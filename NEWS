@@ -10,6 +10,8 @@ See the end for copying conditions.
 
 ** Changes
 
+        - Added --enable-debug flag to the configure script.
+
 ** Bugs fixed:
 
         - scew_element_del_attr() segmentation fault fixed.
