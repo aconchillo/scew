@@ -33,6 +33,9 @@
 
 #include <scew/scew.h>
 
+#include <stdio.h>
+
+
 /* indentation size (in whitespaces) */
 static int const indent_size = 4;
 
@@ -107,10 +110,8 @@ print_element(scew_element* element, unsigned int indent)
 int
 main(int argc, char** argv)
 {
-    int i = 0;
-    int count = 0;
+    scew_tree* tree;
     scew_parser* parser;
-    scew_element** list;
 
     if (argc < 2)
     {
@@ -130,9 +131,14 @@ main(int argc, char** argv)
         return EXIT_FAILURE;
     }
 
-    scew_tree const* tree = scew_parser_tree(parser);
+    tree = scew_parser_tree(parser);
     print_element(scew_tree_root(tree), 0);
+
+    /* Remember to free tree (scew_parser_free does not free it) */
+    scew_tree_free(tree);
 
     /* Frees the SCEW parser */
     scew_parser_free(parser);
+
+    return 0;
 }
