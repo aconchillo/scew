@@ -9,7 +9,7 @@
 
 INCLUDES = -I$(top_srcdir)/src
 
-bin_PROGRAMS = scew_print
+noinst_PROGRAMS = scew_print
 
 scew_print_SOURCES = scew_print.c
 scew_print_LDADD = $(top_srcdir)/src/libscew.a

@@ -9,7 +9,7 @@
 
 INCLUDES = -I$(top_srcdir)/src
 
-bin_PROGRAMS = scew_write
+noinst_PROGRAMS = scew_write
 
 scew_write_SOURCES = scew_write.c
 scew_write_LDADD = $(top_srcdir)/src/libscew.a
