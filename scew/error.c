@@ -9,7 +9,7 @@
  *
  * @if copyright
  *
- * Copyright (C) 2003 Aleix Conchillo Flaque
+ * Copyright (C) 2003, 2004 Aleix Conchillo Flaque
  *
  * SCEW is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -46,17 +46,21 @@ XML_Char const*
 scew_error_string(scew_error code)
 {
     static const XML_Char *message[] = {
-        0,
-        "Out of memory",
-        "Input/Output error",
-        "Internal Expat parser error"
+        _XT("No error"),
+        _XT("Out of memory"),
+        _XT("Input/Output error"),
+        _XT("Internal Expat parser error")
     };
 
     assert(sizeof(message) / sizeof(message[0]) == scew_error_count);
 
     if ((code < 0) || (code > scew_error_count))
     {
-        return 0;
+        // This is not thread safe. Even though, no one should get in
+        // here.
+        static XML_Char unk_message[35];
+        scew_sprintf(unk_message, _XT("Unknown error code (%d)"), code);
+        return unk_message;
     }
     else
     {

@@ -9,7 +9,7 @@
  *
  * @if copyright
  *
- * Copyright (C) 2002, 2003 Aleix Conchillo Flaque
+ * Copyright (C) 2002, 2003, 2004 Aleix Conchillo Flaque
  *
  * SCEW is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -47,6 +47,7 @@
 #define _XT(str)                L##str
 
 #define scew_fprintf            fwprintf
+#define scew_sprintf            swprintf
 
 #define scew_strcmp(s1,s2)      wcscmp(s1,s2)
 #define scew_strspn(s1,s2)      wcsspn(s1,s2)
@@ -75,6 +76,7 @@
 #define _XT(str)                str
 
 #define scew_fprintf            fprintf
+#define scew_sprintf            sprintf
 
 #define scew_strcmp(s1,s2)      strcmp(s1,s2)
 #define scew_strspn(s1,s2)      strspn(s1,s2)
