@@ -10,7 +10,7 @@
 #### boilerplate and flags
 
 AC_INIT(scew/scew.h)
-AM_INIT_AUTOMAKE(scew, 0.3.2)
+AM_INIT_AUTOMAKE(scew, 0.4.0)
 AM_CONFIG_HEADER(config.h)
 
 AC_ISC_POSIX
@@ -58,6 +58,7 @@ win32/Makefile \
 scew/Makefile \
 examples/Makefile \
 examples/scew_print/Makefile \
+examples/scew_stream/Makefile \
 examples/scew_write/Makefile
 )
 

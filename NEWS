@@ -6,11 +6,21 @@ See the end for copying conditions.
 
 ------------------------------------------------------------------------
 
-* Version 0.3.3 (??/??/04)
+* Version 0.4.0 (25/05/04)
 
 ** Changes:
 
+        - Ability  to load  and XML  document  from an  stream has  been
+          added. The stream  may not be completed, so  it will just load
+          correct  XML pieces.   A callback,  set by  the user,  will be
+          called each time an element is available.
+          (thanks to Gord Shier)
+
 ** Fixes:
+
+        - Fixed  indentation  level   when  document  contains  multiple
+          consecutive empty elements.
+          (thanks to Tom Probasco)
 
         - scew_element_add_attr_pair()  did  not  add  a  new  attribute
           correctly if the attribute already existed.
@@ -179,7 +189,7 @@ See the end for copying conditions.
 ------------------------------------------------------------------------
 Copying information:
 
-Copyright (C) 2002, 2003 Aleix Conchillo Flaque
+Copyright (C) 2002, 2003, 2004 Aleix Conchillo Flaque
 
   Permission is granted to anyone  to make or distribute verbatim copies
 of this document as received, in any medium, provided that the copyright
