@@ -30,6 +30,12 @@
 
 #include "xerror.h"
 
+#ifdef _MSC_VER
+
+__declspec( thread ) scew_error key_error = scew_error_none;
+
+#else
+
 #include <pthread.h>
 
 static pthread_key_t key_error;
@@ -47,9 +53,14 @@ create_keys()
     pthread_setspecific(key_error, code);
 }
 
+#endif
+
 void
 set_last_error(scew_error code)
 {
+#ifdef _MSC_VER
+	key_error = code;
+#else
     scew_error* old_code = NULL;
     scew_error* new_code = NULL;
 
@@ -60,11 +71,15 @@ set_last_error(scew_error code)
     new_code = (scew_error*) malloc(sizeof(scew_error));
     free(old_code);
     pthread_setspecific(key_error, new_code);
+#endif
 }
 
 scew_error
 get_last_error()
 {
+#ifdef _MSC_VER
+	return key_error;
+#else
     scew_error* code = NULL;
 
     code = (scew_error*) pthread_getspecific(key_error);
@@ -73,4 +88,5 @@ get_last_error()
         return scew_error_none;
     }
     return *code;
+#endif
 }

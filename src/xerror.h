@@ -35,10 +35,6 @@
 #include "error.h"
 
 
-/* Creates TLS needed keys (TLS stands for Thread Local Storage). */
-void
-create_keys();
-
 /* Sets SCEW internal last error. */
 void
 set_last_error(scew_error code);

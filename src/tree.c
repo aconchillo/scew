@@ -70,10 +70,10 @@ scew_tree_free(scew_tree* tree)
 unsigned int
 scew_tree_save_file(scew_tree const* tree, char const *file_name)
 {
+    FILE* out = NULL;
+
     assert(tree != NULL);
     assert(file_name != NULL);
-
-    FILE* out = NULL;
 
     out = fopen(file_name, "w");
     if (out == NULL)
@@ -100,10 +100,10 @@ scew_tree_root(scew_tree const* tree)
 scew_element*
 scew_tree_add_root(scew_tree* tree, XML_Char const* name)
 {
+    scew_element* root = NULL;
+
     assert(tree != NULL);
     assert(name != NULL);
-
-    scew_element* root = NULL;
 
     root = scew_element_create(name);
     tree->root = root;

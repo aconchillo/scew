@@ -154,11 +154,11 @@ scew_strspn(XML_Char const* s, XML_Char const* accept)
 void
 scew_strtrim(XML_Char* src)
 {
-    assert(src != NULL);
-
     int start = 0;
     int end = 0;
     int total = 0;
+
+    assert(src != NULL);
 
     end = scew_strlen(src);
 

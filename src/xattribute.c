@@ -41,10 +41,10 @@
 scew_attribute*
 attribute_create(XML_Char const* name, XML_Char const* value)
 {
+    scew_attribute* attribute = NULL;
+
     assert(name != NULL);
     assert(value != NULL);
-
-    scew_attribute* attribute = NULL;
 
     attribute = (scew_attribute*) calloc(1, sizeof(scew_attribute));
     if (attribute == NULL)
@@ -108,10 +108,10 @@ attribute_list_free(attribute_list* list)
 scew_attribute*
 attribute_list_add(attribute_list* list, scew_attribute* attribute)
 {
+    scew_attribute* aux = NULL;
+
     assert(list != NULL);
     assert(attribute != NULL);
-
-    scew_attribute* aux = NULL;
 
     aux = attribute_by_name(list, attribute->name);
     if (aux != NULL)

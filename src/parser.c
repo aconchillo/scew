@@ -84,13 +84,13 @@ scew_parser_free(scew_parser* parser)
 unsigned int
 scew_parser_load_file(scew_parser* parser, char const* file_name)
 {
-    assert(parser != NULL);
-    assert(file_name != NULL);
-
     FILE* in = NULL;
     long file_size = 0;
     char* buffer = NULL;
     unsigned int result = 0;
+
+    assert(parser != NULL);
+    assert(file_name != NULL);
 
     in = fopen(file_name, "r");
     if (in == NULL)

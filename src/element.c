@@ -41,9 +41,9 @@
 scew_element*
 scew_element_create(XML_Char const* name)
 {
-    assert(name != NULL);
-
     scew_element* element = NULL;
+
+    assert(name != NULL);
 
     element = (scew_element*) calloc(1, sizeof(scew_element));
     if (element != NULL)
@@ -138,11 +138,11 @@ scew_element_next(scew_element const* parent, scew_element const* element)
 scew_element*
 scew_element_by_index(scew_element const* parent, unsigned int idx)
 {
-    assert(parent != NULL);
-    assert(idx < parent->n_children);
-
     unsigned int i = 0;
     scew_element* element = NULL;
+
+    assert(parent != NULL);
+    assert(idx < parent->n_children);
 
     i = 0;
     element = parent->child;
@@ -158,10 +158,10 @@ scew_element_by_index(scew_element const* parent, unsigned int idx)
 scew_element*
 scew_element_by_name(scew_element const* parent, XML_Char const* name)
 {
-    assert(parent != NULL);
-
     unsigned int i = 0;
     scew_element* element = NULL;
+
+    assert(parent != NULL);
 
     if (name != NULL)
     {
@@ -189,14 +189,14 @@ scew_element**
 scew_element_list(scew_element const* parent, XML_Char const* name,
                   unsigned int* count)
 {
-    assert(parent != NULL);
-    assert(name != NULL);
-    assert(count != NULL);
-
     unsigned int i = 0;
     unsigned int j = 0;
     scew_element** list = NULL;
     scew_element* element = NULL;
+
+    assert(parent != NULL);
+    assert(name != NULL);
+    assert(count != NULL);
 
     for (i = 0; i < parent->n_children; ++i)
     {
@@ -276,10 +276,10 @@ scew_element_add(scew_element* element, XML_Char const* name)
 scew_element*
 scew_element_add_elem(scew_element* element, scew_element* new_elem)
 {
+    scew_element* current = NULL;
+
     assert(element != NULL);
     assert(new_elem != NULL);
-
-    scew_element* current = NULL;
 
     element->n_children++;
 
