@@ -9,11 +9,13 @@
 
 includedir = $(prefix)/include/$(PACKAGE)
 
-include_HEADERS = scew.h attribute.h element.h parser.h tree.h types.h util.h
+include_HEADERS = scew.h attribute.h element.h parser.h tree.h types.h \
+                  util.h
 
-noinst_HEADERS = xattribute.h xelement.h xhandler.h xparser.h xtree.h
+noinst_HEADERS = xattribute.h xelement.h xhandler.h xparser.h xprint.h \
+                 xtree.h
 
 lib_LIBRARIES = libscew.a
 
 libscew_a_SOURCES = attribute.c element.c parser.c tree.c util.c \
-                    xattribute.c xhandler.c xparser.c
+                    xattribute.c xhandler.c xparser.c xprint.c

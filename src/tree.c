@@ -31,9 +31,9 @@
 #include "tree.h"
 
 #include "xtree.h"
+#include "xprint.h"
 
-//#include "element.h"
-
+#include <stdio.h>
 #include <string.h>
 
 
@@ -55,6 +55,22 @@ scew_tree_free(scew_tree* tree)
 {
     scew_element_free(tree->root);
     free(tree);
+}
+
+unsigned int
+scew_tree_save_file(scew_tree const* tree, char const *file_name)
+{
+    FILE* out = NULL;
+
+    out = fopen(file_name, "w");
+    if (out == NULL)
+    {
+        return 0;
+    }
+
+    tree_print(tree, out);
+
+    return 1;
 }
 
 scew_element*

@@ -60,6 +60,13 @@ extern void
 scew_tree_free(scew_tree* tree);
 
 /**
+ * Saves an XML tree in to the specified file. If the file doesn't exist
+ * it will create it, and if it exists it will overwrite it.
+ */
+extern unsigned int
+scew_tree_save_file(scew_tree const* tree, char const *file_name);
+
+/**
  * Returns the root element of the given tree.
  *
  * @see element.h
