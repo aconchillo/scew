@@ -10,8 +10,6 @@
 DOXYGEN_LOG = doxygen.log
 API_DIR = api
 
-EXTRADIST = $(DOXYGEN_CONF)
-
 if DOC
 
 doc:
