@@ -1,7 +1,7 @@
 /**
  *
  * @file     util.h
- * @author   Aleix Conchillo Flaque <aleix@member.fsf.org>
+ * @author   Aleix Conchillo Flaque <aconchillo@acm.org>
  * @date     Sun Dec 01, 2002 13:05
  * @brief    SCEW util functions
  *

@@ -1,7 +1,7 @@
 /**
  *
  * @file     util.c
- * @author   Aleix Conchillo Flaque <aleix@member.fsf.org>
+ * @author   Aleix Conchillo Flaque <aconchillo@acm.org>
  * @date     Mon Nov 25, 2002 23:32
  * @brief    SCEW string functions
  *

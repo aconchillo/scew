@@ -1,7 +1,7 @@
 #
 # $Id$
 #
-# Author: Aleix Conchillo Flaque<aleix@member.fsf.org>
+# Author: Aleix Conchillo Flaque<aconchillo@acm.org>
 # Date:   Wed Nov 06, 2002 00:55
 #
 # Copyright (C) 2002, 2003 Aleix Conchillo Flaque

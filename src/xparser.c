@@ -1,7 +1,7 @@
 /**
  *
  * @file     xparser.c
- * @author   Aleix Conchillo Flaque <aleix@member.fsf.org>
+ * @author   Aleix Conchillo Flaque <aconchillo@acm.org>
  * @date     Tue Dec 03, 2002 00:21
  * @brief    SCEW private parser type declaration
  *

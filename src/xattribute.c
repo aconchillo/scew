@@ -1,7 +1,7 @@
 /**
  *
  * @file     xattribute.c
- * @author   Aleix Conchillo Flaque <aleix@member.fsf.org>
+ * @author   Aleix Conchillo Flaque <aconchillo@acm.org>
  * @date     Mon Dec 02, 2002 23:03
  * @brief    SCEW private attribute type declaration
  *

@@ -1,7 +1,7 @@
 /**
  *
  * @file     xtree.h
- * @author   Aleix Conchillo Flaque <aleix@member.fsf.org>
+ * @author   Aleix Conchillo Flaque <aconchillo@acm.org>
  * @date     Thu Feb 20, 2003 23:48
  * @brief    SCEW private tree type declaration
  *

@@ -1,13 +1,13 @@
 **** Changes in version 0.2.0 ****
 
-2003-03-30  Aleix Conchillo Flaque  <aleix@member.fsf.org>
+2003-03-30  Aleix Conchillo Flaque  <aconchillo@acm.org>
 
 	* src (Module): Lot of cleanup and some important changes in
 	internal data structures. Everything is now based in a triply
 	linked tree which is created when reading a file or when creating
 	a new XML tree in memory.
 
-2003-02-21  Aleix Conchillo Flaque  <aleix@member.fsf.org>
+2003-02-21  Aleix Conchillo Flaque  <aconchillo@acm.org>
 
 	* src (Module): Added new tree structure which is now included in
 	scew_parser and will be used for writing purposes.

@@ -1,7 +1,7 @@
 /**
  *
  * @file     xhandler.h
- * @author   Aleix Conchillo Flaque <aleix@member.fsf.org>
+ * @author   Aleix Conchillo Flaque <aconchillo@acm.org>
  * @date     Mon Nov 25, 2002 00:23
  * @brief    SCEW Expat handlers
  *

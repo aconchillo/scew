@@ -1,7 +1,7 @@
 /**
  *
  * @file     tree.h
- * @author   Aleix Conchillo Flaque <aleix@member.fsf.org>
+ * @author   Aleix Conchillo Flaque <aconchillo@acm.org>
  * @date     Thu Feb 20, 2003 23:32
  * @brief    SCEW tree type declaration
  *

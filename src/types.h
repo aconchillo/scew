@@ -1,7 +1,7 @@
 /**
  *
  * @file     types.h
- * @author   Aleix Conchillo Flaque <aleix@member.fsf.org>
+ * @author   Aleix Conchillo Flaque <aconchillo@acm.org>
  * @date     Sat Mar 29, 2003 19:50
  * @brief    SCEW main types definition
  *
