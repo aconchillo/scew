@@ -1,7 +1,7 @@
 /**
  *
  * @file     xprint.h
- * @author   Aleix Conchillo Flaque <aconchillo@acm.org>
+ * @author   Aleix Conchillo Flaque <aleix@member.fsf.org>
  * @date     Sun Mar 30, 2003 13:30
  * @brief    SCEW print functions
  *

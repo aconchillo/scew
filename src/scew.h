@@ -1,7 +1,7 @@
 /**
  *
  * @file     scew.h
- * @author   Aleix Conchillo Flaque <aconchillo@acm.org>
+ * @author   Aleix Conchillo Flaque <aleix@member.fsf.org>
  * @date     Mon Nov 25, 2002 01:34
  * @brief    SCEW main header file
  *

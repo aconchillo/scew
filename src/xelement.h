@@ -1,7 +1,7 @@
 /**
  *
  * @file     xelement.h
- * @author   Aleix Conchillo Flaque <aconchillo@acm.org>
+ * @author   Aleix Conchillo Flaque <aleix@member.fsf.org>
  * @date     Mon Nov 25, 2002 00:55
  * @brief    SCEW private element type declaration
  *
