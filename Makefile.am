@@ -4,10 +4,10 @@
 # Author: Aleix Conchillo Flaque <aleix@member.fsf.org>
 # Date:   Mon Nov 04, 2002 20:29
 #
-# Copyright (C) 2002, 2003 Aleix Conchillo Flaque
+# Copyright (C) 2002, 2003, 2004 Aleix Conchillo Flaque
 #
 
-SUBDIRS = doc etc src examples
+SUBDIRS = doc etc scew examples
 
 .PHONY: doc
 
