@@ -7,7 +7,7 @@
 # Copyright (C) 2002, 2003, 2004 Aleix Conchillo Flaque
 #
 
-SUBDIRS = doc etc scew examples
+SUBDIRS = . doc etc scew examples
 
 EXTRADIST = INSTALL.WIN32
 
