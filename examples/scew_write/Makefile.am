@@ -7,7 +7,7 @@
 # Copyright (C) 2003, 2004 Aleix Conchillo Flaque
 #
 
-INCLUDES = -I$(top_srcdir)/scew
+INCLUDES = -I$(top_srcdir)
 
 noinst_PROGRAMS = scew_write
 
