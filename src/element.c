@@ -92,6 +92,11 @@ scew_get_element_by_name(scew_element const* parent, char const* name)
         }
     }
 
+    if (i == parent->n_children)
+    {
+        return NULL;
+    }
+
     return element;
 }
 

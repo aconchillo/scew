@@ -77,6 +77,11 @@ scew_get_attribute_by_name(scew_element const* element, XML_Char const* name)
         }
     }
 
+    if (i == element->n_attr)
+    {
+        return NULL;
+    }
+
     return attribute;
 }
 
