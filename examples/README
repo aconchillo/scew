@@ -1,0 +1,11 @@
+README
+******
+
+  This directory contains, as its  name suggests, examples on how to use
+the SCEW library. Here is the list of the examples that you will find:
+
+
+        - scew_print/           Prints any XML file.
+
+---
+$Id$
