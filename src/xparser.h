@@ -53,10 +53,11 @@ struct _scew_parser
     stack_element* stack;
 };
 
-
+/* Pushes an element into the stack. */
 stack_element*
 stack_push(stack_element** stack, scew_element* element);
 
+/* Pops an element from the stack. */
 scew_element*
 stack_pop(stack_element** stack);
 

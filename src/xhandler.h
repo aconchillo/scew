@@ -34,18 +34,23 @@
 
 #include <expat.h>
 
+/* Expat callback for starting elements. */
 void
 start_handler(void* data, XML_Char const* elem, XML_Char const** attr);
 
+/* Expat callback for ending elements. */
 void
 end_handler(void* data, XML_Char const* elem);
 
+/* Expat callback for element contents. */
 void
 char_handler(void* data, XML_Char const* s, int len);
 
+/* Skip beggining whitespaces. */
 int
 skip_white_space(XML_Char const* s, int len);
 
+/* Tells whether a string is empty or not. */
 int
 is_empty_char(XML_Char const* s, int len);
 
