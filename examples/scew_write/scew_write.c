@@ -27,8 +27,8 @@
  *
  * @endif
  *
- * This example shows the usage of the API provided by SCEW. It will
- * create a new XML and write it to a file.
+ * This example shows the usage of the SCEW API. It will create a new
+ * XML and write it to a file.
  *
  * We will create an XML with the follwing structure:
  *
@@ -49,10 +49,6 @@
  *   </scew_test>
  */
 
-/**
- * You will probably need to change this include to <scew/scew.h> in you
- * program.
- */
 #include <scew/scew.h>
 
 #include <stdio.h>

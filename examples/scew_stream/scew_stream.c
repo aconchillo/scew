@@ -28,10 +28,10 @@
  * @endif
  *
  * This example shows the usage of the SCEW API. It loads an XML file
- * using a one byte buffer. Then, the function scew_parser_load_stream
- * is called until the end of file is reached. While elements are
- * encountered a callback function, previously set, is called each time
- * a complete element is read.
+ * using a one byte buffer (any size can be used). Then, the function
+ * scew_parser_load_stream is called until the end of file is
+ * reached. While elements are encountered a callback function,
+ * previously set, is called each time a complete element is read.
  *
  * Example 1:
  *

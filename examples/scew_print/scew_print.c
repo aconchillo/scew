@@ -27,14 +27,10 @@
  *
  * @endif
  *
- * This example shows the usage of the API provided by SCEW. It will
- * print an XML file given as the first program parameter.
+ * This example shows the usage of the SCEW API. It will print an XML
+ * file given as the first program parameter.
  */
 
-/**
- * You will probably need to change this include to <scew/scew.h> in you
- * program.
- */
 #include <scew/scew.h>
 
 #include <stdio.h>
