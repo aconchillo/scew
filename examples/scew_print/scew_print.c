@@ -31,7 +31,11 @@
  * print an XML file given as the first program parameter.
  */
 
-#include <scew/scew.h>
+/**
+ * You will probably need to change this include to <scew/scew.h> in you
+ * program.
+ */
+#include "scew.h"
 
 #include <stdio.h>
 
