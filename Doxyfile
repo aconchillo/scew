@@ -5,7 +5,7 @@
 #---------------------------------------------------------------------------
 PROJECT_NAME           = "Simple C Expat Wrapper"
 PROJECT_NUMBER         = 0.2.0
-OUTPUT_DIRECTORY       = /home/aleix/projects/scew/doc/
+OUTPUT_DIRECTORY       = ./doc
 OUTPUT_LANGUAGE        = English
 EXTRACT_ALL            = NO
 EXTRACT_PRIVATE        = NO
