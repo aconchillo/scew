@@ -41,7 +41,7 @@
 
 
 /* indentation size (in whitespaces) */
-static int const indent_size = 4;
+int const indent_size = 4;
 
 void
 print_indent(unsigned int indent)
