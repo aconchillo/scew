@@ -9,8 +9,8 @@ the SCEW library. Here is the list of the examples that you will find:
 
 
   In order to compile the examples, you must add the next linking flags:
--lexpat and  -lscew. For example,  to compile the  'scew_print' example,
-you should do the following:
+-lexpat  and  -lscew. That  is,  for  'scew_print',  you should  do  the
+following:
 
         gcc -c scew_print.c -I/usr/local/include
         gcc -o scew_print scew_print.o -L/usr/local/lib -lexpat -lscew
