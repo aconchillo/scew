@@ -32,7 +32,7 @@
 
 #include "xerror.h"
 
-#include "util.h"
+#include "str.h"
 
 #include <assert.h>
 #include <string.h>

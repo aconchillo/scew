@@ -30,7 +30,7 @@
 
 #include "tree.h"
 
-#include "util.h"
+#include "str.h"
 
 #include "xerror.h"
 #include "xtree.h"

@@ -32,7 +32,7 @@
 
 #include "xparser.h"
 
-#include "util.h"
+#include "str.h"
 
 #include <stdio.h>
 
