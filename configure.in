@@ -29,7 +29,8 @@ AC_OUTPUT(
 Makefile \
 src/Makefile \
 examples/Makefile \
-examples/scew_print/Makefile
+examples/scew_print/Makefile \
+examples/scew_write/Makefile
 )
 
 echo
