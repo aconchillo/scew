@@ -7,21 +7,36 @@
 # Copyright (C) 2002, 2003 Aleix Conchillo Flaque
 #
 
+#### boilerplate and flags
+
 AC_INIT(src/scew.h)
-AM_INIT_AUTOMAKE(scew, 0.2.0)
+AM_INIT_AUTOMAKE(scew, 0.2.1)
 AM_CONFIG_HEADER(config.h)
 
 AC_ISC_POSIX
 AC_PROG_CC
 AC_PROG_CC_STDC
 AC_HEADER_STDC
-
 AC_PROG_RANLIB
 
-CFLAGS="-Wall -O2"
+#### options
+
+AC_ARG_ENABLE(debug,
+        [  --enable-debug[=yes|no]         Enable debug info compilation (no)],
+        deb=$enableval, deb=no)
+
+CFLAGS="-Wall -pipe"
+
+if test "x$deb" = xyes; then
+   CFLAGS="$CFLAGS -g";
+else
+   CFLAGS="$CFLAGS -O2";
+fi
+
 AC_SUBST(CFLAGS)
 
-# Check for expat
+#### libraries
+
 AC_CHECK_LIB(expat, XML_Parse, , AC_MSG_ERROR(Unable to find Expat.
                   Download lastest version at http://www.libexpat.org))
 
@@ -33,11 +48,17 @@ examples/scew_print/Makefile \
 examples/scew_write/Makefile
 )
 
+if test x$deb = xyes; then
+   mode=debug
+else
+   mode=release
+fi
+
 echo
-echo "*** Simple C Expat Wrapper $VERSION has been successfully configured ***"
+echo "*** SCEW $VERSION has been successfully configured ***"
 echo
-echo "Type 'make' to complete the compilation and then 'make install' as root"
-echo "to install."
+echo "Type 'make' to complete the compilation ($mode mode) and then"
+echo "'make install' as root to install."
 echo
 echo "You can also try the examples in the 'examples' directory before"
 echo "installing the library. See 'examples/README' to see a list of them."
