@@ -77,6 +77,9 @@ scew_error_code();
 
 /**
  * Returns a string describing the internal SCEW error.
+ *
+ * Note: if an unknown error code is given a non thread safe string is
+ * returned.
  */
 extern XML_Char const*
 scew_error_string(scew_error code);
