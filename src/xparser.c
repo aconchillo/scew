@@ -34,7 +34,7 @@
 stack_element*
 stack_push(stack_element** stack, scew_element* element)
 {
-    stack_element* new_elem = (stack_element*) malloc(sizeof(stack_element));
+    stack_element* new_elem = (stack_element*) calloc(1, sizeof(stack_element));
 
     if (new_elem != NULL)
     {

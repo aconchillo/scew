@@ -42,8 +42,7 @@ scew_parser_create()
 {
     scew_parser* parser;
 
-    parser = (scew_parser*) malloc(sizeof(scew_parser));
-    bzero(parser, sizeof(scew_parser));
+    parser = (scew_parser*) calloc(1, sizeof(scew_parser));
     if (parser == NULL)
     {
         return NULL;

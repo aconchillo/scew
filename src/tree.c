@@ -40,14 +40,7 @@
 scew_tree*
 scew_tree_create()
 {
-    scew_tree* tree = (scew_tree*) malloc(sizeof(scew_tree));
-
-    if (tree != NULL)
-    {
-        bzero(tree, sizeof(tree));
-    }
-
-    return tree;
+    return (scew_tree*) calloc(1, sizeof(scew_tree));
 }
 
 void

@@ -40,10 +40,9 @@ scew_element_create(XML_Char const* name)
 {
     scew_element* element = NULL;
 
-    element = (scew_element*) malloc(sizeof(scew_element));
+    element = (scew_element*) calloc(1, sizeof(scew_element));
     if (element != NULL)
     {
-        bzero(element, sizeof(scew_element));
         element->name = scew_strdup(name);
         element->attributes = attribute_list_create();
     }

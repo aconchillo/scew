@@ -68,6 +68,10 @@ attribute_create(XML_Char const* name, XML_Char const* value);
 void
 attribute_free(scew_attribute* attribute);
 
+/* Frees an attribute node structure. */
+void
+attribute_node_free(attribute_node* node);
+
 /* Creates a new attribute list. */
 attribute_list*
 attribute_list_create();

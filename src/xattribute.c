@@ -40,10 +40,9 @@ attribute_create(XML_Char const* name, XML_Char const* value)
 {
     scew_attribute* attribute = NULL;
 
-    attribute = (scew_attribute*) malloc(sizeof(scew_attribute));
+    attribute = (scew_attribute*) calloc(1, sizeof(scew_attribute));
     if (attribute != NULL)
     {
-        bzero(attribute, sizeof(scew_attribute));
         attribute->name = scew_strdup(name);
         attribute->value = scew_strdup(value);
     }
@@ -64,18 +63,22 @@ attribute_free(scew_attribute* attribute)
     free(attribute);
 }
 
+void
+attribute_node_free(attribute_node* node)
+{
+    if (node == NULL)
+    {
+        return;
+    }
+
+    attribute_free(node->info);
+    free(node);
+}
+
 attribute_list*
 attribute_list_create()
 {
-    attribute_list* list = NULL;
-
-    list = (attribute_list*) malloc(sizeof(attribute_list));
-    if (list != NULL)
-    {
-        bzero(list, sizeof(attribute_list));
-    }
-
-    return list;
+    return (attribute_list*) calloc(1, sizeof(attribute_list));
 }
 
 void
@@ -94,7 +97,7 @@ attribute_list_free(attribute_list* list)
     {
         tmp = it;
         it = it->next;
-        free(tmp);
+        attribute_node_free(tmp);
     }
 
     free(list);
@@ -118,12 +121,11 @@ attribute_list_add(attribute_list* list, scew_attribute* attribute)
         return node->info;
     }
 
-    node = (attribute_node*) malloc(sizeof(attribute_node));
+    node = (attribute_node*) calloc(1, sizeof(attribute_node));
     if (node == NULL)
     {
         return NULL;
     }
-    bzero(node, sizeof(attribute_node));
     node->info = attribute;
 
     list->size++;
