@@ -8,11 +8,13 @@ See the end for copying conditions.
 
 * Version 0.2.1 (24/04/03)
 
-** Changes
+** Changes:
 
         - Added --enable-debug flag to the configure script.
 
-** Bugs fixed:
+** Fixes:
+
+        - Compilation warnings fixed.
 
         - scew_element_del_attr() segmentation fault fixed.
           (reported by Jussi Mäki)
@@ -21,22 +23,22 @@ See the end for copying conditions.
 
 * Version 0.2.0 (07/04/03)
 
-** Changes
+** Changes:
 
         - Functions to create and save XML files have been added.
 
         - A  lot  of  cleanup  and  rewriting has  been  done.  Internal
           structures have changed.
 
-** Bugs fixed:
+** Fixes:
 
 ------------------------------------------------------------------------
 
 * Version 0.1.1 (14/01/03)
 
-** Changes
+** Changes:
 
-** Bugs fixed:
+** Fixes:
 
         - scew_get_element_by_name() and scew_get_attribute_by_name()
           did not return NULL if an element/attribute was not found.
