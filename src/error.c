@@ -62,7 +62,6 @@ scew_error_string(scew_error code)
     {
         return message[code];
     }
-    return message[code];
 }
 
 enum XML_Error
