@@ -42,6 +42,9 @@ xmldecl_handler(void* data, XML_Char const* version, XML_Char const* encoding,
 {
     scew_parser* parser = (scew_parser*) data;
 
+    /* standalone is unused */
+    (void)standalone;
+
     if (parser == NULL)
     {
         return;
@@ -106,6 +109,9 @@ end_handler(void* data, XML_Char const* elem)
     XML_Char* contents = NULL;
     scew_element* current = NULL;
     scew_parser* parser = (scew_parser*) data;
+
+    /* elem is unused */
+    (void)elem;
 
     if (parser == NULL)
     {
