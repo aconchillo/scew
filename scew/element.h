@@ -9,7 +9,7 @@
  *
  * @if copyright
  *
- * Copyright (C) 2002, 2003 Aleix Conchillo Flaque
+ * Copyright (C) 2002, 2003, 2004 Aleix Conchillo Flaque
  *
  * SCEW is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -122,7 +122,7 @@ scew_element_list(scew_element const* parent, XML_Char const* name,
  * Frees an element list created by <code>scew_element_list</code>.
  */
 extern void
-scew_element_list_free(scew_element** list);
+scew_element_list_free(scew_element** lst);
 
 /**
  * Returns the element name or NULL if the element does not exist.
