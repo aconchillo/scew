@@ -1,16 +1,36 @@
+2003-07-09  Aleix Conchillo Flaque  <aleix@member.fsf.org>
+
+	* src/str.h (Module): Added isalpha, isalnum, isdigit, isspace,
+	isprint... functions.
+
+	* src/mem.h (Module): Added initial memory functions.
+
+2003-07-08  Aleix Conchillo Flaque  <aleix@member.fsf.org>
+
+	* src (Module):
+	- Added error system
+	- Fixed some minor bugs
+	- Improve white space parse treatment
+	- New string functions
+	- Added support for XML declarations attributes (version,
+       	encoding, standalone)
+
+2003-05-01  Aleix Conchillo Flaque  <aleix@member.fsf.org>
+
+	* src/tree.c (scew_tree_save_file): file closing fixed.
+
 **** Changes in version 0.2.1 ****
 
 2003-04-25  Aleix Conchillo Flaque  <aleix@member.fsf.org>
 
-	* src/*.h: Added compatibilized headers with C++ (ifdef
+	* src (Module): Added compatibilized headers with C++ (ifdef
 	__cplusplus).
 
 2003-04-24  Aleix Conchillo Flaque  <aleix@member.fsf.org>
 
 	* src (Module): Compilation warnings fixes.
 
-	* src/xattribute.c: a crash in scew_element_del_attr() has been
-	fixed.
+	* src/xattribute.c(scew_element_del_attr): memory crash fixed.
 
 **** Changes in version 0.2.0 ****
 
