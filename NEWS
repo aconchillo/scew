@@ -6,7 +6,7 @@ See the end for copying conditions.
 
 ------------------------------------------------------------------------
 
-* Version 0.2.1 (??/??/03)
+* Version 0.2.1 (24/04/03)
 
 ** Changes
 
@@ -15,7 +15,7 @@ See the end for copying conditions.
 ** Bugs fixed:
 
         - scew_element_del_attr() segmentation fault fixed.
-          (reported by Jussi Mdki)
+          (reported by Jussi Mäki)
 
 ------------------------------------------------------------------------
 
