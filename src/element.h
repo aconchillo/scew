@@ -136,7 +136,7 @@ scew_element_add_elem(scew_element* element, scew_element* new_elem);
  * Adds an already existent attribute to the element. If the attribute
  * already exist, the old value will be overwritten. It is important to
  * note that the attribute given will be part of the element's
- * attributes, so it should not be freed.
+ * attributes (ownership is lost), so it should not be freed.
  *
  * @see attribute.h
  *
