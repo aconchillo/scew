@@ -12,4 +12,4 @@ INCLUDES = -I$(top_srcdir)/src
 noinst_PROGRAMS = scew_print
 
 scew_print_SOURCES = scew_print.c
-scew_print_LDADD = $(top_srcdir)/src/libscew.a
+scew_print_LDADD = $(top_builddir)/src/libscew.a
