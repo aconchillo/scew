@@ -55,6 +55,7 @@ print_indent(unsigned int indent)
 void
 print_attributes(scew_element* element)
 {
+    unsigned int i = 0;
     scew_attribute* attribute = NULL;
 
     if (element != NULL)
@@ -63,18 +64,25 @@ print_attributes(scew_element* element)
          * Iterates through the element's attribute list, printing the
          * pair name-value.
          */
-        attribute = NULL;
-        while ((attribute = scew_attribute_next(element, attribute)) != NULL)
+for (i = 0; i < scew_attribute_count(element); i++)
         {
+            attribute = scew_attribute_by_index(element, i);
             printf(" %s=\"%s\"", scew_attribute_name(attribute),
                    scew_attribute_value(attribute));
         }
+/*         attribute = NULL; */
+/*         while ((attribute = scew_attribute_next(element, attribute)) != NULL) */
+/*         { */
+/*             printf(" %s=\"%s\"", scew_attribute_name(attribute), */
+/*                    scew_attribute_value(attribute)); */
+/*         } */
     }
 }
 
 void
 print_element(scew_element* element, unsigned int indent)
 {
+    unsigned int i = 0;
     scew_element* child = NULL;
     XML_Char const* contents = NULL;
 
@@ -100,11 +108,16 @@ print_element(scew_element* element, unsigned int indent)
      * Call print_element function again for each child of the
      * current element.
      */
-    child = NULL;
-    while ((child = scew_element_next(element, child)) != NULL)
+    for (i = 0; i < scew_element_count(element); i++)
     {
-        print_element(child, indent + 1);
+        print_element(scew_element_by_index(element, i), indent + 1);
     }
+
+/*     child = NULL; */
+/*     while ((child = scew_element_next(element, child)) != NULL) */
+/*     { */
+/*         print_element(child, indent + 1); */
+/*     } */
 
     /* Prints element's content. */
     if (contents != NULL)

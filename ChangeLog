@@ -1,3 +1,13 @@
+2003-07-16  Aleix Conchillo Flaque  <aleix@member.fsf.org>
+
+        * src/element.c, src/xattribute.c: performance improvement by
+	saving last index visited.
+
+	* src (Module): Lots of fixes and improvements by Brodie
+	Thiesfield.
+
+**** Changes in version 0.3.0 ****
+
 2003-07-09  Aleix Conchillo Flaque  <aleix@member.fsf.org>
 
 	* src/str.h (Module): Added isalpha, isalnum, isdigit, isspace,

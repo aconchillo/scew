@@ -12,16 +12,18 @@ it complete and exempt of errors.
 * Carlos  Carrasco  has  helped  a  lot in  the  debugging  and  testing
   phases. Those nigths at IRC are really great. Thanks!
 
-* Lluis Gesa has also helped in testing the package.
+* Brodie Thiesfield has submit lots of fixes and improvements.
 
 * Sanzo Miyazawa has  submit code to improve performance  in element and
   attribute iteration.
+
+* Lluis Gesa has also helped in testing the package.
 
 * Neil Harvey has contributed the pkg-config file.
 
 * Bug reporting (in alphabetical order):
   Anonymous reporters, Stuart R. Anderson, Paul Bohme, Jussi Mäki, Sanzo
-  Miyazawa
+  Miyazawa, Brodie Thiesfield
 
 ---
 $Id$
