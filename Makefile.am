@@ -9,6 +9,8 @@
 
 SUBDIRS = doc etc scew examples
 
+EXTRADIST = INSTALL.WIN32
+
 .PHONY: doc
 
 if DOC
