@@ -40,7 +40,9 @@
 #include <stdio.h>
 #include <string.h>
 
-static int const max_buffer = 15000;
+/* This code does not compile under VC .NET */
+/* static int const max_buffer = 5000; */
+#define MAX_BUFFER_SIZE     5000
 
 scew_parser*
 scew_parser_create()
@@ -109,14 +111,14 @@ scew_parser_load_file_fp(scew_parser* parser, FILE* in)
 {
     int len = 0;
     int done = 0;
-    char buffer[max_buffer];
+    char buffer[MAX_BUFFER_SIZE];
 
     assert(parser != NULL);
     assert(in != NULL);
 
     while (!done)
     {
-        len = fread(buffer, 1, max_buffer, in);
+        len = fread(buffer, 1, MAX_BUFFER_SIZE, in);
         if (ferror(in))
         {
             set_last_error(scew_error_io);
