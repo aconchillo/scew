@@ -90,7 +90,7 @@ scew_parser_load_buffer(scew_parser* parser, unsigned char const* buffer,
  *
  * @see scew_tree
  */
-extern scew_tree const*
+extern scew_tree*
 scew_parser_tree(scew_parser const* parser);
 
 /**

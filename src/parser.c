@@ -72,7 +72,6 @@ scew_parser_free(scew_parser* parser)
 
     XML_ParserFree(parser->parser);
 
-    scew_tree_free(parser->tree);
     free(parser);
 }
 
@@ -138,7 +137,7 @@ scew_parser_load_buffer(scew_parser* parser, unsigned char const* buffer,
     return 1;
 }
 
-scew_tree const*
+scew_tree*
 scew_parser_tree(scew_parser const* parser)
 {
     if (parser == NULL)
