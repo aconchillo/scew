@@ -9,7 +9,7 @@
  *
  * @if copyright
  *
- * Copyright (C) 2003 Aleix Conchillo Flaque
+ * Copyright (C) 2003, 2004 Aleix Conchillo Flaque
  *
  * SCEW is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -40,6 +40,7 @@ struct _scew_tree
 {
     XML_Char* version;
     XML_Char* encoding;
+    XML_Char* preamble;
     int standalone;
     scew_element* root;
 };

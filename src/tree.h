@@ -23,7 +23,7 @@
  *
  * You should have received a copy of the GNU Lesser General Public
  * License along with this library; if not, write to the Free Software
- * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+ * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
  *
  * @endif
  *
@@ -63,13 +63,6 @@ extern void
 scew_tree_free(scew_tree* tree);
 
 /**
- * Saves an XML tree in to the specified file. If the file doesn't exist
- * it will create it, and if it exists it will overwrite it.
- */
-extern unsigned int
-scew_tree_save_file(scew_tree const* tree, char const *file_name);
-
-/**
  * Returns the root element of the given tree.
  *
  * @see element.h
@@ -98,7 +91,14 @@ scew_tree_set_xml_version(scew_tree* tree, XML_Char const* version);
  * UTF-8.
  */
 extern void
-scew_tree_set_xml_encoding(scew_tree* tree, XML_Char const* version);
+scew_tree_set_xml_encoding(scew_tree* tree, XML_Char const* encoding);
+
+/**
+ * Sets the preamble string for the XML document. Typically this
+ * will contain a DOCTYPE declaration.
+ */
+extern void
+scew_tree_set_xml_preamble(scew_tree* tree, XML_Char const* preamble);
 
 /**
  * The standalone property tells the XML processor whether there are any

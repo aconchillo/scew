@@ -23,7 +23,7 @@
  *
  * You should have received a copy of the GNU Lesser General Public
  * License along with this library; if not, write to the Free Software
- * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+ * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
  *
  * @endif
  */
@@ -34,7 +34,6 @@
 
 #include "xerror.h"
 #include "xtree.h"
-#include "xprint.h"
 
 #include <assert.h>
 #include <stdio.h>
@@ -65,28 +64,6 @@ scew_tree_free(scew_tree* tree)
         scew_element_free(tree->root);
         free(tree);
     }
-}
-
-unsigned int
-scew_tree_save_file(scew_tree const* tree, char const *file_name)
-{
-    FILE* out = NULL;
-
-    assert(tree != NULL);
-    assert(file_name != NULL);
-
-    out = fopen(file_name, "w");
-    if (out == NULL)
-    {
-        set_last_error(scew_error_io);
-        return 0;
-    }
-
-    tree_print(tree, out);
-
-    fclose(out);
-
-    return 1;
 }
 
 scew_element*
@@ -127,6 +104,15 @@ scew_tree_set_xml_encoding(scew_tree* tree, XML_Char const* encoding)
 
     free(tree->encoding);
     tree->encoding = scew_strdup(encoding);
+}
+
+void
+scew_tree_set_xml_preamble(scew_tree* tree, XML_Char const* preamble)
+{
+    assert(tree != NULL);
+
+    free(tree->preamble);
+    tree->preamble = scew_strdup(preamble);
 }
 
 void
