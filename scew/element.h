@@ -209,10 +209,11 @@ extern void
 scew_element_list_del(scew_element* element, XML_Char const* name);
 
 /**
- * Adds an already existent attribute to the element. If the attribute
+ * Adds an already created attribute to the element. If the attribute
  * already exist, the old value will be overwritten. It is important to
  * note that the attribute given will be part of the element's
- * attributes (ownership is lost), so it should not be freed.
+ * attributes (ownership is lost), so it should not be freed, and it
+ * should not be part of another attribute element list.
  *
  * @see attribute.h
  *
@@ -223,8 +224,8 @@ scew_element_add_attr(scew_element* element, scew_attribute* attribute);
 
 /**
  * Adds a new attribute to the given element. An attribute is formed by
- * a pair (name, value). Note that if the attribute already exist, the
- * old value will be overwritten.
+ * a pair (name, value). If the attribute already exist, the old value
+ * will be overwritten.
  *
  * @see attribute.h
  *
