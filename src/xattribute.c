@@ -30,22 +30,30 @@
 
 #include "xattribute.h"
 
+#include "xerror.h"
+
 #include "util.h"
 
+#include <assert.h>
 #include <string.h>
 
 
 scew_attribute*
 attribute_create(XML_Char const* name, XML_Char const* value)
 {
+    assert(name != NULL);
+    assert(value != NULL);
+
     scew_attribute* attribute = NULL;
 
     attribute = (scew_attribute*) calloc(1, sizeof(scew_attribute));
-    if (attribute != NULL)
+    if (attribute == NULL)
     {
-        attribute->name = scew_strdup(name);
-        attribute->value = scew_strdup(value);
+        set_last_error(scew_error_no_memory);
+        return NULL;
     }
+    attribute->name = scew_strdup(name);
+    attribute->value = scew_strdup(value);
 
     return attribute;
 }
@@ -61,27 +69,25 @@ attribute_free(scew_attribute* attribute)
     }
 }
 
-void
-attribute_node_free(attribute_node* node)
-{
-    if (node != NULL)
-    {
-        attribute_free(node->info);
-        free(node);
-    }
-}
-
 attribute_list*
 attribute_list_create()
 {
-    return (attribute_list*) calloc(1, sizeof(attribute_list));
+    attribute_list* list = NULL;
+
+    list = (attribute_list*) calloc(1, sizeof(attribute_list));
+    if (list == NULL)
+    {
+        set_last_error(scew_error_no_memory);
+    }
+
+    return list;
 }
 
 void
 attribute_list_free(attribute_list* list)
 {
-    attribute_node* it = NULL;
-    attribute_node* tmp = NULL;
+    scew_attribute* it = NULL;
+    scew_attribute* tmp = NULL;
 
     if (list == NULL)
     {
@@ -93,7 +99,7 @@ attribute_list_free(attribute_list* list)
     {
         tmp = it;
         it = it->next;
-        attribute_node_free(tmp);
+        attribute_free(tmp);
     }
 
     free(list);
@@ -102,61 +108,57 @@ attribute_list_free(attribute_list* list)
 scew_attribute*
 attribute_list_add(attribute_list* list, scew_attribute* attribute)
 {
-    attribute_node* node = NULL;
+    assert(list != NULL);
+    assert(attribute != NULL);
 
-    if (list == NULL)
-    {
-        return NULL;
-    }
+    scew_attribute* aux = NULL;
 
-    node = attribute_node_by_name(list, attribute->name);
-    if (node != NULL)
+    aux = attribute_by_name(list, attribute->name);
+    if (aux != NULL)
     {
-        attribute_free(node->info);
-        node->info = attribute;
-        return node->info;
+        if (attribute->prev != NULL)
+        {
+            attribute->prev->next = attribute->next;
+        }
+        attribute->prev = aux->prev;
+        attribute->next = aux->next;
+        attribute_free(aux);
+        return attribute;
     }
-
-    node = (attribute_node*) calloc(1, sizeof(attribute_node));
-    if (node == NULL)
-    {
-        return NULL;
-    }
-    node->info = attribute;
 
     list->size++;
     if (list->first == NULL)
     {
-        list->first = node;
+        list->first = attribute;
     }
     else
     {
-        list->last->next = node;
-        node->prev = list->last;
+        list->last->next = attribute;
+        attribute->prev = list->last;
     }
-    list->last = node;
+    list->last = attribute;
 
-    return node->info;
+    return attribute;
 }
 
 void
 attribute_list_del(attribute_list* list, XML_Char const* name)
 {
-    attribute_node* node = NULL;
-    attribute_node* tmp_prev = NULL;
-    attribute_node* tmp_next = NULL;
+    scew_attribute* attribute = NULL;
+    scew_attribute* tmp_prev = NULL;
+    scew_attribute* tmp_next = NULL;
 
     if ((list == NULL) || (name == NULL))
     {
         return;
     }
 
-    node = attribute_node_by_name(list, name);
+    attribute = attribute_by_name(list, name);
 
-    if (node != NULL)
+    if (attribute != NULL)
     {
-        tmp_prev = node->prev;
-        tmp_next = node->next;
+        tmp_prev = attribute->prev;
+        tmp_next = attribute->next;
         if (tmp_prev != NULL)
         {
             tmp_prev->next = tmp_next;
@@ -166,48 +168,49 @@ attribute_list_del(attribute_list* list, XML_Char const* name)
             tmp_next->prev = tmp_prev;
         }
 
-        if (node == list->first)
+        if (attribute == list->first)
         {
             list->first = tmp_next;
         }
 
-        if (node == list->last)
+        if (attribute == list->last)
         {
             list->last = tmp_prev;
         }
 
-        attribute_node_free(node);
+        attribute_free(attribute);
         list->size--;
     }
 }
 
-attribute_node*
-attribute_node_by_index(attribute_list* list, unsigned int idx)
+scew_attribute*
+attribute_by_index(attribute_list* list, unsigned int idx)
 {
     unsigned int i = 0;
-    attribute_node* node = NULL;
+    scew_attribute* attribute = NULL;
 
-    if ((list == NULL) || (idx >= list->size))
+    if (list == NULL)
     {
         return NULL;
     }
+    assert(idx < list->size);
 
     i = 0;
-    node = list->first;
-    while ((i < idx) && (node != NULL))
+    attribute = list->first;
+    while ((i < idx) && (attribute != NULL))
     {
-        node = node->next;
+        attribute = attribute->next;
         ++i;
     }
 
-    return node;
+    return attribute;
 }
 
-attribute_node*
-attribute_node_by_name(attribute_list* list, XML_Char const* name)
+scew_attribute*
+attribute_by_name(attribute_list* list, XML_Char const* name)
 {
     unsigned int i = 0;
-    attribute_node* node = NULL;
+    scew_attribute* attribute = NULL;
 
     if ((list == NULL) || (name == NULL))
     {
@@ -216,8 +219,8 @@ attribute_node_by_name(attribute_list* list, XML_Char const* name)
 
     for (i = 0; i < list->size; ++i)
     {
-        node = attribute_node_by_index(list, i);
-        if (!scew_strcmp(node->info->name, name))
+        attribute = attribute_by_index(list, i);
+        if (!scew_strcmp(attribute->name, name))
         {
             break;
         }
@@ -228,31 +231,5 @@ attribute_node_by_name(attribute_list* list, XML_Char const* name)
         return NULL;
     }
 
-    return node;
-}
-
-scew_attribute*
-attribute_by_index(attribute_list* list, unsigned int idx)
-{
-    attribute_node* node = attribute_node_by_index(list, idx);
-
-    if (node == NULL)
-    {
-        return NULL;
-    }
-
-    return node->info;
-}
-
-scew_attribute*
-attribute_by_name(attribute_list* list, XML_Char const* name)
-{
-    attribute_node* node = attribute_node_by_name(list, name);
-
-    if (node == NULL)
-    {
-        return NULL;
-    }
-
-    return node->info;
+    return attribute;
 }

@@ -51,6 +51,7 @@ struct _scew_parser
     scew_tree* tree;
     scew_element* current;
     stack_element* stack;
+    int ignore_whitespaces;
 };
 
 /* Pushes an element into the stack. */

@@ -30,9 +30,13 @@
 
 #include "parser.h"
 
+#include "tree.h"
+
+#include "xerror.h"
 #include "xparser.h"
 #include "xhandler.h"
 
+#include <assert.h>
 #include <stdio.h>
 #include <string.h>
 
@@ -45,18 +49,24 @@ scew_parser_create()
     parser = (scew_parser*) calloc(1, sizeof(scew_parser));
     if (parser == NULL)
     {
+        set_last_error(scew_error_no_memory);
         return NULL;
     }
 
     parser->parser = XML_ParserCreate(NULL);
     if (parser->parser == NULL)
     {
+        set_last_error(scew_error_no_memory);
         return NULL;
     }
 
+    XML_SetXmlDeclHandler(parser->parser, xmldecl_handler);
     XML_SetElementHandler(parser->parser, start_handler, end_handler);
     XML_SetCharacterDataHandler(parser->parser, char_handler);
     XML_SetUserData(parser->parser, parser);
+
+    /* ignore white spaces by default */
+    parser->ignore_whitespaces = 1;
 
     return parser;
 }
@@ -74,19 +84,18 @@ scew_parser_free(scew_parser* parser)
 unsigned int
 scew_parser_load_file(scew_parser* parser, char const* file_name)
 {
+    assert(parser != NULL);
+    assert(file_name != NULL);
+
     FILE* in = NULL;
     long file_size = 0;
+    char* buffer = NULL;
     unsigned int result = 0;
-    unsigned char* buffer = NULL;
-
-    if (parser == NULL)
-    {
-        return 0;
-    }
 
     in = fopen(file_name, "r");
     if (in == NULL)
     {
+        set_last_error(scew_error_io);
         return 0;
     }
 
@@ -94,15 +103,17 @@ scew_parser_load_file(scew_parser* parser, char const* file_name)
     file_size = ftell(in);
     fseek(in, 0, SEEK_SET);
 
-    buffer = (unsigned char*) malloc(file_size);
+    buffer = (char*) malloc(file_size);
     if (buffer == NULL)
     {
+        set_last_error(scew_error_no_memory);
         fclose(in);
         return 0;
     }
 
     if (fread(buffer, file_size, 1, in) != 1)
     {
+        set_last_error(scew_error_io);
         fclose(in);
         free(buffer);
         return 0;
@@ -117,16 +128,15 @@ scew_parser_load_file(scew_parser* parser, char const* file_name)
 }
 
 unsigned int
-scew_parser_load_buffer(scew_parser* parser, unsigned char const* buffer,
+scew_parser_load_buffer(scew_parser* parser, char const* buffer,
                         unsigned int size)
 {
-    if (parser == NULL)
-    {
-        return 0;
-    }
+    assert(parser != NULL);
+    assert(buffer != NULL);
 
     if (!XML_Parse(parser->parser, buffer, size, 1))
     {
+        set_last_error(scew_error_expat);
         return 0;
     }
 
@@ -136,10 +146,7 @@ scew_parser_load_buffer(scew_parser* parser, unsigned char const* buffer,
 scew_tree*
 scew_parser_tree(scew_parser const* parser)
 {
-    if (parser == NULL)
-    {
-        return NULL;
-    }
+    assert(parser != NULL);
 
     return parser->tree;
 }
@@ -147,10 +154,15 @@ scew_parser_tree(scew_parser const* parser)
 XML_Parser
 scew_parser_expat(scew_parser* parser)
 {
-    if (parser == NULL)
-    {
-        return NULL;
-    }
+    assert(parser != NULL);
 
     return parser->parser;
+}
+
+void
+scew_parser_ignore_whitespaces(scew_parser* parser, int ignore)
+{
+    assert(parser != NULL);
+
+    parser->ignore_whitespaces = ignore;
 }

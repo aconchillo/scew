@@ -35,7 +35,7 @@
 #include "attribute.h"
 #include "element.h"
 #include "parser.h"
+#include "str.h"
 #include "tree.h"
-#include "util.h"
 
 #endif /* SCEW_H_ALEIX0211250134 */

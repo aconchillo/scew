@@ -41,36 +41,28 @@ struct _scew_attribute
 {
     XML_Char* name;
     XML_Char* value;
-};
+    scew_element const* element;
 
-/* Doubly linked list node */
-typedef struct _attr_node
-{
-    scew_attribute* info;
-    struct _attr_node* prev;
-    struct _attr_node* next;
-} attribute_node;
+    scew_attribute* prev;
+    scew_attribute* next;
+};
 
 /* Doubly linked list */
 typedef struct
 {
     unsigned int size;
-    attribute_node* first;
-    attribute_node* last;
+    scew_attribute* first;
+    scew_attribute* last;
 } attribute_list;
 
 
-/* Creates a duplicated attribute from the given one. */
+/* Creates a new attribute from the given pair (name, value). */
 scew_attribute*
 attribute_create(XML_Char const* name, XML_Char const* value);
 
 /* Frees an attribute structure. */
 void
 attribute_free(scew_attribute* attribute);
-
-/* Frees an attribute node structure. */
-void
-attribute_node_free(attribute_node* node);
 
 /* Creates a new attribute list. */
 attribute_list*
@@ -87,14 +79,6 @@ attribute_list_add(attribute_list* list, scew_attribute* attribute);
 /* Deletes an attribute from an attribute list. */
 void
 attribute_list_del(attribute_list* list, XML_Char const* name);
-
-/* Return the list node in position idx. */
-attribute_node*
-attribute_node_by_index(attribute_list* list, unsigned int idx);
-
-/* Return the list node that matches name. */
-attribute_node*
-attribute_node_by_name(attribute_list* list, XML_Char const* name);
 
 /* Return the attribute in position idx. */
 scew_attribute*

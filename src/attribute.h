@@ -67,6 +67,10 @@ scew_attribute_free(scew_attribute* attribute);
 extern unsigned int
 scew_attribute_count(scew_element const* element);
 
+extern scew_attribute*
+scew_attribute_next(scew_element const* element,
+                    scew_attribute const* attribute);
+
 /**
  * Returns the element attribute on the specified position. Positions
  * are zero based.

@@ -34,6 +34,40 @@
 
 #include "util.h"
 
+#include <stdio.h>
+
+void
+xmldecl_handler(void* data, XML_Char const* version, XML_Char const* encoding,
+                int standalone)
+{
+    scew_parser* parser = (scew_parser*) data;
+
+    if (parser == NULL)
+    {
+        return;
+    }
+
+    if (parser->tree == NULL)
+    {
+        parser->tree = scew_tree_create();
+    }
+
+    if (parser->tree == NULL)
+    {
+        return;
+    }
+
+    if (version != NULL)
+    {
+        parser->tree->version = scew_strdup(version);
+    }
+    if (encoding != NULL)
+    {
+        parser->tree->encoding = scew_strdup(encoding);
+    }
+
+    /* by now, we ignore standalone attribute */
+}
 
 void
 start_handler(void* data, XML_Char const* elem, XML_Char const** attr)
@@ -46,9 +80,12 @@ start_handler(void* data, XML_Char const* elem, XML_Char const** attr)
         return;
     }
 
-    if (parser->tree == NULL)
+    if ((parser->tree == NULL) || (scew_tree_root(parser->tree) == NULL))
     {
-        parser->tree = scew_tree_create();
+        if (parser->tree == NULL)
+        {
+            parser->tree = scew_tree_create();
+        }
         parser->current = scew_tree_add_root(parser->tree, elem);
     }
     else
@@ -66,6 +103,8 @@ start_handler(void* data, XML_Char const* elem, XML_Char const** attr)
 void
 end_handler(void* data, XML_Char const* elem)
 {
+    XML_Char* contents = NULL;
+    scew_element* current = NULL;
     scew_parser* parser = (scew_parser*) data;
 
     if (parser == NULL)
@@ -73,23 +112,40 @@ end_handler(void* data, XML_Char const* elem)
         return;
     }
 
+    current = parser->current;
+    if ((current != NULL) && (current->contents != NULL))
+    {
+        if (parser->ignore_whitespaces)
+        {
+            scew_strtrim(current->contents);
+            if (scew_strlen(current->contents) == 0)
+            {
+                free(current->contents);
+                current->contents = NULL;
+            }
+        }
+        else
+        {
+            contents = scew_strdup(current->contents);
+            scew_strtrim(contents);
+            if (scew_strlen(contents) == 0)
+            {
+                free(current->contents);
+                current->contents = NULL;
+            }
+            free(contents);
+        }
+    }
     parser->current = stack_pop(&parser->stack);
 }
 
 void
 char_handler(void* data, XML_Char const* s, int len)
 {
-    int start = 0;
     int total = 0;
-    int total_new = 0;
     int total_old = 0;
     scew_element* current = NULL;
     scew_parser* parser = (scew_parser*) data;
-
-    if (is_empty_char(s, len))
-    {
-        return;
-    }
 
     if (parser == NULL)
     {
@@ -103,74 +159,17 @@ char_handler(void* data, XML_Char const* s, int len)
         return;
     }
 
-    start = skip_white_space(s, len);
-    total_new = len - start;
-    total_old = scew_strlen(current->contents);
-    total = (total_old + total_new + 2) * sizeof(XML_Char);
+    if (current->contents != NULL)
+    {
+        total_old = scew_strlen(current->contents);
+    }
+    total = (total_old + len + 1) * sizeof(XML_Char);
     current->contents = (XML_Char*) realloc(current->contents, total);
 
     if (total_old == 0)
     {
         current->contents[0] = '\0';
     }
-    else
-    {
-        scew_strcat(current->contents, " ");
-    }
 
-    scew_strncat(current->contents, &s[start], total_new);
-}
-
-int
-skip_white_space(XML_Char const* s, int len)
-{
-    int i = 0;
-
-    if ((s == NULL) || (len == 0))
-    {
-        return 0;
-    }
-
-    while (((s[i] == ' ' || s[i] == '\t' || s[i] == '\n' || s[i] == '\r'))
-           && (i < len))
-    {
-        i++;
-    }
-
-    return i;
-}
-
-int
-is_empty_char(XML_Char const* s, int len)
-{
-    int i = 0;
-    int last = len - 1;
-
-    if ((s == NULL) || (len == 0))
-    {
-        return 1;
-    }
-
-    if (((len == 1) && ((s[0] == '\n') || (s[1] == '\r'))) ||
-        ((len == 2) && ((s[0] == '\r') && (s[1] == '\n'))))
-    {
-        return 1;
-    }
-
-    if (s[last] == ' ')
-    {
-        for (i = 0; i < last; i++)
-        {
-            if (s[i] != ' ')
-            {
-                break;
-            }
-        }
-        if (i == last)
-        {
-            return 1;
-        }
-    }
-
-    return 0;
+    scew_strncat(current->contents, s, len);
 }

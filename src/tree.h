@@ -85,6 +85,33 @@ scew_tree_root(scew_tree const* tree);
 extern scew_element*
 scew_tree_add_root(scew_tree* tree, XML_Char const* name);
 
+/**
+ * Sets the XML version in the XML declaration. Currently there is one
+ * XML version, so the value is always 1.0. If there were more XML
+ * versions, this proerty tells the XML processor which one to use.
+ */
+extern void
+scew_tree_set_xml_version(scew_tree* tree, XML_Char const* version);
+
+/**
+ * Sets the character encoding used in the XML document. The default is
+ * UTF-8.
+ */
+extern void
+scew_tree_set_xml_encoding(scew_tree* tree, XML_Char const* version);
+
+/**
+ * The standalone property tells the XML processor whether there are any
+ * other extra files to load, such as external entities or DTDs. If the
+ * XML document can stand on its own set it to 'yes'. The default SCEW
+ * value is 'no', so the XML processor will load what it needs to.
+ *
+ * @param tree the tree to set the option to.
+ * @param standalone 0 means 'no', any other value means 'yes'.
+ */
+extern void
+scew_tree_set_xml_standalone(scew_tree* tree, int standalone);
+
 #ifdef __cplusplus
 }
 #endif /* __cplusplus */

@@ -65,8 +65,30 @@ extern unsigned int
 scew_element_count(scew_element const* element);
 
 /**
+ * Returns the <code>parent</code>'s child element if
+ * <code>element</code> is NULL, otherwise it returns the contiguous
+ * element to the given one.
+ *
+ * Call this function a first time with <code>element</code> to NULL and
+ * a parent's child element will be returned. In the subsequent calls
+ * you just need to provide this child element and its 'brothers' will
+ * be returned.
+ *
+ * @return a parent's child element or a contiguous element. NULL if
+ * there are no more elements.
+ */
+extern scew_element*
+scew_element_next(scew_element const* parent, scew_element const* element);
+
+/**
  * Returns the child element on the specified position. Positions are
  * zero based.
+ *
+ * Do not call this function with big XML documents, you
+ * will have a serious performance degradation. Use
+ * <code>scew_element_next</code> instead.
+ *
+ * @see scew_element_next
  *
  * @return the element on the specified position, NULL if there is no
  * element in the position.

@@ -38,6 +38,9 @@
 
 struct _scew_tree
 {
+    XML_Char* version;
+    XML_Char* encoding;
+    int standalone;
     scew_element* root;
 };
 

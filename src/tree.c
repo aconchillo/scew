@@ -30,9 +30,13 @@
 
 #include "tree.h"
 
+#include "util.h"
+
+#include "xerror.h"
 #include "xtree.h"
 #include "xprint.h"
 
+#include <assert.h>
 #include <stdio.h>
 #include <string.h>
 
@@ -40,7 +44,15 @@
 scew_tree*
 scew_tree_create()
 {
-    return (scew_tree*) calloc(1, sizeof(scew_tree));
+    scew_tree* tree = NULL;
+
+    tree = (scew_tree*) calloc(1, sizeof(scew_tree));
+    if (tree == NULL)
+    {
+        set_last_error(scew_error_no_memory);
+    }
+
+    return tree;
 }
 
 void
@@ -48,6 +60,8 @@ scew_tree_free(scew_tree* tree)
 {
     if (tree != NULL)
     {
+        free(tree->version);
+        free(tree->encoding);
         scew_element_free(tree->root);
         free(tree);
     }
@@ -56,11 +70,15 @@ scew_tree_free(scew_tree* tree)
 unsigned int
 scew_tree_save_file(scew_tree const* tree, char const *file_name)
 {
+    assert(tree != NULL);
+    assert(file_name != NULL);
+
     FILE* out = NULL;
 
     out = fopen(file_name, "w");
     if (out == NULL)
     {
+        set_last_error(scew_error_io);
         return 0;
     }
 
@@ -74,10 +92,7 @@ scew_tree_save_file(scew_tree const* tree, char const *file_name)
 scew_element*
 scew_tree_root(scew_tree const* tree)
 {
-    if (tree == NULL)
-    {
-        return NULL;
-    }
+    assert(tree != NULL);
 
     return tree->root;
 }
@@ -85,13 +100,39 @@ scew_tree_root(scew_tree const* tree)
 scew_element*
 scew_tree_add_root(scew_tree* tree, XML_Char const* name)
 {
+    assert(tree != NULL);
+    assert(name != NULL);
+
     scew_element* root = NULL;
 
-    if (tree != NULL)
-    {
-        root = scew_element_create(name);
-        tree->root = root;
-    }
+    root = scew_element_create(name);
+    tree->root = root;
 
     return root;
+}
+
+void
+scew_tree_set_xml_version(scew_tree* tree, XML_Char const* version)
+{
+    assert(tree != NULL);
+
+    free(tree->version);
+    tree->version = scew_strdup(version);
+}
+
+void
+scew_tree_set_xml_encoding(scew_tree* tree, XML_Char const* encoding)
+{
+    assert(tree != NULL);
+
+    free(tree->encoding);
+    tree->encoding = scew_strdup(encoding);
+}
+
+void
+scew_tree_set_xml_standalone(scew_tree* tree, int standalone)
+{
+    assert(tree != NULL);
+
+    tree->standalone = standalone;
 }
