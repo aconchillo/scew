@@ -7,4 +7,9 @@
 # Copyright (C) 2003 Aleix Conchillo Flaque
 #
 
-EXTRA_DIST = scew_write.c
+INCLUDES = -I$(top_srcdir)/src
+
+bin_PROGRAMS = scew_write
+
+scew_write_SOURCES = scew_write.c
+scew_write_LDADD = $(top_srcdir)/src/libscew.a

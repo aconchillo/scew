@@ -7,4 +7,9 @@
 # Copyright (C) 2002, 2003 Aleix Conchillo Flaque
 #
 
-EXTRA_DIST = scew_print.c
+INCLUDES = -I$(top_srcdir)/src
+
+bin_PROGRAMS = scew_print
+
+scew_print_SOURCES = scew_print.c
+scew_print_LDADD = $(top_srcdir)/src/libscew.a
