@@ -6,6 +6,45 @@ See the end for copying conditions.
 
 ------------------------------------------------------------------------
 
+* Version 0.3.0 (??/07/03)
+
+** Changes:
+
+        - Added more  string functions.  New memory functions  have also
+          been added.
+
+        - Performance improved in element and attribute iteration.
+          (thanks to Sanzo Miyazawa)
+
+        - Support  for   XML  declaration  attributes   has  been  added
+          (version,  encoding,  standalone).   This  attributes  can  be
+          changed using SCEW tree functions.
+
+        - Improved white spaces treatment in XML element contents.
+
+        - Added error system. See documentation for more details.
+
+        - Added pkg-config file.
+          (thanks to Neil Harvey)
+
+        - Added 'make doc'. If you have doxygen installed (which will be
+          automatically  detected), it  will create  SCEW documentation.
+          Execute  './configure   --help'  to  see   more  documentation
+          options.
+
+        - 'make install' does not install example binaries anymore.
+
+** Fixes:
+
+        - scew_tree_save_file() did not fclose output file.
+          (reported by Paul Bohme)
+
+        - scew_element_free()  did   not  decrement  parent   number  of
+          children.
+          (reported by anonymous)
+
+------------------------------------------------------------------------
+
 * Version 0.2.1 (25/04/03)
 
 ** Changes:
@@ -44,6 +83,7 @@ See the end for copying conditions.
 
         - scew_get_element_by_name() and scew_get_attribute_by_name()
           did not return NULL if an element/attribute was not found.
+          (reported by Stuart R. Anderson)
 
 ------------------------------------------------------------------------
 
