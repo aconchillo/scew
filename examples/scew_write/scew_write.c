@@ -32,21 +32,21 @@
  *
  * We will create an XML with the follwing structure:
  *
- *     <scew_test>
- *         <element>
- *             element contents.
- *         </element>
- *         <element attribute="value"/>
- *         <element attribute1="value1" attribute2="value2"/>
- *         <element>
- *             <sub_element attribute="value"/>
- *             <sub_element attribute1="value1" attribute2="value2">
- *                 <sub_sub_element attribute="value">
- *                   element contents.
- *                 </sub_sub_element>
- *             </sub_element>
- *         </element>
- *     </scew_test>
+ *   <scew_test>
+ *     <element>
+ *       element contents.
+ *     </element>
+ *     <element attribute="value"/>
+ *     <element attribute1="value1" attribute2="value2"/>
+ *     <element>
+ *       <sub_element attribute="value"/>
+ *       <sub_element attribute1="value1" attribute2="value2">
+ *         <sub_sub_element attribute1="value1" attribute2="new_value2" attribute3="value3">
+ *           element contents.
+ *         </sub_sub_element>
+ *       </sub_element>
+ *     </element>
+ *   </scew_test>
  */
 
 /**
@@ -107,7 +107,11 @@ main(int argc, char** argv)
     scew_element_add_attr_pair(sub_element, "attribute2", "value2");
 
     sub_sub_element = scew_element_add(sub_element, "sub_sub_element");
-    scew_element_add_attr_pair(sub_sub_element, "attribute", "value");
+    scew_element_add_attr_pair(sub_sub_element, "attribute1", "value1");
+    scew_element_add_attr_pair(sub_sub_element, "attribute2", "value2");
+    scew_element_add_attr_pair(sub_sub_element, "attribute3", "value3");
+    // check attribute2 replacement
+    scew_element_add_attr_pair(sub_sub_element, "attribute2", "new_value2");
     scew_element_set_contents(sub_sub_element, "element contents.");
 
     /**
