@@ -43,14 +43,12 @@ scew_strcpy(XML_Char* dst, XML_Char const* src)
     {
         return NULL;
     }
-    else
-    {
+
 #ifdef XML_UNICODE_WCHAR_T
-        return wcscpy(dst, src);
+    return wcscpy(dst, src);
 #else
-        return strcpy(dst, src);
+    return strcpy(dst, src);
 #endif /* XML_UNICODE_WCHAR_T */
-    }
 }
 
 XML_Char*
@@ -60,14 +58,12 @@ scew_strcat(XML_Char* dst, XML_Char const* src)
     {
         return NULL;
     }
-    else
-    {
+
 #ifdef XML_UNICODE_WCHAR_T
-        return wcscat(dst, src);
+    return wcscat(dst, src);
 #else
-        return strcat(dst, src);
+    return strcat(dst, src);
 #endif /* XML_UNICODE_WCHAR_T */
-    }
 }
 
 XML_Char*
@@ -77,14 +73,12 @@ scew_strncpy(XML_Char* dst, XML_Char const* src, size_t len)
     {
         return NULL;
     }
-    else
-    {
+
 #ifdef XML_UNICODE_WCHAR_T
-        return wcsncpy(dst, src, len);
+    return wcsncpy(dst, src, len);
 #else
-        return strncpy(dst, src, len);
+    return strncpy(dst, src, len);
 #endif /* XML_UNICODE_WCHAR_T */
-    }
 }
 
 XML_Char*
@@ -94,14 +88,12 @@ scew_strncat(XML_Char* dst, XML_Char const* src, size_t len)
     {
         return NULL;
     }
-    else
-    {
+
 #ifdef XML_UNICODE_WCHAR_T
-        return wcsncat(dst, src, len);
+    return wcsncat(dst, src, len);
 #else
-        return strncat(dst, src, len);
+    return strncat(dst, src, len);
 #endif /* XML_UNICODE_WCHAR_T */
-    }
 }
 
 XML_Char*
@@ -111,19 +103,12 @@ scew_strdup(XML_Char const* src)
     {
         return NULL;
     }
-    else
-    {
+
 #ifdef XML_UNICODE_WCHAR_T
-        XML_Char* dst = NULL;
-        size_t len = scew_strlen(src) + 1;
-
-        dst = (XML_Char*) malloc(sizeof(XML_Char*) * len);
-
-        return wmemcpy(dst, src, len);
+    return wcsdup(src);
 #else
-        return strdup(src);
+    return strdup(src);
 #endif /* XML_UNICODE_WCHAR_T */
-    }
 }
 
 size_t
@@ -133,14 +118,12 @@ scew_strlen(XML_Char const* src)
     {
         return 0;
     }
-    else
-    {
+
 #ifdef XML_UNICODE_WCHAR_T
-        return wcslen(src);
+    return wcslen(src);
 #else
-        return strlen(src);
+    return strlen(src);
 #endif /* XML_UNICODE_WCHAR_T */
-    }
 }
 
 int
@@ -150,12 +133,10 @@ scew_strcmp(XML_Char const* s1, XML_Char const* s2)
     {
         return 0;
     }
-    else
-    {
+
 #ifdef XML_UNICODE_WCHAR_T
-        return wcscmp(s1, s2);
+    return wcscmp(s1, s2);
 #else
-        return strcmp(s1, s2);
+    return strcmp(s1, s2);
 #endif /* XML_UNICODE_WCHAR_T */
-    }
 }
