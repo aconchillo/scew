@@ -25,7 +25,8 @@ LIBS="-L/usr/local/lib $LIBS"
 AC_SUBST(LIBS)
 
 # Check for expat
-AC_CHECK_LIB(expat, XML_Parse, , AC_MSG_ERROR(Cannot find expat))
+AC_CHECK_LIB(expat, XML_Parse, , AC_MSG_ERROR(Unable to find Expat.
+                  Download lastest version at http://www.libexpat.org))
 
 AC_OUTPUT(
 Makefile \
@@ -35,7 +36,8 @@ examples/scew_print/Makefile
 )
 
 echo
-echo "*** Simple C Expat Wrapper $VERSION has been successfully configured"
+echo "*** Simple C Expat Wrapper $VERSION has been successfully configured ***"
 echo
-echo "Type 'make' to complete the compilation"
+echo "Type 'make' to complete the compilation and then 'make install' as root"
+echo "to install."
 echo
