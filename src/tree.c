@@ -66,6 +66,8 @@ scew_tree_save_file(scew_tree const* tree, char const *file_name)
 
     tree_print(tree, out);
 
+    fclose(out);
+
     return 1;
 }
 
