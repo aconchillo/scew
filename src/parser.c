@@ -41,8 +41,8 @@
 #include <string.h>
 
 /* This code does not compile under VC .NET */
-/* static int const max_buffer = 5000; */
-#define MAX_BUFFER_SIZE     5000
+/* static int const  MAX_BUFFER_SIZE = 5000; */
+#define MAX_BUFFER_SIZE 5000
 
 scew_parser*
 scew_parser_create()
