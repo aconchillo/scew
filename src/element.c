@@ -56,6 +56,7 @@ scew_get_element_count(scew_element const* element)
 
     return element->n_children;
 }
+
 scew_element const*
 scew_get_element(scew_element const* parent, unsigned int idx)
 {
