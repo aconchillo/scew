@@ -42,7 +42,10 @@ static int const indent_size = 4;
 void
 print_indent(unsigned int indent)
 {
-    printf("%*s", indent * indent_size, " ");
+    if (indent > 0)
+    {
+        printf("%*s", indent * indent_size, " ");
+    }
 }
 
 void
