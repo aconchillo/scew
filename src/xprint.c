@@ -31,7 +31,7 @@
 #include "xprint.h"
 
 /* indentation size (in whitespaces) */
-int const indent_size = 3;
+static int const indent_size = 3;
 
 
 void
