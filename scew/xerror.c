@@ -9,7 +9,7 @@
  *
  * @if copyright
  *
- * Copyright (C) 2003 Aleix Conchillo Flaque
+ * Copyright (C) 2003, 2004 Aleix Conchillo Flaque
  *
  * SCEW is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -63,6 +63,8 @@ get_last_error()
  * current API, this is the best we can do.
  */
 
+#define WIN32_LEAN_AND_MEAN
+
 #include <windows.h>
 
 static DWORD last_error_key = TLS_OUT_OF_INDEXES;
@@ -74,7 +76,7 @@ set_last_error(scew_error code)
     {
         last_error_key = TlsAlloc();
     }
-    TlsSetValue( last_error_key, (LPVOID) code );
+    TlsSetValue(last_error_key, (LPVOID) code);
 }
 
 scew_error
@@ -83,9 +85,9 @@ get_last_error()
     if (last_error_key == TLS_OUT_OF_INDEXES)
     {
         last_error_key = TlsAlloc();
-        TlsSetValue( last_error_key, (LPVOID) scew_error_none );
+        TlsSetValue(last_error_key, (LPVOID) scew_error_none);
     }
-    return (scew_error) TlsGetValue( last_error_key );
+    return (scew_error) TlsGetValue(last_error_key);
 }
 
 #else /* _MSC_VER */
