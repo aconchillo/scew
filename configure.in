@@ -9,7 +9,7 @@
 
 #### boilerplate and flags
 
-AC_INIT(src/scew.h)
+AC_INIT(scew/scew.h)
 AM_INIT_AUTOMAKE(scew, 0.3.2)
 AM_CONFIG_HEADER(config.h)
 
