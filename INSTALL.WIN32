@@ -4,7 +4,7 @@ Windows Installation
 Extract the SCEW distribution library to it's installation location. For
 example, the scew-0.3.2 distribution may be extracted to the directory
 
-    c:\lib\scew-0.3.2
+  c:\lib\scew-0.3.2
 
 Open the scew.dsp  file from contrib/win32 directory in  Visual Studio 6
 or  Visual Studio .NET  2002/2003.  Go  to the  'Build' menu  and select
@@ -20,23 +20,23 @@ Add the  following directories to  the DevStudio Project paths.  This is
 available via the 'Tools', 'Options' menu. 'Directories' in DevStudio 6,
 'Projects' in DevStudio .NET.
 
-    Include Directories
-        <scew_install_dir, e.g. "c:\lib\scew-0.3.2">
+  Include Directories
+    <scew top level, e.g. "c:\lib\scew-0.3.2">
 
-    Library Directories
-        <scew_install_dir\win32, e.g. "c:\lib\scew-0.3.2\win32">
+  Library Directories
+    <scew win32 lib, e.g. "c:\lib\scew-0.3.2\contrib\win32\lib">
 
-To use scew in your application, you simply include the scew header file
+To use SCEW in your application, you simply include the SCEW header file
 like:
 
-    #include <scew/scew.h>
+  #include <scew/scew.h>
 
 Including this header will  automatically cause the correct SCEW library
 to  be  linked  in  with   your  application  for  the  current  compile
-settings.  You  do not  need  to  add the  scew  library  to the  linker
+settings.  You  do not  need  to  add the  SCEW  library  to the  linker
 settings.
 
-Note: you  do need to add  the appropriate expat library  to your linker
+Note: you  do need to add  the appropriate Expat library  to your linker
 settings.
 
 ===
