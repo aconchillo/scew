@@ -9,7 +9,7 @@
  *
  * @if copyright
  *
- * Copyright (C) 2002, 2003 Aleix Conchillo Flaque
+ * Copyright (C) 2002, 2003, 2004 Aleix Conchillo Flaque
  *
  * SCEW is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -116,9 +116,21 @@ attribute_list_add(attribute_list* list, scew_attribute* attribute)
     aux = attribute_by_name(list, attribute->name);
     if (aux != NULL)
     {
-        if (attribute->prev != NULL)
+        if (aux->prev != NULL)
         {
-            attribute->prev->next = attribute->next;
+            aux->prev->next = attribute;
+        }
+        if (aux->next != NULL)
+        {
+            aux->next->prev = attribute;
+        }
+        if (list->first == aux)
+        {
+            list->first = attribute;
+        }
+        if (list->last == aux)
+        {
+            list->last = attribute;
         }
         attribute->prev = aux->prev;
         attribute->next = aux->next;
