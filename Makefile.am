@@ -7,4 +7,18 @@
 # Copyright (C) 2002, 2003 Aleix Conchillo Flaque
 #
 
-SUBDIRS = src examples
+SUBDIRS = doc etc src examples
+
+.PHONY: doc
+
+if DOC
+
+doc:
+	(cd doc && $(MAKE) doc)
+
+else
+
+doc:
+	@echo "Doxygen documentation generation not enabled";
+
+endif
