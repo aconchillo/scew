@@ -84,9 +84,9 @@ scew_element_next(scew_element const* parent, scew_element const* element);
  * Returns the child element on the specified position. Positions are
  * zero based.
  *
- * Do not call this function with big XML documents, you
- * will have a serious performance degradation. Use
- * <code>scew_element_next</code> instead.
+ * Since version 0.3.1, this function saves the last indexed element and
+ * iterates forward or backwards depending on the index passed. In the
+ * worst case, it will iterate through all the elements.
  *
  * @see scew_element_next
  *
@@ -94,7 +94,7 @@ scew_element_next(scew_element const* parent, scew_element const* element);
  * element in the position.
  */
 extern scew_element*
-scew_element_by_index(scew_element const* parent, unsigned int idx);
+scew_element_by_index(scew_element* parent, unsigned int idx);
 
 /**
  * Returns the first element child that matches the given name. Remember

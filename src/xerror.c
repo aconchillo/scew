@@ -30,11 +30,66 @@
 
 #include "xerror.h"
 
+#ifndef _MT
+/* single-threaded version */
+
+static scew_error last_error = scew_error_none;
+
+void
+set_last_error(scew_error code)
+{
+    last_error = code;
+}
+
+scew_error
+get_last_error()
+{
+    return last_error;
+}
+
+#else /* _MT */
+/* multi-threaded versions */
+
 #ifdef _MSC_VER
+/* Microsoft Visual C++ multi-thread version */
 
-__declspec( thread ) scew_error key_error = scew_error_none;
+/**
+ * Note: This code isn't 100% thread safe without an initializer called
+ * from a single-thread first. The current problem is the small chance
+ * that another thread could enter the if() statement which initializes
+ * the TLS variable before the current thread calls TlsAlloc(). This
+ * would result in TlsAlloc() being called twice losing the first TLS
+ * index and possibly the first thread's error value. However with the
+ * current API, this is the best we can do.
+ */
 
-#else
+#include <windows.h>
+
+static DWORD last_error_key = TLS_OUT_OF_INDEXES;
+
+void
+set_last_error(scew_error code)
+{
+    if (last_error_key == TLS_OUT_OF_INDEXES)
+    {
+        last_error_key = TlsAlloc();
+    }
+    TlsSetValue( last_error_key, (LPVOID) code );
+}
+
+scew_error
+get_last_error()
+{
+    if (last_error_key == TLS_OUT_OF_INDEXES)
+    {
+        last_error_key = TlsAlloc();
+        TlsSetValue( last_error_key, (LPVOID) scew_error_none );
+    }
+    return (scew_error) TlsGetValue( last_error_key );
+}
+
+#else /* _MSC_VER */
+/* pthread multi-threaded version */
 
 #include <pthread.h>
 
@@ -53,14 +108,9 @@ create_keys()
     pthread_setspecific(key_error, code);
 }
 
-#endif
-
 void
 set_last_error(scew_error code)
 {
-#ifdef _MSC_VER
-	key_error = code;
-#else
     scew_error* old_code = NULL;
     scew_error* new_code = NULL;
 
@@ -72,15 +122,11 @@ set_last_error(scew_error code)
     *new_code = code;
     free(old_code);
     pthread_setspecific(key_error, new_code);
-#endif
 }
 
 scew_error
 get_last_error()
 {
-#ifdef _MSC_VER
-	return key_error;
-#else
     scew_error* code = NULL;
 
     /* Initialize error code per thread */
@@ -92,5 +138,8 @@ get_last_error()
         return scew_error_none;
     }
     return *code;
-#endif
 }
+
+#endif /* _MSC_VER */
+
+#endif /* _MT */

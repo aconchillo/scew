@@ -53,6 +53,10 @@ typedef struct
     unsigned int size;
     scew_attribute* first;
     scew_attribute* last;
+
+    /* Performance improvement in attribute_by_index */
+    unsigned int last_idx;
+    scew_attribute* last_idx_attr;
 } attribute_list;
 
 

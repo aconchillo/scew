@@ -40,6 +40,7 @@
 #include <stdio.h>
 #include <string.h>
 
+static int const max_buffer = 15000;
 
 scew_parser*
 scew_parser_create()
@@ -85,46 +86,52 @@ unsigned int
 scew_parser_load_file(scew_parser* parser, char const* file_name)
 {
     FILE* in = NULL;
-    long file_size = 0;
-    char* buffer = NULL;
-    unsigned int result = 0;
+    unsigned int res = 0;
 
     assert(parser != NULL);
     assert(file_name != NULL);
 
-    in = fopen(file_name, "r");
+    in = fopen(file_name, "rb");
     if (in == NULL)
     {
         set_last_error(scew_error_io);
         return 0;
     }
 
-    fseek(in, 0, SEEK_END);
-    file_size = ftell(in);
-    fseek(in, 0, SEEK_SET);
-
-    buffer = (char*) malloc(file_size);
-    if (buffer == NULL)
-    {
-        set_last_error(scew_error_no_memory);
-        fclose(in);
-        return 0;
-    }
-
-    if (fread(buffer, file_size, 1, in) != 1)
-    {
-        set_last_error(scew_error_io);
-        fclose(in);
-        free(buffer);
-        return 0;
-    }
+    res = scew_parser_load_file_fp(parser, in);
     fclose(in);
 
-    result = scew_parser_load_buffer(parser, buffer, file_size);
+    return res;
+}
 
-    free(buffer);
+unsigned int
+scew_parser_load_file_fp(scew_parser* parser, FILE* in)
+{
+    int len = 0;
+    int done = 0;
+    char buffer[max_buffer];
 
-    return result;
+    assert(parser != NULL);
+    assert(in != NULL);
+
+    while (!done)
+    {
+        len = fread(buffer, 1, max_buffer, in);
+        if (ferror(in))
+        {
+            set_last_error(scew_error_io);
+            return 0;
+        }
+
+        done = feof(in);
+        if (!XML_Parse(parser->parser, buffer, len, done))
+        {
+            set_last_error(scew_error_expat);
+            return 0;
+        }
+    }
+
+    return 1;
 }
 
 unsigned int

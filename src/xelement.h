@@ -51,8 +51,12 @@ struct _scew_element
     scew_element* left;
     scew_element* right;
 
-    /* Performance improve (Sanzo Miyazawa) */
+    /* Performance improvement (Sanzo Miyazawa) */
     scew_element* last_child;
+
+    /* Performance improvement in scew_element_by_index */
+    unsigned int last_idx;
+    scew_element* last_idx_child;
 };
 
 #endif /* XELEMENT_H_ALEIX0211250055 */

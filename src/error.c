@@ -52,6 +52,16 @@ scew_error_string(scew_error code)
         "Internal Expat parser error"
     };
 
+    assert(sizeof(message) / sizeof(message[0]) == scew_error_count);
+
+    if ((code < 0) || (code > scew_error_count))
+    {
+        return 0;
+    }
+    else
+    {
+        return message[code];
+    }
     return message[code];
 }
 

@@ -39,6 +39,8 @@
 
 #include <expat.h>
 
+#include <stdio.h>
+
 #ifdef __cplusplus
 extern "C" {
 #endif /* __cplusplus */
@@ -72,6 +74,20 @@ scew_parser_free(scew_parser* parser);
  */
 extern unsigned int
 scew_parser_load_file(scew_parser* parser, char const* file_name);
+
+/**
+ * Loads an XML tree from the specified file pointer using the
+ * given parser.
+ *
+ * @param parser the SCEW parser.
+ * @param in the file pointer to load the XML from.
+ *
+ * @see scew_parser_create
+ *
+ * @return 1 if file was successfully loaded, 0 otherwise.
+ */
+extern unsigned int
+scew_parser_load_file_fp(scew_parser* parser, FILE* in);
 
 /**
  * Loads an XML tree from the specified memory buffer of the specified

@@ -121,36 +121,55 @@ scew_element_next(scew_element const* parent, scew_element const* element)
 
     if (element == NULL)
     {
-	if (parent == NULL)
-    	{
+        if (parent == NULL)
+  	{
             return NULL;
-	}
-	next_element = parent->child;
+        }
+        next_element = parent->child;
     }
     else
     {
-	next_element = element->right;
+        next_element = element->right;
     }
 
     return next_element;
 }
 
 scew_element*
-scew_element_by_index(scew_element const* parent, unsigned int idx)
+scew_element_by_index(scew_element* parent, unsigned int idx)
 {
+    int inc = 0;
     unsigned int i = 0;
     scew_element* element = NULL;
 
     assert(parent != NULL);
     assert(idx < parent->n_children);
 
-    i = 0;
-    element = parent->child;
-    while ((i < idx) && (element != NULL))
+    if ((idx == 0) || (idx > parent->last_idx))
+    {
+        inc = 1;
+    }
+    else
+    {
+        inc = -1;
+    }
+
+    if (parent->last_idx_child == NULL)
+    {
+        inc = 1; /* just to be sure */
+        element = parent->child;
+    }
+    else
+    {
+        element = parent->last_idx_child;
+    }
+    for (i = parent->last_idx; (i != idx) && (element != NULL); i += inc)
     {
         element = element->right;
-        ++i;
     }
+
+    parent->last_idx = idx;
+    parent->last_idx_child = element;
 
     return element;
 }
@@ -158,28 +177,19 @@ scew_element_by_index(scew_element const* parent, unsigned int idx)
 scew_element*
 scew_element_by_name(scew_element const* parent, XML_Char const* name)
 {
-    unsigned int i = 0;
     scew_element* element = NULL;
 
     assert(parent != NULL);
 
-    if (name != NULL)
+    if (name == NULL)
     {
         return NULL;
     }
 
-    for (i = 0; i < parent->n_children; ++i)
+    element = scew_element_next(parent, 0);
+    while (element && scew_strcmp(element->name, name))
     {
-        element = scew_element_by_index(parent, i);
-        if (!scew_strcmp(element->name, name))
-        {
-            break;
-        }
-    }
-
-    if (i == parent->n_children)
-    {
-        return NULL;
+        element = scew_element_next(parent, element);
     }
 
     return element;
@@ -189,32 +199,37 @@ scew_element**
 scew_element_list(scew_element const* parent, XML_Char const* name,
                   unsigned int* count)
 {
-    unsigned int i = 0;
-    unsigned int j = 0;
+    unsigned int curr = 0;
+    unsigned int max = 0;
     scew_element** list = NULL;
-    scew_element* element = NULL;
+    scew_element* element;
 
     assert(parent != NULL);
     assert(name != NULL);
     assert(count != NULL);
 
-    for (i = 0; i < parent->n_children; ++i)
+    element = scew_element_next(parent, 0);
+    while (element)
     {
-        element = scew_element_by_index(parent, i);
         if (!scew_strcmp(element->name, name))
         {
-            j++;
-            list = (scew_element**) realloc(list, sizeof(scew_element*) * j);
-            if (list == NULL)
+            if (curr >= max)
             {
-                set_last_error(scew_error_no_memory);
-                return NULL;
+                max = (max + 1) * 2;
+                list = (scew_element**) realloc(list,
+                                                sizeof(scew_element*) * max);
+                if (!list)
+                {
+                    set_last_error(scew_error_no_memory);
+                    return NULL;
+                }
             }
-            list[j - 1] = element;
+            list[curr++] = element;
         }
+        element = scew_element_next(parent, element);
     }
 
-    *count = j;
+    *count = curr;
 
     return list;
 }

@@ -186,6 +186,7 @@ attribute_list_del(attribute_list* list, XML_Char const* name)
 scew_attribute*
 attribute_by_index(attribute_list* list, unsigned int idx)
 {
+    int inc = 0;
     unsigned int i = 0;
     scew_attribute* attribute = NULL;
 
@@ -195,13 +196,31 @@ attribute_by_index(attribute_list* list, unsigned int idx)
     }
     assert(idx < list->size);
 
-    i = 0;
-    attribute = list->first;
-    while ((i < idx) && (attribute != NULL))
+    if ((idx == 0) || (idx > list->last_idx))
+    {
+        inc = 1;
+    }
+    else
+    {
+        inc = -1;
+    }
+
+    if (list->last_idx_attr == NULL)
+    {
+        inc = 1; /* just to be sure */
+        attribute = list->first;
+    }
+    else
+    {
+        attribute = list->last_idx_attr;
+    }
+    for (i = list->last_idx; (i != idx) && (attribute != NULL); i += inc)
     {
         attribute = attribute->next;
-        ++i;
     }
+
+    list->last_idx = idx;
+    list->last_idx_attr = attribute;
 
     return attribute;
 }
@@ -209,26 +228,18 @@ attribute_by_index(attribute_list* list, unsigned int idx)
 scew_attribute*
 attribute_by_name(attribute_list* list, XML_Char const* name)
 {
-    unsigned int i = 0;
     scew_attribute* attribute = NULL;
 
-    if ((list == NULL) || (name == NULL))
+    assert(list != NULL);
+    if (name == NULL)
     {
         return NULL;
     }
 
-    for (i = 0; i < list->size; ++i)
+    attribute = list->first;
+    while (attribute && scew_strcmp(attribute->name, name))
     {
-        attribute = attribute_by_index(list, i);
-        if (!scew_strcmp(attribute->name, name))
-        {
-            break;
-        }
-    }
-
-    if (i == list->size)
-    {
-        return NULL;
+        attribute = attribute->next;
     }
 
     return attribute;

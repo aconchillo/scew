@@ -57,7 +57,9 @@ typedef enum
     /** General Input/Output error. */
     scew_error_io,
     /** Expat parser error. */
-    scew_error_expat
+    scew_error_expat,
+    /** end of list marker */
+    scew_error_count
 } scew_error;
 
 /**

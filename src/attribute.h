@@ -88,6 +88,12 @@ scew_attribute_next(scew_element const* element,
  * Returns the element attribute on the specified position. Positions
  * are zero based.
  *
+ * Since version 0.3.1, this function saves the last indexed attribute
+ * and iterates forward or backwards depending on the index passed. In
+ * the worst case, it will iterate through all the attribtues. This is
+ * not really important in attribute iteration, because normally there
+ * are not too many attributes.
+ *
  * @return the attribute on the specified position, NULL if there is no
  * attribute in the position.
  */
