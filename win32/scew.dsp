@@ -6,17 +6,17 @@
 
 CFG=scew - Win32 XMLStatic Debug Unicode
 !MESSAGE これは有効なﾒｲｸﾌｧｲﾙではありません。 このﾌﾟﾛｼﾞｪｸﾄをﾋﾞﾙﾄﾞするためには NMAKE を使用してください。
-!MESSAGE [ﾒｲｸﾌｧｲﾙのｴｸｽﾎﾟｰﾄ] ｺﾏﾝﾄﾞを使用して実行
-!MESSAGE
+!MESSAGE [ﾒｲｸﾌｧｲﾙのｴｸｽﾎﾟｰﾄ] ｺﾏﾝﾄﾞを使用して実行してください
+!MESSAGE 
 !MESSAGE NMAKE /f "scew.mak".
-!MESSAGE
-!MESSAGE NMAKE の実行時に構成を指
+!MESSAGE 
+!MESSAGE NMAKE の実行時に構成を指定できます
 !MESSAGE ｺﾏﾝﾄﾞ ﾗｲﾝ上でﾏｸﾛの設定を定義します。例:
-!MESSAGE
+!MESSAGE 
 !MESSAGE NMAKE /f "scew.mak" CFG="scew - Win32 XMLStatic Debug Unicode"
-!MESSAGE
+!MESSAGE 
 !MESSAGE 選択可能なﾋﾞﾙﾄﾞ ﾓｰﾄﾞ:
-!MESSAGE
+!MESSAGE 
 !MESSAGE "scew - Win32 Release" ("Win32 (x86) Static Library" 用)
 !MESSAGE "scew - Win32 Debug" ("Win32 (x86) Static Library" 用)
 !MESSAGE "scew - Win32 Debug Unicode" ("Win32 (x86) Static Library" 用)
@@ -25,7 +25,7 @@ CFG=scew - Win32 XMLStatic Debug Unicode
 !MESSAGE "scew - Win32 XMLStatic Release" ("Win32 (x86) Static Library" 用)
 !MESSAGE "scew - Win32 XMLStatic Debug Unicode" ("Win32 (x86) Static Library" 用)
 !MESSAGE "scew - Win32 XMLStatic Release Unicode" ("Win32 (x86) Static Library" 用)
-!MESSAGE
+!MESSAGE 
 
 # Begin Project
 # PROP AllowPerConfigDependencies 0
@@ -47,7 +47,7 @@ RSC=rc.exe
 # PROP Intermediate_Dir "obj\Release"
 # PROP Target_Dir ""
 # ADD BASE CPP /nologo /W3 /GX /O2 /D "WIN32" /D "NDEBUG" /D "_MBCS" /D "_LIB" /YX /FD /c
-# ADD CPP /nologo /MD /W4 /GX /O2 /I "D:\dev\Expat-1.95.7\Source\lib" /D "WIN32" /D "NDEBUG" /D "_MBCS" /D "_LIB" /FD /c
+# ADD CPP /nologo /MD /W4 /GX /O2 /D "WIN32" /D "NDEBUG" /D "_MBCS" /D "_LIB" /FD /c
 # SUBTRACT CPP /YX
 # ADD BASE RSC /l 0x411 /d "NDEBUG"
 # ADD RSC /l 0x411 /d "NDEBUG"
@@ -71,7 +71,7 @@ LIB32=link.exe -lib
 # PROP Intermediate_Dir "obj\Debug"
 # PROP Target_Dir ""
 # ADD BASE CPP /nologo /W3 /Gm /GX /ZI /Od /D "WIN32" /D "_DEBUG" /D "_MBCS" /D "_LIB" /YX /FD /GZ /c
-# ADD CPP /nologo /MDd /W4 /Gm /GX /ZI /Od /I "D:\dev\Expat-1.95.7\Source\lib" /D "WIN32" /D "_DEBUG" /D "_MBCS" /D "_LIB" /FD /GZ /c
+# ADD CPP /nologo /MDd /W4 /Gm /GX /ZI /Od /D "WIN32" /D "_DEBUG" /D "_MBCS" /D "_LIB" /FD /GZ /c
 # SUBTRACT CPP /YX
 # ADD BASE RSC /l 0x411 /d "_DEBUG"
 # ADD RSC /l 0x411 /d "_DEBUG"
@@ -94,9 +94,9 @@ LIB32=link.exe -lib
 # PROP Output_Dir "obj\DebugU"
 # PROP Intermediate_Dir "obj\DebugU"
 # PROP Target_Dir ""
-# ADD BASE CPP /nologo /MDd /W3 /Gm /GX /ZI /Od /I "D:\dev\Expat-1.95.7\Source\lib" /D "WIN32" /D "_DEBUG" /D "_MBCS" /D "_LIB" /FD /GZ /c
+# ADD BASE CPP /nologo /MDd /W3 /Gm /GX /ZI /Od /D "WIN32" /D "_DEBUG" /D "_MBCS" /D "_LIB" /FD /GZ /c
 # SUBTRACT BASE CPP /YX
-# ADD CPP /nologo /MDd /W4 /Gm /GX /ZI /Od /I "D:\dev\Expat-1.95.7\Source\lib" /D "_DEBUG" /D "WIN32" /D "_LIB" /D "_UNICODE" /D "XML_UNICODE_WCHAR_T" /FD /GZ /c
+# ADD CPP /nologo /MDd /W4 /Gm /GX /ZI /Od /D "_DEBUG" /D "WIN32" /D "_LIB" /D "_UNICODE" /D "XML_UNICODE_WCHAR_T" /FD /GZ /c
 # SUBTRACT CPP /WX /YX
 # ADD BASE RSC /l 0x411 /d "_DEBUG"
 # ADD RSC /l 0x411 /d "_DEBUG"
@@ -119,9 +119,9 @@ LIB32=link.exe -lib
 # PROP Output_Dir "obj\ReleaseU"
 # PROP Intermediate_Dir "obj\ReleaseU"
 # PROP Target_Dir ""
-# ADD BASE CPP /nologo /MD /W3 /GX /O2 /I "D:\dev\Expat-1.95.7\Source\lib" /D "WIN32" /D "NDEBUG" /D "_MBCS" /D "_LIB" /FD /c
+# ADD BASE CPP /nologo /MD /W3 /GX /O2 /D "WIN32" /D "NDEBUG" /D "_MBCS" /D "_LIB" /FD /c
 # SUBTRACT BASE CPP /YX
-# ADD CPP /nologo /MD /W4 /GX /O2 /I "D:\dev\Expat-1.95.7\Source\lib" /D "NDEBUG" /D "WIN32" /D "_LIB" /D "_UNICODE" /D "XML_UNICODE_WCHAR_T" /FD /c
+# ADD CPP /nologo /MD /W4 /GX /O2 /D "NDEBUG" /D "WIN32" /D "_LIB" /D "_UNICODE" /D "XML_UNICODE_WCHAR_T" /FD /c
 # SUBTRACT CPP /WX /YX
 # ADD BASE RSC /l 0x411 /d "NDEBUG"
 # ADD RSC /l 0x411 /d "NDEBUG"
@@ -144,9 +144,9 @@ LIB32=link.exe -lib
 # PROP Output_Dir "obj\DebugS"
 # PROP Intermediate_Dir "obj\DebugS"
 # PROP Target_Dir ""
-# ADD BASE CPP /nologo /MDd /W4 /Gm /GX /ZI /Od /I "D:\dev\Expat-1.95.7\Source\lib" /D "WIN32" /D "_DEBUG" /D "_MBCS" /D "_LIB" /FD /GZ /c
+# ADD BASE CPP /nologo /MDd /W4 /Gm /GX /ZI /Od /D "WIN32" /D "_DEBUG" /D "_MBCS" /D "_LIB" /FD /GZ /c
 # SUBTRACT BASE CPP /YX
-# ADD CPP /nologo /MDd /W4 /Gm /GX /ZI /Od /I "D:\dev\Expat-1.95.7\Source\lib" /D "_DEBUG" /D "_MBCS" /D "WIN32" /D "_LIB" /D "XML_STATIC" /FD /GZ /c
+# ADD CPP /nologo /MDd /W4 /Gm /GX /ZI /Od /D "_DEBUG" /D "_MBCS" /D "WIN32" /D "_LIB" /D "XML_STATIC" /FD /GZ /c
 # SUBTRACT CPP /YX
 # ADD BASE RSC /l 0x411 /d "_DEBUG"
 # ADD RSC /l 0x411 /d "_DEBUG"
@@ -169,9 +169,9 @@ LIB32=link.exe -lib
 # PROP Output_Dir "obj\ReleaseS"
 # PROP Intermediate_Dir "obj\ReleaseS"
 # PROP Target_Dir ""
-# ADD BASE CPP /nologo /MD /W4 /GX /O2 /I "D:\dev\Expat-1.95.7\Source\lib" /D "WIN32" /D "NDEBUG" /D "_MBCS" /D "_LIB" /FD /c
+# ADD BASE CPP /nologo /MD /W4 /GX /O2 /D "WIN32" /D "NDEBUG" /D "_MBCS" /D "_LIB" /FD /c
 # SUBTRACT BASE CPP /YX
-# ADD CPP /nologo /MD /W4 /GX /O2 /I "D:\dev\Expat-1.95.7\Source\lib" /D "NDEBUG" /D "_MBCS" /D "WIN32" /D "_LIB" /D "XML_STATIC" /FD /c
+# ADD CPP /nologo /MD /W4 /GX /O2 /D "NDEBUG" /D "_MBCS" /D "WIN32" /D "_LIB" /D "XML_STATIC" /FD /c
 # SUBTRACT CPP /YX
 # ADD BASE RSC /l 0x411 /d "NDEBUG"
 # ADD RSC /l 0x411 /d "NDEBUG"
@@ -194,9 +194,9 @@ LIB32=link.exe -lib
 # PROP Output_Dir "obj\DebugUS"
 # PROP Intermediate_Dir "obj\DebugUS"
 # PROP Target_Dir ""
-# ADD BASE CPP /nologo /MDd /W4 /Gm /GX /ZI /Od /I "D:\dev\Expat-1.95.7\Source\lib" /D "_DEBUG" /D "_UNICODE" /D "WIN32" /D "_LIB" /FD /GZ /c
+# ADD BASE CPP /nologo /MDd /W4 /Gm /GX /ZI /Od /D "_DEBUG" /D "_UNICODE" /D "WIN32" /D "_LIB" /FD /GZ /c
 # SUBTRACT BASE CPP /WX /YX
-# ADD CPP /nologo /MDd /W4 /Gm /GX /ZI /Od /I "D:\dev\Expat-1.95.7\Source\lib" /D "_DEBUG" /D "XML_STATIC" /D "WIN32" /D "_LIB" /D "_UNICODE" /D "XML_UNICODE_WCHAR_T" /FD /GZ /c
+# ADD CPP /nologo /MDd /W4 /Gm /GX /ZI /Od /D "_DEBUG" /D "XML_STATIC" /D "WIN32" /D "_LIB" /D "_UNICODE" /D "XML_UNICODE_WCHAR_T" /FD /GZ /c
 # SUBTRACT CPP /WX /YX
 # ADD BASE RSC /l 0x411 /d "_DEBUG"
 # ADD RSC /l 0x411 /d "_DEBUG"
@@ -219,9 +219,9 @@ LIB32=link.exe -lib
 # PROP Output_Dir "obj\ReleaseUS"
 # PROP Intermediate_Dir "obj\ReleaseUS"
 # PROP Target_Dir ""
-# ADD BASE CPP /nologo /MD /W4 /GX /O2 /I "D:\dev\Expat-1.95.7\Source\lib" /D "NDEBUG" /D "_UNICODE" /D "WIN32" /D "_LIB" /FD /c
+# ADD BASE CPP /nologo /MD /W4 /GX /O2 /D "NDEBUG" /D "_UNICODE" /D "WIN32" /D "_LIB" /FD /c
 # SUBTRACT BASE CPP /WX /YX
-# ADD CPP /nologo /MD /W4 /GX /O2 /I "D:\dev\Expat-1.95.7\Source\lib" /D "NDEBUG" /D "XML_STATIC" /D "WIN32" /D "_LIB" /D "_UNICODE" /D "XML_UNICODE_WCHAR_T" /FD /c
+# ADD CPP /nologo /MD /W4 /GX /O2 /D "NDEBUG" /D "XML_STATIC" /D "WIN32" /D "_LIB" /D "_UNICODE" /D "XML_UNICODE_WCHAR_T" /FD /c
 # SUBTRACT CPP /WX /YX
 # ADD BASE RSC /l 0x411 /d "NDEBUG"
 # ADD RSC /l 0x411 /d "NDEBUG"
@@ -232,7 +232,7 @@ LIB32=link.exe -lib
 # ADD BASE LIB32 /nologo /out:"lib\scew_u.lib"
 # ADD LIB32 /nologo /out:"lib\scew_us.lib"
 
-!ENDIF
+!ENDIF 
 
 # Begin Target
 
