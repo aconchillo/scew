@@ -186,7 +186,6 @@ attribute_list_del(attribute_list* list, XML_Char const* name)
 scew_attribute*
 attribute_by_index(attribute_list* list, unsigned int idx)
 {
-    int inc = 0;
     unsigned int i = 0;
     scew_attribute* attribute = NULL;
 
@@ -196,31 +195,11 @@ attribute_by_index(attribute_list* list, unsigned int idx)
     }
     assert(idx < list->size);
 
-    if ((idx == 0) || (idx > list->last_idx))
-    {
-        inc = 1;
-    }
-    else
-    {
-        inc = -1;
-    }
-
-    if (list->last_idx_attr == NULL)
-    {
-        inc = 1; /* just to be sure */
-        attribute = list->first;
-    }
-    else
-    {
-        attribute = list->last_idx_attr;
-    }
-    for (i = list->last_idx; (i != idx) && (attribute != NULL); i += inc)
+    attribute = list->first;
+    for (i = 0; (i < idx) && (attribute != NULL); ++i)
     {
         attribute = attribute->next;
     }
-
-    list->last_idx = idx;
-    list->last_idx_attr = attribute;
 
     return attribute;
 }

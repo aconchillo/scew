@@ -84,9 +84,9 @@ scew_element_next(scew_element const* parent, scew_element const* element);
  * Returns the child element on the specified position. Positions are
  * zero based.
  *
- * Since version 0.3.1, this function saves the last indexed element and
- * iterates forward or backwards depending on the index passed. In the
- * worst case, it will iterate through all the elements.
+ * Do not call this function if you just want to iterate through all the
+ * elements, you will have a serious performance degradation. Use
+ * <code>scew_element_next</code> instead.
  *
  * @see scew_element_next
  *

@@ -138,38 +138,17 @@ scew_element_next(scew_element const* parent, scew_element const* element)
 scew_element*
 scew_element_by_index(scew_element* parent, unsigned int idx)
 {
-    int inc = 0;
     unsigned int i = 0;
     scew_element* element = NULL;
 
     assert(parent != NULL);
     assert(idx < parent->n_children);
 
-    if ((idx == 0) || (idx > parent->last_idx))
-    {
-        inc = 1;
-    }
-    else
-    {
-        inc = -1;
-    }
-
-    if (parent->last_idx_child == NULL)
-    {
-        inc = 1; /* just to be sure */
-        element = parent->child;
-    }
-    else
-    {
-        element = parent->last_idx_child;
-    }
-    for (i = parent->last_idx; (i != idx) && (element != NULL); i += inc)
+    element = parent->child;
+    for (i = 0; (i < idx) && (element != NULL); ++i)
     {
         element = element->right;
     }
-
-    parent->last_idx = idx;
-    parent->last_idx_child = element;
 
     return element;
 }
