@@ -63,8 +63,14 @@ scew_element_free(scew_element* element)
 
     left = element->left;
     right = element->right;
-    left->right = right;
-    right->left = left;
+    if (left != NULL)
+    {
+        left->right = right;
+    }
+    if (right != NULL)
+    {
+        right->left = left;
+    }
 
     free(element->name);
     free(element->contents);
