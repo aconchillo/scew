@@ -49,7 +49,9 @@ extern scew_attribute*
 scew_attribute_create(XML_Char const* name, XML_Char const* value);
 
 /**
- * Frees an attribute memory structure. That is, its name and value.
+ * Frees an attribute memory structure. That is, its name and value. You
+ * should not call this function with an attribute coming from an
+ * element, but created with <code>scew_attribute_create</code>.
  */
 extern void
 scew_attribute_free(scew_attribute* attribute);
