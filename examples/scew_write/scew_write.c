@@ -60,12 +60,12 @@
 int
 main(int argc, char** argv)
 {
-    scew_tree* tree;
-    scew_element* root;
-    scew_element* element;
-    scew_element* sub_element;
-    scew_element* sub_sub_element;
-    scew_attribute* attribute;
+    scew_tree* tree = NULL;
+    scew_element* root = NULL;
+    scew_element* element = NULL;
+    scew_element* sub_element = NULL;
+    scew_element* sub_sub_element = NULL;
+    scew_attribute* attribute = NULL;
 
     if (argc < 2)
     {
