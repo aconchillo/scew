@@ -1,3 +1,36 @@
+**** Changes in version 0.3.1 ****
+
+2004-01-26  Aleix Conchillo Flaque  <aleix@member.fsf.org>
+
+	* src/writer.*: write functions moved from tree to new writer
+	files.
+
+2004-01-25  Aleix Conchillo Flaque  <aleix@member.fsf.org>
+
+	* src/xtree.*: added XML preamble support.
+
+2003-12-09  Brodie Thiesfield
+
+        * re-jigged the source tree to make building and installing as a
+        common system library on Windows easier.
+
+        * src directory renamed scew to keep consistency of code on
+        both Unix and Windows platforms. Enables cross platform building
+        of code always using #include <scew/scew.h>
+
+        * added Windows DevStudio 6+ build workspace to easily build
+        all required versions of the library.
+
+        * much of scew/str.* rewritten to use compiler macros instead of
+        separate functions. Means one less level of function calling and
+        supports Unicode building on Windows simply.
+
+        * scew/mem.* removed (functions now available through str.h)
+
+        * added INSTALL.WIN32 file to describe building on Windows
+
+**** Changes in version 0.3.0 ****
+
 2003-07-16  Aleix Conchillo Flaque  <aleix@member.fsf.org>
 
         * src/element.c, src/xattribute.c: performance improvement by
@@ -6,7 +39,7 @@
 	* src (Module): Lots of fixes and improvements by Brodie
 	Thiesfield.
 
-**** Changes in version 0.3.0 ****
+**** Changes in version 0.2.1 ****
 
 2003-07-09  Aleix Conchillo Flaque  <aleix@member.fsf.org>
 
@@ -29,7 +62,7 @@
 
 	* src/tree.c (scew_tree_save_file): file closing fixed.
 
-**** Changes in version 0.2.1 ****
+**** Changes in version 0.2.0 ****
 
 2003-04-25  Aleix Conchillo Flaque  <aleix@member.fsf.org>
 
@@ -42,7 +75,7 @@
 
 	* src/xattribute.c(scew_element_del_attr): memory crash fixed.
 
-**** Changes in version 0.2.0 ****
+**** Changes in version 0.1.1 ****
 
 2003-03-30  Aleix Conchillo Flaque  <aleix@member.fsf.org>
 
