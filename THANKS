@@ -9,10 +9,11 @@ it complete and exempt of errors.
 * Jose A.  Ortega suggested some important C  implementation details. As
   usual, he has helped me in many other ways. Thanks jao!
 
+* Brodie Thiesfield  has submit lots  of fixes and improvements.  He has
+  also improved  builds on Windows, and many more.
+
 * Carlos  Carrasco  has  helped  a  lot in  the  debugging  and  testing
   phases. Those nigths at IRC are really great. Thanks!
-
-* Brodie Thiesfield has submit lots of fixes and improvements.
 
 * Sanzo Miyazawa has  submit code to improve performance  in element and
   attribute iteration.
@@ -23,7 +24,7 @@ it complete and exempt of errors.
 
 * Bug reporting (in alphabetical order):
   Anonymous reporters, Stuart R.  Anderson, Paul Bohme, Eric Fronheiser,
-  Jussi Mäki, Sanzo Miyazawa, Brodie Thiesfield
+  Jussi Mäki, Sanzo Miyazawa, Brodie Thiesfield, Kalle Vallo.
 
 ---
 $Id$

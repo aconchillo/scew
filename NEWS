@@ -1,8 +1,30 @@
 SCEW -- History of visible changes.
 
-Copyright (C) 2002, 2003 Aleix Conchillo Flaque
+Copyright (C) 2002, 2003, 2004 Aleix Conchillo Flaque
 
 See the end for copying conditions.
+
+------------------------------------------------------------------------
+
+* Version 0.3.2 (28/01/04)
+
+** Changes:
+
+        - Improved support for Windows and Unix compilation.
+          (thanks to Brodie Thiesfield)
+
+        - Added improvements in str functions. mem.* has been removed.
+          (thanks to Brodie Thiesfield)
+
+        - Write  functions have  been moved  from tree  to  new writer.*
+          files.
+
+        - Added a preamble section to the XML declaration.
+
+** Fixes:
+
+        - Allow building in a separate directory.
+          (thanks to Kalle Valo)
 
 ------------------------------------------------------------------------
 
