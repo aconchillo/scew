@@ -136,6 +136,45 @@ scew_element_by_name(scew_element const* parent, char const* name)
     return element;
 }
 
+scew_element**
+scew_element_list(scew_element const* parent, XML_Char const* name,
+                  unsigned int* count)
+{
+    int i = 0;
+    int j = 0;
+    scew_element** list = NULL;
+    scew_element* element = NULL;
+
+    if (parent == NULL)
+    {
+        return NULL;
+    }
+
+    for (i = 0; i < parent->n_children; ++i)
+    {
+        element = scew_element_by_index(parent, i);
+        if (!scew_strcmp(element->name, name))
+        {
+            j++;
+            list = (scew_element**) realloc(list, sizeof(scew_element*) * j);
+            list[j - 1] = element;
+        }
+    }
+
+    *count = j;
+
+    return list;
+}
+
+void
+scew_element_list_free(scew_element** list)
+{
+    if (list != NULL)
+    {
+        free(list);
+    }
+}
+
 XML_Char const*
 scew_element_name(scew_element const* element)
 {
@@ -236,4 +275,13 @@ scew_element_add_attr_pair(scew_element* element, XML_Char const* name,
     scew_attribute* attribute = scew_attribute_create(name, value);
 
     return attribute_list_add(element->attributes, attribute);
+}
+
+void
+scew_element_del_attr(scew_element* element, XML_Char const* name)
+{
+    if (element != NULL)
+    {
+        attribute_list_del(element->attributes, name);
+    }
 }

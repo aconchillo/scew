@@ -81,6 +81,23 @@ scew_element_by_index(scew_element const* parent, unsigned int idx);
 extern scew_element*
 scew_element_by_name(scew_element const* parent, XML_Char const* name);
 
+
+/**
+ * Returns a list of elements that matches the name specified. The
+ * number of elements is returned in count. The returned pointer must be
+ * freed after using it, calling the <code>scew_element_list_free</code>
+ * function.
+ */
+extern scew_element**
+scew_element_list(scew_element const* parent, XML_Char const* name,
+                  unsigned int* count);
+
+/**
+ * Frees an element list created by <code>scew_element_list</code>.
+ */
+extern void
+scew_element_list_free(scew_element** list);
+
 /**
  * Returns the element name or NULL if the element does not exist.
  */
@@ -157,5 +174,11 @@ scew_element_add_attr(scew_element* element, scew_attribute* attribute);
 extern scew_attribute*
 scew_element_add_attr_pair(scew_element* element,
                            XML_Char const* name, XML_Char const* value);
+
+/**
+ * Deletes an attribute from an element.
+ */
+void
+scew_element_del_attr(scew_element* element, XML_Char const* name);
 
 #endif /* ELEMENT_H_ALEIX0211250048 */

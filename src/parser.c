@@ -40,7 +40,7 @@
 scew_parser*
 scew_parser_create()
 {
-    scew_parser* parser;
+    scew_parser* parser = NULL;
 
     parser = (scew_parser*) calloc(1, sizeof(scew_parser));
     if (parser == NULL)
@@ -64,23 +64,20 @@ scew_parser_create()
 void
 scew_parser_free(scew_parser* parser)
 {
-    if (parser == NULL)
+    if (parser != NULL)
     {
-        return;
+        XML_ParserFree(parser->parser);
+        free(parser);
     }
-
-    XML_ParserFree(parser->parser);
-
-    free(parser);
 }
 
 unsigned int
 scew_parser_load_file(scew_parser* parser, char const* file_name)
 {
-    FILE* in;
-    long file_size;
-    unsigned int result;
-    unsigned char* buffer;
+    FILE* in = NULL;
+    long file_size = 0;
+    unsigned int result = 0;
+    unsigned char* buffer = NULL;
 
     if (parser == NULL)
     {

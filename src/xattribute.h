@@ -84,6 +84,10 @@ attribute_list_free(attribute_list* list);
 scew_attribute*
 attribute_list_add(attribute_list* list, scew_attribute* attribute);
 
+/* Deletes an attribute from an attribute list. */
+void
+attribute_list_del(attribute_list* list, XML_Char const* name);
+
 /* Return the list node in position idx. */
 attribute_node*
 attribute_node_by_index(attribute_list* list, unsigned int idx);

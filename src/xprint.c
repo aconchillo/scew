@@ -48,6 +48,7 @@ indent_print(FILE* out, unsigned int indent)
 void
 tree_print(scew_tree const* tree, FILE* out)
 {
+    fprintf(out, "<?xml version=\"1.0\"?>\n\n");
     element_print(tree->root, out, 0);
 }
 

@@ -53,26 +53,22 @@ attribute_create(XML_Char const* name, XML_Char const* value)
 void
 attribute_free(scew_attribute* attribute)
 {
-    if (attribute == NULL)
+    if (attribute != NULL)
     {
-        return;
+        free(attribute->name);
+        free(attribute->value);
+        free(attribute);
     }
-
-    free(attribute->name);
-    free(attribute->value);
-    free(attribute);
 }
 
 void
 attribute_node_free(attribute_node* node)
 {
-    if (node == NULL)
+    if (node != NULL)
     {
-        return;
+        attribute_free(node->info);
+        free(node);
     }
-
-    attribute_free(node->info);
-    free(node);
 }
 
 attribute_list*
@@ -143,6 +139,31 @@ attribute_list_add(attribute_list* list, scew_attribute* attribute)
     return node->info;
 }
 
+void
+attribute_list_del(attribute_list* list, XML_Char const* name)
+{
+    attribute_node* node = NULL;
+    attribute_node* tmp_prev = NULL;
+    attribute_node* tmp_next = NULL;
+
+    if ((list == NULL) || (name == NULL))
+    {
+        return;
+    }
+
+    node = attribute_node_by_name(list, name);
+
+    if (node != NULL)
+    {
+        tmp_prev = node->prev;
+        tmp_next = node->next;
+        tmp_prev->next = tmp_next;
+        tmp_next->prev = tmp_prev;
+
+        attribute_node_free(node);
+    }
+}
+
 attribute_node*
 attribute_node_by_index(attribute_list* list, unsigned int idx)
 {
@@ -171,7 +192,7 @@ attribute_node_by_name(attribute_list* list, XML_Char const* name)
     int i = 0;
     attribute_node* node = NULL;
 
-    if (list == NULL)
+    if ((list == NULL) || (name == NULL))
     {
         return NULL;
     }

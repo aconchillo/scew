@@ -46,8 +46,11 @@ scew_tree_create()
 void
 scew_tree_free(scew_tree* tree)
 {
-    scew_element_free(tree->root);
-    free(tree);
+    if (tree != NULL)
+    {
+        scew_element_free(tree->root);
+        free(tree);
+    }
 }
 
 unsigned int
@@ -69,6 +72,11 @@ scew_tree_save_file(scew_tree const* tree, char const *file_name)
 scew_element*
 scew_tree_root(scew_tree const* tree)
 {
+    if (tree == NULL)
+    {
+        return NULL;
+    }
+
     return tree->root;
 }
 
