@@ -10,7 +10,7 @@
 includedir = $(prefix)/include/$(PACKAGE)
 
 include_HEADERS = scew.h attribute.h element.h error.h mem.h parser.h str.h \
-                  tree.h types.h
+                  tree.h types.h writer.h
 
 noinst_HEADERS = xattribute.h xelement.h xerror.h xhandler.h xparser.h \
                  xprint.h xtree.h
@@ -18,4 +18,4 @@ noinst_HEADERS = xattribute.h xelement.h xerror.h xhandler.h xparser.h \
 lib_LIBRARIES = libscew.a
 
 libscew_a_SOURCES = attribute.c element.c error.c mem.c parser.c str.c tree.c \
-                    xattribute.c xerror.c xhandler.c xparser.c xprint.c
+                    writer.c xattribute.c xerror.c xhandler.c xparser.c xprint.c

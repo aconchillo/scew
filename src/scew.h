@@ -23,7 +23,7 @@
  *
  * You should have received a copy of the GNU Lesser General Public
  * License along with this library; if not, write to the Free Software
- * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+ * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307, USA.
  *
  * @endif
  */
@@ -39,5 +39,6 @@
 #include "parser.h"
 #include "str.h"
 #include "tree.h"
+#include "writer.h"
 
 #endif /* SCEW_H_ALEIX0211250134 */
