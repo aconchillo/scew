@@ -157,8 +157,14 @@ attribute_list_del(attribute_list* list, XML_Char const* name)
     {
         tmp_prev = node->prev;
         tmp_next = node->next;
-        tmp_prev->next = tmp_next;
-        tmp_next->prev = tmp_prev;
+        if (tmp_prev != NULL)
+        {
+            tmp_prev->next = tmp_next;
+        }
+        if (tmp_next != NULL)
+        {
+            tmp_next->prev = tmp_prev;
+        }
 
         attribute_node_free(node);
     }
