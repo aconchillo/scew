@@ -67,6 +67,19 @@ scew_attribute_free(scew_attribute* attribute);
 extern unsigned int
 scew_attribute_count(scew_element const* element);
 
+/**
+ * Returns the <code>element</code>'s first attribute if
+ * <code>attribute</code> is NULL, otherwise it returns the contiguous
+ * attribute to the given one.
+ *
+ * Call this function a first time with <code>attribute</code> to NULL
+ * and the first attribute will be returned. In the subsequent calls you
+ * just need to provide the attribute returned and its contiguous
+ * attribute will be returned.
+ *
+ * @return the first attribute of an element or a contiguous
+ * attribute. NULL if there are no more attributes.
+ */
 extern scew_attribute*
 scew_attribute_next(scew_element const* element,
                     scew_attribute const* attribute);

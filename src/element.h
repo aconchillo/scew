@@ -71,7 +71,7 @@ scew_element_count(scew_element const* element);
  *
  * Call this function a first time with <code>element</code> to NULL and
  * a parent's child element will be returned. In the subsequent calls
- * you just need to provide this child element and its 'brothers' will
+ * you just need to provide the element returned and its 'brother' will
  * be returned.
  *
  * @return a parent's child element or a contiguous element. NULL if
