@@ -35,7 +35,7 @@ int const indent_size = 3;
 
 
 void
-print_indent(FILE* out, unsigned int indent)
+indent_print(FILE* out, unsigned int indent)
 {
     int i = 0;
 
@@ -60,7 +60,7 @@ element_print(scew_element const* element, FILE* out, unsigned int indent)
 
     if (element != NULL)
     {
-        print_indent(out, indent);
+        indent_print(out, indent);
         fprintf(out, "<%s", scew_element_name(element));
         for (i = 0; i < scew_attribute_count(element); i++)
         {
@@ -86,13 +86,13 @@ element_print(scew_element const* element, FILE* out, unsigned int indent)
 
         if (contents != NULL)
         {
-            print_indent(out, indent);
+            indent_print(out, indent);
             fprintf(out, "%s\n", contents);
         }
 
         if (!closed)
         {
-            print_indent(out, indent);
+            indent_print(out, indent);
             fprintf(out, "</%s>\n", scew_element_name(element));
         }
     }

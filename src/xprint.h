@@ -39,7 +39,7 @@
 
 /* Prints space indentation. */
 void
-print_indent(FILE* out, unsigned int indent);
+indent_print(FILE* out, unsigned int indent);
 
 /* Prints an XML tree into a file. */
 void
