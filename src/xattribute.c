@@ -167,13 +167,14 @@ attribute_list_del(attribute_list* list, XML_Char const* name)
         }
 
         attribute_node_free(node);
+        list->size--;
     }
 }
 
 attribute_node*
 attribute_node_by_index(attribute_list* list, unsigned int idx)
 {
-    int i = 0;
+    unsigned int i = 0;
     attribute_node* node = NULL;
 
     if ((list == NULL) || (idx >= list->size))
@@ -195,7 +196,7 @@ attribute_node_by_index(attribute_list* list, unsigned int idx)
 attribute_node*
 attribute_node_by_name(attribute_list* list, XML_Char const* name)
 {
-    int i = 0;
+    unsigned int i = 0;
     attribute_node* node = NULL;
 
     if ((list == NULL) || (name == NULL))
