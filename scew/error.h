@@ -9,7 +9,7 @@
  *
  * @if copyright
  *
- * Copyright (C) 2003 Aleix Conchillo Flaque
+ * Copyright (C) 2003, 2004 Aleix Conchillo Flaque
  *
  * SCEW is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -56,6 +56,8 @@ typedef enum
     scew_error_no_memory,
     /** General Input/Output error. */
     scew_error_io,
+    /** Callback error. */
+    scew_error_callback,
     /** Expat parser error. */
     scew_error_expat,
     /** end of list marker */

@@ -9,7 +9,7 @@
  *
  * @if copyright
  *
- * Copyright (C) 2002, 2003 Aleix Conchillo Flaque
+ * Copyright (C) 2002, 2003, 2004 Aleix Conchillo Flaque
  *
  * SCEW is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -34,7 +34,6 @@
 
 #include "xerror.h"
 #include "xparser.h"
-#include "xhandler.h"
 
 #include <assert.h>
 #include <stdio.h>
@@ -43,6 +42,7 @@
 /* This code does not compile under VC .NET */
 /* static int const  MAX_BUFFER_SIZE = 5000; */
 #define MAX_BUFFER_SIZE 5000
+
 
 scew_parser*
 scew_parser_create()
@@ -56,20 +56,17 @@ scew_parser_create()
         return NULL;
     }
 
-    parser->parser = XML_ParserCreate(NULL);
-    if (parser->parser == NULL)
+    if (!init_expat_parser(parser))
     {
-        set_last_error(scew_error_no_memory);
+        scew_parser_free(parser);
         return NULL;
     }
 
-    XML_SetXmlDeclHandler(parser->parser, xmldecl_handler);
-    XML_SetElementHandler(parser->parser, start_handler, end_handler);
-    XML_SetCharacterDataHandler(parser->parser, char_handler);
-    XML_SetUserData(parser->parser, parser);
-
     /* ignore white spaces by default */
     parser->ignore_whitespaces = 1;
+
+    /* no callback by default */
+    parser->stream_callback = NULL;
 
     return parser;
 }
@@ -79,7 +76,10 @@ scew_parser_free(scew_parser* parser)
 {
     if (parser != NULL)
     {
-        XML_ParserFree(parser->parser);
+        if (parser->parser)
+        {
+            XML_ParserFree(parser->parser);
+        }
         free(parser);
     }
 }
@@ -150,6 +150,76 @@ scew_parser_load_buffer(scew_parser* parser, char const* buffer,
     }
 
     return 1;
+}
+
+unsigned int
+scew_parser_load_stream(scew_parser* parser, char const* buffer,
+                        unsigned int size)
+{
+    int start;
+    int end;
+    int length;
+
+    assert(parser != NULL);
+    assert(buffer != NULL);
+
+    start = 0;
+    end = 0;
+
+    /**
+     * Loop through the buffer.
+     * if we encounter a '>', send the chunk to Expat.
+     * if we hit the end of the buffer, send whatever remains to Expat.
+     * if the we have a full element (stack is empty) we call the callback.
+     */
+    while ((start < size) && (end <= size))
+    {
+        if ((end == size) || (buffer[end] == '>'))
+        {
+            length = end - start;
+            if (end < size)
+            {
+                length++;
+            }
+
+            if (!XML_Parse(parser->parser, &buffer[start], length, 0))
+            {
+                set_last_error(scew_error_expat);
+                return 0;
+            }
+
+            if ((parser->tree != NULL) && (parser->current == NULL)
+                && (parser->stack == NULL) && parser->stream_callback)
+            {
+                /* tell Expat we're done */
+                XML_Parse(parser->parser, "", 0, 1);
+
+                /* call the callback */
+                if (!parser->stream_callback(parser))
+                {
+                    set_last_error(scew_error_callback);
+                    return 0;
+                }
+
+                XML_ParserFree(parser->parser);
+                scew_tree_free(parser->tree);
+                parser->tree = NULL;
+                init_expat_parser(parser);
+            }
+            start = end + 1;
+        }
+        end++;
+    }
+
+    return 1;
+}
+
+void
+scew_parser_set_stream_callback(scew_parser* parser, SCEW_CALLBACK* cb)
+{
+    assert(parser != NULL);
+
+    parser->stream_callback = cb;
 }
 
 scew_tree*

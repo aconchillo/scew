@@ -9,7 +9,7 @@
  *
  * @if copyright
  *
- * Copyright (C) 2002, 2003 Aleix Conchillo Flaque
+ * Copyright (C) 2002, 2003, 2004 Aleix Conchillo Flaque
  *
  * SCEW is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -104,6 +104,33 @@ scew_parser_load_file_fp(scew_parser* parser, FILE* in);
 extern unsigned int
 scew_parser_load_buffer(scew_parser* parser, char const* buffer,
                         unsigned int size);
+
+/**
+ * Loads an XML tree from the specified stream buffer. Will call the
+ * callback (set using scew_parser_set_stream_callback) at the end of
+ * each message.
+ *
+ * @param parser the SCEW parser.
+ * @param buffer memory buffer to load XML from.
+ * @param size size in bytes of the memory buffer.
+ *
+ * @see scew_parser_create
+ * @see scew_parser_set_stream_callback
+ *
+ * @return 1 if buffer was successfully loaded, 0 otherwise.
+ */
+extern unsigned int
+scew_parser_load_stream(scew_parser* parser, char const* buffer,
+                        unsigned int size);
+
+/**
+ * Sets the callback for use when reading streams.
+ *
+ * @param parser the SCEW parser
+ * @param cb the callback function
+ */
+void
+scew_parser_set_stream_callback(scew_parser* parser, SCEW_CALLBACK* cb);
 
 /**
  * Returns the XML tree read by the parser. Remember that

@@ -9,7 +9,7 @@
  *
  * @if copyright
  *
- * Copyright (C) 2003 Aleix Conchillo Flaque
+ * Copyright (C) 2003, 2004 Aleix Conchillo Flaque
  *
  * SCEW is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -55,6 +55,13 @@ typedef struct _scew_element scew_element;
  * This is the type declaration for element attributes.
  */
 typedef struct _scew_attribute scew_attribute;
+
+/**
+ * Callback function type.
+ *
+ * @return 1 if callback call had no errors, 0 otherwise.
+ */
+typedef unsigned int SCEW_CALLBACK(scew_parser* parser);
 
 #ifdef __cplusplus
 }

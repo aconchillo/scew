@@ -9,7 +9,7 @@
  *
  * @if copyright
  *
- * Copyright (C) 2002, 2003 Aleix Conchillo Flaque
+ * Copyright (C) 2002, 2003, 2004 Aleix Conchillo Flaque
  *
  * SCEW is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -30,6 +30,31 @@
 
 #include "xparser.h"
 
+#include "xerror.h"
+#include "xhandler.h"
+
+#include <assert.h>
+
+unsigned int
+init_expat_parser(scew_parser* parser)
+{
+    assert(parser != NULL);
+
+    parser->parser = XML_ParserCreate(NULL);
+    if (parser->parser == NULL)
+    {
+        set_last_error(scew_error_no_memory);
+        return 0;
+    }
+
+    /* initialize Expat handlers */
+    XML_SetXmlDeclHandler(parser->parser, xmldecl_handler);
+    XML_SetElementHandler(parser->parser, start_handler, end_handler);
+    XML_SetCharacterDataHandler(parser->parser, char_handler);
+    XML_SetUserData(parser->parser, parser);
+
+    return 1;
+}
 
 stack_element*
 stack_push(stack_element** stack, scew_element* element)

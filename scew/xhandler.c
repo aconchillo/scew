@@ -9,7 +9,7 @@
  *
  * @if copyright
  *
- * Copyright (C) 2002, 2003 Aleix Conchillo Flaque
+ * Copyright (C) 2002, 2003, 2004 Aleix Conchillo Flaque
  *
  * SCEW is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -42,8 +42,8 @@ xmldecl_handler(void* data, XML_Char const* version, XML_Char const* encoding,
 {
     scew_parser* parser = (scew_parser*) data;
 
-    /* standalone is unused */
-    (void)standalone;
+    /* Avoid warning: standalone is unused */
+    (void) standalone;
 
     if (parser == NULL)
     {
@@ -110,8 +110,8 @@ end_handler(void* data, XML_Char const* elem)
     scew_element* current = NULL;
     scew_parser* parser = (scew_parser*) data;
 
-    /* elem is unused */
-    (void)elem;
+    /* Avoid warning: elem is unused */
+    (void) elem;
 
     if (parser == NULL)
     {

@@ -51,6 +51,7 @@ scew_error_string(scew_error code)
         _XT("No error"),
         _XT("Out of memory"),
         _XT("Input/Output error"),
+        _XT("Callback error"),
         _XT("Internal Expat parser error")
     };
 
