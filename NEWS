@@ -33,6 +33,11 @@ See the end for copying conditions.
 
 ** Fixes:
 
+        - scew_isxdigit() was calling isdigit() instead of isxdigit().
+
+        - scew_isxxxx() fixed.
+          (thanks to Brodie Thiesfield)
+
         - strdup() is a GNU extension, replaced it by own version.
 
         - Fixed scew_element_by_name.

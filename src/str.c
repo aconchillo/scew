@@ -177,7 +177,7 @@ scew_isalnum(XML_Char c)
 #ifdef XML_UNICODE_WCHAR_T
     return iswalnum(c);
 #else
-    return isalnum(c);
+    return isalnum((unsigned char) c);
 #endif /* XML_UNICODE_WCHAR_T */
 }
 
@@ -187,7 +187,7 @@ scew_isalpha(XML_Char c)
 #ifdef XML_UNICODE_WCHAR_T
     return iswalpha(c);
 #else
-    return isalpha(c);
+    return isalpha((unsigned char) c);
 #endif /* XML_UNICODE_WCHAR_T */
 }
 
@@ -197,7 +197,7 @@ scew_iscntrl(XML_Char c)
 #ifdef XML_UNICODE_WCHAR_T
     return iswcntrl(c);
 #else
-    return iscntrl(c);
+    return iscntrl((unsigned char) c);
 #endif /* XML_UNICODE_WCHAR_T */
 }
 
@@ -207,7 +207,7 @@ scew_isdigit(XML_Char c)
 #ifdef XML_UNICODE_WCHAR_T
     return iswdigit(c);
 #else
-    return isdigit(c);
+    return isdigit((unsigned char) c);
 #endif /* XML_UNICODE_WCHAR_T */
 }
 
@@ -217,7 +217,7 @@ scew_isgraph(XML_Char c)
 #ifdef XML_UNICODE_WCHAR_T
     return iswgraph(c);
 #else
-    return isgraph(c);
+    return isgraph((unsigned char) c);
 #endif /* XML_UNICODE_WCHAR_T */
 }
 
@@ -227,7 +227,7 @@ scew_islower(XML_Char c)
 #ifdef XML_UNICODE_WCHAR_T
     return iswlower(c);
 #else
-    return islower(c);
+    return islower((unsigned char) c);
 #endif /* XML_UNICODE_WCHAR_T */
 }
 
@@ -237,7 +237,7 @@ scew_isprint(XML_Char c)
 #ifdef XML_UNICODE_WCHAR_T
     return iswprint(c);
 #else
-    return isprint(c);
+    return isprint((unsigned char) c);
 #endif /* XML_UNICODE_WCHAR_T */
 }
 
@@ -247,7 +247,7 @@ scew_ispunct(XML_Char c)
 #ifdef XML_UNICODE_WCHAR_T
     return iswpunct(c);
 #else
-    return ispunct(c);
+    return ispunct((unsigned char) c);
 #endif /* XML_UNICODE_WCHAR_T */
 }
 
@@ -257,7 +257,7 @@ scew_isspace(XML_Char c)
 #ifdef XML_UNICODE_WCHAR_T
     return iswspace(c);
 #else
-    return isspace(c);
+    return isspace((unsigned char) c);
 #endif /* XML_UNICODE_WCHAR_T */
 }
 
@@ -267,7 +267,7 @@ scew_isupper(XML_Char c)
 #ifdef XML_UNICODE_WCHAR_T
     return iswupper(c);
 #else
-    return isupper(c);
+    return isupper((unsigned char) c);
 #endif /* XML_UNICODE_WCHAR_T */
 }
 
@@ -275,8 +275,8 @@ int
 scew_isxdigit(XML_Char c)
 {
 #ifdef XML_UNICODE_WCHAR_T
-    return iswdigit(c);
+    return iswxdigit(c);
 #else
-    return isdigit(c);
+    return isxdigit((unsigned char) c);
 #endif /* XML_UNICODE_WCHAR_T */
 }
