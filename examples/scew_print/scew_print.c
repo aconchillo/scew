@@ -55,7 +55,6 @@ print_indent(unsigned int indent)
 void
 print_attributes(scew_element* element)
 {
-    unsigned int i = 0;
     scew_attribute* attribute = NULL;
 
     if (element != NULL)
@@ -64,9 +63,9 @@ print_attributes(scew_element* element)
          * Iterates through the element's attribute list, printing the
          * pair name-value.
          */
-        for (i = 0; i < scew_attribute_count(element); i++)
+        attribute = NULL;
+        while ((attribute = scew_attribute_next(element, attribute)) != NULL)
         {
-            attribute = scew_attribute_by_index(element, i);
             printf(" %s=\"%s\"", scew_attribute_name(attribute),
                    scew_attribute_value(attribute));
         }
@@ -76,48 +75,51 @@ print_attributes(scew_element* element)
 void
 print_element(scew_element* element, unsigned int indent)
 {
-    unsigned int i = 0;
+    scew_element* child = NULL;
     XML_Char const* contents = NULL;
 
-    if (element != NULL)
+    if (element == NULL)
     {
-        /**
-         * Prints the starting element tag with its attributes.
-         */
-        print_indent(indent);
-        printf("<%s", scew_element_name(element));
-        print_attributes(element);
-        printf(">");
-        contents = scew_element_contents(element);
-        if (contents == NULL)
-        {
-            printf("\n");
-        }
-                                    
-        /**
-         * Call print_element function again for each child of the
-         * current element.
-         */
-        for (i = 0; i < scew_element_count(element); i++)
-        {
-            print_element(scew_element_by_index(element, i), indent + 1);
-        }
-
-        /* Prints element's content. */
-        if (contents != NULL)
-        {
-            printf("%s", contents);
-        }
-        else
-        {
-            print_indent(indent);
-        }
-
-        /**
-         * Prints the closing element tag.
-         */
-        printf("</%s>\n", scew_element_name(element));
+        return;
     }
+
+    /**
+     * Prints the starting element tag with its attributes.
+     */
+    print_indent(indent);
+    printf("<%s", scew_element_name(element));
+    print_attributes(element);
+    printf(">");
+    contents = scew_element_contents(element);
+    if (contents == NULL)
+    {
+        printf("\n");
+    }
+
+    /**
+     * Call print_element function again for each child of the
+     * current element.
+     */
+    child = NULL;
+    while ((child = scew_element_next(element, child)) != NULL)
+    {
+        print_element(child, indent + 1);
+    }
+
+    /* Prints element's content. */
+    if (contents != NULL)
+    {
+        printf("%s", contents);
+    }
+    else
+    {
+        print_indent(indent);
+    }
+
+    /**
+     * Prints the closing element tag.
+     */
+    printf("</%s>\n", scew_element_name(element));
 }
 
 int
