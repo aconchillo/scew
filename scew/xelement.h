@@ -9,7 +9,7 @@
  *
  * @if copyright
  *
- * Copyright (C) 2002, 2003 Aleix Conchillo Flaque
+ * Copyright (C) 2002, 2003, 2004 Aleix Conchillo Flaque
  *
  * SCEW is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -46,12 +46,13 @@ struct _scew_element
 
     unsigned int n_children;
 
+    /* Immediately neighbour pointers */
     scew_element* parent;
     scew_element* child;
     scew_element* left;
     scew_element* right;
 
-    /* Performance improvement (Sanzo Miyazawa) */
+    /* Last element in list */
     scew_element* last_child;
 };
 
