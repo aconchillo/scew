@@ -103,7 +103,7 @@ scew_element_count(scew_element const* parent)
 scew_element*
 scew_element_by_index(scew_element const* parent, unsigned int idx)
 {
-    int i = 0;
+    unsigned int i = 0;
     scew_element* element = NULL;
 
     if ((parent == NULL) || (idx >= parent->n_children))
@@ -125,7 +125,7 @@ scew_element_by_index(scew_element const* parent, unsigned int idx)
 scew_element*
 scew_element_by_name(scew_element const* parent, XML_Char const* name)
 {
-    int i = 0;
+    unsigned int i = 0;
     scew_element* element = NULL;
 
     if (parent == NULL)
@@ -154,8 +154,8 @@ scew_element**
 scew_element_list(scew_element const* parent, XML_Char const* name,
                   unsigned int* count)
 {
-    int i = 0;
-    int j = 0;
+    unsigned int i = 0;
+    unsigned int j = 0;
     scew_element** list = NULL;
     scew_element* element = NULL;
 

@@ -55,7 +55,7 @@ print_indent(unsigned int indent)
 void
 print_attributes(scew_element* element)
 {
-    int i = 0;
+    unsigned int i = 0;
     scew_attribute* attribute = NULL;
 
     if (element != NULL)
@@ -76,7 +76,7 @@ print_attributes(scew_element* element)
 void
 print_element(scew_element* element, unsigned int indent)
 {
-    int i = 0;
+    unsigned int i = 0;
     XML_Char const* contents = NULL;
 
     if (element != NULL)

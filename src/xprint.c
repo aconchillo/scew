@@ -40,7 +40,7 @@ static int const indent_size = 3;
 void
 indent_print(FILE* out, unsigned int indent)
 {
-    int i = 0;
+    unsigned int i = 0;
 
     for (i = 0; i < indent * indent_size; i++)
     {
@@ -67,8 +67,8 @@ tree_print(scew_tree const* tree, FILE* out)
 void
 element_print(scew_element const* element, FILE* out, unsigned int indent)
 {
-    int i = 0;
-    int closed = 0;
+    unsigned int i = 0;
+    unsigned int closed = 0;
     XML_Char const* contents;
 
     if (element != NULL)
