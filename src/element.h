@@ -28,7 +28,7 @@
  * @endif
  *
  * Element related functions. SCEW provides functions to access and
- * manipulate the element of an XML tree.
+ * manipulate the elements of an XML tree.
  */
 
 
