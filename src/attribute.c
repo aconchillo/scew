@@ -46,14 +46,7 @@ scew_attribute_create(XML_Char const* name, XML_Char const* value)
 void
 scew_attribute_free(scew_attribute* attribute)
 {
-    if (attribute == NULL)
-    {
-        return;
-    }
-
-    free(attribute->name);
-    free(attribute->value);
-    free(attribute);
+    attribute_free(attribute);
 }
 
 unsigned int
@@ -70,51 +63,23 @@ scew_attribute_count(scew_element const* element)
 scew_attribute*
 scew_attribute_by_index(scew_element const* element, unsigned int idx)
 {
-    int i = 0;
-    attribute_node* node = NULL;
-
-    if ((element == NULL) || (idx >= element->attributes->size))
-    {
-        return NULL;
-    }
-
-    i = 0;
-    node = element->attributes->first;
-    while ((i < idx) && (node != NULL))
-    {
-        node = node->next;
-        ++i;
-    }
-
-    return node->info;
-}
-
-scew_attribute*
-scew_attribute_by_name(scew_element const* element, XML_Char const* name)
-{
-    int i = 0;
-    scew_attribute* attribute = NULL;
-
     if (element == NULL)
     {
         return NULL;
     }
 
-    for (i = 0; i < element->attributes->size; ++i)
-    {
-        attribute = scew_attribute_by_index(element, i);
-        if (!scew_strcmp(attribute->name, name))
-        {
-            break;
-        }
-    }
+    return attribute_by_index(element->attributes, idx);
+}
 
-    if (i == element->attributes->size)
+scew_attribute*
+scew_attribute_by_name(scew_element const* element, XML_Char const* name)
+{
+    if (element == NULL)
     {
         return NULL;
     }
 
-    return attribute;
+    return attribute_by_name(element->attributes, name);
 }
 
 XML_Char const*

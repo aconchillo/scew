@@ -51,20 +51,17 @@ attribute_create(XML_Char const* name, XML_Char const* value)
     return attribute;
 }
 
-scew_attribute*
-attribute_duplicate(scew_attribute const* attribute)
+void
+attribute_free(scew_attribute* attribute)
 {
-    scew_attribute* new_attr = NULL;
-
-    new_attr = (scew_attribute*) malloc(sizeof(scew_attribute));
-    if (new_attr != NULL)
+    if (attribute == NULL)
     {
-        bzero(new_attr, sizeof(scew_attribute));
-        new_attr->name = scew_strdup(attribute->name);
-        new_attr->value = scew_strdup(attribute->value);
+        return;
     }
 
-    return new_attr;
+    free(attribute->name);
+    free(attribute->value);
+    free(attribute);
 }
 
 attribute_list*
@@ -104,7 +101,7 @@ attribute_list_free(attribute_list* list)
 }
 
 scew_attribute*
-attribute_list_add(attribute_list* list, scew_attribute const* attribute)
+attribute_list_add(attribute_list* list, scew_attribute* attribute)
 {
     attribute_node* node = NULL;
 
@@ -113,13 +110,21 @@ attribute_list_add(attribute_list* list, scew_attribute const* attribute)
         return NULL;
     }
 
+    node = attribute_node_by_name(list, attribute->name);
+    if (node != NULL)
+    {
+        attribute_free(node->info);
+        node->info = attribute;
+        return node->info;
+    }
+
     node = (attribute_node*) malloc(sizeof(attribute_node));
     if (node == NULL)
     {
         return NULL;
     }
     bzero(node, sizeof(attribute_node));
-    node->info = attribute_duplicate(attribute);
+    node->info = attribute;
 
     list->size++;
     if (list->first == NULL)
@@ -132,6 +137,82 @@ attribute_list_add(attribute_list* list, scew_attribute const* attribute)
         node->prev = list->last;
     }
     list->last = node;
+
+    return node->info;
+}
+
+attribute_node*
+attribute_node_by_index(attribute_list* list, unsigned int idx)
+{
+    int i = 0;
+    attribute_node* node = NULL;
+
+    if ((list == NULL) || (idx >= list->size))
+    {
+        return NULL;
+    }
+
+    i = 0;
+    node = list->first;
+    while ((i < idx) && (node != NULL))
+    {
+        node = node->next;
+        ++i;
+    }
+
+    return node;
+}
+
+attribute_node*
+attribute_node_by_name(attribute_list* list, XML_Char const* name)
+{
+    int i = 0;
+    attribute_node* node = NULL;
+
+    if (list == NULL)
+    {
+        return NULL;
+    }
+
+    for (i = 0; i < list->size; ++i)
+    {
+        node = attribute_node_by_index(list, i);
+        if (!scew_strcmp(node->info->name, name))
+        {
+            break;
+        }
+    }
+
+    if (i == list->size)
+    {
+        return NULL;
+    }
+
+    return node;
+}
+
+scew_attribute*
+attribute_by_index(attribute_list* list, unsigned int idx)
+{
+    attribute_node* node = attribute_node_by_index(list, idx);
+
+    if (node == NULL)
+    {
+        return NULL;
+    }
+
+    return node->info;
+}
+
+scew_attribute*
+attribute_by_name(attribute_list* list, XML_Char const* name)
+{
+    attribute_node* node = attribute_node_by_name(list, name);
+
+    if (node == NULL)
+    {
+        return NULL;
+    }
 
     return node->info;
 }

@@ -88,7 +88,7 @@ scew_parser_load_buffer(scew_parser* parser, unsigned char const* buffer,
  * <code>scew_parser_free</code> does not free the
  * <code>scew_tree</code> read.
  *
- * @see scew_tree
+ * @see tree.h
  */
 extern scew_tree*
 scew_parser_tree(scew_parser const* parser);

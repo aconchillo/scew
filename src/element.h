@@ -113,7 +113,7 @@ scew_element_set_contents(scew_element* element, XML_Char const* data);
 /**
  * Adds a new child to the given element with the specified name.
  *
- * @return the new created element.
+ * @return the new element created.
  */
 extern scew_element*
 scew_element_add(scew_element* element, XML_Char const* name);
@@ -127,30 +127,30 @@ scew_element_add(scew_element* element, XML_Char const* name);
  *
  * @see scew_element_create
  *
- * @return the added element.
+ * @return the element added.
  */
 extern scew_element*
 scew_element_add_elem(scew_element* element, scew_element* new_elem);
 
 /**
- * Adds an already existent attribute to the element. Note that if the
- * attribute already exist, the old value will be overwritten. The
- * <code>attribute</code> is duplicated in order to add it to the
- * element, this argument needs to be freed.
+ * Adds an already existent attribute to the element. If the attribute
+ * already exist, the old value will be overwritten. It is important to
+ * note that the attribute given will be part of the element's
+ * attributes, so it should not be freed.
  *
- * @see scew_attribute
+ * @see attribute.h
  *
- * @return the added attribute.
+ * @return the new attribute added to the element.
  */
 scew_attribute*
-scew_element_add_attr(scew_element* element, scew_attribute const* attribute);
+scew_element_add_attr(scew_element* element, scew_attribute* attribute);
 
 /**
  * Adds a new attribute to the given element. An attribute is formed by
  * a pair (name, value). Note that if the attribute already exist, the
  * old value will be overwritten.
  *
- * @see scew_attribute
+ * @see attribute.h
  *
  * @return the new attribute added to the element.
  */

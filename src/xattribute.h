@@ -60,13 +60,13 @@ typedef struct
 } attribute_list;
 
 
-/* Creates a new attribute with the given pair (name, value). */
-scew_attribute*
-attribute_duplicate(scew_attribute const* attribute);
-
 /* Creates a duplicated attribute from the given one. */
 scew_attribute*
 attribute_create(XML_Char const* name, XML_Char const* value);
+
+/* Frees an attribute structure. */
+void
+attribute_free(scew_attribute* attribute);
 
 /* Creates a new attribute list. */
 attribute_list*
@@ -78,6 +78,22 @@ attribute_list_free(attribute_list* list);
 
 /* Adds a new element to the attribute list. */
 scew_attribute*
-attribute_list_add(attribute_list* list, scew_attribute const* attribute);
+attribute_list_add(attribute_list* list, scew_attribute* attribute);
+
+/* Return the list node in position idx. */
+attribute_node*
+attribute_node_by_index(attribute_list* list, unsigned int idx);
+
+/* Return the list node that matches name. */
+attribute_node*
+attribute_node_by_name(attribute_list* list, XML_Char const* name);
+
+/* Return the attribute in position idx. */
+scew_attribute*
+attribute_by_index(attribute_list* list, unsigned int idx);
+
+/* Return the attribute that matches name. */
+scew_attribute*
+attribute_by_name(attribute_list* list, XML_Char const* name);
 
 #endif /* XATTRIBUTE_H_ALEIX0211250054 */

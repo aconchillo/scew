@@ -44,7 +44,7 @@
  * Creates a new empty XML tree in memory. You can also have access to
  * the tree created by the parser when reading an XML file.
  *
- * @see scew_parser
+ * @see parser.h
  */
 extern scew_tree*
 scew_tree_create();
@@ -62,7 +62,7 @@ scew_tree_free(scew_tree* tree);
 /**
  * Returns the root element of the given tree.
  *
- * @see scew_element
+ * @see element.h
  */
 extern scew_element*
 scew_tree_root(scew_tree const* tree);
@@ -70,7 +70,7 @@ scew_tree_root(scew_tree const* tree);
 /**
  * Creates the first element (root) of an XML tree with the given name.
  *
- * @see scew_element
+ * @see element.h
  */
 extern scew_element*
 scew_tree_add_root(scew_tree* tree, XML_Char const* name);

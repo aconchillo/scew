@@ -225,7 +225,7 @@ scew_element_add_elem(scew_element* element, scew_element* new_elem)
 }
 
 scew_attribute*
-scew_element_add_attr(scew_element* element, scew_attribute const* attribute)
+scew_element_add_attr(scew_element* element, scew_attribute* attribute)
 {
     return attribute_list_add(element->attributes, attribute);
 }
@@ -236,5 +236,5 @@ scew_element_add_attr_pair(scew_element* element, XML_Char const* name,
 {
     scew_attribute* attribute = scew_attribute_create(name, value);
 
-    return scew_element_add_attr(element, attribute);
+    return attribute_list_add(element->attributes, attribute);
 }
