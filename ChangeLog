@@ -1,5 +1,7 @@
 **** Changes in version 0.2.1 ****
 
+2003-04-23  Aleix Conchillo Flaque  <aleix@member.fsf.org>
+
 	* src (Module): Compilation warnings fixes.
 
 	* src/xattribute.c: a crash in scew_element_del_attr() has been
