@@ -2,7 +2,8 @@ Welcome to SCEW (Simple C Expat Wrapper)
 
   The  aim of SCEW  is to  provide an  easy interface  to the  XML Expat
 library.  Expat gives an API  based on event handling mechanisms to load
-the XML tree structure.
+the  XML  tree structure.  Eventhough,  since  version  0.2.0, SCEW  has
+incorporated functions to create and save XML trees.
 
   SCEW provides  functions to load  and access XML elements  without the
 need  to  create the  event  handling  routines  and probably  the  most
