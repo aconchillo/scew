@@ -23,7 +23,7 @@
  *
  * You should have received a copy of the GNU Lesser General Public
  * License along with this library; if not, write to the Free Software
- * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+ * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307, USA.
  *
  * @endif
  *
@@ -113,9 +113,9 @@ main(int argc, char** argv)
     /**
      * Save an XML tree to a file.
      */
-    if (!scew_tree_save_file(tree, argv[1]))
+    if (!scew_writer_tree_file(tree, argv[1]))
     {
-        printf("unable to create %s\n", argv[1]);
+        printf("Unable to create %s\n", argv[1]);
         return EXIT_FAILURE;
     }
 
