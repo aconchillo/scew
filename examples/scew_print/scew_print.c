@@ -87,8 +87,13 @@ print_element(scew_element* element, unsigned int indent)
         print_indent(indent);
         printf("<%s", scew_element_name(element));
         print_attributes(element);
-        printf(">\n");
-
+        printf(">");
+        contents = scew_element_contents(element);
+        if (contents == NULL)
+        {
+            printf("\n");
+        }
+                                    
         /**
          * Call print_element function again for each child of the
          * current element.
@@ -99,17 +104,18 @@ print_element(scew_element* element, unsigned int indent)
         }
 
         /* Prints element's content. */
-        contents = scew_element_contents(element);
         if (contents != NULL)
         {
+            printf("%s", contents);
+        }
+        else
+        {
             print_indent(indent);
-            printf("%s\n", contents);
         }
 
         /**
          * Prints the closing element tag.
          */
-        print_indent(indent);
         printf("</%s>\n", scew_element_name(element));
     }
 }
@@ -130,6 +136,8 @@ main(int argc, char** argv)
      * Creates an SCEW parser. This is the first function to call.
      */
     parser = scew_parser_create();
+
+    scew_parser_ignore_whitespaces(parser, 1);
 
     /* Loads an XML file */
     if (!scew_parser_load_file(parser, argv[1]))
