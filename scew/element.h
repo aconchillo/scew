@@ -84,9 +84,10 @@ scew_element_next(scew_element const* parent, scew_element const* element);
  * Returns the child element on the specified position. Positions are
  * zero based.
  *
- * Do not call this function if you just want to iterate through the
- * elements, because you would have a serious performance degradation in
- * large documents. Use <code>scew_element_next</code> instead.
+ * <b>Note:</b> Do not call this function if you just want to iterate
+ * through the elements, because you would have a serious performance
+ * degradation in large documents. Use <code>scew_element_next</code>
+ * instead.
  *
  * This function is for element random access.
  *
