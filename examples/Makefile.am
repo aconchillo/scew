@@ -4,7 +4,7 @@
 # Author: Aleix Conchillo Flaque <aleix@member.fsf.org>
 # Date:   Sat Nov 23, 2002 13:49
 #
-# Copyright (C) 2002, 2003 Aleix Conchillo Flaque
+# Copyright (C) 2002, 2003, 2004 Aleix Conchillo Flaque
 #
 
-SUBDIRS = scew_print scew_write
+SUBDIRS = scew_print scew_stream scew_write
