@@ -1,4 +1,4 @@
-**** Changes in version 0.1.1 ****
+**** Changes in version 0.2.0 ****
 
 2003-03-30  Aleix Conchillo Flaque  <aleix@member.fsf.org>
 
@@ -12,7 +12,4 @@
 	* src (Module): Added new tree structure which is now included in
 	scew_parser and will be used for writing purposes.
 
-**** Initial release 0.1.0 ****
-
 	* ChangeLog started
-
