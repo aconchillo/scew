@@ -1,6 +1,6 @@
 /**
  *
- * @file     attribute.h
+ * @file     scew_print.c
  * @author   Aleix Conchillo Flaque <aconchillo@acm.org>
  * @date     Wed Dec 04, 2002 01:11
  * @brief    SCEW usage example
