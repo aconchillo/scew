@@ -166,6 +166,16 @@ attribute_list_del(attribute_list* list, XML_Char const* name)
             tmp_next->prev = tmp_prev;
         }
 
+        if (node == list->first)
+        {
+            list->first = tmp_next;
+        }
+
+        if (node == list->last)
+        {
+            list->last = tmp_prev;
+        }
+
         attribute_node_free(node);
         list->size--;
     }
