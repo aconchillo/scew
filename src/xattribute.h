@@ -9,7 +9,7 @@
  *
  * @if copyright
  *
- * Copyright (C) 2002 Aleix Conchillo Flaque
+ * Copyright (C) 2002, 2003 Aleix Conchillo Flaque
  *
  * SCEW is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -34,6 +34,8 @@
 
 #include "attribute.h"
 
+#include <expat.h>
+
 
 struct _scew_attribute
 {
@@ -41,8 +43,41 @@ struct _scew_attribute
     XML_Char* value;
 };
 
+/* Doubly linked list node */
+typedef struct _attr_node
+{
+    scew_attribute* info;
+    struct _attr_node* prev;
+    struct _attr_node* next;
+} attribute_node;
 
+/* Doubly linked list */
+typedef struct
+{
+    unsigned int size;
+    attribute_node* first;
+    attribute_node* last;
+} attribute_list;
+
+
+/* Creates a new attribute with the given pair (name, value). */
+scew_attribute*
+attribute_duplicate(scew_attribute const* attribute);
+
+/* Creates a duplicated attribute from the given one. */
+scew_attribute*
+attribute_create(XML_Char const* name, XML_Char const* value);
+
+/* Creates a new attribute list. */
+attribute_list*
+attribute_list_create();
+
+/* Frees an attribute list. */
 void
-free_attribute(scew_attribute* attribute);
+attribute_list_free(attribute_list* list);
+
+/* Adds a new element to the attribute list. */
+scew_attribute*
+attribute_list_add(attribute_list* list, scew_attribute const* attribute);
 
 #endif /* XATTRIBUTE_H_ALEIX0211250054 */

@@ -9,7 +9,7 @@
  *
  * @if copyright
  *
- * Copyright (C) 2002 Aleix Conchillo Flaque
+ * Copyright (C) 2002, 2003 Aleix Conchillo Flaque
  *
  * SCEW is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -148,7 +148,7 @@ scew_strcmp(XML_Char const* s1, XML_Char const* s2)
 {
     if ((s1 == NULL) || (s2 == NULL))
     {
-        return NULL;
+        return 0;
     }
     else
     {

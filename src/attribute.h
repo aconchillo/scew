@@ -9,7 +9,7 @@
  *
  * @if copyright
  *
- * Copyright (C) 2002 Aleix Conchillo Flaque
+ * Copyright (C) 2002, 2003 Aleix Conchillo Flaque
  *
  * SCEW is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -36,22 +36,30 @@
 #ifndef ATTRIBUTE_H_ALEIX0211250039
 #define ATTRIBUTE_H_ALEIX0211250039
 
+#include "types.h"
+
 #include <expat.h>
 
-#include "element.h"
+/**
+ * Creates a new attribute with the given pair (name, value).
+ *
+ * @return the new created attribute.
+ */
+extern scew_attribute*
+scew_attribute_create(XML_Char const* name, XML_Char const* value);
 
 /**
- * This is the type declaration for element attributes.
+ * Frees an attribute memory structure. That is, its name and value.
  */
-typedef struct _scew_attribute scew_attribute;
-
+extern void
+scew_attribute_free(scew_attribute* attribute);
 
 /**
  * Returns the number of attributes of the specified element. An element
  * can have zero or more attributes.
  */
 extern unsigned int
-scew_get_attribute_count(scew_element const* element);
+scew_attribute_count(scew_element const* element);
 
 /**
  * Returns the element attribute on the specified position. Positions
@@ -60,8 +68,8 @@ scew_get_attribute_count(scew_element const* element);
  * @return the attribute on the specified position, NULL if there is no
  * attribute in the position.
  */
-extern scew_attribute const*
-scew_get_attribute(scew_element const* element, unsigned int idx);
+extern scew_attribute*
+scew_attribute_by_index(scew_element const* element, unsigned int idx);
 
 /**
  * Returns the element attribute with the specified name. Remember that
@@ -69,20 +77,35 @@ scew_get_attribute(scew_element const* element, unsigned int idx);
  *
  * @return the attribute with the given name, NULL if not found.
  */
-extern scew_attribute const*
-scew_get_attribute_by_name(scew_element const* element, XML_Char const* name);
+extern scew_attribute*
+scew_attribute_by_name(scew_element const* element, XML_Char const* name);
 
 /**
  * Returns the attribute name or NULL if the attribute does not exist.
  */
 extern XML_Char const*
-scew_get_attribute_name(scew_attribute const* attribute);
+scew_attribute_name(scew_attribute const* attribute);
 
 /**
  * Returns the attribute value or NULL if the attribute does not exist.
  */
 extern XML_Char const*
-scew_get_attribute_value(scew_attribute const* attribute);
+scew_attribute_value(scew_attribute const* attribute);
 
+/**
+ * Sets a new name to the given attribute and frees the old one.
+ *
+ * @return the new attribute name.
+ */
+extern XML_Char const*
+scew_attribute_set_name(scew_attribute* attribute, XML_Char const* name);
+
+/**
+ * Sets a new value to the given attribute and frees the old one.
+ *
+ * @return the new attribute value.
+ */
+extern XML_Char const*
+scew_attribute_set_value(scew_attribute* attribute, XML_Char const* name);
 
 #endif /* ATTRIBUTE_H_ALEIX0211250039 */

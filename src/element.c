@@ -9,7 +9,7 @@
  *
  * @if copyright
  *
- * Copyright (C) 2002 Aleix Conchillo Flaque
+ * Copyright (C) 2002, 2003 Aleix Conchillo Flaque
  *
  * SCEW is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -30,46 +30,87 @@
 
 #include "xelement.h"
 
-#include "xparser.h"
-
 #include "util.h"
 
+#include <string.h>
 
-scew_element const*
-scew_get_root(scew_parser const* parser)
+
+scew_element*
+scew_element_create(XML_Char const* name)
 {
-    if (parser == NULL)
+    scew_element* element = NULL;
+
+    element = (scew_element*) malloc(sizeof(scew_element));
+    if (element != NULL)
     {
-        return NULL;
+        bzero(element, sizeof(scew_element));
+        element->name = scew_strdup(name);
+        element->attributes = attribute_list_create();
     }
 
-    return parser->root;
+    return element;
+}
+
+void
+scew_element_free(scew_element* element)
+{
+    if (element == NULL)
+    {
+        return;
+    }
+
+    free(element->name);
+    free(element->contents);
+    attribute_list_free(element->attributes);
+
+    if ((element->parent != NULL) && (element->parent->child == element))
+    {
+        element->parent->child = element->right;
+    }
+
+    while (element->child != NULL)
+    {
+        scew_element_free(element->child);
+    }
+
+    free(element);
 }
 
 unsigned int
-scew_get_element_count(scew_element const* element)
+scew_element_count(scew_element const* parent)
 {
-    if (element == NULL)
+    if (parent == NULL)
     {
         return 0;
     }
 
-    return element->n_children;
+    return parent->n_children;
 }
 
-scew_element const*
-scew_get_element(scew_element const* parent, unsigned int idx)
+scew_element*
+scew_element_by_index(scew_element const* parent, unsigned int idx)
 {
+    int i = 0;
+    scew_element* element = NULL;
+
     if ((parent == NULL) || (idx >= parent->n_children))
     {
         return NULL;
     }
 
-    return &parent->children[idx];
+    i = 0;
+    element = parent->child;
+    while ((i < idx) && (element != NULL))
+    {
+        element = element->right;
+        ++i;
+    }
+
+    return element;
 }
 
-scew_element const*
-scew_get_element_by_name(scew_element const* parent, char const* name)
+scew_element*
+scew_element_by_name(scew_element const* parent, char const* name)
 {
     int i = 0;
     scew_element* element = NULL;
@@ -79,14 +120,9 @@ scew_get_element_by_name(scew_element const* parent, char const* name)
         return NULL;
     }
 
-    if (!scew_strcmp(parent->name, name))
-    {
-        return (scew_element*) parent;
-    }
-
     for (i = 0; i < parent->n_children; ++i)
     {
-        element = &parent->children[i];
+        element = scew_element_by_index(parent, i);
         if (!scew_strcmp(element->name, name))
         {
             break;
@@ -101,49 +137,8 @@ scew_get_element_by_name(scew_element const* parent, char const* name)
     return element;
 }
 
-scew_element**
-scew_get_elements_list(scew_element const* parent, XML_Char const* name,
-                       unsigned int* count)
-{
-    int i = 0;
-    int j = 0;
-    scew_element** list = NULL;
-    scew_element* element = NULL;
-
-    if (parent == NULL)
-    {
-        return NULL;
-    }
-
-    for (i = 0; i < parent->n_children; ++i)
-    {
-        element = &parent->children[i];
-        if (!scew_strcmp(element->name, name))
-        {
-            j++;
-            list = (scew_element**) realloc(list, sizeof(scew_element*) * j);
-            list[j - 1] = element;
-        }
-    }
-
-    *count = j;
-
-    return list;
-}
-
-void
-scew_elements_list_free(scew_element** list)
-{
-    if (list == NULL)
-    {
-        return;
-    }
-
-    free(list);
-}
-
 XML_Char const*
-scew_get_element_name(scew_element const* element)
+scew_element_name(scew_element const* element)
 {
     if (element == NULL)
     {
@@ -154,7 +149,7 @@ scew_get_element_name(scew_element const* element)
 }
 
 XML_Char const*
-scew_get_element_contents(scew_element const* element)
+scew_element_contents(scew_element const* element)
 {
     if (element == NULL)
     {
@@ -162,4 +157,84 @@ scew_get_element_contents(scew_element const* element)
     }
 
     return element->contents;
+}
+
+XML_Char const*
+scew_element_set_name(scew_element* element, XML_Char const* name)
+{
+    if (element == NULL)
+    {
+        return NULL;
+    }
+
+    free(element->name);
+    element->name = scew_strdup(name);
+
+    return element->name;
+}
+
+XML_Char const*
+scew_element_set_contents(scew_element* element, XML_Char const* data)
+{
+    if (element == NULL)
+    {
+        return NULL;
+    }
+
+    free(element->contents);
+    element->contents = scew_strdup(data);
+
+    return element->contents;
+}
+
+scew_element*
+scew_element_add(scew_element* element, XML_Char const* name)
+{
+    scew_element* new_elem = scew_element_create(name);
+
+    return scew_element_add_elem(element, new_elem);
+}
+
+scew_element*
+scew_element_add_elem(scew_element* element, scew_element* new_elem)
+{
+    scew_element* current = NULL;
+
+    if (element == NULL)
+    {
+        return NULL;
+    }
+    element->n_children++;
+
+    new_elem->parent = element;
+    if (element->child == NULL)
+    {
+        element->child = new_elem;
+    }
+    else
+    {
+        current = element->child;
+        while (current->right != NULL)
+        {
+            current = current->right;
+        }
+        current->right = new_elem;
+    }
+
+    return new_elem;
+}
+
+scew_attribute*
+scew_element_add_attr(scew_element* element, scew_attribute const* attribute)
+{
+    return attribute_list_add(element->attributes, attribute);
+}
+
+scew_attribute*
+scew_element_add_attr_pair(scew_element* element, XML_Char const* name,
+                           XML_Char const* value)
+{
+    scew_attribute* attribute = scew_attribute_create(name, value);
+
+    return scew_element_add_attr(element, attribute);
 }

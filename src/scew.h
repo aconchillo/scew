@@ -9,7 +9,7 @@
  *
  * @if copyright
  *
- * Copyright (C) 2002 Aleix Conchillo Flaque
+ * Copyright (C) 2002, 2003 Aleix Conchillo Flaque
  *
  * SCEW is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -35,6 +35,7 @@
 #include "attribute.h"
 #include "element.h"
 #include "parser.h"
+#include "tree.h"
 #include "util.h"
 
 #endif /* SCEW_H_ALEIX0211250134 */

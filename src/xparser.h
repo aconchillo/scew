@@ -9,7 +9,7 @@
  *
  * @if copyright
  *
- * Copyright (C) 2002 Aleix Conchillo Flaque
+ * Copyright (C) 2002, 2003 Aleix Conchillo Flaque
  *
  * SCEW is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -34,25 +34,27 @@
 
 #include "parser.h"
 
-#include "element.h"
+#include "xtree.h"
+#include "xelement.h"
 
+
+/* Stack to keep previous parsed elements */
 typedef struct _stack_element
 {
     scew_element* element;
     struct _stack_element* prev;
 } stack_element;
 
-
 struct _scew_parser
 {
     XML_Parser parser;
-    scew_element* root;
+    scew_tree* tree;
     scew_element* current;
     stack_element* stack;
 };
 
 
-void
+stack_element*
 stack_push(stack_element** stack, scew_element* element);
 
 scew_element*

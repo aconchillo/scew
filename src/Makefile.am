@@ -4,18 +4,16 @@
 # Author: Aleix Conchillo Flaque<aleix@member.fsf.org>
 # Date:   Wed Nov 06, 2002 00:55
 #
-# Copyright (C) 2002 Aleix Conchillo Flaque
+# Copyright (C) 2002, 2003 Aleix Conchillo Flaque
 #
-
-INCLUDES = -I/usr/local/include
 
 includedir = $(prefix)/include/$(PACKAGE)
 
-include_HEADERS = scew.h attribute.h element.h parser.h util.h
+include_HEADERS = scew.h attribute.h element.h parser.h tree.h types.h util.h
 
-noinst_HEADERS = handler.h xattribute.h xelement.h xparser.h
+noinst_HEADERS = xattribute.h xelement.h xhandler.h xparser.h xtree.h
 
 lib_LIBRARIES = libscew.a
 
-libscew_a_SOURCES = handler.c attribute.c element.c parser.c util.c \
-                    xattribute.c xelement.c xparser.c
+libscew_a_SOURCES = attribute.c element.c parser.c tree.c util.c \
+                    xattribute.c xhandler.c xparser.c

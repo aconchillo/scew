@@ -9,7 +9,7 @@
  *
  * @if copyright
  *
- * Copyright (C) 2002 Aleix Conchillo Flaque
+ * Copyright (C) 2002, 2003 Aleix Conchillo Flaque
  *
  * SCEW is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -28,11 +28,10 @@
  * @endif
  */
 
+#include "parser.h"
+
 #include "xparser.h"
-
-#include "xelement.h"
-
-#include "handler.h"
+#include "xhandler.h"
 
 #include <stdio.h>
 #include <string.h>
@@ -63,17 +62,6 @@ scew_parser_create()
     return parser;
 }
 
-XML_Parser
-scew_parser_expat(scew_parser* parser)
-{
-    if (parser == NULL)
-    {
-        return NULL;
-    }
-
-    return parser->parser;
-}
-
 void
 scew_parser_free(scew_parser* parser)
 {
@@ -84,13 +72,12 @@ scew_parser_free(scew_parser* parser)
 
     XML_ParserFree(parser->parser);
 
-    free_element(parser->root);
-    free(parser->root);
+    scew_tree_free(parser->tree);
     free(parser);
 }
 
 unsigned int
-scew_load_file(scew_parser* parser, char const* file_name)
+scew_parser_load_file(scew_parser* parser, char const* file_name)
 {
     FILE* in;
     long file_size;
@@ -127,7 +114,7 @@ scew_load_file(scew_parser* parser, char const* file_name)
     }
     fclose(in);
 
-    result = scew_load_buffer(parser, buffer, file_size);
+    result = scew_parser_load_buffer(parser, buffer, file_size);
 
     free(buffer);
 
@@ -135,8 +122,8 @@ scew_load_file(scew_parser* parser, char const* file_name)
 }
 
 unsigned int
-scew_load_buffer(scew_parser* parser, unsigned char const* buffer,
-                 unsigned int size)
+scew_parser_load_buffer(scew_parser* parser, unsigned char const* buffer,
+                        unsigned int size)
 {
     if (parser == NULL)
     {
@@ -149,4 +136,26 @@ scew_load_buffer(scew_parser* parser, unsigned char const* buffer,
     }
 
     return 1;
+}
+
+scew_tree const*
+scew_parser_tree(scew_parser const* parser)
+{
+    if (parser == NULL)
+    {
+        return NULL;
+    }
+
+    return parser->tree;
+}
+
+XML_Parser
+scew_parser_expat(scew_parser* parser)
+{
+    if (parser == NULL)
+    {
+        return NULL;
+    }
+
+    return parser->parser;
 }

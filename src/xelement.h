@@ -9,7 +9,7 @@
  *
  * @if copyright
  *
- * Copyright (C) 2002 Aleix Conchillo Flaque
+ * Copyright (C) 2002, 2003 Aleix Conchillo Flaque
  *
  * SCEW is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -34,23 +34,21 @@
 
 #include "element.h"
 
-#include "attribute.h"
+#include "xattribute.h"
 
 
+/* Triply linked tree node */
 struct _scew_element
 {
     XML_Char* name;
     XML_Char* contents;
-
-    unsigned int n_attr;
-    scew_attribute* attributes;
+    attribute_list* attributes;
 
     unsigned int n_children;
-    scew_element* children;
+
+    scew_element* parent;
+    scew_element* child;
+    scew_element* right;
 };
-
-
-void
-free_element(scew_element* element);
 
 #endif /* XELEMENT_H_ALEIX0211250055 */

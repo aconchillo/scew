@@ -9,7 +9,7 @@
  *
  * @if copyright
  *
- * Copyright (C) 2002 Aleix Conchillo Flaque
+ * Copyright (C) 2002, 2003 Aleix Conchillo Flaque
  *
  * SCEW is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -31,16 +31,12 @@
 #include "xparser.h"
 
 
-void
+stack_element*
 stack_push(stack_element** stack, scew_element* element)
 {
     stack_element* new_elem = (stack_element*) malloc(sizeof(stack_element));
 
-    if (new_elem == NULL)
-    {
-        return;
-    }
-    else
+    if (new_elem != NULL)
     {
         new_elem->element = element;
         if (stack != NULL)
@@ -49,24 +45,26 @@ stack_push(stack_element** stack, scew_element* element)
         }
         *stack = new_elem;
     }
+
+    return new_elem;
 }
 
 scew_element*
 stack_pop(stack_element** stack)
 {
-    stack_element* aux = NULL;
-    scew_element* elem = NULL;
+    scew_element* element = NULL;
+    stack_element* sk_elem = NULL;
 
     if (stack != NULL)
     {
-        aux = *stack;
-        if (aux != NULL)
+        sk_elem = *stack;
+        if (sk_elem != NULL)
         {
-            *stack = aux->prev;
-            elem = aux->element;
-            free(aux);
+            *stack = sk_elem->prev;
+            element = sk_elem->element;
+            free(sk_elem);
         }
     }
 
-    return elem;
+    return element;
 }
