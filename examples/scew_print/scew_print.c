@@ -77,7 +77,7 @@ void
 print_element(scew_element* element, unsigned int indent)
 {
     int i = 0;
-    XML_Char const* contents;
+    XML_Char const* contents = NULL;
 
     if (element != NULL)
     {
@@ -117,8 +117,8 @@ print_element(scew_element* element, unsigned int indent)
 int
 main(int argc, char** argv)
 {
-    scew_tree* tree;
-    scew_parser* parser;
+    scew_tree* tree = NULL;
+    scew_parser* parser = NULL;
 
     if (argc < 2)
     {
@@ -139,6 +139,8 @@ main(int argc, char** argv)
     }
 
     tree = scew_parser_tree(parser);
+
+    /* Prints full tree */
     print_element(scew_tree_root(tree), 0);
 
     /* Remember to free tree (scew_parser_free does not free it) */
