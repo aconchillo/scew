@@ -144,7 +144,17 @@ main(int argc, char** argv)
     /* Loads an XML file */
     if (!scew_parser_load_file(parser, argv[1]))
     {
-        printf("unable to open file %s\n", argv[1]);
+        scew_error code = scew_error_code();
+        printf("Unable to load file (error #%d: %s)\n", code,
+               scew_error_string(code));
+        if (code == scew_error_expat)
+        {
+            enum XML_Error expat_code = scew_error_expat_code(parser);
+            printf("Expat error #%d (line %d, column %d): %s\n", expat_code,
+                   scew_error_expat_line(parser),
+                   scew_error_expat_column(parser),
+                   scew_error_expat_string(expat_code));
+        }
         return EXIT_FAILURE;
     }
 
