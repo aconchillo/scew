@@ -112,7 +112,7 @@ element_print(scew_element const* element, FILE* out, unsigned int indent)
     {
         scew_fprintf(out, _XT("%s"), contents);
     }
-    else
+    else if (!closed)
     {
         indent_print(out, indent);
     }
