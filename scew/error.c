@@ -30,6 +30,8 @@
 
 #include "error.h"
 
+#include "str.h"
+
 #include "xerror.h"
 #include "xparser.h"
 
