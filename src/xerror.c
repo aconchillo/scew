@@ -69,6 +69,7 @@ set_last_error(scew_error code)
 
     old_code = (scew_error*) pthread_getspecific(key_error);
     new_code = (scew_error*) malloc(sizeof(scew_error));
+    *new_code = code;
     free(old_code);
     pthread_setspecific(key_error, new_code);
 #endif
@@ -81,6 +82,9 @@ get_last_error()
 	return key_error;
 #else
     scew_error* code = NULL;
+
+    /* Initialize error code per thread */
+    pthread_once(&key_once, create_keys);
 
     code = (scew_error*) pthread_getspecific(key_error);
     if (code == NULL)

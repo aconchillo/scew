@@ -52,10 +52,10 @@ typedef enum
 {
     /** No error has occured. */
     scew_error_none,
-    /** General Input/Output error. */
-    scew_error_io,
     /** No more memory available. */
     scew_error_no_memory,
+    /** General Input/Output error. */
+    scew_error_io,
     /** Expat parser error. */
     scew_error_expat
 } scew_error;
@@ -90,6 +90,18 @@ scew_error_expat_code(scew_parser* parser);
  */
 extern XML_Char const*
 scew_error_expat_string(enum XML_Error code);
+
+/**
+ * Returns the current line at which the error was detected.
+ */
+extern int
+scew_error_expat_line(scew_parser* parser);
+
+/**
+ * Returns the current column at which the error was detected.
+ */
+extern int
+scew_error_expat_column(scew_parser* parser);
 
 #ifdef __cplusplus
 }

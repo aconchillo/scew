@@ -34,6 +34,7 @@
 
 #include "attribute.h"
 #include "element.h"
+#include "error.h"
 #include "mem.h"
 #include "parser.h"
 #include "str.h"

@@ -33,6 +33,9 @@
 #include "xerror.h"
 #include "xparser.h"
 
+#include <assert.h>
+
+
 scew_error
 scew_error_code()
 {
@@ -42,12 +45,21 @@ scew_error_code()
 XML_Char const*
 scew_error_string(scew_error code)
 {
-    return "";
+    static const XML_Char *message[] = {
+        0,
+        "Out of memory",
+        "Input/Output error",
+        "Internal Expat parser error"
+    };
+
+    return message[code];
 }
 
 enum XML_Error
 scew_error_expat_code(scew_parser* parser)
 {
+    assert(parser != NULL);
+
     return XML_GetErrorCode(parser->parser);
 }
 
@@ -57,3 +69,18 @@ scew_error_expat_string(enum XML_Error code)
     return XML_ErrorString(code);
 }
 
+int
+scew_error_expat_line(scew_parser* parser)
+{
+    assert(parser != NULL);
+
+    return XML_GetCurrentLineNumber(parser->parser);
+}
+
+int
+scew_error_expat_column(scew_parser* parser)
+{
+    assert(parser != NULL);
+
+    return XML_GetCurrentColumnNumber(parser->parser);
+}
