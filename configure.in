@@ -4,11 +4,11 @@
 # Author: Aleix Conchillo Flaque <aleix@member.fsf.org>
 # Date:   Mon Oct 07, 2002 01:56
 #
-# Copyright (C) 2002 Aleix Conchillo Flaque
+# Copyright (C) 2002, 2003 Aleix Conchillo Flaque
 #
 
 AC_INIT(src/scew.h)
-AM_INIT_AUTOMAKE(scew, 0.1.0)
+AM_INIT_AUTOMAKE(scew, 0.1.1)
 AM_CONFIG_HEADER(config.h)
 
 AC_ISC_POSIX

@@ -1,8 +1,19 @@
 SCEW -- History of visible changes.
 
-Copyright (C) 2002 Aleix Conchillo Flaque
+Copyright (C) 2002, 2003 Aleix Conchillo Flaque
 
 See the end for copying conditions.
+
+------------------------------------------------------------------------
+
+* Version 0.1.1 (14/01/03)
+
+** Changes
+
+** Bugs fixed:
+
+        - scew_get_element_by_name() and scew_get_attribute_by_name()
+        did not return NULL if an element/attribute was not found.
 
 ------------------------------------------------------------------------
 
@@ -13,7 +24,7 @@ See the end for copying conditions.
 ------------------------------------------------------------------------
 Copying information:
 
-Copyright (C) 2002 Aleix Conchillo Flaque
+Copyright (C) 2002, 2003 Aleix Conchillo Flaque
 
   Permission is granted to anyone  to make or distribute verbatim copies
 of this document as received, in any medium, provided that the copyright
