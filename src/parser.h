@@ -1,7 +1,7 @@
 /**
  *
  * @file     parser.h
- * @author   Aleix Conchillo Flaque <aconchillo@acm.org>
+ * @author   Aleix Conchillo Flaque <aleix@member.fsf.org>
  * @date     Mon Nov 25, 2002 00:57
  * @brief    SCEW parser type declaration
  *
@@ -93,6 +93,5 @@ scew_load_file(scew_parser* parser, char const* file_name);
 extern unsigned int
 scew_load_buffer(scew_parser* parser, unsigned char const* buffer,
                  unsigned int size);
-
 
 #endif /* PARSER_H_ALEIX0211250057 */
