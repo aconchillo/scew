@@ -40,6 +40,10 @@
 
 #include <expat.h>
 
+#ifdef __cplusplus
+extern "C" {
+#endif /* __cplusplus */
+
 /**
  * Creates a new attribute with the given pair (name, value).
  *
@@ -109,5 +113,9 @@ scew_attribute_set_name(scew_attribute* attribute, XML_Char const* name);
  */
 extern XML_Char const*
 scew_attribute_set_value(scew_attribute* attribute, XML_Char const* name);
+
+#ifdef __cplusplus
+}
+#endif /* __cplusplus */
 
 #endif /* ATTRIBUTE_H_ALEIX0211250039 */

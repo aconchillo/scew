@@ -39,6 +39,9 @@
 
 #include <expat.h>
 
+#ifdef __cplusplus
+extern "C" {
+#endif /* __cplusplus */
 
 /**
  * Creates a new empty XML tree in memory. You can also have access to
@@ -81,5 +84,9 @@ scew_tree_root(scew_tree const* tree);
  */
 extern scew_element*
 scew_tree_add_root(scew_tree* tree, XML_Char const* name);
+
+#ifdef __cplusplus
+}
+#endif /* __cplusplus */
 
 #endif /* TREE_H_ALEIX0302202332 */

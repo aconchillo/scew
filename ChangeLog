@@ -1,5 +1,10 @@
 **** Changes in version 0.2.1 ****
 
+2003-04-25  Aleix Conchillo Flaque  <aleix@member.fsf.org>
+
+	* src/*.h: Added compatibilized headers with C++ (ifdef
+	__cplusplus).
+
 2003-04-24  Aleix Conchillo Flaque  <aleix@member.fsf.org>
 
 	* src (Module): Compilation warnings fixes.

@@ -9,7 +9,7 @@
  *
  * @if copyright
  *
- * Copyright (C) 2002 Aleix Conchillo Flaque
+ * Copyright (C) 2002, 2003 Aleix Conchillo Flaque
  *
  * SCEW is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -34,24 +34,28 @@
 
 #include <expat.h>
 
+#ifdef __cplusplus
+extern "C" {
+#endif /* __cplusplus */
+
 /**
  * Copies an XML_Char string from source to destination.
  */
-XML_Char*
+extern XML_Char*
 scew_strcpy(XML_Char* dst, XML_Char const* src);
 
 /**
  * Concatenates source string to destination string. Destination string
  * must have enough space.
  */
-XML_Char*
+extern XML_Char*
 scew_strcat(XML_Char* dst, XML_Char const* src);
 
 /**
  * Copies not more than <code>len</code> characters from source to
  * destination.
  */
-XML_Char*
+extern XML_Char*
 scew_strncpy(XML_Char* dst, XML_Char const* src, size_t len);
 
 /**
@@ -59,19 +63,19 @@ scew_strncpy(XML_Char* dst, XML_Char const* src, size_t len);
  * string to destination string. Destination string must have enough
  * space.
  */
-XML_Char*
+extern XML_Char*
 scew_strncat(XML_Char* dst, XML_Char const* src, size_t len);
 
 /**
  * Creates a new copy of the given string. Client must free it.
  */
-XML_Char*
+extern XML_Char*
 scew_strdup(XML_Char const* src);
 
 /**
  * Returns the length in characeters of the given string.
  */
-size_t
+extern size_t
 scew_strlen(XML_Char const* src);
 
 /**
@@ -79,7 +83,11 @@ scew_strlen(XML_Char const* src);
  * less than 0, according as the string <code>s1</code> is greater than,
  * equal to, or less than the string <code>s2</code>.
  */
-int
+extern int
 scew_strcmp(XML_Char const* s1, XML_Char const* s2);
+
+#ifdef __cplusplus
+}
+#endif /* __cplusplus */
 
 #endif /* UTIL_H_ALEIX0212011305 */

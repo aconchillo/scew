@@ -39,6 +39,9 @@
 
 #include <expat.h>
 
+#ifdef __cplusplus
+extern "C" {
+#endif /* __cplusplus */
 
 /**
  * Creates a new parser which will be used to load XML trees.
@@ -101,5 +104,9 @@ scew_parser_tree(scew_parser const* parser);
  */
 extern XML_Parser
 scew_parser_expat(scew_parser* parser);
+
+#ifdef __cplusplus
+}
+#endif /* __cplusplus */
 
 #endif /* PARSER_H_ALEIX0211250057 */

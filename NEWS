@@ -6,13 +6,15 @@ See the end for copying conditions.
 
 ------------------------------------------------------------------------
 
-* Version 0.2.1 (24/04/03)
+* Version 0.2.1 (25/04/03)
 
 ** Changes:
 
         - Added --enable-debug flag to the configure script.
 
 ** Fixes:
+
+        - Added compatibilized headers with C++ (ifdef __cplusplus).
 
         - Compilation warnings fixed.
 

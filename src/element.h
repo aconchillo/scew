@@ -39,6 +39,9 @@
 
 #include <expat.h>
 
+#ifdef __cplusplus
+extern "C" {
+#endif /* __cplusplus */
 
 /**
  * Creates a new element with the given name. This element is not yet
@@ -210,7 +213,11 @@ scew_element_add_attr_pair(scew_element* element,
 /**
  * Deletes an attribute from an element.
  */
-void
+extern void
 scew_element_del_attr(scew_element* element, XML_Char const* name);
+
+#ifdef __cplusplus
+}
+#endif /* __cplusplus */
 
 #endif /* ELEMENT_H_ALEIX0211250048 */
