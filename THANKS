@@ -1,0 +1,16 @@
+Acknowledgements
+****************
+
+  It has been written originally by Aleix Conchillo Flaque.  Many people
+have contributed to SCEW by reporting problems, suggesting improvements,
+or submitting actual code.  Here is a list of these people. Help me keep
+it complete and exempt of errors.
+
+* Jose A.  Ortega suggested some important C  implementation details. As
+  usual, it has helped me in many other ways. Thanks jao!
+
+* Carlos Carrasco has  helped in the debugging. Those  nigths at IRC are
+  really great.
+
+---
+$Id$

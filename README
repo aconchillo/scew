@@ -1,0 +1,26 @@
+Welcome to SCEW (Simple C Expat Wrapper)
+
+  The  aim of SCEW  is to  provide an  easy interface  to the  XML Expat
+library.  Expat gives an API  based on event handling mechanisms to load
+the XML tree structure.
+
+  SCEW provides  functions to load  and access XML elements  without the
+need  to  create the  event  handling  routines  and probably  the  most
+important: without  the need  to rewrite these  functions each  time you
+need  to load a  different XML  tree.  It  also lets  you access  to the
+internal  Expat  parser,   that  means  you  can  still   have  all  the
+functionality that Expat library gives you.
+
+Project homepage: http://www.nongnu.org/scew/
+
+SCEW is free software [0]. Please see the file COPYING for details.
+
+For installation instructions please see the INSTALL file.
+
+--
+
+[0] To learn more about GNU, the FSF and its goals, please visit
+    http://www.gnu.org.
+
+---
+$Id$
