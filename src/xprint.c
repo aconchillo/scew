@@ -30,9 +30,12 @@
 
 #include "xprint.h"
 
+#ifdef XML_UNICODE_WCHAR_T
+#include <wchar.h>
+#endif
+
 /* indentation size (in whitespaces) */
 static int const indent_size = 3;
-
 
 void
 indent_print(FILE* out, unsigned int indent)
@@ -41,14 +44,23 @@ indent_print(FILE* out, unsigned int indent)
 
     for (i = 0; i < indent * indent_size; i++)
     {
+#ifdef XML_UNICODE_WCHAR_T
+        fwprintf(out, " ");
+#else
         fprintf(out, " ");
+#endif /* XML_UNICODE_WCHAR_T */
     }
 }
 
 void
 tree_print(scew_tree const* tree, FILE* out)
 {
+#ifdef XML_UNICODE_WCHAR_T
+    fwprintf(out, "<?xml version=\"1.0\" encoding=\"UTF-16\"?>\n\n");
+#else
     fprintf(out, "<?xml version=\"1.0\"?>\n\n");
+#endif /* XML_UNICODE_WCHAR_T */
+
     element_print(tree->root, out, 0);
 }
 
@@ -62,7 +74,11 @@ element_print(scew_element const* element, FILE* out, unsigned int indent)
     if (element != NULL)
     {
         indent_print(out, indent);
+#ifdef XML_UNICODE_WCHAR_T
+        fwprintf(out, "<%s", scew_element_name(element));
+#else
         fprintf(out, "<%s", scew_element_name(element));
+#endif /* XML_UNICODE_WCHAR_T */
         for (i = 0; i < scew_attribute_count(element); i++)
         {
             attribute_print(scew_attribute_by_index(element, i), out);
@@ -72,12 +88,20 @@ element_print(scew_element const* element, FILE* out, unsigned int indent)
         if ((contents == NULL) && (element->child == NULL)
             && (element->parent != NULL))
         {
+#ifdef XML_UNICODE_WCHAR_T
+            fwprintf(out, "/>\n");
+#else
             fprintf(out, "/>\n");
+#endif /* XML_UNICODE_WCHAR_T */
             closed = 1;
         }
         else
         {
+#ifdef XML_UNICODE_WCHAR_T
+            fwprintf(out, ">\n");
+#else
             fprintf(out, ">\n");
+#endif /* XML_UNICODE_WCHAR_T */
         }
 
         for (i = 0; i < scew_element_count(element); i++)
@@ -88,13 +112,21 @@ element_print(scew_element const* element, FILE* out, unsigned int indent)
         if (contents != NULL)
         {
             indent_print(out, indent);
+#ifdef XML_UNICODE_WCHAR_T
+            fwprintf(out, "%s\n", contents);
+#else
             fprintf(out, "%s\n", contents);
+#endif /* XML_UNICODE_WCHAR_T */
         }
 
         if (!closed)
         {
             indent_print(out, indent);
+#ifdef XML_UNICODE_WCHAR_T
+            fwprintf(out, "</%s>\n", scew_element_name(element));
+#else
             fprintf(out, "</%s>\n", scew_element_name(element));
+#endif /* XML_UNICODE_WCHAR_T */
         }
     }
 }
@@ -102,5 +134,9 @@ element_print(scew_element const* element, FILE* out, unsigned int indent)
 void
 attribute_print(scew_attribute const* attribute, FILE* out)
 {
+#ifdef XML_UNICODE_WCHAR_T
+    fwprintf(out, " %s=\"%s\"", attribute->name, attribute->value);
+#else
     fprintf(out, " %s=\"%s\"", attribute->name, attribute->value);
+#endif /* XML_UNICODE_WCHAR_T */
 }
