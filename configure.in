@@ -4,13 +4,13 @@
 # Author: Aleix Conchillo Flaque <aleix@member.fsf.org>
 # Date:   Mon Oct 07, 2002 01:56
 #
-# Copyright (C) 2002, 2003 Aleix Conchillo Flaque
+# Copyright (C) 2002, 2003, 2004 Aleix Conchillo Flaque
 #
 
 #### boilerplate and flags
 
 AC_INIT(src/scew.h)
-AM_INIT_AUTOMAKE(scew, 0.3.1)
+AM_INIT_AUTOMAKE(scew, 0.3.2)
 AM_CONFIG_HEADER(config.h)
 
 AC_ISC_POSIX
@@ -22,7 +22,7 @@ AC_PROG_RANLIB
 #### options
 
 AC_ARG_ENABLE(debug,
-        [  --enable-debug[=yes|no]         Enable debug info compilation (no)],
+        AC_HELP_STRING([--enable-debug], [enable debug info compilation (no)]),
         deb=$enableval, deb=no)
 
 CFLAGS="-Wall -pipe"
@@ -67,7 +67,7 @@ else
 fi
 
 echo
-echo "*** SCEW $VERSION has been successfully configured ***"
+echo "*** $PACKAGE $VERSION has been successfully configured ***"
 echo
 echo "Type 'make' to complete the compilation ($mode mode) and then"
 echo "'make install' as root to install."
