@@ -6,10 +6,10 @@ example, the scew-0.3.2 distribution may be extracted to the directory
 
   c:\lib\scew-0.3.2
 
-Open the scew.dsp  file from contrib/win32 directory in  Visual Studio 6
-or  Visual Studio .NET  2002/2003.  Go  to the  'Build' menu  and select
-'Batch  Build...'.  Select  all of  the configurations  to be  built and
-click 'Rebuild All'.   This will build versions of  the SCEW library for
+Open the scew.dsp file from win32 directory in Visual Studio 6 or Visual
+Studio  .NET  2002/2003.  Go  to  the  'Build'  menu and  select  'Batch
+Build...'.   Select all  of the  configurations  to be  built and  click
+'Rebuild  All'.   This will  build  versions  of  the SCEW  library  for
 Debug/Release, MBCS/Unicode and not/XML_STATIC.
 
 Note that  SCEW is always  linked statically with your  application. The
@@ -24,7 +24,7 @@ available via the 'Tools', 'Options' menu. 'Directories' in DevStudio 6,
     <scew top level, e.g. "c:\lib\scew-0.3.2">
 
   Library Directories
-    <scew win32 lib, e.g. "c:\lib\scew-0.3.2\contrib\win32\lib">
+    <scew win32 lib, e.g. "c:\lib\scew-0.3.2\win32\lib">
 
 To use SCEW in your application, you simply include the SCEW header file
 like:

@@ -54,6 +54,7 @@ etc/Makefile \
 etc/autoconf/Makefile \
 etc/pkg-config/scew.pc \
 etc/pkg-config/Makefile \
+win32/Makefile \
 scew/Makefile \
 examples/Makefile \
 examples/scew_print/Makefile \
