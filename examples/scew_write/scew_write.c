@@ -110,7 +110,7 @@ main(int argc, char** argv)
     scew_element_add_attr_pair(sub_sub_element, "attribute1", "value1");
     scew_element_add_attr_pair(sub_sub_element, "attribute2", "value2");
     scew_element_add_attr_pair(sub_sub_element, "attribute3", "value3");
-    // check attribute2 replacement
+    /* Check attribute2 replacement. */
     scew_element_add_attr_pair(sub_sub_element, "attribute2", "new_value2");
     scew_element_set_contents(sub_sub_element, "element contents.");
 
