@@ -21,10 +21,16 @@ available via the 'Tools', 'Options' menu. 'Directories' in DevStudio 6,
 'Projects' in DevStudio .NET.
 
   Include Directories
-    <scew top level, e.g. "c:\lib\scew-0.3.2">
+    SCEW top level, e.g. "c:\lib\scew-0.3.2"
 
   Library Directories
-    <scew win32 lib, e.g. "c:\lib\scew-0.3.2\win32\lib">
+    SCEW win32 lib, e.g. "c:\lib\scew-0.3.2\win32\lib"
+
+You will also  have to include your Expat  library directory to Includes
+and Library:
+
+  Include and Library Directories
+    <expat_install>\source\lib e.g. "c:\lib\expat\source\lib"
 
 To use SCEW in your application, you simply include the SCEW header file
 like:
