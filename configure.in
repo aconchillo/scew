@@ -8,7 +8,7 @@
 #
 
 AC_INIT(src/scew.h)
-AM_INIT_AUTOMAKE(scew, 0.1.1)
+AM_INIT_AUTOMAKE(scew, 0.2.0)
 AM_CONFIG_HEADER(config.h)
 
 AC_ISC_POSIX
@@ -20,9 +20,6 @@ AC_PROG_RANLIB
 
 CFLAGS="-Wall $CFLAGS"
 AC_SUBST(CFLAGS)
-
-LIBS="-L/usr/local/lib $LIBS"
-AC_SUBST(LIBS)
 
 # Check for expat
 AC_CHECK_LIB(expat, XML_Parse, , AC_MSG_ERROR(Unable to find Expat.
