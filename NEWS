@@ -6,6 +6,22 @@ See the end for copying conditions.
 
 ------------------------------------------------------------------------
 
+* Version 0.3.3 (??/??/04)
+
+** Changes:
+
+** Fixes:
+
+        - scew_element_add_attr_pair()  did  not  add  a  new  attribute
+          correctly if the attribute already existed.
+          (reported by Matthew Peltzer)
+
+        - Compiltaion  fixes in MSVC.   Compiler interpreted  a function
+          argument called list as the std::list.
+          (reported by Renaud Dumont)
+
+------------------------------------------------------------------------
+
 * Version 0.3.2 (30/01/04)
 
 ** Changes:
