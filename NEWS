@@ -34,6 +34,7 @@ See the end for copying conditions.
 ** Fixes:
 
         - Fixed scew_element_by_name.
+          (reported by Eric Fronheiser)
 
         - Warning fixes (level 4) in Microsoft Visual C++ 7.
           (thanks to Brodie Thiesfield)

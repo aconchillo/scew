@@ -99,18 +99,14 @@ scew_strncat(XML_Char* dst, XML_Char const* src, size_t len)
 XML_Char*
 scew_strdup(XML_Char const* src)
 {
-    assert(src != NULL);
-
-#ifdef XML_UNICODE_WCHAR_T
     unsigned int len = 0;
     XML_Char* out = NULL;
 
-    len = wcslen(src);
+    assert(src != NULL);
+
+    len = scew_strlen(src);
     out = (XML_Char*) calloc(len + 1, sizeof(XML_Char));
-    return wmemcpy(out, src, len);
-#else
-    return strdup(src);
-#endif /* XML_UNICODE_WCHAR_T */
+    return (XML_Char*) scew_memcpy(out, (XML_Char*) src, len);
 }
 
 size_t
