@@ -34,37 +34,73 @@
 
 #include <expat.h>
 
+#include <string.h>
+
+#define scew_memcpy(dst,src,n)  memcpy(dst,src,sizeof(XML_Char)*(n))
+#define scew_memmove(dst,src,n) memmove(dst,src,sizeof(XML_Char)*(n))
+
+#ifdef XML_UNICODE_WCHAR_T
+
+#include <wchar.h>
+#include <wctype.h>
+
+#define _XT(str)                L##str
+
+#define scew_fprintf            fwprintf
+
+#define scew_strcmp(s1,s2)      wcscmp(s1,s2)
+#define scew_strspn(s1,s2)      wcsspn(s1,s2)
+#define scew_strcpy(s1,s2)      wcscpy(s1,s2)
+#define scew_strcat(s1,s2)      wcscat(s1,s2)
+#define scew_strncpy(s1,s2,n)   wcsncpy(s1,s2,n)
+#define scew_strncat(s1,s2,n)   wcsncat(s1,s2,n)
+#define scew_strlen(s)          wcslen(s)
+
+#define scew_isalnum(c)         iswalnum((c))
+#define scew_isalpha(c)         iswalpha((c))
+#define scew_iscntrl(c)         iswcntrl((c))
+#define scew_isdigit(c)         iswdigit((c))
+#define scew_isxdigit(c)        iswxdigit((c))
+#define scew_isgraph(c)         iswgraph((c))
+#define scew_islower(c)         iswlower((c))
+#define scew_isupper(c)         iswupper((c))
+#define scew_isprint(c)         iswprint((c))
+#define scew_ispunct(c)         iswpunct((c))
+#define scew_isspace(c)         iswspace((c))
+
+#else /* not XML_UNICODE_WCHAR_T */
+
+#include <ctype.h>
+
+#define _XT(str)                str
+
+#define scew_fprintf            fprintf
+
+#define scew_strcmp(s1,s2)      strcmp(s1,s2)
+#define scew_strspn(s1,s2)      strspn(s1,s2)
+#define scew_strcpy(s1,s2)      strcpy(s1,s2)
+#define scew_strcat(s1,s2)      strcat(s1,s2)
+#define scew_strncpy(s1,s2,n)   strncpy(s1,s2,n)
+#define scew_strncat(s1,s2,n)   strncat(s1,s2,n)
+#define scew_strlen(s)          strlen(s)
+
+#define scew_isalnum(c)         isalnum((unsigned char)(c))
+#define scew_isalpha(c)         isalpha((unsigned char)(c))
+#define scew_iscntrl(c)         iscntrl((unsigned char)(c))
+#define scew_isdigit(c)         isdigit((unsigned char)(c))
+#define scew_isxdigit(c)        isxdigit((unsigned char)(c))
+#define scew_isgraph(c)         isgraph((unsigned char)(c))
+#define scew_islower(c)         islower((unsigned char)(c))
+#define scew_isupper(c)         isupper((unsigned char)(c))
+#define scew_isprint(c)         isprint((unsigned char)(c))
+#define scew_ispunct(c)         ispunct((unsigned char)(c))
+#define scew_isspace(c)         isspace((unsigned char)(c))
+
+#endif /* XML_UNICODE_WCHAR_T */
+
 #ifdef __cplusplus
 extern "C" {
 #endif /* __cplusplus */
-
-/**
- * Copies an XML_Char string from source to destination.
- */
-extern XML_Char*
-scew_strcpy(XML_Char* dst, XML_Char const* src);
-
-/**
- * Concatenates source string to destination string. Destination string
- * must have enough space.
- */
-extern XML_Char*
-scew_strcat(XML_Char* dst, XML_Char const* src);
-
-/**
- * Copies not more than <code>len</code> characters from source to
- * destination.
- */
-extern XML_Char*
-scew_strncpy(XML_Char* dst, XML_Char const* src, size_t len);
-
-/**
- * Concatenates not more than <code>len</code> characters from source
- * string to destination string. Destination string must have enough
- * space.
- */
-extern XML_Char*
-scew_strncat(XML_Char* dst, XML_Char const* src, size_t len);
 
 /**
  * Creates a new copy of the given string. Client must free it.
@@ -73,105 +109,10 @@ extern XML_Char*
 scew_strdup(XML_Char const* src);
 
 /**
- * Returns the length in characeters of the given string.
- */
-extern size_t
-scew_strlen(XML_Char const* src);
-
-/**
- * Compares two strings. Returns an integer greater than, equal to, or
- * less than 0, according as the string <code>s1</code> is greater than,
- * equal to, or less than the string <code>s2</code>.
- */
-extern int
-scew_strcmp(XML_Char const* s1, XML_Char const* s2);
-
-/**
- * Calculates the length of the initial segment of <code>s</code> which
- * consists entirely of characters in <code>accept</code>.
- */
-extern size_t
-scew_strspn(XML_Char const* s, XML_Char const* accept);
-
-/**
  * Trims off extra spaces from the beginning and end of a string.
  */
 extern void
 scew_strtrim(XML_Char* src);
-
-/**
- * Checks for an alphanumeric character; it is equivalent to
- * (scew_isalpha(c) || scew_isdigit(c)).
- */
-extern int
-scew_isalnum(XML_Char c);
-
-/**
- * Checks for an alphabetic character; in the standard "C" locale, it is
- * equivalent to (scew_isupper(c) || scew_islower(c)). In some locales,
- * there may be additional characters for which scew_isalpha() is
- * true--letters which are neither upper case nor lower case.
- */
-extern int
-scew_isalpha(XML_Char c);
-
-/**
- * Checks for a control character.
- */
-extern int
-scew_iscntrl(XML_Char c);
-
-/**
- * Checks for a digit (0 through 9).
- */
-extern int
-scew_isdigit(XML_Char c);
-
-/**
- * Checks for any printable character except space.
- */
-extern int
-scew_isgraph(XML_Char c);
-
-/**
- * Checks for a lower-case character.
- */
-extern int
-scew_islower(XML_Char c);
-
-/**
- * Checks for any printable character including space.
- */
-extern int
-scew_isprint(XML_Char c);
-
-/**
- * Checks for any printable character which is not a space or an
- * alphanumeric character.
- */
-extern int
-scew_ispunct(XML_Char c);
-
-/**
- * Checks for white-space characters. In the "C" and "POSIX" locales,
- * these are: space, form-feed, newline, carriage return, horizontal
- * tab, and vertical tab.
- */
-extern int
-scew_isspace(XML_Char c);
-
-/**
- * Checks for an uppercase letter.
- */
-extern int
-scew_isupper(XML_Char c);
-
-/**
- * Checks for a hexadecimal digits, i.e. one of <b>0 1 2 3 4 5 6 7 8 9 a
- * b c d e f A B C D E F</b>.
- */
-extern int
-scew_isxdigit(XML_Char c);
 
 #ifdef __cplusplus
 }
