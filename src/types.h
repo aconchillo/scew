@@ -32,6 +32,10 @@
 #ifndef TYPES_H_ALEIX0303291951
 #define TYPES_H_ALEIX0303291951
 
+#ifdef __cplusplus
+extern "C" {
+#endif /* __cplusplus */
+
 /**
  * This is the type declaration of the SCEW parser.
  */
@@ -51,5 +55,9 @@ typedef struct _scew_element scew_element;
  * This is the type declaration for element attributes.
  */
 typedef struct _scew_attribute scew_attribute;
+
+#ifdef __cplusplus
+}
+#endif /* __cplusplus */
 
 #endif /* TYPES_H_ALEIX0303291951 */
