@@ -38,3 +38,6 @@ settings.
 
 Note: you  do need to add  the appropriate expat library  to your linker
 settings.
+
+===
+$Id$
