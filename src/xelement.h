@@ -48,6 +48,7 @@ struct _scew_element
 
     scew_element* parent;
     scew_element* child;
+    scew_element* left;
     scew_element* right;
 };
 

@@ -53,10 +53,18 @@ scew_element_create(XML_Char const* name)
 void
 scew_element_free(scew_element* element)
 {
+    scew_element* left = NULL;
+    scew_element* right = NULL;
+
     if (element == NULL)
     {
         return;
     }
+
+    left = element->left;
+    right = element->right;
+    left->right = right;
+    right->left = left;
 
     free(element->name);
     free(element->contents);
@@ -109,7 +117,7 @@ scew_element_by_index(scew_element const* parent, unsigned int idx)
 }
 
 scew_element*
-scew_element_by_name(scew_element const* parent, char const* name)
+scew_element_by_name(scew_element const* parent, XML_Char const* name)
 {
     int i = 0;
     scew_element* element = NULL;
@@ -257,9 +265,53 @@ scew_element_add_elem(scew_element* element, scew_element* new_elem)
             current = current->right;
         }
         current->right = new_elem;
+        new_elem->left = current;
     }
 
     return new_elem;
+}
+
+void
+scew_element_del(scew_element* element)
+{
+    scew_element_free(element);
+}
+
+void
+scew_element_del_by_name(scew_element* element, XML_Char const* name)
+{
+    scew_element_free(scew_element_by_name(element, name));
+}
+
+void
+scew_element_del_by_index(scew_element* element, unsigned int idx)
+{
+    scew_element_free(scew_element_by_index(element, idx));
+}
+
+void
+scew_element_list_del(scew_element* element, XML_Char const* name)
+{
+    unsigned int i = 0;
+    unsigned int count = 0;
+    scew_element** list = NULL;
+
+    if ((element == NULL) || (name == NULL))
+    {
+        return;
+    }
+
+    list = scew_element_list(element, name, &count);
+    if (list == NULL)
+    {
+        return;
+    }
+
+    for (i = 0; i < count; i++)
+    {
+        scew_element_free(list[i]);
+    }
+    scew_element_list_free(list);
 }
 
 scew_attribute*

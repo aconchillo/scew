@@ -27,9 +27,8 @@
  *
  * @endif
  *
- * These are the parser functions which allows to read an XML tree
- * element from a file or a memory buffer. A free parser function is
- * also provided.
+ * These are the parser functions that allow to read an XML tree from a
+ * file or a memory buffer.
  */
 
 

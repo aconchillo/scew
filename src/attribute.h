@@ -27,9 +27,9 @@
  *
  * @endif
  *
- * Attribute related functions. SCEW provides functions to access the
- * attributes of all the loaded elements. XML element attributes are
- * basically a name-value pair.
+ * Attribute related functions. SCEW provides functions to access and
+ * manipulate the attributes of all the elements in a tree. XML element
+ * attributes are basically a name-value pair.
  */
 
 

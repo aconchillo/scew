@@ -27,8 +27,8 @@
  *
  * @endif
  *
- * Element related functions. SCEW provides functions to access the
- * element of an XML tree.
+ * Element related functions. SCEW provides functions to access and
+ * manipulate the element of an XML tree.
  */
 
 
@@ -80,7 +80,6 @@ scew_element_by_index(scew_element const* parent, unsigned int idx);
  */
 extern scew_element*
 scew_element_by_name(scew_element const* parent, XML_Char const* name);
-
 
 /**
  * Returns a list of elements that matches the name specified. The
@@ -148,6 +147,39 @@ scew_element_add(scew_element* element, XML_Char const* name);
  */
 extern scew_element*
 scew_element_add_elem(scew_element* element, scew_element* new_elem);
+
+/**
+ * This function is equivalent to <code>scew_element_free</code>.
+ *
+ * @see scew_element_free
+ */
+extern void
+scew_element_del(scew_element* element);
+
+/**
+ * Deletes the first child of the given element that matches
+ * <code>name</code>.
+ */
+extern void
+scew_element_del_by_name(scew_element* element, XML_Char const* name);
+
+/**
+ * Deletes the child element at the specified position.
+ */
+extern void
+scew_element_del_by_index(scew_element* element, unsigned int idx);
+
+/**
+ * Deletes all child elements of the given element that match
+ * <code>name</code>. This function will get an element list created by
+ * <code>scew_element_list</code> and will free all the elements in
+ * it. Note that this function is not equivalent to
+ * <code>scew_element_list_free</code>.
+ *
+ * @see scew_element_list
+ */
+extern void
+scew_element_list_del(scew_element* element, XML_Char const* name);
 
 /**
  * Adds an already existent attribute to the element. If the attribute
