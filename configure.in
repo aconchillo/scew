@@ -39,3 +39,6 @@ echo
 echo "Type 'make' to complete the compilation and then 'make install' as root"
 echo "to install."
 echo
+echo "You can also try the examples in the 'examples' directory before"
+echo "installing the library. See 'examples/README' to see a list of them."
+echo
