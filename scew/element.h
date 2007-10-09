@@ -277,9 +277,9 @@ extern scew_element* scew_element_add (scew_element *element,
  *
  * @ingroup SCEWElementHier
  */
-extern scew_element* scew_element_add_pair (scew_element *element,
-                                            XML_Char const *name,
-                                            XML_Char const *contents);
+extern scew_element* scew_element_add_new_element (scew_element *element,
+                                                   XML_Char const *name,
+                                                   XML_Char const *contents);
 
 /**
  * Adds a @a child to given @a element. Note that the element being

@@ -1,5 +1,4 @@
 /**
- *
  * @file     check_element.c
  * @brief    Unit testing for SCEW elements
  * @author   Aleix Conchillo Flaque <aleix@member.fsf.org>
@@ -118,6 +117,10 @@ START_TEST (test_accessors)
   CHECK_STR (scew_element_contents (element), CONTENTS,
              "Element contents do not match");
 
+  scew_element_free_contents (element);
+
+  CHECK_NULL_PTR (scew_element_contents (element), "Element has no contents");
+
   scew_element_free (element);
 }
 END_TEST
@@ -144,11 +147,13 @@ START_TEST (test_attributes)
 END_TEST
 
 
-// Hierarchy
+// Hierarchy (basic)
 
-START_TEST (test_hierarchy)
+START_TEST (test_hierarchy_basic)
 {
   static XML_Char const *NAME = "element";
+  static XML_Char const *SUB_NAME = "subelement";
+  static XML_Char const *CONTENTS = "contents";
   static unsigned int const N_ELEMENTS = 12;
 
   scew_element *element = scew_element_create ("root");
@@ -161,6 +166,84 @@ START_TEST (test_hierarchy)
 
   CHECK_U_INT (scew_element_count (element), 0, "Element has no children");
 
+  for (unsigned int i = 0; i < N_ELEMENTS; ++i)
+    {
+      scew_element *child = scew_element_add (element, NAME);
+
+      CHECK_PTR (child, "Unable to create child");
+
+      CHECK_BOOL (element == scew_element_parent (child), true,
+                  "Element has wrong parent");
+
+      scew_element *sub_child =
+        scew_element_add_new_element (child, SUB_NAME, CONTENTS);
+
+      CHECK_PTR (sub_child, "Unable to create sub-child");
+
+      CHECK_BOOL (child == scew_element_parent (sub_child), true,
+                  "Sub-child has wrong parent");
+
+      CHECK_STR (scew_element_name (sub_child), SUB_NAME,
+                 "Sub-child name do not match");
+
+      CHECK_STR (scew_element_contents (sub_child), CONTENTS,
+                 "Sub-child contents do not match");
+    }
+
+  CHECK_U_INT (scew_element_count (element), N_ELEMENTS,
+               "Number of children mismatch");
+
+  scew_element_free (element);
+}
+END_TEST
+
+
+// Hierarchy (delete)
+
+START_TEST (test_hierarchy_delete)
+{
+  static XML_Char const *NAME = "element";
+  static unsigned int const N_ELEMENTS = 12;
+
+  scew_element *element = scew_element_create ("root");
+
+  CHECK_PTR (element, "Unable to create element");
+
+  // Add
+  for (unsigned int i = 0; i < N_ELEMENTS; ++i)
+    {
+      scew_element *child = scew_element_create (NAME);
+
+      CHECK_PTR (child, "Unable to create child");
+
+      CHECK_BOOL (child == scew_element_add_element (element, child), true,
+                  "Unable to append child");
+    }
+
+  CHECK_U_INT (scew_element_count (element), N_ELEMENTS,
+               "Number of children mismatch");
+
+  // Remove all children
+  scew_element_delete_all (element);
+
+  CHECK_U_INT (scew_element_count (element), 0, "Number of children mismatch");
+
+  // Re-add and detach
+  for (unsigned int i = 0; i < N_ELEMENTS; ++i)
+    {
+      scew_element *child = scew_element_add (element, NAME);
+
+      CHECK_PTR (child, "Unable to create child");
+
+      scew_element_detach (child);
+
+      CHECK_NULL_PTR (scew_element_parent (child),
+                      "Child should have no parent");
+    }
+
+  CHECK_U_INT (scew_element_count (element), 0, "Number of children mismatch");
+
+  // Re-add
   for (unsigned int i = 0; i < N_ELEMENTS; ++i)
     {
       scew_element *child = scew_element_add (element, NAME);
@@ -285,7 +368,8 @@ element_suite (void)
   tcase_add_test (tc_core, test_alloc);
   tcase_add_test (tc_core, test_accessors);
   tcase_add_test (tc_core, test_attributes);
-  tcase_add_test (tc_core, test_hierarchy);
+  tcase_add_test (tc_core, test_hierarchy_basic);
+  tcase_add_test (tc_core, test_hierarchy_delete);
   tcase_add_test (tc_core, test_search);
   tcase_add_test (tc_core, test_compare);
   suite_add_tcase (s, tc_core);
