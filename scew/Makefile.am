@@ -16,4 +16,4 @@ lib_LTLIBRARIES = libscew.la
 
 libscew_la_SOURCES = attribute.c element.c error.c list.c parser.c str.c \
                      tree.c writer.c xerror.c xhandler.c xparser.c xprint.c
-libscew_la_LDFLAGS = -version-info 5:0:0
+libscew_la_LDFLAGS = -version-info 1:0:1

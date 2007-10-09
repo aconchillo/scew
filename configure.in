@@ -8,7 +8,7 @@
 #### boilerplate and flags
 
 AC_INIT(scew/scew.h)
-AM_INIT_AUTOMAKE(scew, 0.5.0)
+AM_INIT_AUTOMAKE(scew, 1.0.0)
 AM_CONFIG_HEADER(config.h)
 
 AC_ISC_POSIX
