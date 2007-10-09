@@ -1,15 +1,13 @@
 /**
  *
  * @file     xparser.c
+ * @brief    SCEW private parser type declaration
  * @author   Aleix Conchillo Flaque <aleix@member.fsf.org>
  * @date     Tue Dec 03, 2002 00:21
- * @brief    SCEW private parser type declaration
- *
- * $Id$
  *
  * @if copyright
  *
- * Copyright (C) 2002, 2003, 2004 Aleix Conchillo Flaque
+ * Copyright (C) 2002, 2003, 2004, 2005, 2006, 2007 Aleix Conchillo Flaque
  *
  * SCEW is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -35,61 +33,65 @@
 
 #include <assert.h>
 
-unsigned int
-init_expat_parser(scew_parser* parser)
-{
-    assert(parser != NULL);
 
-    parser->parser = XML_ParserCreate(NULL);
-    if (parser->parser == NULL)
+unsigned int
+init_expat_parser_ (scew_parser *parser)
+{
+  assert (parser != NULL);
+
+  parser->parser = XML_ParserCreate (NULL);
+  if (parser->parser == NULL)
     {
-        set_last_error(scew_error_no_memory);
-        return 0;
+      set_last_error (scew_error_no_memory);
+      return 0;
     }
 
-    /* initialize Expat handlers */
-    XML_SetXmlDeclHandler(parser->parser, xmldecl_handler);
-    XML_SetElementHandler(parser->parser, start_handler, end_handler);
-    XML_SetCharacterDataHandler(parser->parser, char_handler);
-    XML_SetUserData(parser->parser, parser);
+  /* initialize Expat handlers */
+  XML_SetXmlDeclHandler (parser->parser, xmldecl_handler);
+  XML_SetElementHandler (parser->parser, start_handler, end_handler);
+  XML_SetCharacterDataHandler (parser->parser, char_handler);
+  XML_SetUserData (parser->parser, parser);
 
-    return 1;
+  return 1;
 }
 
 stack_element*
-stack_push(stack_element** stack, scew_element* element)
+stack_push_ (stack_element **stack, scew_element *element)
 {
-    stack_element* new_elem = (stack_element*) calloc(1, sizeof(stack_element));
+  stack_element *new_elem = NULL;
 
-    if (new_elem != NULL)
+  assert (element != NULL);
+
+  new_elem = (stack_element*) calloc (1, sizeof (stack_element));
+
+  if (new_elem != NULL)
     {
-        new_elem->element = element;
-        if (stack != NULL)
+      new_elem->element = element;
+      if (stack != NULL)
         {
-            new_elem->prev = *stack;
+	  new_elem->prev = *stack;
         }
-        *stack = new_elem;
+      *stack = new_elem;
     }
 
-    return new_elem;
+  return new_elem;
 }
 
 scew_element*
-stack_pop(stack_element** stack)
+stack_pop_ (stack_element **stack)
 {
-    scew_element* element = NULL;
-    stack_element* sk_elem = NULL;
+  scew_element* element = NULL;
+  stack_element* sk_elem = NULL;
 
-    if (stack != NULL)
+  assert (stack != NULL);
+
+  sk_elem = *stack;
+  if (sk_elem != NULL)
     {
-        sk_elem = *stack;
-        if (sk_elem != NULL)
-        {
-            *stack = sk_elem->prev;
-            element = sk_elem->element;
-            free(sk_elem);
-        }
+      *stack = sk_elem->prev;
+      element = sk_elem->element;
+      free(sk_elem);
     }
 
-    return element;
+  return element;
 }

@@ -1,15 +1,13 @@
 /**
  *
  * @file     xtree.h
+ * @brief    SCEW private tree type declaration
  * @author   Aleix Conchillo Flaque <aleix@member.fsf.org>
  * @date     Thu Feb 20, 2003 23:48
- * @brief    SCEW private tree type declaration
- *
- * $Id$
  *
  * @if copyright
  *
- * Copyright (C) 2003, 2004 Aleix Conchillo Flaque
+ * Copyright (C) 2003, 2004, 2005, 2006 Aleix Conchillo Flaque
  *
  * SCEW is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -29,20 +27,9 @@
  */
 
 
-#ifndef XTREE_H_ALEIX0302202348
-#define XTREE_H_ALEIX0302202348
+#ifndef XTREE_H_0302202348
+#define XTREE_H_0302202348
 
-#include "tree.h"
+#include "element.h"
 
-#include "xelement.h"
-
-struct _scew_tree
-{
-    XML_Char* version;
-    XML_Char* encoding;
-    XML_Char* preamble;
-    int standalone;
-    scew_element* root;
-};
-
-#endif /* XTREE_H_ALEIX0302202348 */
+#endif /* XTREE_H_0302202348 */

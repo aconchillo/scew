@@ -1,15 +1,13 @@
 /**
  *
  * @file     xerror.c
+ * @brief    Internal error functions
  * @author   Aleix Conchillo Flaque <aleix@member.fsf.org>
  * @date     Mon May 05, 2003 10:41
- * @brief    Internal error functions
- *
- * $Id$
  *
  * @if copyright
  *
- * Copyright (C) 2003, 2004 Aleix Conchillo Flaque
+ * Copyright (C) 2003, 2004, 2005 Aleix Conchillo Flaque
  *
  * SCEW is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -28,9 +26,20 @@
  * @endif
  */
 
+#ifdef HAVE_CONFIG_H
+#include <config.h>
+#endif
+
 #include "xerror.h"
 
+/* Define a single threading macro common for all platforms */
 #ifndef _MT
+#ifndef HAVE_LIBPTHREAD
+#define SINGLE_THREADED
+#endif /* HAVE_LIBPTHREAD */
+#endif /* _MT */
+
+#ifdef SINGLE_THREADED
 /* single-threaded version */
 
 static scew_error last_error = scew_error_none;
@@ -47,7 +56,7 @@ get_last_error()
     return last_error;
 }
 
-#else /* _MT */
+#else /* SINGLE_THREADED */
 /* multi-threaded versions */
 
 #ifdef _MSC_VER
@@ -144,4 +153,4 @@ get_last_error()
 
 #endif /* _MSC_VER */
 
-#endif /* _MT */
+#endif /* SINGLE_THREADED */

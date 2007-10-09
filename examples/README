@@ -8,6 +8,3 @@ the SCEW library. Here is the list of the examples that you will find:
         - scew_print/           Prints any XML file.
         - scew_stream/          XML stream example.
         - scew_write/           Creates a new XML file.
-
----
-$Id$

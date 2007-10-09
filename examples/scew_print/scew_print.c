@@ -5,11 +5,9 @@
  * @date     Wed Dec 04, 2002 01:11
  * @brief    SCEW usage example
  *
- * $Id$
- *
  * @if copyright
  *
- * Copyright (C) 2002, 2003, 2004 Aleix Conchillo Flaque
+ * Copyright (C) 2002, 2003, 2004, 2007 Aleix Conchillo Flaque
  *
  * SCEW is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -40,130 +38,135 @@
 int const indent_size = 4;
 
 void
-print_indent(unsigned int indent)
+print_indent (unsigned int indent)
 {
-    if (indent > 0)
+  if (indent > 0)
     {
-        printf("%*s", indent * indent_size, " ");
+      printf ("%*s", indent * indent_size, " ");
     }
 }
 
 void
-print_attributes(scew_element* element)
+print_attributes (scew_element *element)
 {
-    scew_attribute* attribute = NULL;
-
-    if (element != NULL)
+  if (element != NULL)
     {
-        /**
-         * Iterates through the element's attribute list, printing the
-         * pair name-value.
-         */
-        attribute = NULL;
-        while ((attribute = scew_attribute_next(element, attribute)) != NULL)
+      /**
+       * Iterates through the element's attribute list, printing the
+       * pair name-value.
+       */
+      scew_list *list = scew_element_attributes (element);
+      while (list != NULL)
         {
-            printf(" %s=\"%s\"", scew_attribute_name(attribute),
-                   scew_attribute_value(attribute));
+          scew_attribute *attribute = scew_list_data (list);
+          printf(" %s=\"%s\"",
+                 scew_attribute_name (attribute),
+                 scew_attribute_value (attribute));
+          list = scew_list_next (list);
         }
     }
 }
 
 void
-print_element(scew_element* element, unsigned int indent)
+print_element (scew_element *element, unsigned int indent)
 {
-    scew_element* child = NULL;
-    XML_Char const* contents = NULL;
+  scew_list *list = NULL;
+  XML_Char const *contents = NULL;
 
-    if (element == NULL)
+  if (element == NULL)
     {
-        return;
+      return;
     }
 
-    /**
-     * Prints the starting element tag with its attributes.
-     */
-    print_indent(indent);
-    printf("<%s", scew_element_name(element));
-    print_attributes(element);
-    printf(">");
-    contents = scew_element_contents(element);
-    if (contents == NULL)
+  /**
+   * Prints the starting element tag with its attributes.
+   */
+  print_indent (indent);
+  printf ("<%s", scew_element_name (element));
+  print_attributes (element);
+  printf (">");
+
+  contents = scew_element_contents (element);
+
+  if (contents == NULL)
     {
-        printf("\n");
+      printf ("\n");
     }
 
-    /**
-     * Call print_element function again for each child of the
-     * current element.
-     */
-    child = NULL;
-    while ((child = scew_element_next(element, child)) != NULL)
+  /**
+   * Call print_element function again for each child of the
+   * current element.
+   */
+  list = scew_element_children (element);
+  while (list != NULL)
     {
-        print_element(child, indent + 1);
+      scew_element *child = scew_list_data (list);
+      print_element (child, indent + 1);
+      list = scew_list_next (list);
     }
 
-    /* Prints element's content. */
-    if (contents != NULL)
+  /* Prints element's content. */
+  if (contents != NULL)
     {
-        printf("%s", contents);
+      printf ("%s", contents);
     }
-    else
+  else
     {
-        print_indent(indent);
+      print_indent (indent);
     }
 
-    /**
-     * Prints the closing element tag.
-     */
-    printf("</%s>\n", scew_element_name(element));
+  /**
+   * Prints the closing element tag.
+   */
+  printf ("</%s>\n", scew_element_name (element));
 }
 
 int
-main(int argc, char** argv)
+main (int argc, char *argv[])
 {
-    scew_tree* tree = NULL;
-    scew_parser* parser = NULL;
+  scew_tree *tree = NULL;
+  scew_parser *parser = NULL;
 
-    if (argc < 2)
+  if (argc < 2)
     {
-        printf("usage: scew_print file.xml\n");
-        return EXIT_FAILURE;
+      printf ("usage: scew_print file.xml\n");
+      return EXIT_FAILURE;
     }
 
-    /**
-     * Creates an SCEW parser. This is the first function to call.
-     */
-    parser = scew_parser_create();
+  /**
+   * Creates an SCEW parser. This is the first function to call.
+   */
+  parser = scew_parser_create ();
 
-    scew_parser_ignore_whitespaces(parser, 1);
+  scew_parser_ignore_whitespaces (parser, 1);
 
-    /* Loads an XML file */
-    if (!scew_parser_load_file(parser, argv[1]))
+  /* Loads an XML file */
+  if (!scew_parser_load_file (parser, argv[1]))
     {
-        scew_error code = scew_error_code();
-        printf("Unable to load file (error #%d: %s)\n", code,
-               scew_error_string(code));
-        if (code == scew_error_expat)
+      scew_error code = scew_error_code ();
+      printf ("Unable to load file (error #%d: %s)\n", code,
+              scew_error_string (code));
+      if (code == scew_error_expat)
         {
-            enum XML_Error expat_code = scew_error_expat_code(parser);
-            printf("Expat error #%d (line %d, column %d): %s\n", expat_code,
-                   scew_error_expat_line(parser),
-                   scew_error_expat_column(parser),
-                   scew_error_expat_string(expat_code));
+          enum XML_Error expat_code = scew_error_expat_code (parser);
+          printf("Expat error #%d (line %d, column %d): %s\n", expat_code,
+                 scew_error_expat_line (parser),
+                 scew_error_expat_column (parser),
+                 scew_error_expat_string (expat_code));
         }
-        return EXIT_FAILURE;
+      return EXIT_FAILURE;
     }
 
-    tree = scew_parser_tree(parser);
+  tree = scew_parser_tree (parser);
 
-    /* Prints full tree */
-    print_element(scew_tree_root(tree), 0);
+  /* Prints full tree */
+  print_element (scew_tree_root (tree), 0);
 
-    /* Remember to free tree (scew_parser_free does not free it) */
-    scew_tree_free(tree);
+  /* Remember to free tree (scew_parser_free does not free it) */
+  scew_tree_free (tree);
 
-    /* Frees the SCEW parser */
-    scew_parser_free(parser);
+  /* Frees the SCEW parser */
+  scew_parser_free (parser);
 
-    return 0;
+  return 0;
 }

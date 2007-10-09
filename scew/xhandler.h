@@ -1,15 +1,13 @@
 /**
  *
  * @file     xhandler.h
+ * @brief    SCEW Expat handlers
  * @author   Aleix Conchillo Flaque <aleix@member.fsf.org>
  * @date     Mon Nov 25, 2002 00:23
- * @brief    SCEW Expat handlers
- *
- * $Id$
  *
  * @if copyright
  *
- * Copyright (C) 2002, 2003 Aleix Conchillo Flaque
+ * Copyright (C) 2002, 2003, 2004, 2005, 2006 Aleix Conchillo Flaque
  *
  * SCEW is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -29,26 +27,26 @@
  */
 
 
-#ifndef XHANDLER_H_ALEIX0211250023
-#define XHANDLER_H_ALEIX0211250023
+#ifndef XHANDLER_H_0211250023
+#define XHANDLER_H_0211250023
 
 #include <expat.h>
 
 /* Expat callback for XML declaration. */
-void
-xmldecl_handler(void* data, XML_Char const* version, XML_Char const* encoding,
-                int standalone);
+extern void xmldecl_handler (void *data,
+			     XML_Char const *version,
+			     XML_Char const *encoding,
+			     int standalone);
 
 /* Expat callback for starting elements. */
-void
-start_handler(void* data, XML_Char const* elem, XML_Char const** attr);
+extern void start_handler (void *data,
+			   XML_Char const *elem,
+			   XML_Char const **attr);
 
 /* Expat callback for ending elements. */
-void
-end_handler(void* data, XML_Char const* elem);
+extern void end_handler (void *data, XML_Char const *elem);
 
 /* Expat callback for element contents. */
-void
-char_handler(void* data, XML_Char const* s, int len);
+extern void char_handler (void *data, XML_Char const *s, int len);
 
-#endif /* XHANDLER_H_ALEIX0211250023 */
+#endif /* XHANDLER_H_0211250023 */

@@ -1,50 +1,75 @@
 #
-# $Id$
-#
 # Author: Aleix Conchillo Flaque <aleix@member.fsf.org>
 # Date:   Mon Oct 07, 2002 01:56
 #
-# Copyright (C) 2002, 2003, 2004 Aleix Conchillo Flaque
+# Copyright (C) 2002, 2003, 2004, 2005, 2006, 2007 Aleix Conchillo Flaque
 #
 
 #### boilerplate and flags
 
 AC_INIT(scew/scew.h)
-AM_INIT_AUTOMAKE(scew, 0.4.0)
+AM_INIT_AUTOMAKE(scew, 0.5.0)
 AM_CONFIG_HEADER(config.h)
 
 AC_ISC_POSIX
 AC_PROG_CC
-AC_PROG_CC_STDC
-AC_HEADER_STDC
-AC_PROG_RANLIB
+
+AC_DISABLE_SHARED
+AC_PROG_LIBTOOL
 
 #### options
 
-AC_ARG_ENABLE(debug,
-        AC_HELP_STRING([--enable-debug], [enable debug info compilation (no)]),
-        deb=$enableval, deb=no)
+AC_ARG_ENABLE([debug],
+   AC_HELP_STRING([--enable-debug],
+      [turn on debug support @<:@default=no@:>@]),
+      [], [enable_debug=no])
 
-CFLAGS="-Wall -pipe"
-
-if test "x$deb" = xyes; then
-   CFLAGS="$CFLAGS -g";
-else
-   CFLAGS="$CFLAGS -O2";
-fi
-
-AC_SUBST(CFLAGS)
+AC_ARG_ENABLE([threads],
+   AC_HELP_STRING([--enable-threads],
+      [turn on basic thread support @<:@default=yes@:>@]),
+      [], [enable_threads=yes])
 
 # doxygen
-SCEW_DOXYGEN
+
+SCEW_DOXYGEN()
+
+AM_CONDITIONAL(DOC, test x$enable_doc = xyes)
 
 #### libraries
 
-AC_CHECK_LIB(expat, XML_Parse, , AC_MSG_ERROR(Unable to find Expat library.
-                  Download lastest version at http://www.libexpat.org))
+AC_CHECK_HEADER(expat.h, ,
+                AC_MSG_ERROR(Unable to find Expat library.
+                Download lastest version at http://www.libexpat.org))
+AC_CHECK_LIB(expat, XML_Parse, ,
+             AC_MSG_ERROR(Unable to find Expat library.
+             Download lastest version at http://www.libexpat.org))
 
-AC_CHECK_LIB(pthread, pthread_key_create, ,
-             AC_MSG_ERROR(Unable to find pthread libray.))
+if test "x$enable_threads" = "xyes"; then
+   AC_CHECK_LIB(pthread, pthread_key_create, ,
+                AC_MSG_ERROR(Unable to find pthread libray.))
+fi
+
+#### Unit testing framework
+
+PKG_CHECK_MODULES([CHECK], [check >= 0.9.5],
+                  [enable_tests=yes], [enable_tests=no])
+
+AM_CONDITIONAL(CHECK_TESTS, test x$enable_tests = xyes)
+
+if test "x$enable_tests" = "xno"; then
+   AC_MSG_WARN(Check unit testing framework not found.)
+fi
+
+####
+
+CFLAGS="$CFLAGS -std=c99 -Wall -Werror"
+
+if test "x$enable_debug" = "xno"; then
+   CFLAGS="$CFLAGS -DNDEBUG"
+   AC_SUBST(CFLAGS)
+fi
+
+####
 
 AC_OUTPUT(
 Makefile \
@@ -60,9 +85,10 @@ examples/Makefile \
 examples/scew_print/Makefile \
 examples/scew_stream/Makefile \
 examples/scew_write/Makefile
+tests/Makefile \
 )
 
-if test x$deb = xyes; then
+if test "x$enable_debug" = "xyes"; then
    mode=debug
 else
    mode=release
@@ -79,6 +105,9 @@ echo "installing the library. See 'examples/README' to see a list of them."
 echo
 echo "If you have doxygen installed, type 'make doc' to generate the"
 echo "documentation."
+echo
+echo "If you want to run the test suite, type 'make check' (Check unit"
+echo "testing framework needed)."
 echo
 echo "Run './configure --help' to see all available options."
 echo

@@ -44,6 +44,3 @@ settings.
 
 Note: you  do need to add  the appropriate Expat library  to your linker
 settings.
-
-===
-$Id$

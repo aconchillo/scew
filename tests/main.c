@@ -1,13 +1,13 @@
 /**
  *
- * @file     xerror.h
- * @brief    Internal error functions
+ * @file     main.c
+ * @brief    Unit testing main
  * @author   Aleix Conchillo Flaque <aleix@member.fsf.org>
- * @date     Mon May 05, 2003 10:40
+ * @date     Fri Aug 03, 2007 17:52
  *
  * @if copyright
  *
- * Copyright (C) 2003, 2004, 2005, 2006 Aleix Conchillo Flaque
+ * Copyright (C) 2007 Aleix Conchillo Flaque
  *
  * SCEW is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -26,17 +26,24 @@
  * @endif
  */
 
+#include <check.h>
 
-#ifndef XERROR_H_0305051040
-#define XERROR_H_0305051040
+#include <stdlib.h>
 
-#include "error.h"
+extern void run_tests (SRunner *sr);
 
+int
+main (void)
+{
+  SRunner *sr = srunner_create (NULL);
 
-/* Sets SCEW internal last error. */
-extern void set_last_error (scew_error code);
+  run_tests (sr);
 
-/* Gets SCEW internal last error. */
-extern scew_error get_last_error (void);
+  srunner_run_all (sr, CK_NORMAL);
 
-#endif /* XERROR_H_0305051040 */
+  int number_failed = srunner_ntests_failed (sr);
+
+  srunner_free (sr);
+
+  return (number_failed == 0) ? EXIT_SUCCESS : EXIT_FAILURE;
+}

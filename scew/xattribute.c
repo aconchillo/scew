@@ -1,15 +1,13 @@
 /**
  *
  * @file     xattribute.c
+ * @brief    SCEW private attribute type declaration
  * @author   Aleix Conchillo Flaque <aleix@member.fsf.org>
  * @date     Mon Dec 02, 2002 23:03
- * @brief    SCEW private attribute type declaration
- *
- * $Id$
  *
  * @if copyright
  *
- * Copyright (C) 2002, 2003, 2004 Aleix Conchillo Flaque
+ * Copyright (C) 2002, 2003, 2004, 2005, 2006, 2007 Aleix Conchillo Flaque
  *
  * SCEW is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -35,203 +33,92 @@
 #include "str.h"
 
 #include <assert.h>
-#include <string.h>
-
-
-scew_attribute*
-attribute_create(XML_Char const* name, XML_Char const* value)
-{
-    scew_attribute* attribute = NULL;
-
-    assert(name != NULL);
-    assert(value != NULL);
-
-    attribute = (scew_attribute*) calloc(1, sizeof(scew_attribute));
-    if (attribute == NULL)
-    {
-        set_last_error(scew_error_no_memory);
-        return NULL;
-    }
-    attribute->name = scew_strdup(name);
-    attribute->value = scew_strdup(value);
-
-    return attribute;
-}
-
-void
-attribute_free(scew_attribute* attribute)
-{
-    if (attribute != NULL)
-    {
-        free(attribute->name);
-        free(attribute->value);
-        free(attribute);
-    }
-}
 
 attribute_list*
-attribute_list_create()
+attribute_list_create_ (void)
 {
-    attribute_list* list = NULL;
-
-    list = (attribute_list*) calloc(1, sizeof(attribute_list));
-    if (list == NULL)
-    {
-        set_last_error(scew_error_no_memory);
-    }
-
-    return list;
 }
 
 void
-attribute_list_free(attribute_list* list)
+attribute_list_free_ (attribute_list *list)
 {
-    scew_attribute* it = NULL;
-    scew_attribute* tmp = NULL;
-
-    if (list == NULL)
-    {
-        return;
-    }
-
-    it = list->first;
-    while (it != NULL)
-    {
-        tmp = it;
-        it = it->next;
-        attribute_free(tmp);
-    }
-
-    free(list);
 }
 
 scew_attribute*
-attribute_list_add(attribute_list* list, scew_attribute* attribute)
+attribute_list_add_ (attribute_list *list, scew_attribute *attribute)
 {
-    scew_attribute* aux = NULL;
-
-    assert(list != NULL);
-    assert(attribute != NULL);
-
-    aux = attribute_by_name(list, attribute->name);
-    if (aux != NULL)
-    {
-        if (aux->prev != NULL)
-        {
-            aux->prev->next = attribute;
-        }
-        if (aux->next != NULL)
-        {
-            aux->next->prev = attribute;
-        }
-        if (list->first == aux)
-        {
-            list->first = attribute;
-        }
-        if (list->last == aux)
-        {
-            list->last = attribute;
-        }
-        attribute->prev = aux->prev;
-        attribute->next = aux->next;
-        attribute_free(aux);
-        return attribute;
-    }
-
-    list->size++;
-    if (list->first == NULL)
-    {
-        list->first = attribute;
-    }
-    else
-    {
-        list->last->next = attribute;
-        attribute->prev = list->last;
-    }
-    list->last = attribute;
-
-    return attribute;
 }
 
 void
-attribute_list_del(attribute_list* list, XML_Char const* name)
+attribute_list_delete_ (attribute_list *list, XML_Char const *name)
 {
-    scew_attribute* attribute = NULL;
-    scew_attribute* tmp_prev = NULL;
-    scew_attribute* tmp_next = NULL;
+  scew_attribute* attribute = NULL;
 
-    if ((list == NULL) || (name == NULL))
+  assert (list != NULL);
+  assert (name != NULL);
+
+  attribute = attribute_by_name_ (list, name);
+
+  if (attribute != NULL)
     {
-        return;
-    }
+      scew_attribute *tmp_prev = attribute->prev;
+      scew_attribute *tmp_next = attribute->next;
 
-    attribute = attribute_by_name(list, name);
-
-    if (attribute != NULL)
-    {
-        tmp_prev = attribute->prev;
-        tmp_next = attribute->next;
-        if (tmp_prev != NULL)
+      if (tmp_prev != NULL)
         {
-            tmp_prev->next = tmp_next;
+	  tmp_prev->next = tmp_next;
         }
-        if (tmp_next != NULL)
+      if (tmp_next != NULL)
         {
-            tmp_next->prev = tmp_prev;
+	  tmp_next->prev = tmp_prev;
         }
 
-        if (attribute == list->first)
+      if (attribute == list->first)
         {
-            list->first = tmp_next;
+	  list->first = tmp_next;
         }
 
-        if (attribute == list->last)
+      if (attribute == list->last)
         {
-            list->last = tmp_prev;
+	  list->last = tmp_prev;
         }
 
-        attribute_free(attribute);
-        list->size--;
+      scew_attribute_free (attribute);
+      list->size = list->size - 1;
     }
 }
 
 scew_attribute*
-attribute_by_index(attribute_list* list, unsigned int idx)
+attribute_by_index_ (attribute_list *list, unsigned int idx)
 {
-    unsigned int i = 0;
-    scew_attribute* attribute = NULL;
+  unsigned int i = 0;
+  scew_attribute* attribute = NULL;
 
-    if (list == NULL)
-    {
-        return NULL;
-    }
-    assert(idx < list->size);
+  assert (list != NULL);
+  assert (idx < list->size);
 
-    attribute = list->first;
-    for (i = 0; (i < idx) && (attribute != NULL); ++i)
+  attribute = list->first;
+  for (i = 0; (i < idx) && (attribute != NULL); ++i)
     {
-        attribute = attribute->next;
+      attribute = attribute->next;
     }
 
-    return attribute;
+  return attribute;
 }
 
 scew_attribute*
-attribute_by_name(attribute_list* list, XML_Char const* name)
+attribute_by_name_ (attribute_list *list, XML_Char const *name)
 {
-    scew_attribute* attribute = NULL;
+  scew_attribute* attribute = NULL;
 
-    assert(list != NULL);
-    if (name == NULL)
+  assert (list != NULL);
+  assert (name != NULL);
+
+  attribute = list->first;
+  while ((attribute != NULL) && scew_strcmp (attribute->name, name))
     {
-        return NULL;
+      attribute = attribute->next;
     }
 
-    attribute = list->first;
-    while (attribute && scew_strcmp(attribute->name, name))
-    {
-        attribute = attribute->next;
-    }
-
-    return attribute;
+  return attribute;
 }

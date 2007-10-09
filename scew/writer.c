@@ -1,15 +1,13 @@
 /**
  *
  * @file     writer.c
+ * @brief    SCEW writer functions
  * @author   Aleix Conchillo Flaque <aleix@member.fsf.org>
  * @date     Thu Sep 11, 2003 00:39
- * @brief    SCEW writer functions
- *
- * $Id$
  *
  * @if copyright
  *
- * Copyright (C) 2003, 2004 Aleix Conchillo Flaque
+ * Copyright (C) 2003, 2004, 2005, 2007 Aleix Conchillo Flaque
  *
  * SCEW is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -37,35 +35,34 @@
 
 #include <assert.h>
 
-unsigned int
-scew_writer_tree_file(scew_tree const* tree, char const* file_name)
+bool
+scew_writer_tree_file (scew_tree const *tree, char const *file_name)
 {
-    FILE* out = NULL;
+  assert(tree != NULL);
+  assert(file_name != NULL);
 
-    assert(tree != NULL);
-    assert(file_name != NULL);
+  FILE *out = fopen (file_name, "w");
 
-    out = fopen(file_name, "w");
-    if (out == NULL)
+  if (out == NULL)
     {
-        set_last_error(scew_error_io);
-        return 0;
+      set_last_error (scew_error_io);
+      return 0;
     }
 
-    scew_writer_tree_fp(tree, out);
+  scew_writer_tree_fp (tree, out);
 
-    fclose(out);
+  fclose(out);
 
-    return 1;
+  return true;
 }
 
-unsigned int
+bool
 scew_writer_tree_fp(scew_tree const* tree, FILE* out)
 {
-    assert(tree != NULL);
-    assert(out != NULL);
+  assert (tree != NULL);
+  assert (out != NULL);
 
-    tree_print(tree, out);
+  tree_print (tree, out);
 
-    return 1;
+  return true;
 }

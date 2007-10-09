@@ -1,15 +1,13 @@
 /**
  *
  * @file     scew.h
+ * @brief    SCEW main header file
  * @author   Aleix Conchillo Flaque <aleix@member.fsf.org>
  * @date     Mon Nov 25, 2002 01:34
- * @brief    SCEW main header file
- *
- * $Id$
  *
  * @if copyright
  *
- * Copyright (C) 2002, 2003, 2004 Aleix Conchillo Flaque
+ * Copyright (C) 2002, 2003, 2004, 2005, 2006 Aleix Conchillo Flaque
  *
  * SCEW is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -29,8 +27,8 @@
  */
 
 
-#ifndef SCEW_H_ALEIX0211250134
-#define SCEW_H_ALEIX0211250134
+#ifndef SCEW_H_0211250134
+#define SCEW_H_0211250134
 
 #include "attribute.h"
 #include "element.h"
@@ -43,30 +41,30 @@
 /* automatically include the correct library on windows */
 #ifdef _WIN32
 
-# ifdef XML_UNICODE_WCHAR_T
-#  define SCEW_LIB_U    "u"
-# else
-#  define SCEW_LIB_U
-# endif /* XML_UNICODE_WCHAR_T */
+#ifdef XML_UNICODE_WCHAR_T
+#define SCEW_LIB_U    "u"
+#else
+#define SCEW_LIB_U
+#endif /* XML_UNICODE_WCHAR_T */
 
-# ifdef XML_STATIC
-#  define SCEW_LIB_S    "s"
-# else
-#  define SCEW_LIB_S
-# endif /* XML_STATIC */
+#ifdef XML_STATIC
+#define SCEW_LIB_S    "s"
+#else
+#define SCEW_LIB_S
+#endif /* XML_STATIC */
 
-# ifdef _DEBUG
-#  define SCEW_LIB_D    "d"
-# else
-#  define SCEW_LIB_D
-# endif /* _DEBUG */
+#ifdef _DEBUG
+#define SCEW_LIB_D    "d"
+#else
+#define SCEW_LIB_D
+#endif /* _DEBUG */
 
-# if defined(SCEW_LIB_U) || defined(SCEW_LIB_S) || defined(SCEW_LIB_D)
-# pragma comment( lib, "scew_" SCEW_LIB_U SCEW_LIB_S SCEW_LIB_D ".lib" )
-# else
-# pragma comment( lib, "scew.lib" )
-# endif
+#if defined (SCEW_LIB_U) || defined (SCEW_LIB_S) || defined (SCEW_LIB_D)
+#pragma comment (lib, "scew_" SCEW_LIB_U SCEW_LIB_S SCEW_LIB_D ".lib")
+#else
+#pragma comment (lib, "scew.lib")
+#endif
 
 #endif /* _WIN32 */
 
-#endif /* SCEW_H_ALEIX0211250134 */
+#endif /* SCEW_H_0211250134 */

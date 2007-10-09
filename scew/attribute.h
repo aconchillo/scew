@@ -1,15 +1,14 @@
 /**
  *
  * @file     attribute.h
+ * @brief    Attribute's handling routines
  * @author   Aleix Conchillo Flaque <aleix@member.fsf.org>
  * @date     Mon Nov 25, 2002 00:39
- * @brief    SCEW attribute type declaration
- *
- * $Id$
+ * @ingroup  SCEWAttributeAlloc, SCEWAttributeAcc
  *
  * @if copyright
  *
- * Copyright (C) 2002, 2003 Aleix Conchillo Flaque
+ * Copyright (C) 2002, 2003, 2004, 2005, 2006, 2007 Aleix Conchillo Flaque
  *
  * SCEW is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -26,113 +25,157 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307, USA.
  *
  * @endif
- *
- * Attribute related functions. SCEW provides functions to access and
- * manipulate the attributes of all the elements in a tree. XML element
- * attributes are basically a name-value pair.
  */
 
+/**
+ * @defgroup SCEWAttribute Attributes
+ *
+ * Attribute related functions. SCEW provides functions to access and
+ * manipulate the attributes of all the elements in a tree. XML
+ * element attributes are basically a name-value pair.
+ */
 
-#ifndef ATTRIBUTE_H_ALEIX0211250039
-#define ATTRIBUTE_H_ALEIX0211250039
-
-#include "types.h"
+#ifndef ATTRIBUTE_H_0211250039
+#define ATTRIBUTE_H_0211250039
 
 #include <expat.h>
+
+#include <stdbool.h>
 
 #ifdef __cplusplus
 extern "C" {
 #endif /* __cplusplus */
 
 /**
- * Creates a new attribute with the given pair (name, value).
+ * This is the type declaration for element attributes.
  *
- * @return the new created attribute.
+ * @ingroup SCEWAttribute
  */
-extern scew_attribute*
-scew_attribute_create(XML_Char const* name, XML_Char const* value);
+typedef struct scew_attribute scew_attribute;
+
+
+/**
+ * @defgroup SCEWAttributeAlloc Allocation
+ * Allocate and free attributes.
+ * @ingroup SCEWAttribute
+ */
 
 /**
- * Frees an attribute memory structure. That is, its name and value. You
- * should not call this function with an attribute coming from an
- * element, but created with <code>scew_attribute_create</code>.
- */
-extern void
-scew_attribute_free(scew_attribute* attribute);
-
-/**
- * Returns the number of attributes of the specified element. An element
- * can have zero or more attributes.
- */
-extern unsigned int
-scew_attribute_count(scew_element const* element);
-
-/**
- * Returns the <code>element</code>'s first attribute if
- * <code>attribute</code> is NULL, otherwise it returns the contiguous
- * attribute to the given one.
+ * Creates a new attribute with the given pair (@a name, @a value).
  *
- * Call this function a first time with <code>attribute</code> to NULL
- * and the first attribute will be returned. In the subsequent calls you
- * just need to provide the attribute returned and its contiguous
- * attribute will be returned.
+ * @pre name != NULL
+ * @pre value != NULL
  *
- * @return the first attribute of an element or a contiguous
- * attribute. NULL if there are no more attributes.
- */
-extern scew_attribute*
-scew_attribute_next(scew_element const* element,
-                    scew_attribute const* attribute);
-
-/**
- * Returns the element attribute on the specified position. Positions
- * are zero based.
+ * @param name the attribute's name.
+ * @param value the attribute's value.
  *
- * @return the attribute on the specified position, NULL if there is no
- * attribute in the position.
- */
-extern scew_attribute*
-scew_attribute_by_index(scew_element const* element, unsigned int idx);
-
-/**
- * Returns the element attribute with the specified name. Remember that
- * XML names are case-sensitive.
+ * @return the created attribute, or NULL if an error is found.
  *
- * @return the attribute with the given name, NULL if not found.
+ * @ingroup SCEWAttributeAlloc
  */
-extern scew_attribute*
-scew_attribute_by_name(scew_element const* element, XML_Char const* name);
+extern scew_attribute* scew_attribute_create (XML_Char const *name,
+					      XML_Char const *value);
 
 /**
- * Returns the attribute name or NULL if the attribute does not exist.
- */
-extern XML_Char const*
-scew_attribute_name(scew_attribute const* attribute);
-
-/**
- * Returns the attribute value or NULL if the attribute does not exist.
- */
-extern XML_Char const*
-scew_attribute_value(scew_attribute const* attribute);
-
-/**
- * Sets a new name to the given attribute and frees the old one.
+ * Makes a copy of the given @a attribute.
  *
- * @return the new attribute name.
+ * @param attribute the attribute to be copied.
+ *
+ * @return a new attribute, or NULL if the copy failed.
+ *
+ * @ingroup SCEWAttributeAlloc
  */
-extern XML_Char const*
-scew_attribute_set_name(scew_attribute* attribute, XML_Char const* name);
+extern scew_attribute* scew_attribute_copy (scew_attribute const *attribute);
 
 /**
- * Sets a new value to the given attribute and frees the old one.
+ * Frees an @a attribute. That is, its name and value. You should not
+ * call this function with an attribute obtained from an element, but
+ * created with #scew_attribute_create. If a NULL @a attribute is
+ * given, this function does not have any effect.
  *
- * @return the new attribute value.
+ * @param attribute the attribute to be freed.
+ *
+ * @ingroup SCEWAttributeAlloc
  */
-extern XML_Char const*
-scew_attribute_set_value(scew_attribute* attribute, XML_Char const* name);
+extern void scew_attribute_free (scew_attribute *attribute);
+
+
+/**
+ * @defgroup SCEWAttributeCompare Comparisson
+ * Attribute comparisson routines.
+ * @ingroup SCEWAttribute
+ */
+
+/**
+ *
+ *
+ * @param a
+ * @param b
+ *
+ * @return
+ *
+ * @ingroup SCEWAttributeCompare
+ */
+extern bool scew_attribute_compare (scew_attribute const *a,
+                                    scew_attribute const *b);
+
+
+/**
+ * @defgroup SCEWAttributeAcc Accessors
+ * Access attribute's data, such as name and value.
+ * @ingroup SCEWAttribute
+ */
+
+/**
+ * Returns the @a attribute's name.
+ *
+ * @pre attribute != NULL
+ *
+ * @ingroup SCEWAttributeAcc
+ */
+extern XML_Char const* scew_attribute_name (scew_attribute const *attribute);
+
+/**
+ * Returns the @a attribute's value.
+ *
+ * @pre attribute != NULL
+ *
+ * @ingroup SCEWAttributeAcc
+ */
+extern XML_Char const* scew_attribute_value (scew_attribute const *attribute);
+
+/**
+ * Sets a new @a name to the given @a attribute and frees the old
+ * one. If an error is found, the old name is not freed.
+ *
+ * @pre attribute != NULL
+ * @pre name != NULL
+ *
+ * @return the new attribute's name, or NULL if the new name can not
+ * be set.
+ *
+ * @ingroup SCEWAttributeAcc
+ */
+extern XML_Char const* scew_attribute_set_name (scew_attribute *attribute,
+						XML_Char const *name);
+
+/**
+ * Sets a new @a value to the given @a attribute and frees the old
+ * one. If an error is found, the old value is not freed.
+ *
+ * @pre attribute != NULL
+ * @pre name != NULL
+ *
+ * @return the new attribute's value, or NULL if the new value could
+ * not be set.
+ *
+ * @ingroup SCEWAttributeAcc
+ */
+extern XML_Char const* scew_attribute_set_value (scew_attribute *attribute,
+						 XML_Char const *value);
 
 #ifdef __cplusplus
 }
 #endif /* __cplusplus */
 
-#endif /* ATTRIBUTE_H_ALEIX0211250039 */
+#endif /* ATTRIBUTE_H_0211250039 */

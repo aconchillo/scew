@@ -5,11 +5,9 @@
  * @date     Sun May 23, 2004 20:58
  * @brief    SCEW usage example
  *
- * $Id$
- *
  * @if copyright
  *
- * Copyright (C) 2004 Aleix Conchillo Flaque
+ * Copyright (C) 2004, 2007 Aleix Conchillo Flaque
  *
  * SCEW is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -52,68 +50,68 @@
 #include <stdio.h>
 
 unsigned int
-stream_cb(scew_parser* parser)
+stream_cb (scew_parser *parser)
 {
-    printf("SCEW stream callback called!\n");
-    return 1;
+  printf ("SCEW stream callback called!\n");
+  return 1;
 }
 
 int
-main(int argc, char** argv)
+main (int argc, char *argv[])
 {
-    FILE* in;
-    scew_parser* parser = NULL;
+  int len = 1;
+  FILE *in = NULL;
+  scew_parser *parser = NULL;
 
-    if (argc < 2)
+  if (argc < 2)
     {
-        printf("usage: scew_stream file.xml\n");
-        return EXIT_FAILURE;
+      printf ("usage: scew_stream file.xml\n");
+      return EXIT_FAILURE;
     }
 
-    in = fopen(argv[1], "rb");
-    if (in == NULL)
+  in = fopen (argv[1], "rb");
+
+  if (in == NULL)
     {
-        perror("Unable to open file");
-        return EXIT_FAILURE;
+      perror ("Unable to open file");
+      return EXIT_FAILURE;
     }
 
-    /**
-     * Creates an SCEW parser. This is the first function to call.
-     */
-    parser = scew_parser_create();
+  /**
+   * Creates an SCEW parser. This is the first function to call.
+   */
+  parser = scew_parser_create ();
 
-    scew_parser_set_stream_callback(parser, stream_cb);
+  scew_parser_set_stream_callback (parser, stream_cb);
 
+  while (len)
     {
-        int len = 1;
-        char buffer;
-        while (len)
+      char buffer;
+      len = fread (&buffer, 1, 1, in);
+
+      if (!scew_parser_load_stream (parser, &buffer, 1))
         {
-            len = fread(&buffer, 1, 1, in);
-
-            if (!scew_parser_load_stream(parser, &buffer, 1))
+          scew_error code = scew_error_code ();
+          printf ("Unable to load stream (error #%d: %s)\n",
+                  code,
+                  scew_error_string (code));
+          if (code == scew_error_expat)
             {
-                scew_error code = scew_error_code();
-                printf("Unable to load stream (error #%d: %s)\n", code,
-                       scew_error_string(code));
-                if (code == scew_error_expat)
-                {
-                    enum XML_Error expat_code = scew_error_expat_code(parser);
-                    printf("Expat error #%d (line %d, column %d): %s\n",
-                           expat_code,
-                           scew_error_expat_line(parser),
-                           scew_error_expat_column(parser),
-                           scew_error_expat_string(expat_code));
-                }
-                return EXIT_FAILURE;
+              enum XML_Error expat_code = scew_error_expat_code (parser);
+              printf ("Expat error #%d (line %d, column %d): %s\n",
+                      expat_code,
+                      scew_error_expat_line (parser),
+                      scew_error_expat_column (parser),
+                      scew_error_expat_string (expat_code));
             }
+          return EXIT_FAILURE;
         }
     }
 
-    fclose(in);
+  fclose (in);
 
-    /* Frees the SCEW parser */
-    scew_parser_free(parser);
+  /* Frees the SCEW parser */
+  scew_parser_free (parser);
 
-    return 0;
+  return 0;
 }

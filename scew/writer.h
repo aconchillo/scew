@@ -1,15 +1,13 @@
 /**
  *
  * @file     writer.h
+ * @brief    SCEW writer functions
  * @author   Aleix Conchillo Flaque <aleix@member.fsf.org>
  * @date     Thu Sep 11, 2003 00:36
- * @brief    SCEW writer functions
- *
- * $Id$
  *
  * @if copyright
  *
- * Copyright (C) 2003, 2004 Aleix Conchillo Flaque
+ * Copyright (C) 2003, 2004, 2005, 2006, 2007 Aleix Conchillo Flaque
  *
  * SCEW is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -29,13 +27,14 @@
  */
 
 
-#ifndef WRITER_H_ALEIX0309110036
-#define WRITER_H_ALEIX0309110036
+#ifndef WRITER_H_0309110036
+#define WRITER_H_0309110036
 
-#include "types.h"
+#include "tree.h"
 
 #include <expat.h>
 
+#include <stdbool.h>
 #include <stdio.h>
 
 #ifdef __cplusplus
@@ -46,21 +45,20 @@ extern "C" {
  * Saves an XML tree to the specified file. If the file doesn't exist it
  * will create it, and if it exists it will overwrite it.
  *
- * @return 1 if tree was successfully saved, 0 otherwise.
+ * @return true if tree was successfully saved, false otherwise.
  */
-extern unsigned int
-scew_writer_tree_file(scew_tree const* tree, char const* file_name);
+extern bool scew_writer_tree_file (scew_tree const *tree,
+                                   char const *file_name);
 
 /**
  * Saves an XML tree to the already created file pointer.
  *
- * @return 1 if tree was successfully saved, 0 otherwise.
+ * @return true if tree was successfully saved, false otherwise.
  */
-extern unsigned int
-scew_writer_tree_fp(scew_tree const* tree, FILE* out);
+extern bool scew_writer_tree_fp (scew_tree const *tree, FILE *out);
 
 #ifdef __cplusplus
 }
 #endif /* __cplusplus */
 
-#endif /* WRITER_H_ALEIX0309110036 */
+#endif /* WRITER_H_0309110036 */

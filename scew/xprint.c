@@ -1,15 +1,13 @@
 /**
  *
- * @file     xtree.c
+ * @file     xprint.c
+ * @brief    SCEW private tree type declaration
  * @author   Aleix Conchillo Flaque <aleix@member.fsf.org>
  * @date     Sun Mar 30, 2003 13:23
- * @brief    SCEW private tree type declaration
- *
- * $Id$
  *
  * @if copyright
  *
- * Copyright (C) 2003, 2004 Aleix Conchillo Flaque
+ * Copyright (C) 2003, 2004, 2005, 2006, 2007 Aleix Conchillo Flaque
  *
  * SCEW is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -29,107 +27,117 @@
  */
 
 #include "xprint.h"
+
+#include "element.h"
 #include "str.h"
+
+#include <assert.h>
 
 /* indentation size (in whitespaces) */
 static int const indent_size = 3;
 
 void
-indent_print(FILE* out, unsigned int indent)
+indent_print (FILE *out, unsigned int indent)
 {
-    unsigned int i = 0;
+  unsigned int i = 0;
 
-    for (i = 0; i < indent * indent_size; i++)
+  for (i = 0; i < indent * indent_size; i++)
     {
-        scew_fprintf(out, _XT(" "));
+      scew_fprintf (out, _XT (" "));
     }
 }
 
 void
-tree_print(scew_tree const* tree, FILE* out)
+tree_print (scew_tree const *tree, FILE *out)
 {
-    static XML_Char const* version = _XT("1.0");
+  static XML_Char const *version = _XT("1.0");
 #ifdef XML_UNICODE_WCHAR_T
-    static XML_Char const* encoding = _XT("UTF-16");
+  static XML_Char const *encoding = _XT("UTF-16");
 #else
-    static XML_Char const* encoding = _XT("UTF-8");
+  static XML_Char const *encoding = _XT("UTF-8");
 #endif /* XML_UNICODE_WCHAR_T */
 
-    scew_fprintf(
-        out,
-        _XT("<?xml version=\"%s\" encoding=\"%s\" standalone=\"%s\"?>\n\n"),
-        (tree->version == NULL ? version : tree->version),
-        (tree->encoding == NULL ? encoding : tree->encoding),
-        (tree->standalone > 0 ? _XT("yes") : _XT("no")));
+  XML_Char const *tree_version = scew_tree_xml_version (tree);
+  XML_Char const *tree_encoding = scew_tree_xml_encoding (tree);
+  int tree_standalone = scew_tree_xml_standalone (tree);
 
-    element_print(tree->root, out, 0);
+  scew_fprintf (out,
+		_XT("<?xml version=\"%s\" encoding=\"%s\" standalone=\"%s\"?>\n\n"),
+		(tree_version == NULL ? version : tree_version),
+		(tree_encoding == NULL ? encoding : tree_encoding),
+		(tree_standalone > 0 ? _XT ("yes") : _XT ("no")));
+
+  element_print (scew_tree_root (tree), out, 0);
 }
 
 void
-element_print(scew_element const* element, FILE* out, unsigned int indent)
+element_print (scew_element const *element, FILE *out, unsigned int indent)
 {
-    unsigned int closed = 0;
-    XML_Char const* contents;
-    scew_element* child = NULL;
-    scew_attribute* attribute = NULL;
+  unsigned int closed = 0;
+  scew_list *list = NULL;
+  scew_element *parent = NULL;
+  XML_Char const *contents = NULL;
 
-    if (element == NULL)
+  assert (element != NULL);
+
+  indent_print (out, indent);
+  scew_fprintf (out, _XT ("<%s"), scew_element_name (element));
+
+  list = scew_element_attributes (element);
+  while (list != NULL)
     {
-        return;
+      scew_attribute *attribute = scew_list_data (list);
+      attribute_print (attribute, out);
+      list = scew_list_next (list);
     }
 
-    indent_print(out, indent);
-    scew_fprintf(out, _XT("<%s"), scew_element_name(element));
-    attribute = NULL;
-    while ((attribute = scew_attribute_next(element, attribute)) != NULL)
-    {
-        attribute_print(attribute, out);
-    }
+  contents = scew_element_contents (element);
+  parent = scew_element_parent (element);
 
-    contents = scew_element_contents(element);
-    if ((contents == NULL) && (element->child == NULL)
-        && (element->parent != NULL))
+  list = scew_element_children (element);
+  if ((contents == NULL) && (list == NULL) && (parent != NULL))
     {
-		scew_fprintf(out, _XT("/>\n"));
-        closed = 1;
+      scew_fprintf (out, _XT ("/>\n"));
+      closed = 1;
     }
-    else
+  else
     {
-        scew_fprintf(out, _XT(">"));
-        if (contents == NULL)
+      scew_fprintf (out, _XT (">"));
+      if (contents == NULL)
         {
-            scew_fprintf(out, _XT("\n"));
+	  scew_fprintf (out, _XT ("\n"));
         }
     }
 
-    child = NULL;
-    while ((child = scew_element_next(element, child)) != NULL)
+  while (list != NULL)
     {
-        element_print(child, out, indent + 1);
+      scew_element *child = scew_list_data (list);
+      element_print (child, out, indent + 1);
+      list = scew_list_next (list);
     }
 
-    if (contents != NULL)
+  if (contents != NULL)
     {
-        scew_fprintf(out, _XT("%s"), contents);
+      scew_fprintf (out, _XT ("%s"), contents);
     }
-    else if (!closed)
+  else if (!closed)
     {
-        indent_print(out, indent);
+      indent_print (out, indent);
     }
 
-    if (!closed)
+  if (!closed)
     {
-        scew_fprintf(out, _XT("</%s>\n"), scew_element_name(element));
+      scew_fprintf (out, _XT ("</%s>\n"), scew_element_name (element));
     }
 }
 
 void
-attribute_print(scew_attribute const* attribute, FILE* out)
+attribute_print (scew_attribute const *attribute, FILE *out)
 {
-    if (attribute == NULL)
+  if (attribute != NULL)
     {
-        return;
+      scew_fprintf (out, _XT (" %s=\"%s\""),
+                    scew_attribute_name (attribute),
+                    scew_attribute_value (attribute));
     }
-
-    scew_fprintf(out, _XT(" %s=\"%s\""), attribute->name, attribute->value);
 }

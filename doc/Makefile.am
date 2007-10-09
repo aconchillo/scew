@@ -1,6 +1,4 @@
 #
-# $Id$
-#
 # Author: Aleix Conchillo Flaque <aleix@member.fsf.org>
 # Date:   Sun Jul 06, 2003 04:51
 #
@@ -19,7 +17,7 @@ doc:
 else
 
 doc:
-	@echo "Doxygen documentation generation not enabled"
+	@echo "WARNING: Documentation generation not enabled or available"
 
 endif
 

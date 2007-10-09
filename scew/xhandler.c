@@ -1,15 +1,13 @@
 /**
  *
  * @file     xhandler.c
+ * @brief    SCEW Expat handlers
  * @author   Aleix Conchillo Flaque <aleix@member.fsf.org>
  * @date     Mon Nov 25, 2002 00:21
- * @brief    SCEW Expat handlers
- *
- * $Id$
  *
  * @if copyright
  *
- * Copyright (C) 2002, 2003, 2004 Aleix Conchillo Flaque
+ * Copyright (C) 2002, 2003, 2004, 2005, 2006, 2007 Aleix Conchillo Flaque
  *
  * SCEW is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -32,150 +30,143 @@
 
 #include "xparser.h"
 
+#include "element.h"
 #include "str.h"
+#include "tree.h"
 
 #include <stdio.h>
 
 void
-xmldecl_handler(void* data, XML_Char const* version, XML_Char const* encoding,
+xmldecl_handler (void *data,
+                 XML_Char const *version,
+                 XML_Char const *encoding,
                 int standalone)
 {
-    scew_parser* parser = (scew_parser*) data;
+  scew_parser *parser = (scew_parser *) data;
 
-    /* Avoid warning: standalone is unused */
-    (void) standalone;
-
-    if (parser == NULL)
+  if (parser == NULL)
     {
-        return;
+      return;
     }
 
-    if (parser->tree == NULL)
+  if (parser->tree == NULL)
     {
-        parser->tree = scew_tree_create();
+      parser->tree = scew_tree_create ();
     }
 
-    if (parser->tree == NULL)
+  if (parser->tree == NULL)
     {
-        return;
+      return;
     }
 
-    if (version != NULL)
+  if (version != NULL)
     {
-        parser->tree->version = scew_strdup(version);
+      scew_tree_set_xml_version (parser->tree, scew_strdup (version));
     }
-    if (encoding != NULL)
+  if (encoding != NULL)
     {
-        parser->tree->encoding = scew_strdup(encoding);
+      scew_tree_set_xml_encoding (parser->tree, scew_strdup (encoding));
     }
 
-    /* by now, we ignore standalone attribute */
+  /* By now, we ignore standalone attribute */
+  (void) standalone; /* avoid warning: standalone is unused */
 }
 
 void
-start_handler(void* data, XML_Char const* elem, XML_Char const** attr)
+start_handler (void *data, XML_Char const *elem, XML_Char const **attr)
 {
-    int i = 0;
-    scew_parser* parser = (scew_parser*) data;
+  int i = 0;
+  scew_parser *parser = (scew_parser *) data;
 
-    if (parser == NULL)
+  if (parser == NULL)
     {
-        return;
+      return;
     }
 
-    if ((parser->tree == NULL) || (scew_tree_root(parser->tree) == NULL))
+  if ((parser->tree == NULL) || (scew_tree_root (parser->tree) == NULL))
     {
-        if (parser->tree == NULL)
+      if (parser->tree == NULL)
         {
-            parser->tree = scew_tree_create();
+	  parser->tree = scew_tree_create ();
         }
-        parser->current = scew_tree_add_root(parser->tree, elem);
+      parser->current = scew_tree_set_root (parser->tree, elem);
     }
-    else
+  else
     {
-        stack_push(&parser->stack, parser->current);
-        parser->current = scew_element_add(parser->current, elem);
+      stack_push_ (&parser->stack, parser->current);
+      parser->current = scew_element_add (parser->current, elem);
     }
 
-    for (i = 0; attr[i]; i += 2)
+  for (i = 0; attr[i]; i += 2)
     {
-        scew_element_add_attr_pair(parser->current, attr[i], attr[i + 1]);
+      scew_element_add_new_attribute (parser->current, attr[i], attr[i + 1]);
     }
 }
 
 void
-end_handler(void* data, XML_Char const* elem)
+end_handler (void *data, XML_Char const *elem)
 {
-    XML_Char* contents = NULL;
-    scew_element* current = NULL;
-    scew_parser* parser = (scew_parser*) data;
+  scew_element *current = NULL;
+  XML_Char const *contents = NULL;
+  scew_parser *parser = (scew_parser *) data;
 
-    /* Avoid warning: elem is unused */
-    (void) elem;
+  /* Avoid warning: elem is unused */
+  (void) elem;
 
-    if (parser == NULL)
+  if (parser == NULL)
     {
-        return;
+      return;
     }
 
-    current = parser->current;
-    if ((current != NULL) && (current->contents != NULL))
+  current = parser->current;
+  contents = scew_element_contents (current);
+
+  if ((current != NULL) && (contents != NULL))
     {
-        if (parser->ignore_whitespaces)
+      if (parser->ignore_whitespaces)
         {
-            scew_strtrim(current->contents);
-            if (scew_strlen(current->contents) == 0)
+          XML_Char *new_contents = scew_strdup (contents);
+	  scew_strtrim (new_contents);
+	  if (scew_strlen (new_contents) == 0)
             {
-                free(current->contents);
-                current->contents = NULL;
+	      scew_element_free_contents (current);
             }
         }
-        else
-        {
-            contents = scew_strdup(current->contents);
-            scew_strtrim(contents);
-            if (scew_strlen(contents) == 0)
-            {
-                free(current->contents);
-                current->contents = NULL;
-            }
-            free(contents);
-        }
     }
-    parser->current = stack_pop(&parser->stack);
+  parser->current = stack_pop_ (&parser->stack);
 }
 
 void
-char_handler(void* data, XML_Char const* s, int len)
+char_handler (void *data, XML_Char const *s, int len)
 {
-    int total = 0;
-    int total_old = 0;
-    scew_element* current = NULL;
-    scew_parser* parser = (scew_parser*) data;
+  scew_element *current = NULL;
+  scew_parser *parser = (scew_parser *) data;
 
-    if (parser == NULL)
+  if (parser == NULL)
     {
-        return;
+      return;
     }
 
-    current = parser->current;
+  current = parser->current;
 
-    if (current == NULL)
+  if (current != NULL)
     {
-        return;
-    }
+      unsigned int total = 0;
+      unsigned int total_old = 0;
+      XML_Char *new_contents = NULL;
 
-    if (current->contents != NULL)
-    {
-        total_old = scew_strlen(current->contents);
-    }
-    total = (total_old + len + 1) * sizeof(XML_Char);
-    current->contents = (XML_Char*) realloc(current->contents, total);
+      XML_Char const *contents = scew_element_contents (current);
 
-    if (total_old == 0)
-    {
-        current->contents[0] = '\0';
-    }
+      if (contents != NULL)
+        {
+          total_old = scew_strlen (contents);
+        }
 
-    scew_strncat(current->contents, s, len);
+      total = (total_old + len + 1) * sizeof (XML_Char);
+
+      new_contents = (XML_Char*) calloc (total, 1);
+      scew_strncat (new_contents, s, len);
+
+      scew_element_set_contents (current, new_contents);
+    }
 }

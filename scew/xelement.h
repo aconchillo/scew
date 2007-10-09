@@ -1,15 +1,13 @@
 /**
  *
  * @file     xelement.h
+ * @brief    SCEW private element type declaration
  * @author   Aleix Conchillo Flaque <aleix@member.fsf.org>
  * @date     Mon Nov 25, 2002 00:55
- * @brief    SCEW private element type declaration
- *
- * $Id$
  *
  * @if copyright
  *
- * Copyright (C) 2002, 2003, 2004 Aleix Conchillo Flaque
+ * Copyright (C) 2002, 2003, 2004, 2005 Aleix Conchillo Flaque
  *
  * SCEW is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -32,28 +30,5 @@
 #ifndef XELEMENT_H_ALEIX0211250055
 #define XELEMENT_H_ALEIX0211250055
 
-#include "element.h"
-
-#include "xattribute.h"
-
-
-/* Triply linked tree node */
-struct _scew_element
-{
-    XML_Char* name;
-    XML_Char* contents;
-    attribute_list* attributes;
-
-    unsigned int n_children;
-
-    /* Immediately neighbour pointers */
-    scew_element* parent;
-    scew_element* child;
-    scew_element* left;
-    scew_element* right;
-
-    /* Last element in list */
-    scew_element* last_child;
-};
 
 #endif /* XELEMENT_H_ALEIX0211250055 */

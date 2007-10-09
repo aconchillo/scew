@@ -1,6 +1,4 @@
 #
-# $Id$
-#
 # Author: Aleix Conchillo Flaque <aleix@member.fsf.org>
 # Date:   Thu Jan 29, 2004 23:27
 #

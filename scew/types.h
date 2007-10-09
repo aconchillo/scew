@@ -1,15 +1,13 @@
 /**
  *
  * @file     types.h
+ * @brief    SCEW main types definition
  * @author   Aleix Conchillo Flaque <aleix@member.fsf.org>
  * @date     Sat Mar 29, 2003 19:50
- * @brief    SCEW main types definition
- *
- * $Id$
  *
  * @if copyright
  *
- * Copyright (C) 2003, 2004 Aleix Conchillo Flaque
+ * Copyright (C) 2003, 2004, 2005, 2006, 2007 Aleix Conchillo Flaque
  *
  * SCEW is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -29,42 +27,15 @@
  */
 
 
-#ifndef TYPES_H_ALEIX0303291951
-#define TYPES_H_ALEIX0303291951
+#ifndef TYPES_H_0303291951
+#define TYPES_H_0303291951
 
 #ifdef __cplusplus
 extern "C" {
 #endif /* __cplusplus */
 
-/**
- * This is the type declaration of the SCEW parser.
- */
-typedef struct _scew_parser scew_parser;
-
-/**
- * This is the type delcaration for XML trees.
- */
-typedef struct _scew_tree scew_tree;
-
-/**
- * This is the type delcaration for elements.
- */
-typedef struct _scew_element scew_element;
-
-/**
- * This is the type declaration for element attributes.
- */
-typedef struct _scew_attribute scew_attribute;
-
-/**
- * Callback function type.
- *
- * @return 1 if callback call had no errors, 0 otherwise.
- */
-typedef unsigned int SCEW_CALLBACK(scew_parser* parser);
-
 #ifdef __cplusplus
 }
 #endif /* __cplusplus */
 
-#endif /* TYPES_H_ALEIX0303291951 */
+#endif /* TYPES_H_0303291951 */

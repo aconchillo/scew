@@ -5,11 +5,9 @@
  * @date     Sun Mar 30, 2003 12:21
  * @brief    SCEW usage example
  *
- * $Id$
- *
  * @if copyright
  *
- * Copyright (C) 2002, 2003, 2004 Aleix Conchillo Flaque
+ * Copyright (C) 2002, 2003, 2004, 2007 Aleix Conchillo Flaque
  *
  * SCEW is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -41,7 +39,9 @@
  *     <element>
  *       <sub_element attribute="value"/>
  *       <sub_element attribute1="value1" attribute2="value2">
- *         <sub_sub_element attribute1="value1" attribute2="new_value2" attribute3="value3">
+ *         <sub_sub_element attribute1="value1"
+ *                          attribute2="new_value2"
+ *                          attribute3="value3">
  *           element contents.
  *         </sub_sub_element>
  *       </sub_element>
@@ -54,73 +54,74 @@
 #include <stdio.h>
 
 int
-main(int argc, char** argv)
+main(int argc, char *argv[])
 {
-    scew_tree* tree = NULL;
-    scew_element* root = NULL;
-    scew_element* element = NULL;
-    scew_element* sub_element = NULL;
-    scew_element* sub_sub_element = NULL;
-    scew_attribute* attribute = NULL;
+  scew_tree *tree = NULL;
+  scew_element *root = NULL;
+  scew_element *element = NULL;
+  scew_element *sub_element = NULL;
+  scew_element *sub_sub_element = NULL;
+  scew_attribute *attribute = NULL;
 
-    if (argc < 2)
+  if (argc < 2)
     {
-        printf("usage: scew_write new_file.xml\n");
-        return EXIT_FAILURE;
+      printf ("usage: scew_write new_file.xml\n");
+      return EXIT_FAILURE;
     }
 
-    /**
-     * Create an empty XML tree in memory, and add a root element
-     * "scew_test".
-     */
-    tree = scew_tree_create();
-    root = scew_tree_add_root(tree, "scew_test");
+  /**
+   * Create an empty XML tree in memory, and add a root element
+   * "scew_test".
+   */
+  tree = scew_tree_create ();
+  root = scew_tree_set_root (tree, "scew_test");
 
-    /* Add an element and set element contents. */
-    element = scew_element_add(root, "element");
-    scew_element_set_contents(element, "element contents.");
+  /* Add an element and set element contents. */
+  element = scew_element_add (root, "element");
+  scew_element_set_contents (element, "element contents.");
 
-    /* Add an element with an attribute pair (name, value). */
-    element = scew_element_add(root, "element");
-    scew_element_add_attr_pair(element, "attribute", "value");
+  /* Add an element with an attribute pair (name, value). */
+  element = scew_element_add (root, "element");
+  scew_element_add_new_attribute (element, "attribute", "value");
 
-    element = scew_element_add(root, "element");
-    scew_element_add_attr_pair(element, "attribute1", "value1");
+  element = scew_element_add (root, "element");
+  scew_element_add_new_attribute (element, "attribute1", "value1");
 
-    /**
-     * Another way to add an attribute. You loose attribute ownership,
-     * so there is no need to free it.
-     */
-    attribute = scew_attribute_create("attribute2", "value2");
-    scew_element_add_attr(element, attribute);
+  /**
+   * Another way to add an attribute. You loose attribute ownership,
+   * so there is no need to free it.
+   */
+  attribute = scew_attribute_create ("attribute2", "value2");
+  scew_element_add_attribute (element, attribute);
 
-    element = scew_element_add(root, "element");
-    sub_element = scew_element_add(element, "sub_element");
-    scew_element_add_attr_pair(sub_element, "attribute", "value");
+  element = scew_element_add (root, "element");
+  sub_element = scew_element_add (element, "sub_element");
+  scew_element_add_new_attribute (sub_element, "attribute", "value");
 
-    sub_element = scew_element_add(element, "sub_element");
-    scew_element_add_attr_pair(sub_element, "attribute1", "value1");
-    scew_element_add_attr_pair(sub_element, "attribute2", "value2");
+  sub_element = scew_element_add (element, "sub_element");
+  scew_element_add_new_attribute (sub_element, "attribute1", "value1");
+  scew_element_add_new_attribute (sub_element, "attribute2", "value2");
 
-    sub_sub_element = scew_element_add(sub_element, "sub_sub_element");
-    scew_element_add_attr_pair(sub_sub_element, "attribute1", "value1");
-    scew_element_add_attr_pair(sub_sub_element, "attribute2", "value2");
-    scew_element_add_attr_pair(sub_sub_element, "attribute3", "value3");
-    /* Check attribute2 replacement. */
-    scew_element_add_attr_pair(sub_sub_element, "attribute2", "new_value2");
-    scew_element_set_contents(sub_sub_element, "element contents.");
+  sub_sub_element = scew_element_add (sub_element,
+                                                    "sub_sub_element");
+  scew_element_add_new_attribute (sub_sub_element, "attribute1", "value1");
+  scew_element_add_new_attribute (sub_sub_element, "attribute2", "value2");
+  scew_element_add_new_attribute (sub_sub_element, "attribute3", "value3");
+  /* Check attribute2 replacement. */
+  scew_element_add_new_attribute (sub_sub_element, "attribute2", "new_value2");
+  scew_element_set_contents (sub_sub_element, "element contents.");
 
-    /**
-     * Save an XML tree to a file.
-     */
-    if (!scew_writer_tree_file(tree, argv[1]))
+  /**
+   * Save an XML tree to a file.
+   */
+  if (!scew_writer_tree_file (tree, argv[1]))
     {
-        printf("Unable to create %s\n", argv[1]);
-        return EXIT_FAILURE;
+      printf ("Unable to create %s\n", argv[1]);
+      return EXIT_FAILURE;
     }
 
-    /* Frees the SCEW tree */
-    scew_tree_free(tree);
+  /* Frees the SCEW tree */
+  scew_tree_free (tree);
 
-    return 0;
+  return 0;
 }

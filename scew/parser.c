@@ -1,15 +1,13 @@
 /**
  *
  * @file     parser.c
+ * @brief    SCEW parser type implementation
  * @author   Aleix Conchillo Flaque <aleix@member.fsf.org>
  * @date     Mon Nov 25, 2002 00:58
- * @brief    SCEW parser type implementation
- *
- * $Id$
  *
  * @if copyright
  *
- * Copyright (C) 2002, 2003, 2004 Aleix Conchillo Flaque
+ * Copyright (C) 2002, 2003, 2004, 2005, 2006, 2007 Aleix Conchillo Flaque
  *
  * SCEW is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -39,209 +37,197 @@
 #include <stdio.h>
 #include <string.h>
 
-/* This code does not compile under VC .NET */
-/* static int const  MAX_BUFFER_SIZE = 5000; */
-#define MAX_BUFFER_SIZE 5000
-
-
 scew_parser*
-scew_parser_create()
+scew_parser_create (void)
 {
-    scew_parser* parser = NULL;
+  scew_parser *parser = (scew_parser*) calloc (1, sizeof (scew_parser));
 
-    parser = (scew_parser*) calloc(1, sizeof(scew_parser));
-    if (parser == NULL)
+  if (parser == NULL)
     {
-        set_last_error(scew_error_no_memory);
-        return NULL;
+      set_last_error (scew_error_no_memory);
+      return NULL;
     }
 
-    if (!init_expat_parser(parser))
+  if (!init_expat_parser_ (parser))
     {
-        scew_parser_free(parser);
-        return NULL;
+      scew_parser_free (parser);
+      return NULL;
     }
 
-    /* ignore white spaces by default */
-    parser->ignore_whitespaces = 1;
+  /* ignore white spaces by default */
+  parser->ignore_whitespaces = 1;
 
-    /* no callback by default */
-    parser->stream_callback = NULL;
+  /* no callback by default */
+  parser->stream_callback = NULL;
 
-    return parser;
+  return parser;
 }
 
 void
-scew_parser_free(scew_parser* parser)
+scew_parser_free (scew_parser* parser)
 {
-    if (parser != NULL)
+  assert (parser != NULL);
+
+  if (parser->parser)
     {
-        if (parser->parser)
-        {
-            XML_ParserFree(parser->parser);
-        }
-        free(parser);
+      XML_ParserFree (parser->parser);
     }
+  free (parser);
 }
 
-unsigned int
-scew_parser_load_file(scew_parser* parser, char const* file_name)
+bool
+scew_parser_load_file (scew_parser *parser, char const *file_name)
 {
-    FILE* in = NULL;
-    unsigned int res = 0;
+  assert (parser != NULL);
+  assert (file_name != NULL);
 
-    assert(parser != NULL);
-    assert(file_name != NULL);
-
-    in = fopen(file_name, "rb");
-    if (in == NULL)
+  FILE *in = fopen (file_name, "rb");
+  if (in == NULL)
     {
-        set_last_error(scew_error_io);
-        return 0;
+      set_last_error (scew_error_io);
+      return 0;
     }
 
-    res = scew_parser_load_file_fp(parser, in);
-    fclose(in);
+  bool result = scew_parser_load_file_fp (parser, in);
+  fclose (in);
 
-    return res;
+  return result;
 }
 
-unsigned int
-scew_parser_load_file_fp(scew_parser* parser, FILE* in)
+bool
+scew_parser_load_file_fp (scew_parser *parser, FILE *in)
 {
-    int len = 0;
-    int done = 0;
-    char buffer[MAX_BUFFER_SIZE];
+  assert (parser != NULL);
+  assert (in != NULL);
 
-    assert(parser != NULL);
-    assert(in != NULL);
-
-    while (!done)
+  bool done = false;
+  while (!done)
     {
-        len = fread(buffer, 1, MAX_BUFFER_SIZE, in);
-        if (ferror(in))
+      enum { MAX_BUFFER = 5000 };
+      char buffer[MAX_BUFFER];
+
+      int len = fread (buffer, 1, MAX_BUFFER, in);
+      if (ferror (in))
         {
-            set_last_error(scew_error_io);
-            return 0;
+	  set_last_error (scew_error_io);
+	  return false;
         }
 
-        done = feof(in);
-        if (!XML_Parse(parser->parser, buffer, len, done))
+      done = feof (in);
+      if (!XML_Parse (parser->parser, buffer, len, done))
         {
-            set_last_error(scew_error_expat);
-            return 0;
+	  set_last_error (scew_error_expat);
+	  return false;
         }
     }
 
-    return 1;
+  return true;
 }
 
-unsigned int
-scew_parser_load_buffer(scew_parser* parser, char const* buffer,
-                        unsigned int size)
+bool
+scew_parser_load_buffer (scew_parser *parser, char const *buffer,
+			 unsigned int size)
 {
-    assert(parser != NULL);
-    assert(buffer != NULL);
+  assert (parser != NULL);
+  assert (buffer != NULL);
+  assert (size > 0);
 
-    if (!XML_Parse(parser->parser, buffer, size, 1))
+  if (!XML_Parse (parser->parser, buffer, size, 1))
     {
-        set_last_error(scew_error_expat);
-        return 0;
+      set_last_error (scew_error_expat);
+      return false;
     }
 
-    return 1;
+  return true;
 }
 
-unsigned int
-scew_parser_load_stream(scew_parser* parser, char const* buffer,
-                        unsigned int size)
+bool
+scew_parser_load_stream (scew_parser *parser, char const *buffer,
+			 unsigned int size)
 {
-    int start;
-    int end;
-    int length;
+  assert (parser != NULL);
+  assert (buffer != NULL);
+  assert (size > 0);
 
-    assert(parser != NULL);
-    assert(buffer != NULL);
+  unsigned int start = 0;
+  unsigned int end = 0;
 
-    start = 0;
-    end = 0;
-
-    /**
-     * Loop through the buffer.
-     * if we encounter a '>', send the chunk to Expat.
-     * if we hit the end of the buffer, send whatever remains to Expat.
-     * if the we have a full element (stack is empty) we call the callback.
-     */
-    while ((start < size) && (end <= size))
+  /**
+   * Loop through the buffer.
+   * if we encounter a '>', send the chunk to Expat.
+   * if we hit the end of the buffer, send whatever remains to Expat.
+   * if the we have a full element (stack is empty) we call the callback.
+   */
+  while ((start < size) && (end <= size))
     {
-        if ((end == size) || (buffer[end] == '>'))
+      if ((end == size) || (buffer[end] == '>'))
         {
-            length = end - start;
-            if (end < size)
+	  unsigned int length = end - start;
+	  if (end < size)
             {
-                length++;
+	      length = length + 1;
             }
 
-            if (!XML_Parse(parser->parser, &buffer[start], length, 0))
+	  if (!XML_Parse (parser->parser, &buffer[start], length, 0))
             {
-                set_last_error(scew_error_expat);
-                return 0;
+	      set_last_error (scew_error_expat);
+	      return false;
             }
 
-            if ((parser->tree != NULL) && (parser->current == NULL)
-                && (parser->stack == NULL) && parser->stream_callback)
+	  if ((parser->tree != NULL) && (parser->current == NULL)
+	      && (parser->stack == NULL) && parser->stream_callback)
             {
-                /* tell Expat we're done */
-                XML_Parse(parser->parser, "", 0, 1);
+	      /* tell Expat we're done */
+	      XML_Parse (parser->parser, "", 0, 1);
 
-                /* call the callback */
-                if (!parser->stream_callback(parser))
+	      /* call the callback */
+	      if (!parser->stream_callback (parser))
                 {
-                    set_last_error(scew_error_callback);
-                    return 0;
+		  set_last_error (scew_error_callback);
+		  return false;
                 }
 
-                XML_ParserFree(parser->parser);
-                scew_tree_free(parser->tree);
-                parser->tree = NULL;
-                init_expat_parser(parser);
+	      XML_ParserFree (parser->parser);
+	      scew_tree_free (parser->tree);
+	      parser->tree = NULL;
+	      init_expat_parser_ (parser);
             }
-            start = end + 1;
+	  start = end + 1;
         }
-        end++;
+      end++;
     }
 
-    return 1;
+  return true;
 }
 
 void
-scew_parser_set_stream_callback(scew_parser* parser, SCEW_CALLBACK* cb)
+scew_parser_set_stream_callback (scew_parser *parser, SCEW_CALLBACK *cb)
 {
-    assert(parser != NULL);
+  assert (parser != NULL);
 
-    parser->stream_callback = cb;
+  parser->stream_callback = cb;
 }
 
 scew_tree*
-scew_parser_tree(scew_parser const* parser)
+scew_parser_tree (scew_parser const *parser)
 {
-    assert(parser != NULL);
+  assert (parser != NULL);
 
-    return parser->tree;
+  return parser->tree;
 }
 
 XML_Parser
-scew_parser_expat(scew_parser* parser)
+scew_parser_expat (scew_parser *parser)
 {
-    assert(parser != NULL);
+  assert (parser != NULL);
 
-    return parser->parser;
+  return parser->parser;
 }
 
 void
-scew_parser_ignore_whitespaces(scew_parser* parser, int ignore)
+scew_parser_ignore_whitespaces (scew_parser *parser, int ignore)
 {
-    assert(parser != NULL);
+  assert (parser != NULL);
 
-    parser->ignore_whitespaces = ignore;
+  parser->ignore_whitespaces = ignore;
 }
