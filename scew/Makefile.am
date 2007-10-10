@@ -8,7 +8,7 @@
 includedir = $(prefix)/include/$(PACKAGE)
 
 include_HEADERS = scew.h attribute.h element.h error.h parser.h str.h \
-                  tree.h types.h writer.h
+                  tree.h writer.h
 
 noinst_HEADERS = xerror.h xhandler.h xparser.h xprint.h
 

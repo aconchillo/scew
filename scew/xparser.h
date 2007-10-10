@@ -32,9 +32,6 @@
 
 #include "parser.h"
 
-#include "xtree.h"
-#include "xelement.h"
-
 
 /* Stack to keep previous parsed elements */
 typedef struct stack_element
