@@ -28,41 +28,17 @@
 
 #include "xparser.h"
 
-#include "xerror.h"
-#include "xhandler.h"
-
 #include <assert.h>
 
-
-unsigned int
-init_expat_parser_ (scew_parser *parser)
-{
-  assert (parser != NULL);
-
-  parser->parser = XML_ParserCreate (NULL);
-  if (parser->parser == NULL)
-    {
-      set_last_error (scew_error_no_memory);
-      return 0;
-    }
-
-  /* initialize Expat handlers */
-  XML_SetXmlDeclHandler (parser->parser, xmldecl_handler);
-  XML_SetElementHandler (parser->parser, start_handler, end_handler);
-  XML_SetCharacterDataHandler (parser->parser, char_handler);
-  XML_SetUserData (parser->parser, parser);
-
-  return 1;
-}
+
+// Protected
 
 stack_element*
 stack_push_ (stack_element **stack, scew_element *element)
 {
-  stack_element *new_elem = NULL;
-
   assert (element != NULL);
 
-  new_elem = (stack_element*) calloc (1, sizeof (stack_element));
+  stack_element *new_elem = calloc (1, sizeof (stack_element));
 
   if (new_elem != NULL)
     {
@@ -80,17 +56,15 @@ stack_push_ (stack_element **stack, scew_element *element)
 scew_element*
 stack_pop_ (stack_element **stack)
 {
-  scew_element* element = NULL;
-  stack_element* sk_elem = NULL;
-
   assert (stack != NULL);
 
-  sk_elem = *stack;
+  scew_element *element = NULL;
+  stack_element *sk_elem = *stack;
   if (sk_elem != NULL)
     {
       *stack = sk_elem->prev;
       element = sk_elem->element;
-      free(sk_elem);
+      free (sk_elem);
     }
 
   return element;

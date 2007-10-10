@@ -70,9 +70,6 @@ print_attributes (scew_element *element)
 void
 print_element (scew_element *element, unsigned int indent)
 {
-  scew_list *list = NULL;
-  XML_Char const *contents = NULL;
-
   if (element == NULL)
     {
       return;
@@ -86,7 +83,7 @@ print_element (scew_element *element, unsigned int indent)
   print_attributes (element);
   printf (">");
 
-  contents = scew_element_contents (element);
+  XML_Char const *contents = scew_element_contents (element);
 
   if (contents == NULL)
     {
@@ -97,7 +94,7 @@ print_element (scew_element *element, unsigned int indent)
    * Call print_element function again for each child of the
    * current element.
    */
-  list = scew_element_children (element);
+  scew_list *list = scew_element_children (element);
   while (list != NULL)
     {
       scew_element *child = scew_list_data (list);
@@ -124,9 +121,6 @@ print_element (scew_element *element, unsigned int indent)
 int
 main (int argc, char *argv[])
 {
-  scew_tree *tree = NULL;
-  scew_parser *parser = NULL;
-
   if (argc < 2)
     {
       printf ("usage: scew_print file.xml\n");
@@ -136,7 +130,7 @@ main (int argc, char *argv[])
   /**
    * Creates an SCEW parser. This is the first function to call.
    */
-  parser = scew_parser_create ();
+  scew_parser *parser = scew_parser_create ();
 
   scew_parser_ignore_whitespaces (parser, 1);
 
@@ -157,7 +151,7 @@ main (int argc, char *argv[])
       return EXIT_FAILURE;
     }
 
-  tree = scew_parser_tree (parser);
+  scew_tree *tree = scew_parser_tree (parser);
 
   /* Prints full tree */
   print_element (scew_tree_root (tree), 0);

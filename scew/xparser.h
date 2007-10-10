@@ -32,6 +32,8 @@
 
 #include "parser.h"
 
+
+// Types
 
 /* Stack to keep previous parsed elements */
 typedef struct stack_element
@@ -46,12 +48,12 @@ struct scew_parser
   scew_tree* tree;		/**< XML document tree */
   scew_element* current;	/**< Current parsed element */
   stack_element* stack;		/**< Current parsed element stack */
-  int ignore_whitespaces;	/**< 1 if ignore white spaces, 0 otherwise */
-  SCEW_CALLBACK* stream_callback; /**< Callback to use while reading streams */
+  bool ignore_whitespaces;	/**< wheter to ignore white spaces */
+  scew_parser_callback stream_callback; /**< Callback to use while reading streams */
 };
 
-/* Creates and initializes Expat parser. */
-extern unsigned int init_expat_parser_ (scew_parser *parser);
+
+// Functions
 
 /* Pushes an element into the stack. */
 extern stack_element* stack_push_ (stack_element **stack,

@@ -52,9 +52,9 @@ typedef struct scew_parser scew_parser;
 /**
  * Callback function type.
  *
- * @return 1 if callback call had no errors, 0 otherwise.
+ * @return true if callback call had no errors, false otherwise.
  */
-typedef unsigned int SCEW_CALLBACK (scew_parser* parser);
+typedef bool (*scew_parser_callback) (scew_parser* parser);
 
 
 /* Allocation */
@@ -140,7 +140,7 @@ extern bool scew_parser_load_stream (scew_parser *parser,
  * @param cb the callback function
  */
 extern void scew_parser_set_stream_callback (scew_parser *parser,
-					     SCEW_CALLBACK *cb);
+					     scew_parser_callback cb);
 
 /**
  * Returns the XML tree read by the parser. Remember that
@@ -174,11 +174,11 @@ extern XML_Parser scew_parser_expat (scew_parser *parser);
  * This function gives the possibility to change the XML processor
  * behaviour.
  *
- * @param parser the parser to set the option to.  @param ignore 0 if
- * you do @b not want to ignore white spaces, any other value
+ * @param parser the parser to set the option to.
+ * @param true whether the parser should ignore white spaces, false
  * otherwise.
  */
-extern void scew_parser_ignore_whitespaces (scew_parser *parser, int ignore);
+extern void scew_parser_ignore_whitespaces (scew_parser *parser, bool ignore);
 
 #ifdef __cplusplus
 }

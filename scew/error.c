@@ -28,10 +28,10 @@
 
 #include "error.h"
 
-#include "str.h"
-
 #include "xerror.h"
-#include "xparser.h"
+
+#include "str.h"
+#include "parser.h"
 
 #include <assert.h>
 
@@ -78,7 +78,7 @@ scew_error_expat_code (scew_parser *parser)
 {
   assert (parser != NULL);
 
-  return XML_GetErrorCode (parser->parser);
+  return XML_GetErrorCode (scew_parser_expat (parser));
 }
 
 XML_Char const*
@@ -92,7 +92,7 @@ scew_error_expat_line (scew_parser *parser)
 {
   assert (parser != NULL);
 
-  return XML_GetCurrentLineNumber (parser->parser);
+  return XML_GetCurrentLineNumber (scew_parser_expat (parser));
 }
 
 int
@@ -100,5 +100,5 @@ scew_error_expat_column (scew_parser *parser)
 {
   assert (parser != NULL);
 
-  return XML_GetCurrentColumnNumber (parser->parser);
+  return XML_GetCurrentColumnNumber (scew_parser_expat (parser));
 }

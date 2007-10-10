@@ -56,13 +56,6 @@
 int
 main(int argc, char *argv[])
 {
-  scew_tree *tree = NULL;
-  scew_element *root = NULL;
-  scew_element *element = NULL;
-  scew_element *sub_element = NULL;
-  scew_element *sub_sub_element = NULL;
-  scew_attribute *attribute = NULL;
-
   if (argc < 2)
     {
       printf ("usage: scew_write new_file.xml\n");
@@ -73,11 +66,11 @@ main(int argc, char *argv[])
    * Create an empty XML tree in memory, and add a root element
    * "scew_test".
    */
-  tree = scew_tree_create ();
-  root = scew_tree_set_root (tree, "scew_test");
+  scew_tree *tree = scew_tree_create ();
+  scew_element *root = scew_tree_set_root (tree, "scew_test");
 
   /* Add an element and set element contents. */
-  element = scew_element_add (root, "element");
+  scew_element *element = scew_element_add (root, "element");
   scew_element_set_contents (element, "element contents.");
 
   /* Add an element with an attribute pair (name, value). */
@@ -91,18 +84,18 @@ main(int argc, char *argv[])
    * Another way to add an attribute. You loose attribute ownership,
    * so there is no need to free it.
    */
-  attribute = scew_attribute_create ("attribute2", "value2");
+  scew_attribute *attribute = scew_attribute_create ("attribute2", "value2");
   scew_element_add_attribute (element, attribute);
 
   element = scew_element_add (root, "element");
-  sub_element = scew_element_add (element, "sub_element");
+  scew_element *sub_element = scew_element_add (element, "sub_element");
   scew_element_add_new_attribute (sub_element, "attribute", "value");
 
   sub_element = scew_element_add (element, "sub_element");
   scew_element_add_new_attribute (sub_element, "attribute1", "value1");
   scew_element_add_new_attribute (sub_element, "attribute2", "value2");
 
-  sub_sub_element = scew_element_add (sub_element,
+  scew_element *sub_sub_element = scew_element_add (sub_element,
                                                     "sub_sub_element");
   scew_element_add_new_attribute (sub_sub_element, "attribute1", "value1");
   scew_element_add_new_attribute (sub_sub_element, "attribute2", "value2");

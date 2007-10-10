@@ -48,28 +48,25 @@
 #include <scew/scew.h>
 
 #include <stdio.h>
+#include <stdbool.h>
 
-unsigned int
+bool
 stream_cb (scew_parser *parser)
 {
   printf ("SCEW stream callback called!\n");
-  return 1;
+  return true;
 }
 
 int
 main (int argc, char *argv[])
 {
-  int len = 1;
-  FILE *in = NULL;
-  scew_parser *parser = NULL;
-
   if (argc < 2)
     {
       printf ("usage: scew_stream file.xml\n");
       return EXIT_FAILURE;
     }
 
-  in = fopen (argv[1], "rb");
+  FILE *in = fopen (argv[1], "rb");
 
   if (in == NULL)
     {
@@ -80,10 +77,11 @@ main (int argc, char *argv[])
   /**
    * Creates an SCEW parser. This is the first function to call.
    */
-  parser = scew_parser_create ();
+  scew_parser *parser = scew_parser_create ();
 
   scew_parser_set_stream_callback (parser, stream_cb);
 
+  int len = 1;
   while (len)
     {
       char buffer;

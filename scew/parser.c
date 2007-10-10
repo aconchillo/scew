@@ -28,14 +28,23 @@
 
 #include "parser.h"
 
-#include "tree.h"
-
-#include "xerror.h"
 #include "xparser.h"
+#include "xerror.h"
+#include "xhandler.h"
+
+#include "tree.h"
 
 #include <assert.h>
 #include <stdio.h>
 #include <string.h>
+
+
+// Private
+
+static bool init_expat_parser_ (scew_parser *parser);
+
+
+// Public
 
 scew_parser*
 scew_parser_create (void)
@@ -55,7 +64,7 @@ scew_parser_create (void)
     }
 
   /* ignore white spaces by default */
-  parser->ignore_whitespaces = 1;
+  parser->ignore_whitespaces = true;
 
   /* no callback by default */
   parser->stream_callback = NULL;
@@ -201,7 +210,7 @@ scew_parser_load_stream (scew_parser *parser, char const *buffer,
 }
 
 void
-scew_parser_set_stream_callback (scew_parser *parser, SCEW_CALLBACK *cb)
+scew_parser_set_stream_callback (scew_parser *parser, scew_parser_callback cb)
 {
   assert (parser != NULL);
 
@@ -225,9 +234,33 @@ scew_parser_expat (scew_parser *parser)
 }
 
 void
-scew_parser_ignore_whitespaces (scew_parser *parser, int ignore)
+scew_parser_ignore_whitespaces (scew_parser *parser, bool ignore)
 {
   assert (parser != NULL);
 
   parser->ignore_whitespaces = ignore;
+}
+
+
+// Private
+
+bool
+init_expat_parser_ (scew_parser *parser)
+{
+  assert (parser != NULL);
+
+  parser->parser = XML_ParserCreate (NULL);
+  if (parser->parser == NULL)
+    {
+      set_last_error (scew_error_no_memory);
+      return false;
+    }
+
+  /* initialize Expat handlers */
+  XML_SetXmlDeclHandler (parser->parser, xmldecl_handler);
+  XML_SetElementHandler (parser->parser, start_handler, end_handler);
+  XML_SetCharacterDataHandler (parser->parser, char_handler);
+  XML_SetUserData (parser->parser, parser);
+
+  return true;
 }
