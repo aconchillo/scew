@@ -1,7 +1,6 @@
 /**
- *
  * @file     tree.c
- * @brief    SCEW tree type declaration
+ * @brief    tree.h implementation
  * @author   Aleix Conchillo Flaque <aleix@member.fsf.org>
  * @date     Thu Feb 20, 2003 23:45
  *
@@ -21,7 +20,8 @@
  *
  * You should have received a copy of the GNU Lesser General Public
  * License along with this library; if not, write to the Free Software
- * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
+ * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA
+ * 02110-1301, USA.
  *
  * @endif
  */
@@ -36,7 +36,7 @@
 #include <assert.h>
 
 
-/* Private */
+// Private
 
 struct scew_tree
 {
@@ -47,17 +47,26 @@ struct scew_tree
   scew_element *root;
 };
 
+static XML_Char const *DEFAULT_XML_VERSION_ = "1.0";
+static XML_Char const *DEFAULT_ENCODING_ = "UTF-8";
+
 
-/* Public */
+// Public
 
 scew_tree*
 scew_tree_create (void)
 {
-  scew_tree *tree = (scew_tree*) calloc (1, sizeof (scew_tree));
+  scew_tree *tree = calloc (1, sizeof (scew_tree));
 
   if (tree == NULL)
     {
       set_last_error (scew_error_no_memory);
+    }
+  else
+    {
+      tree->version = scew_strdup (DEFAULT_XML_VERSION_);
+      tree->encoding = scew_strdup (DEFAULT_ENCODING_);
+      tree->standalone = true;
     }
 
   return tree;
@@ -138,40 +147,52 @@ scew_tree_xml_preamble (scew_tree const *tree)
 bool
 scew_tree_xml_standalone (scew_tree const *tree)
 {
-  assert(tree != NULL);
+  assert (tree != NULL);
 
   return tree->standalone;
 }
 
 void
-scew_tree_set_xml_version(scew_tree* tree, XML_Char const* version)
+scew_tree_set_xml_version(scew_tree *tree, XML_Char const *version)
 {
-  assert(tree != NULL);
+  assert (tree != NULL);
+  assert (version != NULL);
 
-  free(tree->version);
-  tree->version = scew_strdup(version);
+  if (tree->version != NULL)
+    {
+      free (tree->version);
+    }
+  tree->version = scew_strdup (version);
 }
 
 void
-scew_tree_set_xml_encoding(scew_tree* tree, XML_Char const* encoding)
+scew_tree_set_xml_encoding (scew_tree *tree, XML_Char const *encoding)
 {
-  assert(tree != NULL);
+  assert (tree != NULL);
+  assert (encoding != NULL);
 
-  free(tree->encoding);
-  tree->encoding = scew_strdup(encoding);
+  if (tree->encoding != NULL)
+    {
+      free (tree->encoding);
+    }
+  tree->encoding = scew_strdup (encoding);
 }
 
 void
-scew_tree_set_xml_preamble(scew_tree* tree, XML_Char const* preamble)
+scew_tree_set_xml_preamble (scew_tree *tree, XML_Char const *preamble)
 {
-  assert(tree != NULL);
+  assert (tree != NULL);
+  assert (preamble != NULL);
 
-  free(tree->preamble);
-  tree->preamble = scew_strdup(preamble);
+  if (tree->preamble != NULL)
+    {
+      free (tree->preamble);
+    }
+  tree->preamble = scew_strdup (preamble);
 }
 
 void
-scew_tree_set_xml_standalone(scew_tree *tree, bool standalone)
+scew_tree_set_xml_standalone (scew_tree *tree, bool standalone)
 {
   assert(tree != NULL);
 

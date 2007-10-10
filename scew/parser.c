@@ -1,7 +1,6 @@
 /**
- *
  * @file     parser.c
- * @brief    SCEW parser type implementation
+ * @brief    parser.h implementation
  * @author   Aleix Conchillo Flaque <aleix@member.fsf.org>
  * @date     Mon Nov 25, 2002 00:58
  *
@@ -21,7 +20,8 @@
  *
  * You should have received a copy of the GNU Lesser General Public
  * License along with this library; if not, write to the Free Software
- * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307, USA.
+ * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA
+ * 02110-1301, USA.
  *
  * @endif
  */
@@ -49,7 +49,7 @@ static bool init_expat_parser_ (scew_parser *parser);
 scew_parser*
 scew_parser_create (void)
 {
-  scew_parser *parser = (scew_parser*) calloc (1, sizeof (scew_parser));
+  scew_parser *parser = calloc (1, sizeof (scew_parser));
 
   if (parser == NULL)
     {

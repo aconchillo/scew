@@ -1,10 +1,9 @@
 /**
- *
  * @file     attribute.h
  * @brief    Attribute's handling routines
  * @author   Aleix Conchillo Flaque <aleix@member.fsf.org>
  * @date     Mon Nov 25, 2002 00:39
- * @ingroup  SCEWAttributeAlloc, SCEWAttributeAcc
+ * @ingroup  SCEWAttributeAlloc, SCEWAttributeAcc, SCEWAttributeCompare
  *
  * @if copyright
  *
@@ -22,7 +21,8 @@
  *
  * You should have received a copy of the GNU Lesser General Public
  * License along with this library; if not, write to the Free Software
- * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307, USA.
+ * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA
+ * 02110-1301, USA.
  *
  * @endif
  */
@@ -66,9 +66,6 @@ typedef struct scew_attribute scew_attribute;
  * @pre name != NULL
  * @pre value != NULL
  *
- * @param name the attribute's name.
- * @param value the attribute's value.
- *
  * @return the created attribute, or NULL if an error is found.
  *
  * @ingroup SCEWAttributeAlloc
@@ -79,7 +76,7 @@ extern scew_attribute* scew_attribute_create (XML_Char const *name,
 /**
  * Makes a copy of the given @a attribute.
  *
- * @param attribute the attribute to be copied.
+ * @pre attribute != NULL
  *
  * @return a new attribute, or NULL if the copy failed.
  *
@@ -93,8 +90,6 @@ extern scew_attribute* scew_attribute_copy (scew_attribute const *attribute);
  * created with #scew_attribute_create. If a NULL @a attribute is
  * given, this function does not have any effect.
  *
- * @param attribute the attribute to be freed.
- *
  * @ingroup SCEWAttributeAlloc
  */
 extern void scew_attribute_free (scew_attribute *attribute);
@@ -107,12 +102,13 @@ extern void scew_attribute_free (scew_attribute *attribute);
  */
 
 /**
+ * Performs a comparisson of the given attributes. That is, name and
+ * value must be equal in both attributes.
  *
+ * @pre a != NULL
+ * @pre b != NULL
  *
- * @param a
- * @param b
- *
- * @return
+ * @return true if attributes are equal, false otherwise.
  *
  * @ingroup SCEWAttributeCompare
  */

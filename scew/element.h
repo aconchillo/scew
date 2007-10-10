@@ -3,7 +3,7 @@
  * @brief    Element's handling routines
  * @author   Aleix Conchillo Flaque <aleix@member.fsf.org>
  * @date     Mon Nov 25, 2002 00:48
- * @ingroup  SCEWElementAcc, SCEWElementAttr, SCEWElementHier
+ * @ingroup  SCEWElement, SCEWElementAcc, SCEWElementAttr, SCEWElementHier
  * @ingroup  SCEWElementAlloc, SCEWElementSearch
  *
  * @if copyright
@@ -22,7 +22,8 @@
  *
  * You should have received a copy of the GNU Lesser General Public
  * License along with this library; if not, write to the Free Software
- * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307, USA.
+ * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA
+ * 02110-1301, USA.
  *
  * @endif
  */
@@ -48,6 +49,7 @@ extern "C" {
 
 /**
  * This is the type delcaration for elements.
+ * @ingroup SCEWElement
  */
 typedef struct scew_element scew_element;
 
@@ -75,8 +77,6 @@ extern scew_element* scew_element_create (XML_Char const *name);
 /**
  * Makes a deep copy of the given @a element.
  *
- * @param element the element to be copied.
- *
  * @return a new element, or NULL if the copy failed.
  *
  * @ingroup SCEWElementAlloc
@@ -88,8 +88,6 @@ extern scew_element* scew_element_copy (scew_element const *element);
  * children and attributes. If the @a element has a parent, it is also
  * detached from it. If a NULL @a element is given, this function does
  * not have any effect.
- *
- * @param element the element to be freed.
  *
  * @ingroup SCEWElementAlloc
  */
@@ -147,12 +145,11 @@ extern scew_list* scew_element_list_by_name (scew_element const *element,
  */
 
 /**
+ * Performs a deep comparisson of the given elements. That is, it
+ * compares that both elements have the same name, contents, children
+ * (recursively), etc.
  *
- *
- * @param a
- * @param b
- *
- * @return
+ * @return true if elements are equal, false otherwise.
  *
  * @ingroup SCEWElementCompare
  */
@@ -215,6 +212,13 @@ extern XML_Char const* scew_element_set_name (scew_element *element,
 extern XML_Char const* scew_element_set_contents (scew_element *element,
 						  XML_Char const *contents);
 
+/**
+ * Frees the current contents of the given @a element.
+ *
+ * @pre element != NULL
+ *
+ * @ingroup SCEWElementAcc
+ */
 extern void scew_element_free_contents (scew_element *element);
 
 
@@ -246,6 +250,17 @@ extern unsigned int scew_element_count (scew_element const *element);
  */
 extern scew_element* scew_element_parent (scew_element const *element);
 
+/**
+ * Returns the list of all the @a element's children. This is the
+ * internal list where @a element's children are stored, so no delete
+ * operations shold be performed on the list itself.
+ *
+ * @param element the element to obtain its children list for.
+ *
+ * @return the list of the given element's children.
+ *
+ * @ingroup SCEWElementHier
+ */
 extern scew_list* scew_element_children (scew_element const *element);
 
 /**
@@ -268,10 +283,7 @@ extern scew_element* scew_element_add (scew_element *element,
  *
  * @pre element != NULL
  * @pre name != NULL
- *
- * @param element
- * @param name
- * @param contents
+ * @pre contents != NULL
  *
  * @return the new created element or NULL if an error is found.
  *
@@ -299,14 +311,19 @@ extern scew_element* scew_element_add_element (scew_element *element,
 					       scew_element *child);
 
 /**
+ * Deletes all the children for the given @a element. All sub-children
+ * are also deleted.
  *
+ * @pre element != NULL
  *
- * @param element
+ * @param element the element to delete its children for.
+ *
+ * @ingroup SCEWElementHier
  */
 extern void scew_element_delete_all (scew_element *element);
 
 /**
- * Deletes the first child of the given @a element that matches @a
+ * Deletes all the children of the given @a element that matches @a
  * name.
  *
  * @pre element != NULL
@@ -342,13 +359,10 @@ extern void scew_element_delete_by_index (scew_element *element,
 					  unsigned int idx);
 
 /**
- * Deletes all children elements of the given @a element that match @a
- * name. This function will internally get an element list created by
- * #scew_element_list and will free all the elements in it. Note that
- * this function is not equivalent to #scew_element_list_free.
+ * Detaches the given @a element from its parent, if any. This
+ * functions only detaches the element, but does not free it.
  *
  * @pre element != NULL
- * @pre name != NULL
  *
  * @ingroup SCEWElementHier
  */
@@ -462,22 +476,47 @@ extern scew_attribute* scew_element_add_new_attribute (scew_element *element,
                                                        XML_Char const *name,
                                                        XML_Char const *value);
 
+/**
+ * Deletes all the attributes of the given @a element.
+ *
+ * @pre element != NULL
+ *
+ * @ingroup SCEWElementAttr
+ */
 extern void scew_element_delete_attribute_all (scew_element *element);
 
 /**
- * Deletes an attribute from an element.
+ * Deletes the given @a attribute from the specified @a element.
  *
  * @pre element != NULL
- * @pre name != NULL
+ * @pre attribute != NULL
  *
  * @ingroup SCEWElementAttr
  */
 extern void scew_element_delete_attribute (scew_element *element,
                                            scew_attribute *attribute);
 
+/**
+ * Deletes the first attribute of the given @a element that matches @a
+ * name.
+ *
+ * @pre element != NULL
+ * @pre name != NULL
+ *
+ * @ingroup SCEWElementAttr
+ */
 extern void scew_element_delete_attribute_by_name (scew_element *element,
                                                    XML_Char const* name);
 
+/**
+ * Deletes the attribute of the given @a element at the specified
+ * position.
+ *
+ * @pre element != NULL
+ * @pre idx < #scew_element_attribute_count
+ *
+ * @ingroup SCEWElementAttr
+ */
 extern void scew_element_delete_attribute_by_index (scew_element *element,
                                                     unsigned int idx);
 

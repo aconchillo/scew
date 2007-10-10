@@ -1,5 +1,4 @@
 /**
- *
  * @file     xparser.h
  * @brief    SCEW private parser type declaration
  * @author   Aleix Conchillo Flaque <aleix@member.fsf.org>
@@ -21,7 +20,8 @@
  *
  * You should have received a copy of the GNU Lesser General Public
  * License along with this library; if not, write to the Free Software
- * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307, USA.
+ * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA
+ * 02110-1301, USA.
  *
  * @endif
  */
@@ -35,7 +35,7 @@
 
 // Types
 
-/* Stack to keep previous parsed elements */
+// Stack to keep previous parsed elements
 typedef struct stack_element
 {
   scew_element* element;
@@ -49,17 +49,18 @@ struct scew_parser
   scew_element* current;	/**< Current parsed element */
   stack_element* stack;		/**< Current parsed element stack */
   bool ignore_whitespaces;	/**< wheter to ignore white spaces */
-  scew_parser_callback stream_callback; /**< Callback to use while reading streams */
+  scew_parser_callback stream_callback; /**< Callback to use while
+                                           reading streams */
 };
 
 
 // Functions
 
-/* Pushes an element into the stack. */
+// Pushes an element into the stack
 extern stack_element* stack_push_ (stack_element **stack,
                                    scew_element *element);
 
-/* Pops an element from the stack. */
+// Pops an element from the stack
 extern scew_element* stack_pop_ (stack_element **stack);
 
 #endif /* XPARSER_H_0211250057 */

@@ -1,7 +1,6 @@
 /**
- *
  * @file     xhandler.c
- * @brief    SCEW Expat handlers
+ * @brief    xhandler.h implementation
  * @author   Aleix Conchillo Flaque <aleix@member.fsf.org>
  * @date     Mon Nov 25, 2002 00:21
  *
@@ -21,7 +20,8 @@
  *
  * You should have received a copy of the GNU Lesser General Public
  * License along with this library; if not, write to the Free Software
- * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307, USA.
+ * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA
+ * 02110-1301, USA.
  *
  * @endif
  */
@@ -164,7 +164,7 @@ char_handler (void *data, XML_Char const *s, int len)
 
       total = (total_old + len + 1) * sizeof (XML_Char);
 
-      new_contents = (XML_Char*) calloc (total, 1);
+      new_contents = calloc (total, 1);
       scew_strncat (new_contents, s, len);
 
       scew_element_set_contents (current, new_contents);

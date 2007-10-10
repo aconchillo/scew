@@ -20,7 +20,8 @@
  *
  * You should have received a copy of the GNU Lesser General Public
  * License along with this library; if not, write to the Free Software
- * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307, USA.
+ * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA
+ * 02110-1301, USA.
  *
  * @endif
  */
@@ -80,7 +81,7 @@ scew_element_create (XML_Char const *name)
 {
   assert (name != NULL);
 
-  scew_element *element = (scew_element *) calloc (1, sizeof (scew_element));
+  scew_element *element = calloc (1, sizeof (scew_element));
 
   if (element != NULL)
     {
@@ -97,7 +98,7 @@ scew_element_create (XML_Char const *name)
 scew_element*
 scew_element_copy (scew_element const *element)
 {
-  scew_element *new_elem = (scew_element *) calloc (1, sizeof (scew_element));
+  scew_element *new_elem = calloc (1, sizeof (scew_element));
 
   if (new_elem != NULL)
     {

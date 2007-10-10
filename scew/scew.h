@@ -1,5 +1,4 @@
 /**
- *
  * @file     scew.h
  * @brief    SCEW main header file
  * @author   Aleix Conchillo Flaque <aleix@member.fsf.org>
@@ -7,7 +6,7 @@
  *
  * @if copyright
  *
- * Copyright (C) 2002, 2003, 2004, 2005, 2006 Aleix Conchillo Flaque
+ * Copyright (C) 2002, 2003, 2004, 2005, 2006, 2007 Aleix Conchillo Flaque
  *
  * SCEW is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -21,11 +20,11 @@
  *
  * You should have received a copy of the GNU Lesser General Public
  * License along with this library; if not, write to the Free Software
- * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+ * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA
+ * 02110-1301, USA.
  *
  * @endif
  */
-
 
 #ifndef SCEW_H_0211250134
 #define SCEW_H_0211250134
@@ -38,7 +37,7 @@
 #include "tree.h"
 #include "writer.h"
 
-/* automatically include the correct library on windows */
+// Automatically include the correct library on windows
 #ifdef _WIN32
 
 #ifdef XML_UNICODE_WCHAR_T

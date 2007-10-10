@@ -1,8 +1,29 @@
 /**
- * @file     list.h
+ * @file     list.c
+ * @brief    list.h implementation
  * @author   Aleix Conchillo Flaque <aleix@member.fsf.org>
  * @date     Thu Jul 12, 2007 20:09
- * @brief    General list implementation
+ *
+ * @if copyright
+ *
+ * Copyright (C) 2007 Aleix Conchillo Flaque
+ *
+ * SCEW is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU Lesser General Public
+ * License as published by the Free Software Foundation; either
+ * version 2.1 of the License, or (at your option) any later version.
+ *
+ * SCEW is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+ * Lesser General Public License for more details.
+ *
+ * You should have received a copy of the GNU Lesser General Public
+ * License along with this library; if not, write to the Free Software
+ * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA
+ * 02110-1301, USA.
+ *
+ * @endif
  **/
 
 #include "list.h"
@@ -31,7 +52,7 @@ scew_list_create (void *data)
 {
   assert (data != NULL);
 
-  scew_list *list = (scew_list*) calloc (1, sizeof (scew_list));
+  scew_list *list = calloc (1, sizeof (scew_list));
 
   if (list != NULL)
     {

@@ -97,17 +97,18 @@ fi
 echo
 echo "*** $PACKAGE $VERSION has been successfully configured ***"
 echo
-echo "Type 'make' to complete the compilation ($mode mode) and then"
-echo "'make install' as root to install."
+echo "Type 'make' to complete the compilation ($mode mode) and"
+echo "then 'make install' as root to install."
 echo
-echo "You can also try the examples in the 'examples' directory before"
-echo "installing the library. See 'examples/README' to see a list of them."
+echo "To build the examples found in the 'examples' directory, type"
+echo "'make examples' or 'make' inside the directory. See"
+echo "'examples/README' to see a list of them."
 echo
-echo "If you have doxygen installed, type 'make doc' to generate the"
-echo "documentation."
+echo "If you want to run the test suite, type 'make check' (Check"
+echo "Unit testing framework needed)."
 echo
-echo "If you want to run the test suite, type 'make check' (Check unit"
-echo "testing framework needed)."
+echo "If you have doxygen installed, type 'make doc' to generate"
+echo "the documentation."
 echo
 echo "Run './configure --help' to see all available options."
 echo

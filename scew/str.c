@@ -1,7 +1,6 @@
 /**
- *
  * @file     str.c
- * @brief    SCEW string functions
+ * @brief    str.h implementation
  * @author   Aleix Conchillo Flaque <aleix@member.fsf.org>
  * @date     Mon Nov 25, 2002 23:32
  *
@@ -21,7 +20,8 @@
  *
  * You should have received a copy of the GNU Lesser General Public
  * License along with this library; if not, write to the Free Software
- * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+ * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA
+ * 02110-1301, USA.
  *
  * @endif
  */
@@ -39,7 +39,7 @@ scew_strdup (XML_Char const *src)
   assert (src != NULL);
 
   unsigned int len = scew_strlen (src);
-  XML_Char *out = (XML_Char*) calloc (len + 1, sizeof (XML_Char));
+  XML_Char *out = calloc (len + 1, sizeof (XML_Char));
 
   return (XML_Char*) scew_memcpy (out, (XML_Char*) src, len);
 }

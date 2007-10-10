@@ -1,5 +1,4 @@
 /**
- *
  * @file     attribute.c
  * @brief    attribute.h implementation
  * @author   Aleix Conchillo Flaque <aleix@member.fsf.org>
@@ -21,7 +20,8 @@
  *
  * You should have received a copy of the GNU Lesser General Public
  * License along with this library; if not, write to the Free Software
- * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307, USA.
+ * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA
+ * 02110-1301, USA.
  *
  * @endif
  */
@@ -46,7 +46,6 @@ struct scew_attribute
 
 // Public
 
-
 // Allocation
 
 scew_attribute*
@@ -55,8 +54,7 @@ scew_attribute_create (XML_Char const *name, XML_Char const *value)
   assert (name != NULL);
   assert (value != NULL);
 
-  scew_attribute *attribute =
-    (scew_attribute*) calloc (1, sizeof (scew_attribute));
+  scew_attribute *attribute = calloc (1, sizeof (scew_attribute));
 
   if (attribute == NULL)
     {
@@ -74,8 +72,7 @@ scew_attribute_create (XML_Char const *name, XML_Char const *value)
 scew_attribute*
 scew_attribute_copy (scew_attribute const *attribute)
 {
-  scew_attribute *new_attr =
-    (scew_attribute *) calloc (1, sizeof (scew_attribute));
+  scew_attribute *new_attr = calloc (1, sizeof (scew_attribute));
 
   if (new_attr != NULL)
     {

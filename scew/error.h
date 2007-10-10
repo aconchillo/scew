@@ -1,10 +1,9 @@
 /**
- *
  * @file     error.h
  * @brief    SCEW error handling functions
  * @author   Aleix Conchillo Flaque <aleix@member.fsf.org>
  * @date     Mon May 05, 2003 10:29
- * @ingroup  SCEWError, SCEWErrorExpat
+ * @ingroup  SCEWError, SCEWErrorCodes, SCEWErrorExpat
  *
  * @if copyright
  *
@@ -22,7 +21,8 @@
  *
  * You should have received a copy of the GNU Lesser General Public
  * License along with this library; if not, write to the Free Software
- * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307, USA.
+ * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA
+ * 02110-1301, USA.
  *
  * @endif
  */
@@ -46,10 +46,15 @@ extern "C" {
 #endif /* __cplusplus */
 
 /**
+ * @defgroup SCEWErrorCodes Codes and descriptions
+ * @ingroup SCEWError
+ */
+
+/**
  * This is the type declaration of the SCEW error. That is, an
  * enumeration of all SCEW possible errors.
  *
- * @ingroup SCEWError
+ * @ingroup SCEWErrorCodes
  */
 typedef enum {
   scew_error_none,		/**< No error has occured. */
@@ -70,7 +75,7 @@ typedef enum {
  * @see scew_error_expat_code
  * @see scew_error_expat_string
  *
- * @ingroup SCEWError
+ * @ingroup SCEWErrorCodes
  */
 extern scew_error scew_error_code (void);
 
@@ -80,12 +85,16 @@ extern scew_error scew_error_code (void);
  * @note if an unknown error code is given a non thread safe string is
  * returned.
  *
- * @ingroup SCEWError
+ * @ingroup SCEWErrorCodes
  */
 extern XML_Char const* scew_error_string (scew_error code);
 
+
 /**
- * @defgroup SCEWErrorExpat Expat
+ * @defgroup SCEWErrorExpat Expat errors
+ *
+ * Routines to access Expat internal error information.
+ *
  * @ingroup SCEWError
  */
 

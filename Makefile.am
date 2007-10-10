@@ -5,11 +5,14 @@
 # Copyright (C) 2002, 2003, 2004, 2007 Aleix Conchillo Flaque
 #
 
-SUBDIRS = doc etc win32 scew examples tests
+SUBDIRS = doc etc win32 scew tests
 
 EXTRA_DIST = INSTALL.WIN32
 
-.PHONY: doc
+.PHONY: doc examples
+
+examples:
+	(cd examples && $(MAKE))
 
 if DOC
 
