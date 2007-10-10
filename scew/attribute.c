@@ -35,7 +35,7 @@
 #include <assert.h>
 
 
-/* Private */
+// Private
 
 struct scew_attribute
 {

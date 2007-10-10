@@ -176,7 +176,7 @@ START_TEST (test_hierarchy_basic)
                   "Element has wrong parent");
 
       scew_element *sub_child =
-        scew_element_add_new_element (child, SUB_NAME, CONTENTS);
+        scew_element_add_pair (child, SUB_NAME, CONTENTS);
 
       CHECK_PTR (sub_child, "Unable to create sub-child");
 
@@ -252,6 +252,25 @@ START_TEST (test_hierarchy_delete)
     }
 
   CHECK_U_INT (scew_element_count (element), N_ELEMENTS,
+               "Number of children mismatch");
+
+  // Delete first child
+  unsigned int total = N_ELEMENTS;
+
+  scew_element_delete_by_name (element, NAME);
+  --total;
+
+  CHECK_U_INT (scew_element_count (element), total,
+               "Number of children mismatch");
+
+  // Delete five next child
+  for (unsigned int i = 0; i < 5; ++i)
+    {
+      scew_element_delete_by_index (element, i);
+    }
+  total -= 5;
+
+  CHECK_U_INT (scew_element_count (element), total,
                "Number of children mismatch");
 
   scew_element_free (element);

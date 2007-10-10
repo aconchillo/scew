@@ -277,9 +277,9 @@ extern scew_element* scew_element_add (scew_element *element,
  *
  * @ingroup SCEWElementHier
  */
-extern scew_element* scew_element_add_new_element (scew_element *element,
-                                                   XML_Char const *name,
-                                                   XML_Char const *contents);
+extern scew_element* scew_element_add_pair (scew_element *element,
+                                            XML_Char const *name,
+                                            XML_Char const *contents);
 
 /**
  * Adds a @a child to given @a element. Note that the element being
@@ -304,6 +304,18 @@ extern scew_element* scew_element_add_element (scew_element *element,
  * @param element
  */
 extern void scew_element_delete_all (scew_element *element);
+
+/**
+ * Deletes the first child of the given @a element that matches @a
+ * name.
+ *
+ * @pre element != NULL
+ * @pre name != NULL
+ *
+ * @ingroup SCEWElementHier
+ */
+extern void scew_element_delete_all_by_name (scew_element *element,
+                                             XML_Char const *name);
 
 /**
  * Deletes the first child of the given @a element that matches @a

@@ -21,10 +21,10 @@ struct scew_list
 };
 
 
-/* Public */
+// Public
 
 
-/* Allocation */
+// Allocation
 
 scew_list*
 scew_list_create (void *data)
@@ -53,7 +53,7 @@ scew_list_free (scew_list *list)
 }
 
 
-/* Accessors */
+// Accessors
 
 void*
 scew_list_data (scew_list *list)
@@ -78,7 +78,7 @@ scew_list_size (scew_list *list)
 }
 
 
-/* Modifiers */
+// Modifiers
 
 scew_list*
 scew_list_append (scew_list *list, void *data)
@@ -168,7 +168,7 @@ scew_list_delete_item (scew_list *list, scew_list *item)
         {
           item->prev->next = item->next;
         }
-      if (item->next)
+      if (item->next != NULL)
         {
           item->next->prev = item->prev;
         }
@@ -178,8 +178,6 @@ scew_list_delete_item (scew_list *list, scew_list *item)
           list = list->next;
         }
 
-      item->next = NULL;
-      item->prev = NULL;
       free (item);
     }
 
@@ -187,7 +185,7 @@ scew_list_delete_item (scew_list *list, scew_list *item)
 }
 
 
-/* Traverse */
+// Traverse
 
 scew_list*
 scew_list_first (scew_list *list)
@@ -238,7 +236,7 @@ scew_list_foreach (scew_list *list, scew_list_function func, void *user_data)
 }
 
 
-/* Search */
+// Search
 
 scew_list*
 scew_list_find (scew_list *list, void *data)

@@ -163,7 +163,7 @@ scew_element_by_index (scew_element const *element, unsigned int idx)
   assert (element != NULL);
   assert (idx < element->n_children);
 
-  scew_list *item = scew_list_by_index (element->children , idx);
+  scew_list *item = scew_list_by_index (element->children, idx);
 
   return (item == NULL) ? NULL : (scew_element *) scew_list_data (item);
 }
@@ -335,9 +335,9 @@ scew_element_add (scew_element *element, XML_Char const *name)
 }
 
 scew_element*
-scew_element_add_new_element (scew_element *element,
-                              XML_Char const *name,
-                              XML_Char const *contents)
+scew_element_add_pair (scew_element *element,
+                       XML_Char const *name,
+                       XML_Char const *contents)
 {
   assert (element != NULL);
   assert (name != NULL);
@@ -392,13 +392,13 @@ scew_element_delete_all (scew_element *element)
 {
   assert (element != NULL);
 
-  scew_list *list = element->children;
+  scew_list* list = element->children;
 
   while (list != NULL)
     {
       scew_element *aux = scew_list_data (list);
-      scew_element_free (aux);
       list = scew_list_next (list);
+      scew_element_free (aux);
     }
 
   // Do not free element->children as childs are already detached
@@ -409,9 +409,26 @@ scew_element_delete_all (scew_element *element)
 }
 
 void
+scew_element_delete_all_by_name (scew_element *element, XML_Char const *name)
+{
+  assert (element != NULL);
+  assert (name != NULL);
+
+  scew_element *child = scew_element_by_name (element, name);
+
+  while (child != NULL)
+    {
+      scew_element_free (child);
+
+      child = scew_element_by_name (element, name);
+    }
+}
+
+void
 scew_element_delete_by_name (scew_element *element, XML_Char const *name)
 {
   assert (element != NULL);
+  assert (name != NULL);
 
   scew_element_free (scew_element_by_name (element, name));
 }
@@ -430,15 +447,27 @@ scew_element_detach (scew_element *element)
 {
   assert (element != NULL);
 
-  if (element->parent != NULL)
+  scew_element *parent = element->parent;
+
+  if (parent != NULL)
     {
-      scew_list_delete_item (element->parent->children, element->myself);
-      --element->parent->n_children;
-      if (element->parent->n_children == 0)
+      if (parent->last_child == element->myself)
         {
-          element->parent->children = NULL;
+          parent->last_child = scew_list_previous (element->myself);
         }
+
+      parent->children = scew_list_delete_item (parent->children,
+                                                element->myself);
+
+      --parent->n_children;
+      if (parent->n_children == 0)
+        {
+          parent->children = NULL;
+          parent->last_child = NULL;
+        }
+
       element->parent = NULL;
+      element->myself = NULL;
     }
 }
 
@@ -553,8 +582,8 @@ scew_element_delete_attribute_all (scew_element *element)
   while (list != NULL)
     {
       scew_attribute *aux = scew_list_data (list);
-      scew_attribute_free (aux);
       list = scew_list_next (list);
+      scew_attribute_free (aux);
     }
   scew_list_free (element->attributes);
 
