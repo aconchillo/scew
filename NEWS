@@ -16,7 +16,7 @@ See the end for copying conditions.
      (see http://check.sf.net)
 
    - Added copy  and comparisson functions in most  SCEW types: trees,
-     elements, attributes and lists.
+     elements and attributes.
 
    - A new type, scew_list, has been defined and used for scew_element
      children and attributes. scew_list provides a general way to work

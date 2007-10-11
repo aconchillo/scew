@@ -41,6 +41,7 @@ struct scew_attribute
 {
   XML_Char *name;
   XML_Char *value;
+  scew_element *parent;
 };
 
 
@@ -171,4 +172,23 @@ scew_attribute_set_value (scew_attribute *attribute, XML_Char const *value)
     }
 
   return new_value;
+}
+
+scew_element*
+scew_attribute_parent (scew_attribute const *attribute)
+{
+  assert (attribute != NULL);
+
+  return attribute->parent;
+}
+
+void
+scew_attribute_detach (scew_attribute *attribute)
+{
+  assert (attribute != NULL);
+
+  if (attribute->parent != NULL)
+    {
+      scew_element_delete_attribute (attribute->parent, attribute);
+    }
 }

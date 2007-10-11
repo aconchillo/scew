@@ -287,8 +287,11 @@ scew_element_free_contents (scew_element *element)
 {
   assert (element != NULL);
 
-  free (element->contents);
-  element->contents = NULL;
+  if (element->contents != NULL)
+    {
+      free (element->contents);
+      element->contents = NULL;
+    }
 }
 
 
@@ -364,6 +367,7 @@ scew_element_add_element (scew_element *element, scew_element *child)
 {
   assert (element != NULL);
   assert (child != NULL);
+  assert (scew_element_parent (child) == NULL);
 
   scew_list *item = scew_list_append (element->last_child, child);
 

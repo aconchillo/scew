@@ -29,6 +29,7 @@
 #include "xprint.h"
 
 #include "element.h"
+#include "attribute.h"
 #include "str.h"
 
 #include <assert.h>

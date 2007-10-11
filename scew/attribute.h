@@ -3,8 +3,8 @@
  * @brief    Attribute's handling routines
  * @author   Aleix Conchillo Flaque <aleix@member.fsf.org>
  * @date     Mon Nov 25, 2002 00:39
- * @ingroup  SCEWAttributeAlloc, SCEWAttributeAcc, SCEWAttributeCompare
- *
+ * @ingroup  SCEWAttribute, SCEWAttributeAlloc, SCEWAttributeAcc
+ * @ingroup  SCEWAttributeCompare, SCEWAttributeHier
  * @if copyright
  *
  * Copyright (C) 2002, 2003, 2004, 2005, 2006, 2007 Aleix Conchillo Flaque
@@ -30,13 +30,15 @@
 /**
  * @defgroup SCEWAttribute Attributes
  *
- * Attribute related functions. SCEW provides functions to access and
- * manipulate the attributes of all the elements in a tree. XML
- * element attributes are basically a name-value pair.
+ * SCEW provides functions to access and manipulate the attributes of
+ * all the elements in a tree. XML element attributes are basically a
+ * name-value pair.
  */
 
 #ifndef ATTRIBUTE_H_0211250039
 #define ATTRIBUTE_H_0211250039
+
+#include "element.h"
 
 #include <expat.h>
 
@@ -45,13 +47,6 @@
 #ifdef __cplusplus
 extern "C" {
 #endif /* __cplusplus */
-
-/**
- * This is the type declaration for element attributes.
- *
- * @ingroup SCEWAttribute
- */
-typedef struct scew_attribute scew_attribute;
 
 
 /**
@@ -85,10 +80,10 @@ extern scew_attribute* scew_attribute_create (XML_Char const *name,
 extern scew_attribute* scew_attribute_copy (scew_attribute const *attribute);
 
 /**
- * Frees an @a attribute. That is, its name and value. You should not
- * call this function with an attribute obtained from an element, but
- * created with #scew_attribute_create. If a NULL @a attribute is
- * given, this function does not have any effect.
+ * Frees the given @a attribute. That is, its name and value. You
+ * should not call this function with an attribute obtained from an
+ * element, use #scew_element_delete_attribute instead. If a NULL @a
+ * attribute is given, this function does not have any effect.
  *
  * @ingroup SCEWAttributeAlloc
  */
@@ -102,8 +97,8 @@ extern void scew_attribute_free (scew_attribute *attribute);
  */
 
 /**
- * Performs a comparisson of the given attributes. That is, name and
- * value must be equal in both attributes.
+ * Performs a comparisson between the given attributes. That is, name
+ * and value must be equal in both attributes.
  *
  * @pre a != NULL
  * @pre b != NULL
@@ -123,7 +118,7 @@ extern bool scew_attribute_compare (scew_attribute const *a,
  */
 
 /**
- * Returns the @a attribute's name.
+ * Returns the given @a attribute's name.
  *
  * @pre attribute != NULL
  *
@@ -132,7 +127,7 @@ extern bool scew_attribute_compare (scew_attribute const *a,
 extern XML_Char const* scew_attribute_name (scew_attribute const *attribute);
 
 /**
- * Returns the @a attribute's value.
+ * Returns the given @a attribute's value.
  *
  * @pre attribute != NULL
  *
@@ -169,6 +164,37 @@ extern XML_Char const* scew_attribute_set_name (scew_attribute *attribute,
  */
 extern XML_Char const* scew_attribute_set_value (scew_attribute *attribute,
 						 XML_Char const *value);
+
+
+/**
+ * @defgroup SCEWAttributeHier Hierarchy
+ * Handle attribute's hierarchy.
+ * @ingroup SCEWAttribute
+ */
+
+/**
+ * Returns the given @a attribute's parent.
+ *
+ * @pre attribute != NULL
+ *
+ * @return the given attribute's parent, or NULL if attribute has no
+ * parent.
+ *
+ * @ingroup SCEWAttributeHier
+ */
+extern scew_element* scew_attribute_parent (scew_attribute const *attribute);
+
+/**
+ * Detaches the given @a attribute from its parent, if any. This is
+ * the same as deleting the attribute from its parent by using
+ * #scew_element_delete_attribute. If the attribute has no parent,
+ * this function does not have any effect.
+ *
+ * @pre attribute != NULL
+ *
+ * @ingroup SCEWAttributeHier
+ */
+extern void scew_attribute_detach (scew_attribute *attribute);
 
 #ifdef __cplusplus
 }
