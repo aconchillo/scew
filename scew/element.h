@@ -455,8 +455,7 @@ scew_element_attribute_by_index (scew_element const *element,
  * Adds an existent @a attribute to the given @a element. If the @a
  * attribute already exists, the old value will be overwritten. It is
  * important to note that the given attribute will be part of the
- * element's attributes (ownership is lost), so it should not be
- * manually freed.
+ * element's attributes (ownership is lost).
  *
  * @pre element != NULL
  * @pre attribute != NULL

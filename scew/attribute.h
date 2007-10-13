@@ -5,6 +5,7 @@
  * @date     Mon Nov 25, 2002 00:39
  * @ingroup  SCEWAttribute, SCEWAttributeAlloc, SCEWAttributeAcc
  * @ingroup  SCEWAttributeCompare, SCEWAttributeHier
+ *
  * @if copyright
  *
  * Copyright (C) 2002, 2003, 2004, 2005, 2006, 2007 Aleix Conchillo Flaque
@@ -183,6 +184,18 @@ extern XML_Char const* scew_attribute_set_value (scew_attribute *attribute,
  * @ingroup SCEWAttributeHier
  */
 extern scew_element* scew_attribute_parent (scew_attribute const *attribute);
+
+/**
+ * Sets a new @a parent to the given @a attribute. If the attribute is
+ * part of another element, it is first detached.
+ *
+ * @pre attribute != NULL
+ * @pre parent != NULL
+ *
+ * @ingroup SCEWAtrtibuteHier
+ */
+extern void scew_attribute_set_parent (scew_attribute *attribute,
+                                       scew_element const *parent);
 
 /**
  * Detaches the given @a attribute from its parent, if any. This is

@@ -183,6 +183,18 @@ scew_attribute_parent (scew_attribute const *attribute)
 }
 
 void
+scew_attribute_set_parent (scew_attribute *attribute,
+                           scew_element const *parent)
+{
+  assert (attribute != NULL);
+  assert (parent != NULL);
+
+  scew_attribute_detach (attribute);
+
+  attribute->parent = (scew_element *) parent;
+}
+
+void
 scew_attribute_detach (scew_attribute *attribute)
 {
   assert (attribute != NULL);

@@ -534,6 +534,8 @@ scew_element_add_attribute (scew_element *element, scew_attribute *attribute)
   assert (element != NULL);
   assert (attribute != NULL);
 
+  scew_attribute_detach (attribute);
+
   scew_list *list = scew_list_append (element->attributes, attribute);
 
   if (list == NULL)
@@ -542,6 +544,7 @@ scew_element_add_attribute (scew_element *element, scew_attribute *attribute)
     }
   else
     {
+      scew_attribute_set_parent (attribute, element);
       element->attributes = list;
     }
   return (list == NULL) ? NULL : attribute;
