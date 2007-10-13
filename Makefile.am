@@ -12,7 +12,7 @@ EXTRA_DIST = INSTALL.WIN32
 .PHONY: doc examples
 
 examples:
-	(cd examples && $(MAKE))
+	($(MAKE) && cd examples && $(MAKE))
 
 if DOC
 
