@@ -484,9 +484,9 @@ extern scew_attribute* scew_element_add_attribute (scew_element *element,
  *
  * @ingroup SCEWElementAttr
  */
-extern scew_attribute* scew_element_add_new_attribute (scew_element *element,
-                                                       XML_Char const *name,
-                                                       XML_Char const *value);
+extern scew_attribute* scew_element_add_attribute_pair (scew_element *element,
+                                                        XML_Char const *name,
+                                                        XML_Char const *value);
 
 /**
  * Deletes all the attributes of the given @a element.

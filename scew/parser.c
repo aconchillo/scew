@@ -203,7 +203,7 @@ scew_parser_load_stream (scew_parser *parser, char const *buffer,
             }
 	  start = end + 1;
         }
-      end++;
+      ++end;
     }
 
   return true;

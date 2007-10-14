@@ -546,14 +546,15 @@ scew_element_add_attribute (scew_element *element, scew_attribute *attribute)
     {
       scew_attribute_set_parent (attribute, element);
       element->attributes = list;
+      ++element->n_attributes;
     }
   return (list == NULL) ? NULL : attribute;
 }
 
 scew_attribute*
-scew_element_add_new_attribute (scew_element *element,
-                                XML_Char const *name,
-                                XML_Char const *value)
+scew_element_add_attribute_pair (scew_element *element,
+                                 XML_Char const *name,
+                                 XML_Char const *value)
 {
   assert (element != NULL);
   assert (name != NULL);

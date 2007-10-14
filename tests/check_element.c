@@ -132,6 +132,9 @@ END_TEST
 START_TEST (test_attributes)
 {
   static XML_Char const *NAME = "root";
+  static XML_Char const *ATTRIBUTE = "attribute";
+  static XML_Char const *VALUE = "value";
+  static unsigned int const N_ATTRIBUTES = 5;
 
   scew_element *element = scew_element_create (NAME);
 
@@ -142,6 +145,23 @@ START_TEST (test_attributes)
 
   CHECK_U_INT (scew_element_attribute_count (element), 0,
                "Element has no attributes");
+
+  for (unsigned int i = 0; i < N_ATTRIBUTES; ++i)
+    {
+      enum { MAX_BUFFER = 100 };
+      XML_Char attr_name[MAX_BUFFER];
+      XML_Char value[MAX_BUFFER];
+      scew_sprintf (attr_name, "%s_%d", ATTRIBUTE, i);
+      scew_sprintf (value, "%s_%d", VALUE, i);
+
+      scew_attribute *attr =
+        scew_element_add_attribute_pair (element, attr_name, value);
+
+      CHECK_PTR (attr, "Unable to create attribute");
+    }
+
+  CHECK_U_INT (scew_element_attribute_count (element), N_ATTRIBUTES,
+               "Number of attributes mismatch");
 
   scew_element_free (element);
 }

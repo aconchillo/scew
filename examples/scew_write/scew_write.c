@@ -75,10 +75,10 @@ main(int argc, char *argv[])
 
   /* Add an element with an attribute pair (name, value). */
   element = scew_element_add (root, "element");
-  scew_element_add_new_attribute (element, "attribute", "value");
+  scew_element_add_attribute_pair (element, "attribute", "value");
 
   element = scew_element_add (root, "element");
-  scew_element_add_new_attribute (element, "attribute1", "value1");
+  scew_element_add_attribute_pair (element, "attribute1", "value1");
 
   /**
    * Another way to add an attribute. You loose attribute ownership,
@@ -89,19 +89,19 @@ main(int argc, char *argv[])
 
   element = scew_element_add (root, "element");
   scew_element *sub_element = scew_element_add (element, "sub_element");
-  scew_element_add_new_attribute (sub_element, "attribute", "value");
+  scew_element_add_attribute_pair (sub_element, "attribute", "value");
 
   sub_element = scew_element_add (element, "sub_element");
-  scew_element_add_new_attribute (sub_element, "attribute1", "value1");
-  scew_element_add_new_attribute (sub_element, "attribute2", "value2");
+  scew_element_add_attribute_pair (sub_element, "attribute1", "value1");
+  scew_element_add_attribute_pair (sub_element, "attribute2", "value2");
 
   scew_element *sub_sub_element = scew_element_add (sub_element,
                                                     "sub_sub_element");
-  scew_element_add_new_attribute (sub_sub_element, "attribute1", "value1");
-  scew_element_add_new_attribute (sub_sub_element, "attribute2", "value2");
-  scew_element_add_new_attribute (sub_sub_element, "attribute3", "value3");
+  scew_element_add_attribute_pair (sub_sub_element, "attribute1", "value1");
+  scew_element_add_attribute_pair (sub_sub_element, "attribute2", "value2");
+  scew_element_add_attribute_pair (sub_sub_element, "attribute3", "value3");
   /* Check attribute2 replacement. */
-  scew_element_add_new_attribute (sub_sub_element, "attribute2", "new_value2");
+  scew_element_add_attribute_pair (sub_sub_element, "attribute2", "new_value2");
   scew_element_set_contents (sub_sub_element, "element contents.");
 
   /**

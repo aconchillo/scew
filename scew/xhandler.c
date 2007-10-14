@@ -99,7 +99,7 @@ start_handler (void *data, XML_Char const *elem, XML_Char const **attr)
 
   for (i = 0; attr[i]; i += 2)
     {
-      scew_element_add_new_attribute (parser->current, attr[i], attr[i + 1]);
+      scew_element_add_attribute_pair (parser->current, attr[i], attr[i + 1]);
     }
 }
 

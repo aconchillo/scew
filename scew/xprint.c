@@ -42,7 +42,7 @@ indent_print (FILE *out, unsigned int indent)
 {
   unsigned int i = 0;
 
-  for (i = 0; i < indent * indent_size; i++)
+  for (i = 0; i < indent * indent_size; ++i)
     {
       scew_fprintf (out, _XT (" "));
     }

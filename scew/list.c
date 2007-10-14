@@ -91,7 +91,7 @@ scew_list_size (scew_list *list)
 
   while (list != NULL)
     {
-      total++;
+      ++total;
       list = list->next;
     }
 
@@ -299,7 +299,7 @@ scew_list_by_index (scew_list *list, unsigned int idx)
   while ((list != NULL) && (count < idx))
     {
       list = list->next;
-      count++;
+      ++count;
     }
 
   return list;
