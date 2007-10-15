@@ -9,17 +9,19 @@ INCLUDES = -I$(top_srcdir)
 
 if CHECK_TESTS
 
-COMMONSRC = main.c test.h
+COMMON = main.c test.h
 
 TESTS = check_element check_list
 
 check_PROGRAMS = check_element check_list
 
-check_element_SOURCES = $(COMMONSRC) check_element.c $(top_builddir)/scew/element.h
+check_element_SOURCES = $(COMMON) check_element.c \
+	$(top_builddir)/scew/attribute.h $(top_builddir)/scew/element.h \
+	$(top_builddir)/scew/list.h
 check_element_CFLAGS = @CHECK_CFLAGS@
 check_element_LDADD = @CHECK_LIBS@ $(top_builddir)/scew/libscew.la
 
-check_list_SOURCES = $(COMMONSRC) check_list.c $(top_builddir)/scew/list.h
+check_list_SOURCES = $(COMMON) check_list.c $(top_builddir)/scew/list.h
 check_list_CFLAGS = @CHECK_CFLAGS@
 check_list_LDADD = @CHECK_LIBS@ $(top_builddir)/scew/libscew.la
 
