@@ -1,6 +1,6 @@
 SCEW -- History of visible changes.
 
-Copyright (C) 2002, 2003, 2004, 2005, 2006, 2007 Aleix Conchillo Flaque
+Copyright (C) 2002-2008 Aleix Conchillo Flaqué
 
 See the end for copying conditions.
 
@@ -200,7 +200,7 @@ See the end for copying conditions.
    - Compilation warnings fixed.
 
    - scew_element_del_attr() segmentation fault fixed.
-     (reported by Jussi M�ki)
+     (reported by Jussi Mäki)
 
 ------------------------------------------------------------------------
 
@@ -237,7 +237,7 @@ See the end for copying conditions.
 
 * Copying information:
 
-Copyright (C) 2002, 2003, 2004 Aleix Conchillo Flaque
+Copyright (C) 2002-2008 Aleix Conchillo Flaqué
 
    Permission  is granted  to anyone  to make  or  distribute verbatim
    copies of this  document as received, in any  medium, provided that
