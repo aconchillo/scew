@@ -7,7 +7,7 @@
  *
  * @if copyright
  *
- * Copyright (C) 2003, 2004, 2005, 2006, 2007 Aleix Conchillo Flaque
+ * Copyright (C) 2003-2008 Aleix Conchillo Flaque
  *
  * SCEW is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -56,14 +56,15 @@ extern "C" {
  *
  * @ingroup SCEWErrorCodes
  */
-typedef enum {
-  scew_error_none,		/**< No error has occured. */
-  scew_error_no_memory,		/**< No more memory available. */
-  scew_error_io,		/**< General Input/Output error. */
-  scew_error_callback,		/**< Callback error. */
-  scew_error_expat,		/**< Expat parser error. */
-  scew_error_unknown		/**< end of list marker */
-} scew_error;
+typedef enum
+  {
+    scew_error_none,		/**< No error has occured. */
+    scew_error_no_memory,       /**< No more memory available. */
+    scew_error_io,		/**< General Input/Output error. */
+    scew_error_callback,        /**< Callback error. */
+    scew_error_expat,		/**< Expat parser error. */
+    scew_error_unknown		/**< end of list marker */
+  } scew_error;
 
 /**
  * Returns the SCEW internal error code. If the error code returned is

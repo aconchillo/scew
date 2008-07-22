@@ -6,7 +6,7 @@
  *
  * @if copyright
  *
- * Copyright (C) 2003, 2004, 2005, 2006, 2007 Aleix Conchillo Flaque
+ * Copyright (C) 2003-2008 Aleix Conchillo Flaque
  *
  * SCEW is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -31,11 +31,10 @@
 
 #include "error.h"
 
-
 /* Sets SCEW internal last error. */
-extern void set_last_error (scew_error code);
+extern void scew_error_set_last_error_ (scew_error code);
 
 /* Gets SCEW internal last error. */
-extern scew_error get_last_error (void);
+extern scew_error scew_error_last_error_ (void);
 
 #endif /* XERROR_H_0305051040 */

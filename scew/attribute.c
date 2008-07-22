@@ -6,7 +6,7 @@
  *
  * @if copyright
  *
- * Copyright (C) 2002, 2003, 2004, 2005, 2006, 2007 Aleix Conchillo Flaque
+ * Copyright (C) 2002-2008 Aleix Conchillo Flaque
  *
  * SCEW is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -57,14 +57,14 @@ scew_attribute_create (XML_Char const *name, XML_Char const *value)
 
   scew_attribute *attribute = calloc (1, sizeof (scew_attribute));
 
-  if (attribute == NULL)
-    {
-      set_last_error (scew_error_no_memory);
-    }
-  else
+  if (attribute != NULL)
     {
       attribute->name = scew_strdup(name);
       attribute->value = scew_strdup(value);
+    }
+  else
+    {
+      scew_error_set_last_error_ (scew_error_no_memory);
     }
 
   return attribute;
@@ -141,14 +141,14 @@ scew_attribute_set_name (scew_attribute *attribute, XML_Char const *name)
   assert (name != NULL);
 
   XML_Char *new_name = scew_strdup (name);
-  if (new_name == NULL)
-    {
-      set_last_error (scew_error_no_memory);
-    }
-  else
+  if (new_name != NULL)
     {
       free (attribute->name);
       attribute->name = new_name;
+    }
+  else
+    {
+      scew_error_set_last_error_ (scew_error_no_memory);
     }
 
   return new_name;
@@ -161,14 +161,14 @@ scew_attribute_set_value (scew_attribute *attribute, XML_Char const *value)
   assert (value != NULL);
 
   XML_Char *new_value = scew_strdup (value);
-  if (new_value == NULL)
-    {
-      set_last_error (scew_error_no_memory);
-    }
-  else
+  if (new_value != NULL)
     {
       free (attribute->value);
       attribute->value = new_value;
+    }
+  else
+    {
+      scew_error_set_last_error_ (scew_error_no_memory);
     }
 
   return new_value;

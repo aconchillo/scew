@@ -6,7 +6,7 @@
  *
  * @if copyright
  *
- * Copyright (C) 2007 Aleix Conchillo Flaque
+ * Copyright (C) 2007-2008 Aleix Conchillo Flaque
  *
  * SCEW is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public

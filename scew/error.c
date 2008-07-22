@@ -6,7 +6,7 @@
  *
  * @if copyright
  *
- * Copyright (C) 2003, 2004, 2005, 2006, 2007 Aleix Conchillo Flaque
+ * Copyright (C) 2003-2008 Aleix Conchillo Flaque
  *
  * SCEW is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -39,7 +39,7 @@
 scew_error
 scew_error_code (void)
 {
-  return get_last_error();
+  return scew_error_last_error_ ();
 }
 
 XML_Char const*
@@ -56,20 +56,18 @@ scew_error_string (scew_error code)
 
   assert (sizeof(message) / sizeof(message[0]) == scew_error_unknown);
 
-  if (code >= scew_error_unknown)
+  if (code < scew_error_unknown)
     {
-      /**
-       * This is not thread safe. Even though, no one should get in
-       * here.
-       */
+      return message[code];
+    }
+  else
+    {
+      // This is not thread safe. Even though, no one else should get
+      // in here.
       enum { MAX_BUFFER = 100 };
       static XML_Char unk_message[MAX_BUFFER];
       scew_sprintf (unk_message, _XT ("Unknown error code (%d)"), code);
       return unk_message;
-    }
-  else
-    {
-      return message[code];
     }
 }
 

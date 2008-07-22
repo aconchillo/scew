@@ -6,7 +6,7 @@
  *
  * @if copyright
  *
- * Copyright (C) 2002, 2003, 2004, 2005, 2006, 2007 Aleix Conchillo Flaque
+ * Copyright (C) 2002-2008 Aleix Conchillo Flaque
  *
  * SCEW is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -89,7 +89,7 @@ scew_element_create (XML_Char const *name)
     }
   else
     {
-      set_last_error (scew_error_no_memory);
+      scew_error_set_last_error_ (scew_error_no_memory);
     }
 
   return element;
@@ -245,14 +245,14 @@ scew_element_set_name (scew_element *element, XML_Char const *name)
   assert (name != NULL);
 
   XML_Char *new_name = scew_strdup (name);
-  if (new_name == NULL)
-    {
-      set_last_error (scew_error_no_memory);
-    }
-  else
+  if (new_name != NULL)
     {
       free (element->name);
       element->name = new_name;
+    }
+  else
+    {
+      scew_error_set_last_error_ (scew_error_no_memory);
     }
 
   return new_name;
@@ -266,17 +266,17 @@ scew_element_set_contents (scew_element *element, XML_Char const *contents)
 
   XML_Char *new_contents = scew_strdup (contents);
 
-  if (new_contents == NULL)
-    {
-      set_last_error (scew_error_no_memory);
-    }
-  else
+  if (new_contents != NULL)
     {
       if (element->contents != NULL)
         {
           free (element->contents);
         }
       element->contents = new_contents;
+    }
+  else
+    {
+      scew_error_set_last_error_ (scew_error_no_memory);
     }
 
   return new_contents;
@@ -327,15 +327,26 @@ scew_element_add (scew_element *element, XML_Char const *name)
   assert (element != NULL);
   assert (name != NULL);
 
+  scew_element *add_elem = NULL;
+
   scew_element *new_elem = scew_element_create (name);
 
-  if (new_elem == NULL)
+  if (new_elem != NULL)
     {
-      set_last_error (scew_error_no_memory);
+      add_elem = scew_element_add_element (element, new_elem);
+
+      // Delete element if it can not be added
+      if (add_elem == NULL)
+        {
+          scew_element_free (new_elem);
+        }
+    }
+  else
+    {
+      scew_error_set_last_error_ (scew_error_no_memory);
     }
 
-  return (new_elem == NULL)
-    ? NULL : scew_element_add_element (element, new_elem);
+  return add_elem;
 }
 
 scew_element*
@@ -347,19 +358,31 @@ scew_element_add_pair (scew_element *element,
   assert (name != NULL);
   assert (contents != NULL);
 
+  scew_element *add_elem = NULL;
   scew_element *new_elem = scew_element_create (name);
 
   if (new_elem != NULL)
     {
-      scew_element_set_contents (new_elem, contents);
+      XML_Char const *add_contents = scew_element_set_contents (new_elem,
+                                                                contents);
+
+      // If contents could not be created does not affect adding an
+      // element (we will treat the error below)
+      add_elem = scew_element_add_element (element, new_elem);
+
+      // Delete element if unable t add contents or new element can
+      // not be added
+      if ((add_contents == NULL) || (NULL == add_elem))
+        {
+          scew_element_free (new_elem);
+        }
     }
   else
     {
-      set_last_error (scew_error_no_memory);
+      scew_error_set_last_error_ (scew_error_no_memory);
     }
 
-  return (new_elem == NULL)
-    ? NULL : scew_element_add_element (element, new_elem);
+  return add_elem;
 }
 
 scew_element*
@@ -385,7 +408,7 @@ scew_element_add_element (scew_element *element, scew_element *child)
     }
   else
     {
-      set_last_error (scew_error_no_memory);
+      scew_error_set_last_error_ (scew_error_no_memory);
       child = NULL;
     }
 
@@ -538,15 +561,15 @@ scew_element_add_attribute (scew_element *element, scew_attribute *attribute)
 
   scew_list *list = scew_list_append (element->attributes, attribute);
 
-  if (list == NULL)
-    {
-      set_last_error (scew_error_no_memory);
-    }
-  else
+  if (list != NULL)
     {
       scew_attribute_set_parent (attribute, element);
       element->attributes = list;
       ++element->n_attributes;
+    }
+  else
+    {
+      scew_error_set_last_error_ (scew_error_no_memory);
     }
   return (list == NULL) ? NULL : attribute;
 }
@@ -560,15 +583,24 @@ scew_element_add_attribute_pair (scew_element *element,
   assert (name != NULL);
   assert (value != NULL);
 
+  scew_attribute *add_attr = NULL;
+
   scew_attribute *attribute = scew_attribute_create (name, value);
 
-  if (attribute == NULL)
+  if (attribute != NULL)
     {
-      set_last_error (scew_error_no_memory);
+      add_attr = scew_element_add_attribute (element, attribute);
+      if (add_attr == NULL)
+        {
+          scew_attribute_free (attribute);
+        }
+    }
+  else
+    {
+      scew_error_set_last_error_ (scew_error_no_memory);
     }
 
-  return (attribute == NULL) ? NULL : scew_element_add_attribute (element,
-                                                                  attribute);
+  return add_attr;
 }
 
 void

@@ -6,7 +6,7 @@
  *
  * @if copyright
  *
- * Copyright (C) 2002, 2003, 2004, 2007 Aleix Conchillo Flaque
+ * Copyright (C) 2002-2008 Aleix Conchillo Flaque
  *
  * SCEW is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -67,7 +67,7 @@ main(int argc, char *argv[])
    * "scew_test".
    */
   scew_tree *tree = scew_tree_create ();
-  scew_element *root = scew_tree_set_root (tree, "scew_test");
+  scew_element *root = scew_tree_set_root (tree, "test");
 
   /* Add an element and set element contents. */
   scew_element *element = scew_element_add (root, "element");
@@ -88,15 +88,15 @@ main(int argc, char *argv[])
   scew_element_add_attribute (element, attribute);
 
   element = scew_element_add (root, "element");
-  scew_element *sub_element = scew_element_add (element, "sub_element");
+  scew_element *sub_element = scew_element_add (element, "subelement");
   scew_element_add_attribute_pair (sub_element, "attribute", "value");
 
-  sub_element = scew_element_add (element, "sub_element");
+  sub_element = scew_element_add (element, "subelement");
   scew_element_add_attribute_pair (sub_element, "attribute1", "value1");
   scew_element_add_attribute_pair (sub_element, "attribute2", "value2");
 
   scew_element *sub_sub_element = scew_element_add (sub_element,
-                                                    "sub_sub_element");
+                                                    "subsubelement");
   scew_element_add_attribute_pair (sub_sub_element, "attribute1", "value1");
   scew_element_add_attribute_pair (sub_sub_element, "attribute2", "value2");
   scew_element_add_attribute_pair (sub_sub_element, "attribute3", "value3");
@@ -107,11 +107,14 @@ main(int argc, char *argv[])
   /**
    * Save an XML tree to a file.
    */
-  if (!scew_writer_tree_file (tree, argv[1]))
+  scew_writer *writer = scew_writer_file_create (argv[1]);
+  if (writer == NULL)
     {
       printf ("Unable to create %s\n", argv[1]);
       return EXIT_FAILURE;
     }
+
+  scew_writer_print_tree (writer, tree);
 
   /* Frees the SCEW tree */
   scew_tree_free (tree);

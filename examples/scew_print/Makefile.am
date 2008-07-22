@@ -2,7 +2,7 @@
 # Author: Aleix Conchillo Flaque <aleix@member.fsf.org>
 # Date:   Sat Nov 23, 2002 13:52
 #
-# Copyright (C) 2002, 2003, 2004, 2005 Aleix Conchillo Flaque
+# Copyright (C) 2002-2008 Aleix Conchillo Flaque
 #
 
 INCLUDES = -I$(top_srcdir)

@@ -6,7 +6,7 @@
  *
  * @if copyright
  *
- * Copyright (C) 2003, 2004, 2005, 2006, 2007 Aleix Conchillo Flaque
+ * Copyright (C) 2003-2008 Aleix Conchillo Flaque
  *
  * SCEW is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -58,15 +58,15 @@ scew_tree_create (void)
 {
   scew_tree *tree = calloc (1, sizeof (scew_tree));
 
-  if (tree == NULL)
-    {
-      set_last_error (scew_error_no_memory);
-    }
-  else
+  if (tree != NULL)
     {
       tree->version = scew_strdup (DEFAULT_XML_VERSION_);
       tree->encoding = scew_strdup (DEFAULT_ENCODING_);
       tree->standalone = true;
+    }
+  else
+    {
+      scew_error_set_last_error_ (scew_error_no_memory);
     }
 
   return tree;
@@ -99,14 +99,20 @@ scew_tree_set_root (scew_tree *tree, XML_Char const *name)
   assert (tree != NULL);
   assert (name != NULL);
 
+  scew_element *new_root = NULL;
+
   scew_element *root = scew_element_create (name);
 
-  if (root == NULL)
+  if (root != NULL)
     {
-      set_last_error (scew_error_no_memory);
+      new_root = scew_tree_set_root_element (tree, root);
+    }
+  else
+    {
+      scew_error_set_last_error_ (scew_error_no_memory);
     }
 
-  return (root == NULL) ? NULL : scew_tree_set_root_element (tree, root);
+  return new_root;
 }
 
 scew_element*

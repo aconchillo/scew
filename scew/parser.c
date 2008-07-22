@@ -6,7 +6,7 @@
  *
  * @if copyright
  *
- * Copyright (C) 2002, 2003, 2004, 2005, 2006, 2007 Aleix Conchillo Flaque
+ * Copyright (C) 2002-2008 Aleix Conchillo Flaque
  *
  * SCEW is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -53,7 +53,7 @@ scew_parser_create (void)
 
   if (parser == NULL)
     {
-      set_last_error (scew_error_no_memory);
+      scew_error_set_last_error_ (scew_error_no_memory);
       return NULL;
     }
 
@@ -93,7 +93,7 @@ scew_parser_load_file (scew_parser *parser, char const *file_name)
   FILE *in = fopen (file_name, "rb");
   if (in == NULL)
     {
-      set_last_error (scew_error_io);
+      scew_error_set_last_error_ (scew_error_io);
       return 0;
     }
 
@@ -118,14 +118,14 @@ scew_parser_load_file_fp (scew_parser *parser, FILE *in)
       int len = fread (buffer, 1, MAX_BUFFER, in);
       if (ferror (in))
         {
-	  set_last_error (scew_error_io);
+	  scew_error_set_last_error_ (scew_error_io);
 	  return false;
         }
 
       done = feof (in);
       if (!XML_Parse (parser->parser, buffer, len, done))
         {
-	  set_last_error (scew_error_expat);
+	  scew_error_set_last_error_ (scew_error_expat);
 	  return false;
         }
     }
@@ -143,7 +143,7 @@ scew_parser_load_buffer (scew_parser *parser, char const *buffer,
 
   if (!XML_Parse (parser->parser, buffer, size, 1))
     {
-      set_last_error (scew_error_expat);
+      scew_error_set_last_error_ (scew_error_expat);
       return false;
     }
 
@@ -179,7 +179,7 @@ scew_parser_load_stream (scew_parser *parser, char const *buffer,
 
 	  if (!XML_Parse (parser->parser, &buffer[start], length, 0))
             {
-	      set_last_error (scew_error_expat);
+	      scew_error_set_last_error_ (scew_error_expat);
 	      return false;
             }
 
@@ -192,7 +192,7 @@ scew_parser_load_stream (scew_parser *parser, char const *buffer,
 	      /* call the callback */
 	      if (!parser->stream_callback (parser))
                 {
-		  set_last_error (scew_error_callback);
+		  scew_error_set_last_error_ (scew_error_callback);
 		  return false;
                 }
 
@@ -250,17 +250,20 @@ init_expat_parser_ (scew_parser *parser)
   assert (parser != NULL);
 
   parser->parser = XML_ParserCreate (NULL);
-  if (parser->parser == NULL)
+
+  bool result = (parser->parser != NULL);
+
+  if (result)
     {
-      set_last_error (scew_error_no_memory);
-      return false;
+      XML_SetXmlDeclHandler (parser->parser, xmldecl_handler);
+      XML_SetElementHandler (parser->parser, start_handler, end_handler);
+      XML_SetCharacterDataHandler (parser->parser, char_handler);
+      XML_SetUserData (parser->parser, parser);
+    }
+  else
+    {
+      scew_error_set_last_error_ (scew_error_no_memory);
     }
 
-  /* initialize Expat handlers */
-  XML_SetXmlDeclHandler (parser->parser, xmldecl_handler);
-  XML_SetElementHandler (parser->parser, start_handler, end_handler);
-  XML_SetCharacterDataHandler (parser->parser, char_handler);
-  XML_SetUserData (parser->parser, parser);
-
-  return true;
+  return result;
 }

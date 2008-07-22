@@ -1,12 +1,12 @@
 /**
- * @file     xprint.h
- * @brief    SCEW print functions
+ * @file     writer_buffer.c
+ * @brief    writer.h implementation
  * @author   Aleix Conchillo Flaque <aleix@member.fsf.org>
- * @date     Sun Mar 30, 2003 13:30
+ * @date     Mon Jul 21, 2008 23:40
  *
  * @if copyright
  *
- * Copyright (C) 2003, 2004, 2005, 2006, 2007 Aleix Conchillo Flaque
+ * Copyright (C) 2008 Aleix Conchillo Flaque
  *
  * SCEW is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -26,27 +26,32 @@
  * @endif
  */
 
+#include "writer.h"
 
-#ifndef XPRINT_H_0303301330
-#define XPRINT_H_0303301330
+#include "xwriter.h"
 
-#include "tree.h"
+#include <assert.h>
 
-#include <stdio.h>
+
+// Private
 
+typedef struct
+{
+  scew_writer writer;
+  XML_Char *buffer;
+  unsigned int size;
+  unsigned int current;
+} scew_writer_buffer;
 
-/* Prints space indentation. */
-extern void indent_print (FILE *out, unsigned int indent);
+
+// Public
 
-/* Prints an XML tree into a file. */
-extern void tree_print (scew_tree const *tree, FILE *out);
+scew_writer*
+scew_writer_buffer_create (XML_Char *buffer, unsigned int size)
+{
+  assert (buffer != NULL);
+  assert (size > 0);
 
-/* Prints an XML element into a file. */
-extern void element_print (scew_element const *element,
-			   FILE *out,
-			   unsigned int indent);
+  return NULL;
+}
 
-/* Prints an XML attribute pair into a file. */
-extern void attribute_print (scew_attribute const *attribute, FILE *out);
-
-#endif /* XPRINT_H_ALEIX0303301330 */
