@@ -2,7 +2,7 @@
 # Author: Aleix Conchillo Flaque <aleix@member.fsf.org>
 # Date:   Mon Oct 07, 2002 01:56
 #
-# Copyright (C) 2002, 2003, 2004, 2005, 2006, 2007 Aleix Conchillo Flaque
+# Copyright (C) 2002-2008 Aleix Conchillo Flaque
 #
 
 #### boilerplate and flags
@@ -13,6 +13,7 @@ AM_CONFIG_HEADER(config.h)
 
 AC_ISC_POSIX
 AC_PROG_CC
+AC_PROG_CC_C99
 
 AC_DISABLE_SHARED
 AC_PROG_LIBTOOL
@@ -53,7 +54,7 @@ fi
 
 #### Unit testing framework
 
-PKG_CHECK_MODULES([CHECK], [check >= 0.9.5],
+PKG_CHECK_MODULES([CHECK], [check >= 0.9.0],
                   [enable_tests=yes], [enable_tests=no])
 
 AM_CONDITIONAL(CHECK_TESTS, test x$enable_tests = xyes)
@@ -64,7 +65,7 @@ fi
 
 ####
 
-CFLAGS="$CFLAGS -std=c99 -Wall -Werror"
+CFLAGS="$CFLAGS -Wall -Werror"
 
 if test "x$enable_debug" = "xno"; then
    CFLAGS="$CFLAGS -DNDEBUG"
