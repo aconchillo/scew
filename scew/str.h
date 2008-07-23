@@ -43,17 +43,16 @@
 
 #define _XT(str) L##str
 
+#define scew_printf wprintf
 #define scew_fprintf fwprintf
 #define scew_vfprintf vfwprintf
-#define scew_sprintf swprintf
-#define scew_vsprintf vswprintf
 
 #define scew_strcmp(s1, s2) wcscmp (s1, s2)
-#define scew_strspn(s1, s2) wcsspn (s1, s2)
-#define scew_strcpy(s1, s2) wcscpy (s1, s2)
-#define scew_strcat(s1, s2) wcscat (s1, s2)
-#define scew_strncpy(s1, s2, n) wcsncpy (s1, s2, n)
-#define scew_strncat(s1, s2, n) wcsncat (s1, s2, n)
+#define scew_strspn(wcs, accept) wcsspn (wcs, accept)
+#define scew_strcpy(dest, src) wcscpy (dest, src)
+#define scew_strcat(dest, src) wcscat (dest, src)
+#define scew_strncpy(dest, src, n) wcsncpy (dest, src, n)
+#define scew_strncat(dest, src, n) wcsncat (dest, src, n)
 #define scew_strlen(s) wcslen (s)
 
 #define scew_isalnum(c) iswalnum ((c))
@@ -74,18 +73,17 @@
 
 #define _XT(str) str
 
+#define scew_printf printf
 #define scew_fprintf fprintf
 #define scew_vfprintf vfprintf
-#define scew_sprintf sprintf
-#define scew_vsprintf vsprintf
 
 #define scew_strcmp(s1, s2) strcmp (s1, s2)
-#define scew_strspn(s1, s2) strspn (s1, s2)
-#define scew_strcpy(s1, s2) strcpy (s1, s2)
-#define scew_strcat(s1, s2) strcat (s1, s2)
-#define scew_strncpy(s1, s2, n) strncpy (s1, s2, (n))
-#define scew_strncat(s1, s2, n) strncat (s1, s2, (n))
-#define scew_strlen(s) strlen(s)
+#define scew_strspn(s, accept) strspn (s, accept)
+#define scew_strcpy(dest, src) strcpy (dest, src)
+#define scew_strcat(dest, src) strcat (dest, src)
+#define scew_strncpy(dest, src, n) strncpy (dest, src, (n))
+#define scew_strncat(dest, src, n) strncat (dest, src, (n))
+#define scew_strlen(s) strlen (s)
 
 #define scew_isalnum(c) isalnum ((unsigned char)(c))
 #define scew_isalpha(c) isalpha ((unsigned char)(c))
