@@ -71,7 +71,7 @@ main(int argc, char *argv[])
 
   /* Add an element and set element contents. */
   scew_element *element = scew_element_add (root, "element");
-  scew_element_set_contents (element, "element contents.");
+  scew_element_set_contents (element, "element contents");
 
   /* Add an element with an attribute pair (name, value). */
   element = scew_element_add (root, "element");
@@ -102,19 +102,35 @@ main(int argc, char *argv[])
   scew_element_add_attribute_pair (sub_sub_element, "attribute3", "value3");
   /* Check attribute2 replacement. */
   scew_element_add_attribute_pair (sub_sub_element, "attribute2", "new_value2");
-  scew_element_set_contents (sub_sub_element, "element contents.");
+  scew_element_set_contents (sub_sub_element, "With accents: à é è í ó ú");
 
   /**
-   * Save an XML tree to a file.
+   * Save the XML tree to a file.
    */
-  scew_writer *writer = scew_writer_file_create (argv[1]);
-  if (writer == NULL)
+  scew_writer *fp_writer = scew_writer_file_create (argv[1]);
+  if (fp_writer == NULL)
     {
       printf ("Unable to create %s\n", argv[1]);
       return EXIT_FAILURE;
     }
+  scew_writer_print_tree (fp_writer, tree);
+  scew_writer_free (fp_writer);
 
-  scew_writer_print_tree (writer, tree);
+  /**
+   * Save the XML tree to a buffer.
+   */
+  XML_Char *buffer = (XML_Char *) malloc (2000);
+  scew_writer *buf_writer = scew_writer_buffer_create (buffer, 1000);
+  if (buf_writer == NULL)
+    {
+      printf ("Unable to create writer buffer\n");
+      return EXIT_FAILURE;
+    }
+  scew_writer_print_tree (buf_writer, tree);
+  scew_writer_free (buf_writer);
+
+  scew_printf (_XT("%s"), buffer);
+  free (buffer);
 
   /* Frees the SCEW tree */
   scew_tree_free (tree);

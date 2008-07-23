@@ -559,19 +559,23 @@ scew_element_add_attribute (scew_element *element, scew_attribute *attribute)
 
   scew_attribute_detach (attribute);
 
-  scew_list *list = scew_list_append (element->attributes, attribute);
+  scew_list *item = scew_list_append (element->attributes, attribute);
 
-  if (list != NULL)
+  if (item != NULL)
     {
+      if (element->attributes == NULL)
+        {
+          element->attributes = item;
+        }
       scew_attribute_set_parent (attribute, element);
-      element->attributes = list;
+      element->last_attribute = item;
       ++element->n_attributes;
     }
   else
     {
       scew_error_set_last_error_ (scew_error_no_memory);
     }
-  return (list == NULL) ? NULL : attribute;
+  return (item == NULL) ? NULL : attribute;
 }
 
 scew_attribute*

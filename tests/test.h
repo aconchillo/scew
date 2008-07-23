@@ -4,7 +4,7 @@
  * @author   Aleix Conchillo Flaque <aleix@member.fsf.org>
  * @date     Thu Aug 09, 2007 12:25
  *
- * Copyright (C) 2007 Aleix Conchillo Flaque
+ * Copyright (C) 2007-2008 Aleix Conchillo Flaque
  *
  * This file is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -64,11 +64,11 @@
     {                                                                   \
       XML_Char const *str_a = (A);                                      \
       XML_Char const *str_b = (B);                                      \
-      if (scew_strcmp (str_a, str_b) != 0)                              \
+      if (strcmp (str_a, str_b) != 0)                                   \
         {                                                               \
           enum { CHECK_MAX_BUFFER = 250 };                              \
           static char buffer[CHECK_MAX_BUFFER];                         \
-          scew_sprintf (buffer, MSG, ##__VA_ARGS__);                    \
+          sprintf (buffer, MSG, ##__VA_ARGS__);                         \
           fail ("(%s) == (%s) \n  Actual: %s \n  Expected: %s \n  %s",  \
                 #A, #B, str_a, str_b, buffer);                          \
         }                                                               \

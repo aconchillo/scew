@@ -6,7 +6,7 @@
  *
  * @if copyright
  *
- * Copyright (C) 2007 Aleix Conchillo Flaque
+ * Copyright (C) 2007-2008 Aleix Conchillo Flaque
  *
  * SCEW is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -29,6 +29,7 @@
 #include "test.h"
 
 #include <scew/element.h>
+#include <scew/attribute.h>
 
 #include <check.h>
 
@@ -146,22 +147,42 @@ START_TEST (test_attributes)
   CHECK_U_INT (scew_element_attribute_count (element), 0,
                "Element has no attributes");
 
+  enum { MAX_BUFFER = 100 };
+  XML_Char attr_name[MAX_BUFFER];
+  XML_Char attr_value[MAX_BUFFER];
+
   for (unsigned int i = 0; i < N_ATTRIBUTES; ++i)
     {
-      enum { MAX_BUFFER = 100 };
-      XML_Char attr_name[MAX_BUFFER];
-      XML_Char value[MAX_BUFFER];
-      scew_sprintf (attr_name, "%s_%d", ATTRIBUTE, i);
-      scew_sprintf (value, "%s_%d", VALUE, i);
+      sprintf (attr_name, "%s_%d", ATTRIBUTE, i);
+      sprintf (attr_value, "%s_%d", VALUE, i);
 
       scew_attribute *attr =
-        scew_element_add_attribute_pair (element, attr_name, value);
+        scew_element_add_attribute_pair (element, attr_name, attr_value);
 
       CHECK_PTR (attr, "Unable to create attribute");
     }
 
   CHECK_U_INT (scew_element_attribute_count (element), N_ATTRIBUTES,
                "Number of attributes mismatch");
+
+  unsigned int i = 0;
+  scew_list *list = scew_element_attributes (element);
+  while (list != NULL)
+    {
+      scew_attribute *attr = scew_list_data (list);
+
+      sprintf (attr_name, "%s_%d", ATTRIBUTE, i);
+      sprintf (attr_value, "%s_%d", VALUE, i);
+
+      CHECK_STR (scew_attribute_name (attr), attr_name,
+                 "Attribute name do not match");
+      CHECK_STR (scew_attribute_value (attr), attr_value,
+                 "Attribute value do not match");
+
+      list = scew_list_next (list);
+
+      i += 1;
+    }
 
   scew_element_free (element);
 }
