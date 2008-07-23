@@ -108,14 +108,11 @@ scew_list_append (scew_list *list, void *data)
 
   scew_list *item = scew_list_create (data);
 
-  if (item != NULL)
+  if ((item != NULL) && (list != NULL))
     {
-      if (list != NULL)
-        {
-          scew_list *last = scew_list_last (list);
-          last->next = item;
-          item->prev = last;
-        }
+      scew_list *last = scew_list_last (list);
+      last->next = item;
+      item->prev = last;
     }
 
   return item;
@@ -128,14 +125,11 @@ scew_list_prepend (scew_list *list, void *data)
 
   scew_list *item = scew_list_create (data);
 
-  if (item != NULL)
+  if ((item != NULL) && (list != NULL))
     {
-      if (list != NULL)
-        {
-          scew_list *first = scew_list_first (list);
-          first->prev = item;
-          item->next = first;
-        }
+      scew_list *first = scew_list_first (list);
+      first->prev = item;
+      item->next = first;
     }
 
   return item;
