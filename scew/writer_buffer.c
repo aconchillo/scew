@@ -29,8 +29,12 @@
 #include "writer.h"
 
 #include "xwriter.h"
+#include "xerror.h"
+
+#include "str.h"
 
 #include <assert.h>
+#include <stdarg.h>
 
 
 // Private
@@ -39,9 +43,13 @@ typedef struct
 {
   scew_writer writer;
   XML_Char *buffer;
+  XML_Char *temp_buffer;
   unsigned int size;
   unsigned int current;
 } scew_writer_buffer;
+
+static bool buffer_close_ (scew_writer *writer);
+static bool buffer_printf_ (scew_writer *writer, XML_Char const *format, ...);
 
 
 // Public
@@ -52,6 +60,85 @@ scew_writer_buffer_create (XML_Char *buffer, unsigned int size)
   assert (buffer != NULL);
   assert (size > 0);
 
-  return NULL;
+  scew_writer_buffer *buf_writer = calloc (1, sizeof (scew_writer_buffer));
+
+  if (buf_writer != NULL)
+    {
+      buf_writer->temp_buffer = calloc (1, sizeof (XML_Char) * size);
+
+      if (buf_writer != NULL)
+        {
+          buffer[0] = '\0';
+          buf_writer->buffer = buffer;
+          buf_writer->size = size;
+          buf_writer->current = 0;
+
+          scew_writer *writer = (scew_writer *) buf_writer;
+          writer->close = buffer_close_;
+          writer->printf = buffer_printf_;
+
+          scew_writer_set_indented (writer, true);
+          scew_writer_set_indent_spaces (writer, DEFAULT_INDENT_SPACES_);
+        }
+      else
+        {
+          free (buf_writer);
+          scew_error_set_last_error_ (scew_error_no_memory);
+        }
+    }
+  else
+    {
+      scew_error_set_last_error_ (scew_error_no_memory);
+    }
+
+  return (scew_writer *) buf_writer;
 }
 
+
+// Private
+
+bool
+buffer_close_ (scew_writer *writer)
+{
+  scew_writer_buffer *buf_writer = (scew_writer_buffer *) writer;
+
+  if (buf_writer->temp_buffer != NULL)
+    {
+      free (buf_writer->temp_buffer);
+    }
+
+  return true;
+}
+
+bool
+buffer_printf_ (scew_writer *writer, XML_Char const *format, ...)
+{
+  assert (writer != NULL);
+  assert (format != NULL);
+
+  va_list args;
+
+  va_start (args, format);
+
+  scew_writer_buffer *buf_writer = (scew_writer_buffer *) writer;
+
+  size_t maxlen = buf_writer->size - buf_writer->current;
+
+#ifdef XML_UNICODE_WCHAR_T
+  int written = vswprintf (buf_writer->temp_buffer, maxlen, format, args);
+#else
+  int written = vsprintf (buf_writer->temp_buffer, format, args);
+#endif
+
+  bool result = (written != -1) && (written <= maxlen);
+
+  if (result)
+    {
+      scew_strcat (buf_writer->buffer, buf_writer->temp_buffer);
+      buf_writer->current += written;
+    }
+
+  va_end (args);
+
+  return result;
+}
