@@ -68,7 +68,7 @@ scew_writer_close (scew_writer *writer)
 {
   assert (writer != NULL);
 
-  return writer->close (writer);
+  return (writer->close != NULL) ? writer->close (writer) : true;
 }
 
 void

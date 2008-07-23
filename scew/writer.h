@@ -46,8 +46,6 @@ typedef struct scew_writer scew_writer;
 
 extern scew_writer* scew_writer_file_create (char const *file_name);
 
-extern scew_writer* scew_writer_fp_create (FILE *file);
-
 extern scew_writer* scew_writer_buffer_create (XML_Char *buffer,
                                                unsigned int size);
 
