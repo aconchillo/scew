@@ -39,10 +39,11 @@
 
 // Private
 
-static void print_eol_ (scew_writer *writer);
-static void print_indent_ (scew_writer *writer);
+static bool print_eol_ (scew_writer *writer);
+static bool print_indent_ (scew_writer *writer);
 static bool print_element_header_ (scew_writer *writer,
-                                   scew_element const *element);
+                                   scew_element const *element,
+                                   bool *closed);
 
 
 // Public
@@ -81,7 +82,7 @@ scew_writer_free (scew_writer *writer)
     }
 }
 
-void
+bool
 scew_writer_print_tree (scew_writer *writer, scew_tree const *tree)
 {
   assert (writer != NULL);
@@ -91,46 +92,64 @@ scew_writer_print_tree (scew_writer *writer, scew_tree const *tree)
   XML_Char const *encoding = scew_tree_xml_encoding (tree);
   bool standalone = scew_tree_xml_standalone (tree);
 
-  writer->printf (writer, _XT("<?xml version=\"%s\""), version);
+  bool result = writer->printf (writer, _XT("<?xml version=\"%s\""), version);
   if (encoding)
     {
-      writer->printf (writer, _XT(" encoding=\"%s\""), encoding);
+      result = result && writer->printf (writer, _XT(" encoding=\"%s\""),
+                                         encoding);
     }
-  writer->printf (writer, _XT(" standalone=\"%s\"?>\n"),
-                  standalone ? _XT ("yes") : _XT ("no"));
+  result = result && writer->printf (writer, _XT(" standalone=\"%s\"?>\n"),
+                                     standalone ? _XT ("yes") : _XT ("no"));
 
-  scew_writer_print_element (writer, scew_tree_root (tree));
+  result = result && scew_writer_print_element (writer, scew_tree_root (tree));
+
+  if (!result)
+    {
+      scew_error_set_last_error_ (scew_error_io);
+    }
+
+  return result;
 }
 
-void
+bool
 scew_writer_print_element (scew_writer *writer, scew_element const *element)
 {
   assert (writer != NULL);
   assert (element != NULL);
 
-  print_indent_ (writer);
+  bool result = print_indent_ (writer);
 
-  bool closed = print_element_header_ (writer, element);
+  bool closed = false;
+
+  result = result && print_element_header_ (writer, element, &closed);
 
   if (!closed)
     {
-      scew_writer_print_element_children (writer, element);
+      result = result && scew_writer_print_element_children (writer, element);
 
       XML_Char const *contents = scew_element_contents (element);
       if (contents != NULL)
         {
-          writer->printf (writer, contents);
+          result = result && writer->printf (writer, contents);
         }
       else
         {
-          print_indent_ (writer);
+          result = result && print_indent_ (writer);
         }
-      writer->printf (writer, _XT ("</%s>"), scew_element_name (element));
-      print_eol_ (writer);
+      result = result && writer->printf (writer, _XT ("</%s>"),
+                                         scew_element_name (element));
+      result = result && print_eol_ (writer);
     }
+
+  if (!result)
+    {
+      scew_error_set_last_error_ (scew_error_io);
+    }
+
+  return result;
 }
 
-void
+bool
 scew_writer_print_element_children (scew_writer *writer,
                                     scew_element const  *element)
 {
@@ -139,110 +158,142 @@ scew_writer_print_element_children (scew_writer *writer,
 
   unsigned int indent = writer->indent;
 
+  bool result = true;
   scew_list *list = scew_element_children (element);
-  while (list != NULL)
+  while (result && (list != NULL))
     {
       writer->indent = indent + 1;
 
       scew_element *child = scew_list_data (list);
-      scew_writer_print_element (writer, child);
+      result = scew_writer_print_element (writer, child);
       list = scew_list_next (list);
     }
 
   writer->indent = indent;
+
+  if (!result)
+    {
+      scew_error_set_last_error_ (scew_error_io);
+    }
+
+  return result;
 }
 
 
-void
+bool
 scew_writer_print_element_attributes (scew_writer *writer,
                                       scew_element const *element)
 {
   assert (writer != NULL);
   assert (element != NULL);
 
+  bool result = true;
+
   scew_list *list = scew_element_attributes (element);
-  while (list != NULL)
+  while (result && (list != NULL))
     {
       scew_attribute *attribute = scew_list_data (list);
-      scew_writer_print_attribute (writer, attribute);
+      result = scew_writer_print_attribute (writer, attribute);
       list = scew_list_next (list);
     }
+
+  if (!result)
+    {
+      scew_error_set_last_error_ (scew_error_io);
+    }
+
+  return result;
 }
 
-void
+bool
 scew_writer_print_attribute (scew_writer *writer,
                              scew_attribute const *attribute)
 {
   assert (writer != NULL);
   assert (attribute != NULL);
 
-  if (attribute != NULL)
+  bool result = writer->printf (writer,
+                                _XT (" %s=\"%s\""),
+                                scew_attribute_name (attribute),
+                                scew_attribute_value (attribute));
+
+  if (!result)
     {
-      writer->printf (writer,
-                      _XT (" %s=\"%s\""),
-                      scew_attribute_name (attribute),
-                      scew_attribute_value (attribute));
+      scew_error_set_last_error_ (scew_error_io);
     }
+
+  return result;
 }
 
 
 // Private
 
-void
+bool
 print_eol_ (scew_writer *writer)
 {
   assert (writer != NULL);
 
+  bool result = true;
+
   if (writer->indented)
     {
-      writer->printf (writer, _XT ("\n"));
+      result = writer->printf (writer, _XT ("\n"));
     }
+
+  return result;
 }
 
-void
+bool
 print_indent_ (scew_writer *writer)
 {
   assert (writer != NULL);
 
+  bool result = true;
+
   if (writer->indented)
     {
       unsigned int spaces = writer->indent * writer->spaces;
-      for (unsigned int i = 0; i < spaces; ++i)
+      for (unsigned int i = 0; result && (i < spaces); ++i)
         {
-          writer->printf (writer, _XT (" "));
+          result = writer->printf (writer, _XT (" "));
         }
     }
+
+  return result;
 }
 
 bool
-print_element_header_ (scew_writer *writer, scew_element const *element)
+print_element_header_ (scew_writer *writer,
+                       scew_element const *element,
+                       bool *closed)
 {
   assert (writer != NULL);
   assert (element != NULL);
 
-  writer->printf (writer, _XT ("<%s"), scew_element_name (element));
+  bool result = writer->printf (writer, _XT ("<%s"),
+                                scew_element_name (element));
 
-  scew_writer_print_element_attributes (writer, element);
+  result = result && scew_writer_print_element_attributes (writer, element);
 
   XML_Char const *contents = scew_element_contents (element);
   scew_element *parent = scew_element_parent (element);
 
-  bool closed = false;
+  *closed = false;
   scew_list *list = scew_element_children (element);
   if ((contents == NULL) && (list == NULL) && (parent != NULL))
     {
-      writer->printf (writer, _XT ("/>"));
-      print_eol_ (writer);
-      closed = true;
+      result = result && writer->printf (writer, _XT ("/>"));
+      result = result && print_eol_ (writer);
+      *closed = true;
     }
   else
     {
-      writer->printf (writer, _XT (">"));
+      result = result && writer->printf (writer, _XT (">"));
       if (contents == NULL)
         {
-	  print_eol_ (writer);
+	  result = result && print_eol_ (writer);
         }
     }
 
-  return closed;
+  return result;
 }

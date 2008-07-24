@@ -57,27 +57,39 @@ scew_writer_file_create (char const *file_name)
 {
   assert (file_name != NULL);
 
-  scew_writer_fp *fp_writer  = calloc (1, sizeof (scew_writer_fp));
+  scew_writer *writer = NULL;
+
+  FILE *file = fopen (file_name, "wb");
+
+  if (file != NULL)
+    {
+      writer = scew_writer_fp_create (file);
+    }
+  else
+    {
+      scew_error_set_last_error_ (scew_error_io);
+    }
+
+  return writer;
+}
+
+scew_writer*
+scew_writer_fp_create (FILE *file)
+{
+  assert (file != NULL);
+
+  scew_writer_fp *fp_writer = calloc (1, sizeof (scew_writer_fp));
 
   if (fp_writer != NULL)
     {
-      FILE *file = fopen (file_name, "wb");
+      fp_writer->file = file;
 
-      if (file != NULL)
-        {
-          fp_writer->file = file;
+      scew_writer *writer = (scew_writer *) fp_writer;
+      writer->close = file_close_;
+      writer->printf = file_printf_;
 
-          scew_writer *writer = (scew_writer *) fp_writer;
-          writer->close = file_close_;
-          writer->printf = file_printf_;
-
-          scew_writer_set_indented (writer, true);
-          scew_writer_set_indent_spaces (writer, DEFAULT_INDENT_SPACES_);
-        }
-      else
-        {
-          scew_error_set_last_error_ (scew_error_io);
-        }
+      scew_writer_set_indented (writer, true);
+      scew_writer_set_indent_spaces (writer, DEFAULT_INDENT_SPACES_);
     }
   else
     {
@@ -121,5 +133,5 @@ file_printf_ (scew_writer *writer, XML_Char const *format, ...)
 
   va_end (args);
 
-  return (written < 0);
+  return (written > 0);
 }
