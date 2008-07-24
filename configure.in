@@ -103,9 +103,8 @@ echo
 echo "Type 'make' to complete the compilation ($mode mode) and"
 echo "then 'make install' as root to install."
 echo
-echo "To build the examples found in the 'examples' directory, type"
-echo "'make examples' or 'make' inside the directory. See"
-echo "'examples/README' to see a list of them."
+echo "A set of examples found in the 'examples' directory will"
+echo "also be built. See 'examples/README' to see a list of them."
 echo
 echo "If you want to run the test suite, type 'make check' (Check"
 echo "Unit testing framework needed)."

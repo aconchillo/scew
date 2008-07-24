@@ -2,17 +2,14 @@
 # Author: Aleix Conchillo Flaque <aleix@member.fsf.org>
 # Date:   Mon Nov 04, 2002 20:29
 #
-# Copyright (C) 2002, 2003, 2004, 2007 Aleix Conchillo Flaque
+# Copyright (C) 2002-2008 Aleix Conchillo Flaque
 #
 
-SUBDIRS = doc etc win32 scew tests
+SUBDIRS = doc etc scew examples tests win32
 
 EXTRA_DIST = INSTALL.WIN32
 
-.PHONY: doc examples
-
-examples:
-	($(MAKE) && cd examples && $(MAKE))
+.PHONY: doc
 
 if DOC
 

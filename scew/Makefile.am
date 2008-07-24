@@ -10,7 +10,7 @@ includedir = $(prefix)/include/$(PACKAGE)
 include_HEADERS = scew.h attribute.h element.h error.h parser.h str.h \
                   tree.h writer.h
 
-noinst_HEADERS = xerror.h xhandler.h xparser.h
+noinst_HEADERS = xerror.h xhandler.h xparser.h xwriter.h
 
 lib_LTLIBRARIES = libscew.la
 
