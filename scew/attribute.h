@@ -192,7 +192,7 @@ extern scew_element* scew_attribute_parent (scew_attribute const *attribute);
  * @pre attribute != NULL
  * @pre parent != NULL
  *
- * @ingroup SCEWAtrtibuteHier
+ * @ingroup SCEWAttributeHier
  */
 extern void scew_attribute_set_parent (scew_attribute *attribute,
                                        scew_element const *parent);

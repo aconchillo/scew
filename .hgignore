@@ -18,6 +18,7 @@ config.status
 config.sub
 configure
 depcomp
+doc/api
 doc/Doxyfile
 etc/pkg-config/scew.pc
 examples/scew_print/scew_print

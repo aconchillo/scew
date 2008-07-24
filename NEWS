@@ -6,14 +6,9 @@ See the end for copying conditions.
 
 ------------------------------------------------------------------------
 
-* Version 1.0.0 (2007/11/??)
+* Version 1.0.0 (2008/??/??)
 
-** Changes:
-
-   - C99 standard adopted.
-
-   - Test cases have been added using Check unit testing framework.
-     (see http://check.sf.net)
+** API changes:
 
    - Added copy  and comparisson functions in most  SCEW types: trees,
      elements and attributes.
@@ -22,15 +17,6 @@ See the end for copying conditions.
      children and attributes. scew_list provides a general way to work
      with  lists, thus  no  code repetition  is  done and  there is  a
      flexible and general way to work with lists.
-
-   - Code has been  cleaned to allow better definition  of private and
-     public interfaces.
-
-   - Documentation has been improved and organized into modules.
-
-   - SCEW now uses libtool to generate a static or dynamic library.
-
-   - Thread support can now be disabled (see ./configure --help).
 
    - Added  scew_element_detach, which  detaches an  element  from its
      parent (it does not free it).
@@ -43,6 +29,22 @@ See the end for copying conditions.
    - Added scew_element_add_pair  which allows to add  a new attribute
      with a name and contents.
      (thanks to Christopher Layne)
+
+** Changes:
+
+   - C99 standard adopted.
+
+   - Test cases have been added using Check unit testing framework.
+     (see http://check.sf.net)
+
+   - Code has been  cleaned to allow better definition  of private and
+     public interfaces.
+
+   - Documentation has been improved and organized into modules.
+
+   - SCEW now uses libtool to generate a static or dynamic library.
+
+   - Thread support can now be disabled (see ./configure --help).
 
 ** Fixes:
 
