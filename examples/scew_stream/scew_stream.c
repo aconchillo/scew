@@ -62,7 +62,7 @@ main (int argc, char *argv[])
 {
   if (argc < 2)
     {
-      printf ("usage: scew_stream file.xml\n");
+      printf ("Usage: scew_stream file.xml\n");
       return EXIT_FAILURE;
     }
 
@@ -74,9 +74,7 @@ main (int argc, char *argv[])
       return EXIT_FAILURE;
     }
 
-  /**
-   * Creates an SCEW parser. This is the first function to call.
-   */
+  // Creates an SCEW parser. This is the first function to call.
   scew_parser *parser = scew_parser_create ();
 
   scew_parser_set_stream_callback (parser, stream_cb);
@@ -108,7 +106,7 @@ main (int argc, char *argv[])
 
   fclose (in);
 
-  /* Frees the SCEW parser */
+  // Frees the SCEW parser.
   scew_parser_free (parser);
 
   return 0;
