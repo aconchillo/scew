@@ -559,7 +559,7 @@ scew_element_add_attribute (scew_element *element, scew_attribute *attribute)
 
   scew_attribute_detach (attribute);
 
-  scew_list *item = scew_list_append (element->attributes, attribute);
+  scew_list *item = scew_list_append (element->last_attribute, attribute);
 
   if (item != NULL)
     {
