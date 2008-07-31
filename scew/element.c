@@ -164,7 +164,7 @@ scew_element_by_index (scew_element const *element, unsigned int idx)
   assert (element != NULL);
   assert (idx < element->n_children);
 
-  scew_list *item = scew_list_by_index (element->children, idx);
+  scew_list *item = scew_list_index (element->children, idx);
 
   return (item == NULL) ? NULL : (scew_element *) scew_list_data (item);
 }
@@ -545,7 +545,7 @@ scew_element_attribute_by_index (scew_element const *element, unsigned int idx)
 
   if (element->attributes != NULL)
     {
-      item = scew_list_by_index (element->attributes, idx);
+      item = scew_list_index (element->attributes, idx);
     }
 
   return (item == NULL) ? NULL : (scew_attribute *) scew_list_data (item);
@@ -666,7 +666,7 @@ scew_element_delete_attribute_by_index (scew_element *element,
 
   if (element->attributes != NULL)
     {
-      scew_list *item = scew_list_by_index (element->attributes, idx);
+      scew_list *item = scew_list_index (element->attributes, idx);
 
       if (item != NULL)
         {

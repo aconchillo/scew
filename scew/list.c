@@ -175,7 +175,6 @@ scew_list*
 scew_list_delete_item (scew_list *list, scew_list *item)
 {
   assert (list != NULL);
-  assert (item != NULL);
 
   if (item != NULL)
     {
@@ -205,44 +204,67 @@ scew_list_delete_item (scew_list *list, scew_list *item)
 scew_list*
 scew_list_first (scew_list *list)
 {
-  if (list != NULL)
+  assert (list != NULL);
+
+  while (list->prev != NULL)
     {
-      while (list->prev != NULL)
-        {
-          list = list->prev;
-        }
+      list = list->prev;
     }
+
   return list;
 }
 
 scew_list*
 scew_list_last (scew_list *list)
 {
-  if (list != NULL)
+  assert (list != NULL);
+
+  while (list->next != NULL)
     {
-      while (list->next != NULL)
-        {
-          list = list->next;
-        }
+      list = list->next;
     }
+
   return list;
 }
 
 scew_list*
 scew_list_next (scew_list *list)
 {
-  return (list != NULL) ? list->next : NULL;
+  assert (list != NULL);
+
+  return list->next;
 }
 
 scew_list*
 scew_list_previous (scew_list *list)
 {
-  return (list != NULL) ? list->prev : NULL;
+  assert (list != NULL);
+
+  return list->prev;
+}
+
+scew_list*
+scew_list_index (scew_list *list, unsigned int index)
+{
+  assert (list != NULL);
+
+  unsigned int count = 0;
+
+  while ((list != NULL) && (count < index))
+    {
+      list = list->next;
+      ++count;
+    }
+
+  return list;
 }
 
 void
 scew_list_foreach (scew_list *list, scew_list_function func, void *user_data)
 {
+  assert (list != NULL);
+  assert (func != NULL);
+
   while (list != NULL)
     {
       func (list, user_data);
@@ -256,6 +278,9 @@ scew_list_foreach (scew_list *list, scew_list_function func, void *user_data)
 scew_list*
 scew_list_find (scew_list *list, void *data)
 {
+  assert (list != NULL);
+  assert (data != NULL);
+
   while (list != NULL)
     {
       if (list->data == data)
@@ -273,6 +298,10 @@ scew_list_find_custom (scew_list *list,
                        void const *data,
                        scew_cmp_function func)
 {
+  assert (list != NULL);
+  assert (data != NULL);
+  assert (func != NULL);
+
   while (list != NULL)
     {
       if (func (list->data, data))
@@ -280,20 +309,6 @@ scew_list_find_custom (scew_list *list,
           break;
         }
       list = list->next;
-    }
-
-  return list;
-}
-
-scew_list*
-scew_list_by_index (scew_list *list, unsigned int idx)
-{
-  unsigned int count = 0;
-
-  while ((list != NULL) && (count < idx))
-    {
-      list = list->next;
-      ++count;
     }
 
   return list;

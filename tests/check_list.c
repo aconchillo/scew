@@ -6,7 +6,7 @@
  *
  * @if copyright
  *
- * Copyright (C) 2007 Aleix Conchillo Flaque
+ * Copyright (C) 2007, 2008 Aleix Conchillo Flaque
  *
  * SCEW is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -327,12 +327,12 @@ START_TEST (test_search)
   scew_list *item = list;
   for (unsigned int i = 0; i < N_ELEMENTS_; ++i)
     {
-      CHECK_BOOL (item == scew_list_by_index (list, i), true,
+      CHECK_BOOL (item == scew_list_index (list, i), true,
                   "Sequential index item mismatch");
       item = scew_list_next (item);
     }
 
-  CHECK_NULL_PTR (scew_list_by_index (list, N_ELEMENTS_),
+  CHECK_NULL_PTR (scew_list_index (list, N_ELEMENTS_),
                   "Sequential index out of range");
 }
 END_TEST
