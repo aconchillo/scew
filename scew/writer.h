@@ -26,6 +26,9 @@
  * @endif
  */
 
+/**
+ * @defgroup SCEWWriter Writer
+ */
 
 #ifndef WRITER_H_0309110036
 #define WRITER_H_0309110036
@@ -44,34 +47,108 @@ extern "C" {
 
 typedef struct scew_writer scew_writer;
 
+
+/**
+ * @defgroup SCEWWriterAlloc Allocation
+ * @ingroup SCEWWriter
+ */
+
+/**
+ * @ingroup SCEWWriterAlloc
+ */
 extern scew_writer* scew_writer_file_create (char const *file_name);
 
+/**
+ * @ingroup SCEWWriterAlloc
+ */
 extern scew_writer* scew_writer_fp_create (FILE *file);
 
+/**
+ * @ingroup SCEWWriterAlloc
+ */
 extern scew_writer* scew_writer_buffer_create (XML_Char *buffer,
                                                unsigned int size);
 
+/**
+ * @ingroup SCEWWriterAlloc
+ */
+extern bool scew_writer_close (scew_writer *writer);
+
+/**
+ * @ingroup SCEWWriterAlloc
+ */
+extern void scew_writer_free (scew_writer *writer);
+
+
+/**
+ * @defgroup SCEWWriterProp Properties
+ * @ingroup SCEWWriter
+ */
+
+/**
+ * @ingroup SCEWWriterProp
+ */
 extern void scew_writer_set_indented (scew_writer *writer, bool indented);
 
+/**
+ * @ingroup SCEWWriterProp
+ */
 extern void scew_writer_set_indent_spaces (scew_writer *writer,
                                            unsigned int spaces);
 
-extern bool scew_writer_close (scew_writer *writer);
+
+/**
+ * @defgroup SCEWWriterOutput Output
+ * @ingroup SCEWWriter
+ */
 
-extern void scew_writer_free (scew_writer *writer);
-
+/**
+ *
+ * @pre writer != NULL
+ * @pre tree != NULL
+ *
+ * @ingroup SCEWWriterOutput
+ */
 extern bool scew_writer_print_tree (scew_writer *writer,
                                     scew_tree const *tree);
 
+/**
+ *
+ * @pre writer != NULL
+ * @pre element != NULL
+ *
+ * @ingroup SCEWWriterOutput
+ */
 extern bool scew_writer_print_element (scew_writer *writer,
                                        scew_element const *element);
 
+/**
+ *
+ * @pre writer != NULL
+ * @pre element != NULL
+ *
+ * @ingroup SCEWWriterOutput
+ */
 extern bool scew_writer_print_element_children (scew_writer *writer,
                                                 scew_element const  *element);
 
+/**
+ *
+ * @pre writer != NULL
+ * @pre element != NULL
+ *
+ * @ingroup SCEWWriterOutput
+ */
 extern bool scew_writer_print_element_attributes (scew_writer *writer,
                                                   scew_element const *element);
 
+/**
+ *
+ * @pre writer != NULL
+ * @pre attribute != NULL
+ *
+ * @ingroup SCEWWriterOutput
+ */
 extern bool scew_writer_print_attribute (scew_writer *writer,
                                          scew_attribute const *attribute);
 

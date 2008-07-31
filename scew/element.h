@@ -179,7 +179,7 @@ extern bool scew_element_compare (scew_element const *a,
 
 /**
  * @defgroup SCEWElementAcc Accessors
- * Access element's data, such as name and contents.
+ * Access elements' data, such as name and contents.
  * @ingroup SCEWElement
  */
 

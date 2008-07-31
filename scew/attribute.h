@@ -114,7 +114,7 @@ extern bool scew_attribute_compare (scew_attribute const *a,
 
 /**
  * @defgroup SCEWAttributeAcc Accessors
- * Access attribute's data, such as name and value.
+ * Access attributes' data, such as name and value.
  * @ingroup SCEWAttribute
  */
 
