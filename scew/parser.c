@@ -30,7 +30,6 @@
 
 #include "xparser.h"
 #include "xerror.h"
-#include "xhandler.h"
 
 #include "tree.h"
 
@@ -255,9 +254,11 @@ init_expat_parser_ (scew_parser *parser)
 
   if (result)
     {
-      XML_SetXmlDeclHandler (parser->parser, xmldecl_handler);
-      XML_SetElementHandler (parser->parser, start_handler, end_handler);
-      XML_SetCharacterDataHandler (parser->parser, char_handler);
+      XML_SetXmlDeclHandler (parser->parser, scew_parser_xmldecl_handler_);
+      XML_SetElementHandler (parser->parser,
+                             scew_parser_start_handler_,
+                             scew_parser_end_handler_);
+      XML_SetCharacterDataHandler (parser->parser, scew_parser_char_handler_);
       XML_SetUserData (parser->parser, parser);
     }
   else

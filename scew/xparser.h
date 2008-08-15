@@ -36,11 +36,7 @@
 // Types
 
 // Stack to keep previous parsed elements
-typedef struct stack_element
-{
-  scew_element* element;
-  struct stack_element* prev;
-} stack_element;
+typedef struct stack_element stack_element;
 
 struct scew_parser
 {
@@ -48,7 +44,7 @@ struct scew_parser
   scew_tree* tree;		/**< XML document tree */
   scew_element* current;	/**< Current parsed element */
   stack_element* stack;		/**< Current parsed element stack */
-  bool ignore_whitespaces;	/**< wheter to ignore white spaces */
+  bool ignore_whitespaces;	/**< Whether to ignore white spaces */
   scew_parser_callback stream_callback; /**< Callback to use while
                                            reading streams */
 };
@@ -56,11 +52,21 @@ struct scew_parser
 
 // Functions
 
-// Pushes an element into the stack
-extern stack_element* stack_push_ (stack_element **stack,
-                                   scew_element *element);
+/* Expat callback for XML declaration. */
+extern void scew_parser_xmldecl_handler_ (void *data,
+                                          XML_Char const *version,
+                                          XML_Char const *encoding,
+                                          int standalone);
 
-// Pops an element from the stack
-extern scew_element* stack_pop_ (stack_element **stack);
+/* Expat callback for starting elements. */
+extern void scew_parser_start_handler_ (void *data,
+                                        XML_Char const *elem,
+                                        XML_Char const **attr);
+
+/* Expat callback for ending elements. */
+extern void scew_parser_end_handler_ (void *data, XML_Char const *elem);
+
+/* Expat callback for element contents. */
+extern void scew_parser_char_handler_ (void *data, XML_Char const *s, int len);
 
 #endif /* XPARSER_H_0211250057 */
