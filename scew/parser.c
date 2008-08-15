@@ -37,10 +37,6 @@
 #include <stdio.h>
 #include <string.h>
 
-
-// Private
-
-static bool init_expat_parser_ (scew_parser *parser);
 
 
 // Public
@@ -56,23 +52,23 @@ scew_parser_create (void)
       return NULL;
     }
 
-  if (!init_expat_parser_ (parser))
+  if (!scew_parser_expat_init_ (parser))
     {
       scew_parser_free (parser);
       return NULL;
     }
 
-  /* ignore white spaces by default */
+  // Ignore white spaces by default
   parser->ignore_whitespaces = true;
 
-  /* no callback by default */
+  // No callback by default
   parser->stream_callback = NULL;
 
   return parser;
 }
 
 void
-scew_parser_free (scew_parser* parser)
+scew_parser_free (scew_parser *parser)
 {
   assert (parser != NULL);
 
@@ -133,7 +129,8 @@ scew_parser_load_file_fp (scew_parser *parser, FILE *in)
 }
 
 bool
-scew_parser_load_buffer (scew_parser *parser, char const *buffer,
+scew_parser_load_buffer (scew_parser *parser,
+                         char const *buffer,
 			 unsigned int size)
 {
   assert (parser != NULL);
@@ -150,7 +147,8 @@ scew_parser_load_buffer (scew_parser *parser, char const *buffer,
 }
 
 bool
-scew_parser_load_stream (scew_parser *parser, char const *buffer,
+scew_parser_load_stream (scew_parser *parser,
+                         char const *buffer,
 			 unsigned int size)
 {
   assert (parser != NULL);
@@ -198,7 +196,7 @@ scew_parser_load_stream (scew_parser *parser, char const *buffer,
 	      XML_ParserFree (parser->parser);
 	      scew_tree_free (parser->tree);
 	      parser->tree = NULL;
-	      init_expat_parser_ (parser);
+	      scew_parser_expat_init_ (parser);
             }
 	  start = end + 1;
         }
@@ -238,33 +236,4 @@ scew_parser_ignore_whitespaces (scew_parser *parser, bool ignore)
   assert (parser != NULL);
 
   parser->ignore_whitespaces = ignore;
-}
-
-
-// Private
-
-bool
-init_expat_parser_ (scew_parser *parser)
-{
-  assert (parser != NULL);
-
-  parser->parser = XML_ParserCreate (NULL);
-
-  bool result = (parser->parser != NULL);
-
-  if (result)
-    {
-      XML_SetXmlDeclHandler (parser->parser, scew_parser_xmldecl_handler_);
-      XML_SetElementHandler (parser->parser,
-                             scew_parser_start_handler_,
-                             scew_parser_end_handler_);
-      XML_SetCharacterDataHandler (parser->parser, scew_parser_char_handler_);
-      XML_SetUserData (parser->parser, parser);
-    }
-  else
-    {
-      scew_error_set_last_error_ (scew_error_no_memory);
-    }
-
-  return result;
 }

@@ -52,21 +52,6 @@ struct scew_parser
 
 // Functions
 
-/* Expat callback for XML declaration. */
-extern void scew_parser_xmldecl_handler_ (void *data,
-                                          XML_Char const *version,
-                                          XML_Char const *encoding,
-                                          int standalone);
-
-/* Expat callback for starting elements. */
-extern void scew_parser_start_handler_ (void *data,
-                                        XML_Char const *elem,
-                                        XML_Char const **attr);
-
-/* Expat callback for ending elements. */
-extern void scew_parser_end_handler_ (void *data, XML_Char const *elem);
-
-/* Expat callback for element contents. */
-extern void scew_parser_char_handler_ (void *data, XML_Char const *s, int len);
+extern bool scew_parser_expat_init_ (scew_parser *parser);
 
 #endif /* XPARSER_H_0211250057 */

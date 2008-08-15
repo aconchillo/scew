@@ -30,6 +30,8 @@
 
 #include "str.h"
 
+#include "xerror.h"
+
 #include <assert.h>
 
 
@@ -41,21 +43,67 @@ struct stack_element
   struct stack_element* prev;
 };
 
-// Pushes an element into the stack
+// Expat callback for XML declaration.
+static void expat_xmldecl_handler_ (void *data,
+                                    XML_Char const *version,
+                                    XML_Char const *encoding,
+                                    int standalone);
+
+// Expat callback for starting elements.
+static void expat_start_handler_ (void *data,
+                                  XML_Char const *elem,
+                                  XML_Char const **attr);
+
+// Expat callback for ending elements.
+static void expat_end_handler_ (void *data, XML_Char const *elem);
+
+// Expat callback for element contents.
+static void expat_char_handler_ (void *data, XML_Char const *s, int len);
+
+// Pushes an element into the stack.
 static stack_element* stack_push_ (stack_element **stack,
                                    scew_element *element);
 
-// Pops an element from the stack
+// Pops an element from the stack.
 static scew_element* stack_pop_ (stack_element **stack);
 
 
 // Protected
 
+bool
+scew_parser_expat_init_ (scew_parser *parser)
+{
+  assert (parser != NULL);
+
+  parser->parser = XML_ParserCreate (NULL);
+
+  bool result = (parser->parser != NULL);
+
+  if (result)
+    {
+      XML_SetXmlDeclHandler (parser->parser, expat_xmldecl_handler_);
+      XML_SetElementHandler (parser->parser,
+                             expat_start_handler_,
+                             expat_end_handler_);
+      XML_SetCharacterDataHandler (parser->parser, expat_char_handler_);
+      XML_SetUserData (parser->parser, parser);
+    }
+  else
+    {
+      scew_error_set_last_error_ (scew_error_no_memory);
+    }
+
+  return result;
+}
+
+
+// Private
+
 void
-scew_parser_xmldecl_handler_ (void *data,
-                              XML_Char const *version,
-                              XML_Char const *encoding,
-                              int standalone)
+expat_xmldecl_handler_ (void *data,
+                        XML_Char const *version,
+                        XML_Char const *encoding,
+                        int standalone)
 {
   scew_parser *parser = (scew_parser *) data;
 
@@ -83,13 +131,11 @@ scew_parser_xmldecl_handler_ (void *data,
       scew_tree_set_xml_encoding (parser->tree, scew_strdup (encoding));
     }
 
-  // By now, we ignore standalone attribute.
+  scew_tree_set_xml_standalone (parser->tree, standalone + 1);
 }
 
 void
-scew_parser_start_handler_ (void *data,
-                            XML_Char const *elem,
-                            XML_Char const **attr)
+expat_start_handler_ (void *data, XML_Char const *elem, XML_Char const **attr)
 {
   int i = 0;
   scew_parser *parser = (scew_parser *) data;
@@ -120,7 +166,7 @@ scew_parser_start_handler_ (void *data,
 }
 
 void
-scew_parser_end_handler_ (void *data, XML_Char const *elem)
+expat_end_handler_ (void *data, XML_Char const *elem)
 {
   scew_element *current = NULL;
   XML_Char const *contents = NULL;
@@ -150,7 +196,7 @@ scew_parser_end_handler_ (void *data, XML_Char const *elem)
 }
 
 void
-scew_parser_char_handler_ (void *data, XML_Char const *s, int len)
+expat_char_handler_ (void *data, XML_Char const *s, int len)
 {
   scew_element *current = NULL;
   scew_parser *parser = (scew_parser *) data;
@@ -183,9 +229,6 @@ scew_parser_char_handler_ (void *data, XML_Char const *s, int len)
       scew_element_set_contents (current, new_contents);
     }
 }
-
-
-// Private
 
 stack_element*
 stack_push_ (stack_element **stack, scew_element *element)
