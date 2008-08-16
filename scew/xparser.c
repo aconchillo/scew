@@ -109,17 +109,18 @@ expat_xmldecl_handler_ (void *data,
 
   if (parser == NULL)
     {
+      XML_StopParser (parser->parser, XML_FALSE);
       return;
     }
 
   if (parser->tree == NULL)
     {
       parser->tree = scew_tree_create ();
-    }
-
-  if (parser->tree == NULL)
-    {
-      return;
+      if (parser->tree == NULL)
+        {
+          XML_StopParser (parser->parser, XML_FALSE);
+          return;
+        }
     }
 
   if (version != NULL)
@@ -131,35 +132,49 @@ expat_xmldecl_handler_ (void *data,
       scew_tree_set_xml_encoding (parser->tree, scew_strdup (encoding));
     }
 
+  // We need to add 1 as our standalone enumeration starts at 0. Expat
+  // returns -1, 0 or 1.
   scew_tree_set_xml_standalone (parser->tree, standalone + 1);
 }
 
 void
 expat_start_handler_ (void *data, XML_Char const *elem, XML_Char const **attr)
 {
-  int i = 0;
   scew_parser *parser = (scew_parser *) data;
 
   if (parser == NULL)
     {
+      XML_StopParser (parser->parser, XML_FALSE);
       return;
     }
 
+  // If tree is still not created it means that no XML declaration was
+  // found.
   if ((parser->tree == NULL) || (scew_tree_root (parser->tree) == NULL))
     {
       if (parser->tree == NULL)
         {
 	  parser->tree = scew_tree_create ();
+          if (parser->tree == NULL)
+            {
+              XML_StopParser (parser->parser, XML_FALSE);
+              return;
+            }
         }
       parser->current = scew_tree_set_root (parser->tree, elem);
     }
   else
     {
-      stack_push_ (&parser->stack, parser->current);
+      stack_element *stack = stack_push_ (&parser->stack, parser->current);
+      if (stack == NULL)
+        {
+          XML_StopParser (parser->parser, XML_FALSE);
+          return;
+        }
       parser->current = scew_element_add (parser->current, elem);
     }
 
-  for (i = 0; attr[i]; i += 2)
+  for (unsigned int i = 0; attr[i]; i += 2)
     {
       scew_element_add_attribute_pair (parser->current, attr[i], attr[i + 1]);
     }
@@ -168,17 +183,16 @@ expat_start_handler_ (void *data, XML_Char const *elem, XML_Char const **attr)
 void
 expat_end_handler_ (void *data, XML_Char const *elem)
 {
-  scew_element *current = NULL;
-  XML_Char const *contents = NULL;
   scew_parser *parser = (scew_parser *) data;
 
   if (parser == NULL)
     {
+      XML_StopParser (parser->parser, XML_FALSE);
       return;
     }
 
-  current = parser->current;
-  contents = scew_element_contents (current);
+  scew_element *current = parser->current;
+  XML_Char const *contents = scew_element_contents (current);
 
   if ((current != NULL) && (contents != NULL))
     {
@@ -198,32 +212,28 @@ expat_end_handler_ (void *data, XML_Char const *elem)
 void
 expat_char_handler_ (void *data, XML_Char const *s, int len)
 {
-  scew_element *current = NULL;
   scew_parser *parser = (scew_parser *) data;
 
   if (parser == NULL)
     {
+      XML_StopParser (parser->parser, XML_FALSE);
       return;
     }
 
-  current = parser->current;
+  scew_element *current = parser->current;
 
   if (current != NULL)
     {
-      unsigned int total = 0;
       unsigned int total_old = 0;
-      XML_Char *new_contents = NULL;
-
       XML_Char const *contents = scew_element_contents (current);
-
       if (contents != NULL)
         {
           total_old = scew_strlen (contents);
         }
 
-      total = (total_old + len + 1) * sizeof (XML_Char);
+      unsigned int total = (total_old + len + 1) * sizeof (XML_Char);
 
-      new_contents = calloc (total, 1);
+      XML_Char *new_contents = calloc (total, 1);
       scew_strncat (new_contents, s, len);
 
       scew_element_set_contents (current, new_contents);

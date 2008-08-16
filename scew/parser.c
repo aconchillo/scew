@@ -110,6 +110,7 @@ scew_parser_load_file_fp (scew_parser *parser, FILE *in)
       enum { MAX_BUFFER = 5000 };
       char buffer[MAX_BUFFER];
 
+      // Read files in small chunks
       int len = fread (buffer, 1, MAX_BUFFER, in);
       if (ferror (in))
         {

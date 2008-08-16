@@ -162,8 +162,8 @@ extern bool scew_parser_load_buffer (scew_parser *parser,
  * @ingroup SCEWParserLoad
  */
 extern bool scew_parser_load_stream (scew_parser *parser,
-                                     char const *buffer,
-                                     unsigned int size);
+                                      char const *buffer,
+                                      unsigned int size);
 
 /**
  * Sets the callback for use when reading streams.

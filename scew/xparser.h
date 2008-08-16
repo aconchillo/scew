@@ -45,8 +45,7 @@ struct scew_parser
   scew_element* current;	/**< Current parsed element */
   stack_element* stack;		/**< Current parsed element stack */
   bool ignore_whitespaces;	/**< Whether to ignore white spaces */
-  scew_parser_callback stream_callback; /**< Callback to use while
-                                           reading streams */
+  scew_parser_callback stream_callback; /**< Callback for streams */
 };
 
 
