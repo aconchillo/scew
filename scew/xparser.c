@@ -262,7 +262,8 @@ expat_char_handler_ (void *data, XML_Char const *str, int len)
       total_old = scew_strlen (contents);
     }
 
-  // Calculate new size and allocate enough space
+  // Calculate new size and allocate enough space (+ 1 for
+  // null-terminated string)
   unsigned int total = (total_old + len + 1) * sizeof (XML_Char);
   XML_Char *new_contents = calloc (total, 1);
 
@@ -272,6 +273,7 @@ expat_char_handler_ (void *data, XML_Char const *str, int len)
       scew_strcpy (new_contents, contents);
     }
   scew_strncat (new_contents, str, len);
+  new_contents[total] = 0;
 
   scew_element_set_contents (current, new_contents);
 }
