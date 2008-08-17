@@ -53,4 +53,6 @@ struct scew_parser
 
 extern bool scew_parser_expat_init_ (scew_parser *parser);
 
+extern void scew_parser_stack_free_ (scew_parser *parser);
+
 #endif /* XPARSER_H_0211250057 */

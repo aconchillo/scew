@@ -45,13 +45,14 @@ scew_error_code (void)
 XML_Char const*
 scew_error_string (scew_error code)
 {
-  static const XML_Char *message[] =
+  static XML_Char const *message[] =
     {
       [scew_error_none] = _XT("No error"),
       [scew_error_no_memory] = _XT("Out of memory"),
       [scew_error_io] = _XT("Input/Output error"),
       [scew_error_callback] = _XT("Callback error"),
-      [scew_error_expat] = _XT("Internal Expat parser error")
+      [scew_error_expat] = _XT("Internal Expat parser error"),
+      [scew_error_internal] = _XT("Internal SCEW error")
     };
 
   assert (sizeof(message) / sizeof(message[0]) == scew_error_unknown);
@@ -64,7 +65,7 @@ scew_error_string (scew_error code)
     {
       // This is not thread safe. Even though, no one else should get
       // in here.
-      enum { MAX_BUF = 100 };
+      enum { MAX_BUF = 200 };
       static XML_Char unk_message[MAX_BUF];
 
 #ifdef XML_UNICODE_WCHAR_T

@@ -51,13 +51,13 @@ scew_strtrim (XML_Char *src)
 
   unsigned int end = scew_strlen (src);
 
-  /* strip trailing whitespace */
+  // Strip trailing whitespace
   while (end > 0 && scew_isspace (src[end-1]))
     {
       src[--end] = '\0';
     }
 
-  /* strip leading whitespace */
+  // Strip leading whitespace
   unsigned int start = scew_strspn (src, _XT (" \n\r\t\v") );
   unsigned int total = end - start;
   scew_memmove (src, &src[start], total);

@@ -51,21 +51,32 @@ static void expat_xmldecl_handler_ (void *data,
 
 // Expat callback for starting elements.
 static void expat_start_handler_ (void *data,
-                                  XML_Char const *elem,
+                                  XML_Char const *name,
                                   XML_Char const **attr);
 
 // Expat callback for ending elements.
-static void expat_end_handler_ (void *data, XML_Char const *elem);
+static void expat_end_handler_ (void *data, XML_Char const *name);
 
 // Expat callback for element contents.
-static void expat_char_handler_ (void *data, XML_Char const *s, int len);
+static void expat_char_handler_ (void *data, XML_Char const *str, int len);
 
-// Pushes an element into the stack.
-static stack_element* stack_push_ (stack_element **stack,
-                                   scew_element *element);
+// Tells Expat parser to stop due to a SCEW error.
+static void stop_expat_parsing_ (scew_parser *parser, scew_error error);
 
-// Pops an element from the stack.
-static scew_element* stack_pop_ (stack_element **stack);
+// Creates a new tree for the given parser (if not created already).
+static scew_tree* create_tree_ (scew_parser *parser);
+
+// Creates a new element with the given name and attributes.
+static scew_element* create_element_ (XML_Char const *name,
+                                      XML_Char const **attrs);
+
+// Pushes an element into the stack returning the pushed element.
+static stack_element* parser_stack_push_ (scew_parser *parser,
+                                          scew_element *element);
+
+// Pops an element from the stack returning the new top element (not
+// the actual top).
+static scew_element* parser_stack_pop_ (scew_parser *parser);
 
 
 // Protected
@@ -86,6 +97,8 @@ scew_parser_expat_init_ (scew_parser *parser)
                              expat_start_handler_,
                              expat_end_handler_);
       XML_SetCharacterDataHandler (parser->parser, expat_char_handler_);
+
+      // Data to be passed to all handlers is the SCEW parser.
       XML_SetUserData (parser->parser, parser);
     }
   else
@@ -96,8 +109,21 @@ scew_parser_expat_init_ (scew_parser *parser)
   return result;
 }
 
+void
+scew_parser_stack_free_ (scew_parser *parser)
+{
+  if (parser != NULL)
+    {
+      scew_element *element = parser_stack_pop_ (parser);
+      while (element != NULL)
+        {
+          element = parser_stack_pop_ (parser);
+        }
+    }
+}
+
 
-// Private
+// Private (handlers)
 
 void
 expat_xmldecl_handler_ (void *data,
@@ -109,18 +135,15 @@ expat_xmldecl_handler_ (void *data,
 
   if (parser == NULL)
     {
-      XML_StopParser (parser->parser, XML_FALSE);
+      stop_expat_parsing_ (parser, scew_error_internal);
       return;
     }
 
+  parser->tree = create_tree_ (parser);
   if (parser->tree == NULL)
     {
-      parser->tree = scew_tree_create ();
-      if (parser->tree == NULL)
-        {
-          XML_StopParser (parser->parser, XML_FALSE);
-          return;
-        }
+      stop_expat_parsing_ (parser, scew_error_no_memory);
+      return;
     }
 
   if (version != NULL)
@@ -138,46 +161,41 @@ expat_xmldecl_handler_ (void *data,
 }
 
 void
-expat_start_handler_ (void *data, XML_Char const *elem, XML_Char const **attr)
+expat_start_handler_ (void *data,
+                      XML_Char const *name,
+                      XML_Char const **attrs)
 {
   scew_parser *parser = (scew_parser *) data;
 
   if (parser == NULL)
     {
-      XML_StopParser (parser->parser, XML_FALSE);
+      stop_expat_parsing_ (parser, scew_error_internal);
       return;
     }
 
-  // If tree is still not created it means that no XML declaration was
-  // found.
-  if ((parser->tree == NULL) || (scew_tree_root (parser->tree) == NULL))
+  // Create element
+  scew_element *element = create_element_ (name, attrs);
+  if (element == NULL)
     {
-      if (parser->tree == NULL)
-        {
-	  parser->tree = scew_tree_create ();
-          if (parser->tree == NULL)
-            {
-              XML_StopParser (parser->parser, XML_FALSE);
-              return;
-            }
-        }
-      parser->current = scew_tree_set_root (parser->tree, elem);
-    }
-  else
-    {
-      stack_element *stack = stack_push_ (&parser->stack, parser->current);
-      if (stack == NULL)
-        {
-          XML_StopParser (parser->parser, XML_FALSE);
-          return;
-        }
-      parser->current = scew_element_add (parser->current, elem);
+      stop_expat_parsing_ (parser, scew_error_no_memory);
+      return;
     }
 
-  for (unsigned int i = 0; attr[i]; i += 2)
+  // Add the element to its parent (if any)
+  if (parser->current != NULL)
     {
-      scew_element_add_attribute_pair (parser->current, attr[i], attr[i + 1]);
+      (void) scew_element_add_element (parser->current, element);
     }
+
+  // Push element onto the stack
+  stack_element *stack = parser_stack_push_ (parser, element);
+  if (stack == NULL)
+    {
+      stop_expat_parsing_ (parser, scew_error_no_memory);
+      return;
+    }
+
+  parser->current = element;
 }
 
 void
@@ -185,63 +203,127 @@ expat_end_handler_ (void *data, XML_Char const *elem)
 {
   scew_parser *parser = (scew_parser *) data;
 
-  if (parser == NULL)
+  scew_element *current = parser->current;
+
+  if ((parser == NULL) || (current == NULL))
     {
-      XML_StopParser (parser->parser, XML_FALSE);
+      stop_expat_parsing_ (parser, scew_error_internal);
       return;
     }
 
-  scew_element *current = parser->current;
   XML_Char const *contents = scew_element_contents (current);
 
-  if ((current != NULL) && (contents != NULL))
+  // Trim element contents if necessary
+  if (parser->ignore_whitespaces && (contents != NULL))
     {
-      if (parser->ignore_whitespaces)
+      // We use the internal const pointer for performance reasons
+      scew_strtrim ((XML_Char *) contents);
+      if (scew_strlen (contents) == 0)
         {
-          XML_Char *new_contents = scew_strdup (contents);
-	  scew_strtrim (new_contents);
-	  if (scew_strlen (new_contents) == 0)
-            {
-	      scew_element_free_contents (current);
-            }
+          scew_element_free_contents (current);
         }
     }
-  parser->current = stack_pop_ (&parser->stack);
+
+  // Go back to the previous element
+  parser->current = parser_stack_pop_ (parser);
+
+  // If there are no more elements (root node) we set the root
+  // element.
+  if (parser->current == NULL)
+    {
+      parser->tree = create_tree_ (parser);
+      if (parser->tree == NULL)
+        {
+          stop_expat_parsing_ (parser, scew_error_no_memory);
+          return;
+        }
+      (void) scew_tree_set_root_element (parser->tree, current);
+    }
 }
 
 void
-expat_char_handler_ (void *data, XML_Char const *s, int len)
+expat_char_handler_ (void *data, XML_Char const *str, int len)
 {
   scew_parser *parser = (scew_parser *) data;
 
-  if (parser == NULL)
+  scew_element *current = parser->current;
+
+  if ((parser == NULL) || (current == NULL))
     {
-      XML_StopParser (parser->parser, XML_FALSE);
+      stop_expat_parsing_ (parser, scew_error_internal);
       return;
     }
 
-  scew_element *current = parser->current;
-
-  if (current != NULL)
+  // Get size of current contents
+  unsigned int total_old = 0;
+  XML_Char const *contents = scew_element_contents (current);
+  if (contents != NULL)
     {
-      unsigned int total_old = 0;
-      XML_Char const *contents = scew_element_contents (current);
-      if (contents != NULL)
-        {
-          total_old = scew_strlen (contents);
-        }
-
-      unsigned int total = (total_old + len + 1) * sizeof (XML_Char);
-
-      XML_Char *new_contents = calloc (total, 1);
-      scew_strncat (new_contents, s, len);
-
-      scew_element_set_contents (current, new_contents);
+      total_old = scew_strlen (contents);
     }
+
+  // Calculate new size and allocate enough space
+  unsigned int total = (total_old + len + 1) * sizeof (XML_Char);
+  XML_Char *new_contents = calloc (total, 1);
+
+  // Copy old contents (if any) and concatenate new one
+  if (contents != NULL)
+    {
+      scew_strcpy (new_contents, contents);
+    }
+  scew_strncat (new_contents, str, len);
+
+  scew_element_set_contents (current, new_contents);
 }
 
+
+// Private (miscellaneous)
+
+void
+stop_expat_parsing_ (scew_parser *parser, scew_error error)
+{
+  XML_StopParser (parser->parser, XML_FALSE);
+  scew_error_set_last_error_ (error);
+}
+
+scew_tree*
+create_tree_ (scew_parser *parser)
+{
+  scew_tree *tree = parser->tree;
+
+  if (tree == NULL)
+    {
+      tree = scew_tree_create ();
+    }
+
+  return tree;
+}
+
+scew_element*
+create_element_ (XML_Char const *name, XML_Char const **attrs)
+{
+  scew_element *element = scew_element_create (name);
+
+  for (unsigned int i = 0; (element != NULL) && (attrs[i] != NULL); i += 2)
+    {
+      scew_attribute *attr = scew_element_add_attribute_pair (element,
+                                                              attrs[i],
+                                                              attrs[i + 1]);
+      if (attr == NULL)
+        {
+          scew_element_free (element);
+          element = NULL;
+        }
+    }
+
+  return element;
+}
+
+
+// Private (stack)
+
 stack_element*
-stack_push_ (stack_element **stack, scew_element *element)
+parser_stack_push_ (scew_parser *parser, scew_element *element)
 {
   assert (element != NULL);
 
@@ -250,29 +332,27 @@ stack_push_ (stack_element **stack, scew_element *element)
   if (new_elem != NULL)
     {
       new_elem->element = element;
-      if (stack != NULL)
+      if (parser->stack != NULL)
         {
-	  new_elem->prev = *stack;
+	  new_elem->prev = parser->stack;
         }
-      *stack = new_elem;
+      parser->stack = new_elem;
     }
 
   return new_elem;
 }
 
 scew_element*
-stack_pop_ (stack_element **stack)
+parser_stack_pop_ (scew_parser *parser)
 {
   assert (stack != NULL);
 
-  scew_element *element = NULL;
-  stack_element *sk_elem = *stack;
-  if (sk_elem != NULL)
+  stack_element *element = parser->stack;
+  if (element != NULL)
     {
-      *stack = sk_elem->prev;
-      element = sk_elem->element;
-      free (sk_elem);
+      parser->stack = element->prev;
+      free (element);
     }
 
-  return element;
+  return (parser->stack != NULL) ? parser->stack->element : NULL;
 }
