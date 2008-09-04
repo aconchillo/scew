@@ -5,4 +5,4 @@
 # Copyright (C) 2004 Aleix Conchillo Flaque
 #
 
-EXTRA_DIST = scew.dsp
+EXTRA_DIST = scew.vcproj
