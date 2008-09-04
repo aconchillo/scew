@@ -73,7 +73,8 @@ START_TEST (test_accessors)
   // Add items to list
   scew_list *list = NULL;
   scew_list *last = NULL;
-  for (unsigned int i = 0; i < N_ELEMENTS_; ++i)
+  unsigned int i = 0;
+  for (i = 0; i < N_ELEMENTS_; ++i)
     {
       last = scew_list_append (last, &data_[i]);
 
@@ -105,7 +106,8 @@ START_TEST (test_append)
 {
   // Append items to list
   scew_list *list = NULL;
-  for (unsigned int i = 0; i < N_ELEMENTS_; ++i)
+  unsigned int i = 0;
+  for (i = 0; i < N_ELEMENTS_; ++i)
     {
       scew_list *item = scew_list_append (list, &data_[i]);
       if (list == NULL)
@@ -133,7 +135,8 @@ START_TEST (test_prepend)
 {
   // Prepend items to list
   scew_list *list = NULL;
-  for (unsigned int i = 0; i < N_ELEMENTS_; ++i)
+  unsigned int i = 0;
+  for (i = 0; i < N_ELEMENTS_; ++i)
     {
       list = scew_list_prepend (list, &data_[i]);
 
@@ -158,7 +161,8 @@ START_TEST (test_delete)
 {
   // Append items to list
   scew_list *list = NULL;
-  for (unsigned int i = 0; i < N_ELEMENTS_; ++i)
+  unsigned int i = 0;
+  for (i = 0; i < N_ELEMENTS_; ++i)
     {
       scew_list *item = scew_list_append (list, &data_[i]);
       if (list == NULL)
@@ -188,7 +192,8 @@ START_TEST (test_delete)
   while (item != NULL)
     {
       item_t *tmp = scew_list_data (item);
-      for (unsigned int j = 0; j < N_REMOVED; ++j)
+      unsigned int j = 0;
+      for (j = 0; j < N_REMOVED; ++j)
         {
           CHECK_BOOL (tmp->value != REMOVED[j], true,
                       "Item %d should have been previously removed",
@@ -209,7 +214,8 @@ START_TEST (test_traverse)
   // Append items to list
   scew_list *item = NULL;
   scew_list *list = NULL;
-  for (unsigned int i = 0; i < N_ELEMENTS_; ++i)
+  unsigned int i = 0;
+  for (i = 0; i < N_ELEMENTS_; ++i)
     {
       item = scew_list_append (list, &data_[i]);
       if (list == NULL)
@@ -271,7 +277,8 @@ START_TEST (test_traverse_foreach)
 {
   // Append items to list
   scew_list *list = NULL;
-  for (unsigned int i = 0; i < N_ELEMENTS_; ++i)
+  unsigned int i = 0;
+  for (i = 0; i < N_ELEMENTS_; ++i)
     {
       scew_list *item = scew_list_append (list, &data_[i]);
       if (list == NULL)
@@ -303,7 +310,8 @@ START_TEST (test_search)
   // Append items to list
   scew_list *item_5 = NULL;
   scew_list *list = NULL;
-  for (unsigned int i = 0; i < N_ELEMENTS_; ++i)
+  unsigned int i = 0;
+  for (i = 0; i < N_ELEMENTS_; ++i)
     {
       scew_list *item = scew_list_append (list, &data_[i]);
       if (i == 5)
@@ -325,7 +333,7 @@ START_TEST (test_search)
 
   // Sequential indexing
   scew_list *item = list;
-  for (unsigned int i = 0; i < N_ELEMENTS_; ++i)
+  for (i = 0; i < N_ELEMENTS_; ++i)
     {
       CHECK_BOOL (item == scew_list_index (list, i), true,
                   "Sequential index item mismatch");
@@ -346,7 +354,8 @@ list_suite (void)
   Suite *s = suite_create ("SCEW lists");
 
   // Setup items
-  for (unsigned int i = 0; i < N_ELEMENTS_; ++i)
+  unsigned int i = 0;
+  for (i = 0; i < N_ELEMENTS_; ++i)
     {
       data_[i].value = i;
     }

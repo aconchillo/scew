@@ -306,7 +306,8 @@ create_element_ (XML_Char const *name, XML_Char const **attrs)
 {
   scew_element *element = scew_element_create (name);
 
-  for (unsigned int i = 0; (element != NULL) && (attrs[i] != NULL); i += 2)
+  unsigned int i = 0;
+  for (i = 0; (element != NULL) && (attrs[i] != NULL); i += 2)
     {
       scew_attribute *attr = scew_element_add_attribute_pair (element,
                                                               attrs[i],

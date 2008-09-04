@@ -44,13 +44,14 @@ START_TEST (test_alloc)
   static XML_Char const *CHILD_NAME = "element";
   static XML_Char const *CONTENTS = "first child";
   static unsigned int const N_ELEMENTS = 12;
+  unsigned int i = 0;
 
   scew_element *root = scew_element_create (NAME);
 
   CHECK_PTR (root, "Unable to create element");
 
   // Create elements
-  for (unsigned int i = 0; i < N_ELEMENTS; ++i)
+  for (i = 0; i < N_ELEMENTS; ++i)
     {
       scew_element *child = scew_element_add (root, CHILD_NAME);
 
@@ -136,6 +137,7 @@ START_TEST (test_attributes)
   static XML_Char const *ATTRIBUTE = "attribute";
   static XML_Char const *VALUE = "value";
   static unsigned int const N_ATTRIBUTES = 5;
+  unsigned int i = 0;
 
   scew_element *element = scew_element_create (NAME);
 
@@ -151,7 +153,7 @@ START_TEST (test_attributes)
   XML_Char attr_name[MAX_BUFFER];
   XML_Char attr_value[MAX_BUFFER];
 
-  for (unsigned int i = 0; i < N_ATTRIBUTES; ++i)
+  for (i = 0; i < N_ATTRIBUTES; ++i)
     {
       sprintf (attr_name, "%s_%d", ATTRIBUTE, i);
       sprintf (attr_value, "%s_%d", VALUE, i);
@@ -165,7 +167,7 @@ START_TEST (test_attributes)
   CHECK_U_INT (scew_element_attribute_count (element), N_ATTRIBUTES,
                "Number of attributes mismatch");
 
-  unsigned int i = 0;
+  i = 0;
   scew_list *list = scew_element_attributes (element);
   while (list != NULL)
     {
@@ -197,6 +199,7 @@ START_TEST (test_hierarchy_basic)
   static XML_Char const *SUB_NAME = "subelement";
   static XML_Char const *CONTENTS = "contents";
   static unsigned int const N_ELEMENTS = 12;
+  unsigned int i = 0;
 
   scew_element *element = scew_element_create ("root");
 
@@ -208,7 +211,7 @@ START_TEST (test_hierarchy_basic)
 
   CHECK_U_INT (scew_element_count (element), 0, "Element has no children");
 
-  for (unsigned int i = 0; i < N_ELEMENTS; ++i)
+  for (i = 0; i < N_ELEMENTS; ++i)
     {
       scew_element *child = scew_element_add (element, NAME);
 
@@ -252,7 +255,8 @@ START_TEST (test_hierarchy_delete)
   CHECK_PTR (element, "Unable to create element");
 
   // Add
-  for (unsigned int i = 0; i < N_ELEMENTS; ++i)
+  unsigned int i = 0;
+  for (i = 0; i < N_ELEMENTS; ++i)
     {
       scew_element *child = scew_element_create (NAME);
 
@@ -271,7 +275,7 @@ START_TEST (test_hierarchy_delete)
   CHECK_U_INT (scew_element_count (element), 0, "Number of children mismatch");
 
   // Re-add and detach
-  for (unsigned int i = 0; i < N_ELEMENTS; ++i)
+  for (i = 0; i < N_ELEMENTS; ++i)
     {
       scew_element *child = scew_element_add (element, NAME);
 
@@ -286,7 +290,7 @@ START_TEST (test_hierarchy_delete)
   CHECK_U_INT (scew_element_count (element), 0, "Number of children mismatch");
 
   // Re-add
-  for (unsigned int i = 0; i < N_ELEMENTS; ++i)
+  for (i = 0; i < N_ELEMENTS; ++i)
     {
       scew_element *child = scew_element_add (element, NAME);
 
@@ -306,7 +310,7 @@ START_TEST (test_hierarchy_delete)
                "Number of children mismatch");
 
   // Delete five next child
-  for (unsigned int i = 0; i < 5; ++i)
+  for (i = 0; i < 5; ++i)
     {
       scew_element_delete_by_index (element, i);
     }
@@ -332,7 +336,8 @@ START_TEST (test_search)
 
   CHECK_PTR (root, "Unable to create element");
 
-  for (unsigned int i = 0; i < N_ELEMENTS; ++i)
+  unsigned int i = 0;
+  for (i = 0; i < N_ELEMENTS; ++i)
     {
       scew_element *child = scew_element_add (root, NAME);
 
@@ -391,7 +396,8 @@ START_TEST (test_compare)
   CHECK_PTR (root, "Unable to create element");
 
   // Create elements
-  for (unsigned int i = 0; i < N_ELEMENTS; ++i)
+  unsigned int i = 0;
+  for (i = 0; i < N_ELEMENTS; ++i)
     {
       scew_element *child = scew_element_add (root, CHILD_NAME);
 
