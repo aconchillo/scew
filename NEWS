@@ -6,38 +6,59 @@ See the end for copying conditions.
 
 ------------------------------------------------------------------------
 
-* Version 1.0.0 (2008/??/??)
+* Version 1.0.0rc1 (2008/??/??)
 
 ** API changes:
 
-   - Added copy  and comparisson functions in most  SCEW types: trees,
+   - A new scew_writer type has been created to support any type of
+     output. Two default writers are provided: files and buffers. New
+     writers should be easily added by providing two special callback
+     functions: "printf" and "close". Thew new writer functionality
+     supports trees, elements and attributes printing.
+
+   - More functions to delete attributes and child elements have been
+     added to the scew_element interface.
+
+   - Attribute functions related to elements have been moved to the
+     scew_element interface.
+
+   - Some element functions have been renamed, mostly the ones related
+     to attributes.
+
+   - Added copy and comparisson functions in most SCEW types: trees,
      elements and attributes.
 
    - A new type, scew_list, has been defined and used for scew_element
      children and attributes. scew_list provides a general way to work
-     with  lists, thus  no  code repetition  is  done and  there is  a
+     with lists, thus no code repetition is done and there is a
      flexible and general way to work with lists.
 
-   - Added  scew_element_detach, which  detaches an  element  from its
+   - Added scew_attribute_set_parent which assigns an attribute to an
+     element and detaches it from the old one (if any).
+
+   - Added scew_attribute_detach which detaches an attribute from its
+     element (it does not free it).
+
+   - Added scew_element_detach which detaches an element from its
      parent (it does not free it).
      (suggested by Alex Katebi)
 
-   - Added scew_element_parent,  which returns an  element's parent if
+   - Added scew_element_parent which returns an element's parent if
      any.
-     (thanks to dsk AT purdue DOT edu / Alex Katebi)
+     (thanks to dsk AT purdue DOT edu and Alex Katebi)
 
-   - Added scew_element_add_pair  which allows to add  a new attribute
+   - Added scew_element_add_pair which allows to add a new attribute
      with a name and contents.
      (thanks to Christopher Layne)
 
 ** Changes:
 
-   - C99 standard adopted.
+   - XML declaration standalone attribute is now used.
 
    - Test cases have been added using Check unit testing framework.
      (see http://check.sf.net)
 
-   - Code has been  cleaned to allow better definition  of private and
+   - Code has been cleaned to allow better definition of private and
      public interfaces.
 
    - Documentation has been improved and organized into modules.
@@ -63,23 +84,23 @@ See the end for copying conditions.
 
 ** Changes:
 
-   - Ability  to  load  and  XML  document from  an  stream  has  been
-     added.  The stream may  not be  completed, so  it will  just load
-     correct XML pieces.  A callback,  set by the user, will be called
+   - Ability to load and XML document from an stream has been
+     added. The stream may not be completed, so it will just load
+     correct XML pieces. A callback, set by the user, will be called
      each time an element is available.
      (thanks to Gord Shier)
 
 ** Fixes:
 
-   - Fixed   indentation  level   when   document  contains   multiple
+   - Fixed indentation level when document contains multiple
      consecutive empty elements.
      (thanks to Tom Probasco)
 
-   - scew_element_add_attr_pair()   did  not   add  a   new  attribute
+   - scew_element_add_attr_pair() did not add a new attribute
      correctly if the attribute already existed.
      (reported by Matthew Peltzer)
 
-   - Compiltaion  fixes  in  MSVC.   Compiler interpreted  a  function
+   - Compiltaion fixes in MSVC.  Compiler interpreted a function
      argument called list as the std::list.
      (reported by Renaud Dumont)
 
@@ -117,11 +138,11 @@ See the end for copying conditions.
      element and attribute iterations.
      (thanks to Brodie Thiesfield)
 
-   - Added exponentially  growing buffer  to avoid many  realloc calls
+   - Added exponentially growing buffer to avoid many realloc calls
      which are slow and fragment memory in scew_element_list.
      (thanks to Brodie Thiesfield)
 
-   - Performance  improvements  in  file  loading by  using  a  static
+   - Performance improvements in file loading by using a static
      buffer.
      (thanks to Brodie Thiesfield)
 
@@ -146,8 +167,8 @@ See the end for copying conditions.
    - Warning fixes (level 4) in Microsoft Visual C++ 7.
      (thanks to Brodie Thiesfield)
 
-   - Multi-thread   support    fixed   in   Microsoft    Visual   C++.
-     __declspec(thread) did not work, use TLS functions instead.
+   - Multi-thread support fixed in Microsoft Visual
+     C++. __declspec(thread) did not work, use TLS functions instead.
      (thanks to Brodie Thiesfield)
 
 ------------------------------------------------------------------------
@@ -156,13 +177,13 @@ See the end for copying conditions.
 
 ** Changes:
 
-   - Added more string functions.  New memory functions have also been
+   - Added more string functions. New memory functions have also been
      added.
 
    - Performance improved in element and attribute iteration.
      (thanks to Sanzo Miyazawa)
 
-   - Support for  XML declaration attributes has  been added (version,
+   - Support for XML declaration attributes has been added (version,
      encoding, standalone).  This attributes can be changed using SCEW
      tree functions.
 
@@ -173,9 +194,10 @@ See the end for copying conditions.
    - Added pkg-config file.
      (thanks to Neil Harvey)
 
-   - Added 'make  doc'. If you  have doxygen installed (which  will be
-     automatically  detected),  it  will  create  SCEW  documentation.
-     Execute './configure --help' to see more documentation options.
+   - Added 'make doc'. If you have doxygen installed (which will be
+     automatically detected), it will create SCEW
+     documentation. Execute './configure --help' to see more
+     documentation options.
 
    - 'make install' does not install example binaries anymore.
 
@@ -212,8 +234,8 @@ See the end for copying conditions.
 
    - Functions to create and save XML files have been added.
 
-   - A  lot  of  cleanup   and  rewriting  has  been  done.   Internal
-     structures have changed.
+   - A lot of cleanup and rewriting has been done. Internal structures
+     have changed.
 
 ** Fixes:
 
@@ -225,7 +247,7 @@ See the end for copying conditions.
 
 ** Fixes:
 
-   - scew_get_element_by_name()  and  scew_get_attribute_by_name() did
+   - scew_get_element_by_name() and scew_get_attribute_by_name() did
      not return NULL if an element/attribute was not found.
      (reported by Stuart R. Anderson)
 
@@ -241,14 +263,14 @@ See the end for copying conditions.
 
 Copyright (C) 2002-2008 Aleix Conchillo Flaqué
 
-   Permission  is granted  to anyone  to make  or  distribute verbatim
-   copies of this  document as received, in any  medium, provided that
+   Permission is granted to anyone to make or distribute verbatim
+   copies of this document as received, in any medium, provided that
    the copyright notice and this permission notice are preserved, thus
    giving the recipient permission to redistribute in turn.
 
-   Permission  is  granted to  distribute  modified  versions of  this
-   document,  or  of  portions  of  it, under  the  above  conditions,
-   provided also  that they carry  prominent notices stating  who last
+   Permission is granted to distribute modified versions of this
+   document, or of portions of it, under the above conditions,
+   provided also that they carry prominent notices stating who last
    changed them.
 
 --
