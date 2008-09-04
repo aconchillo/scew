@@ -46,8 +46,9 @@ typedef struct
   FILE *file;
 } scew_writer_fp;
 
-static bool file_close_ (scew_writer *writer);
-static bool file_printf_ (scew_writer *writer, XML_Char const *format, ...);
+static scew_bool file_close_ (scew_writer *writer);
+static scew_bool file_printf_ (scew_writer *writer,
+                               XML_Char const *format, ...);
 
 
 // Public
@@ -88,7 +89,7 @@ scew_writer_fp_create (FILE *file)
       writer->close = file_close_;
       writer->printf = file_printf_;
 
-      scew_writer_set_indented (writer, true);
+      scew_writer_set_indented (writer, SCEW_TRUE);
       scew_writer_set_indent_spaces (writer, DEFAULT_INDENT_SPACES_);
     }
   else
@@ -102,13 +103,13 @@ scew_writer_fp_create (FILE *file)
 
 // Private
 
-bool
+scew_bool
 file_close_ (scew_writer *writer)
 {
   scew_writer_fp *fp_writer = (scew_writer_fp *) writer;
 
   int status = fclose (fp_writer->file);
-  bool result = (status == 0);
+  scew_bool result = (status == 0);
 
   if (!result)
     {
@@ -118,7 +119,7 @@ file_close_ (scew_writer *writer)
   return result;
 }
 
-bool
+scew_bool
 file_printf_ (scew_writer *writer, XML_Char const *format, ...)
 {
   assert (writer != NULL);

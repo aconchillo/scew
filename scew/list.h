@@ -37,7 +37,7 @@
 #ifndef LIST_H_0707122009
 #define LIST_H_0707122009
 
-#include <stdbool.h>
+#include "bool.h"
 
 #ifdef __cplusplus
 extern "C" {
@@ -70,7 +70,7 @@ typedef void (*scew_list_function) (scew_list *, void *);
  *
  * @ingroup SCEWList
  */
-typedef bool (*scew_cmp_function) (void const *, void const *);
+typedef scew_bool (*scew_cmp_function) (void const *, void const *);
 
 
 /**

@@ -40,10 +40,9 @@
 #define ATTRIBUTE_H_0211250039
 
 #include "element.h"
+#include "bool.h"
 
 #include <expat.h>
-
-#include <stdbool.h>
 
 #ifdef __cplusplus
 extern "C" {
@@ -108,8 +107,8 @@ extern void scew_attribute_free (scew_attribute *attribute);
  *
  * @ingroup SCEWAttributeCompare
  */
-extern bool scew_attribute_compare (scew_attribute const *a,
-                                    scew_attribute const *b);
+extern scew_bool scew_attribute_compare (scew_attribute const *a,
+                                         scew_attribute const *b);
 
 
 /**

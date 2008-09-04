@@ -69,14 +69,14 @@ START_TEST (test_alloc)
   CHECK_PTR (root_copy, "Unable to copy root element");
 
   // Check elements have different addresses
-  CHECK_BOOL ((root != root_copy), true,
+  CHECK_BOOL ((root != root_copy), SCEW_TRUE,
               "Root element address should be different");
 
   scew_list *list = scew_element_children (root);
   scew_list *list_copy = scew_element_children (root_copy);
   while ((list != NULL) && (list_copy != NULL))
     {
-      CHECK_BOOL ((list != list_copy), true,
+      CHECK_BOOL ((list != list_copy), SCEW_TRUE,
                   "Element address should be different");
       list = scew_list_next (list);
       list_copy = scew_list_next (list_copy);
@@ -217,7 +217,7 @@ START_TEST (test_hierarchy_basic)
 
       CHECK_PTR (child, "Unable to create child");
 
-      CHECK_BOOL (element == scew_element_parent (child), true,
+      CHECK_BOOL (element == scew_element_parent (child), SCEW_TRUE,
                   "Element has wrong parent");
 
       scew_element *sub_child =
@@ -225,7 +225,7 @@ START_TEST (test_hierarchy_basic)
 
       CHECK_PTR (sub_child, "Unable to create sub-child");
 
-      CHECK_BOOL (child == scew_element_parent (sub_child), true,
+      CHECK_BOOL (child == scew_element_parent (sub_child), SCEW_TRUE,
                   "Sub-child has wrong parent");
 
       CHECK_STR (scew_element_name (sub_child), SUB_NAME,
@@ -262,8 +262,8 @@ START_TEST (test_hierarchy_delete)
 
       CHECK_PTR (child, "Unable to create child");
 
-      CHECK_BOOL (child == scew_element_add_element (element, child), true,
-                  "Unable to append child");
+      CHECK_BOOL (child == scew_element_add_element (element, child),
+                  SCEW_TRUE, "Unable to append child");
     }
 
   CHECK_U_INT (scew_element_count (element), N_ELEMENTS,
@@ -414,7 +414,7 @@ START_TEST (test_compare)
 
   CHECK_PTR (root_copy, "Unable to copy root element");
 
-  CHECK_BOOL (scew_element_compare (root, root_copy), true,
+  CHECK_BOOL (scew_element_compare (root, root_copy), SCEW_TRUE,
               "Root and root copy should be equal");
 
   scew_element_free (root);

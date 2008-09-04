@@ -58,17 +58,17 @@ struct scew_element
   scew_list *last_attribute;    /**< Pointer to last attribute (performance) */
 };
 
-static bool cmp_name_ (void const *element, void const *name);
-static bool cmp_attr_name_ (void const *attribute, void const *name);
+static scew_bool cmp_name_ (void const *element, void const *name);
+static scew_bool cmp_attr_name_ (void const *attribute, void const *name);
 
-static bool copy_children_ (scew_element *new_element,
-                            scew_element const *element);
-static bool copy_attributes_ (scew_element *new_element,
-                              scew_element const *element);
-static bool compare_children_ (scew_element const *a,
-                               scew_element const *b);
-static bool compare_attributes_ (scew_element const *a,
-                                 scew_element const *b);
+static scew_bool copy_children_ (scew_element *new_element,
+                                 scew_element const *element);
+static scew_bool copy_attributes_ (scew_element *new_element,
+                                   scew_element const *element);
+static scew_bool compare_children_ (scew_element const *a,
+                                    scew_element const *b);
+static scew_bool compare_attributes_ (scew_element const *a,
+                                      scew_element const *b);
 
 
 // Public
@@ -102,7 +102,7 @@ scew_element_copy (scew_element const *element)
 
   if (new_elem != NULL)
     {
-      bool copied =
+      scew_bool copied =
         ((element->contents == NULL)
          || (scew_element_set_contents (new_elem, element->contents) != NULL));
 
@@ -198,13 +198,13 @@ scew_element_list_by_name (scew_element const *element, XML_Char const *name)
 
 // Comparisson
 
-bool
+scew_bool
 scew_element_compare (scew_element const *a, scew_element const *b)
 {
   assert (a != NULL);
   assert (b != NULL);
 
-  bool equal = true;
+  scew_bool equal = SCEW_TRUE;
 
   if ((a->contents != NULL) && (b->contents != NULL))
     {
@@ -679,26 +679,26 @@ scew_element_delete_attribute_by_index (scew_element *element,
 
 // Private
 
-bool
+scew_bool
 cmp_name_ (void const *element, void const *name)
 {
   return (scew_strcmp (((scew_element *) element)->name, (XML_Char *) name) == 0);
 }
 
-bool
+scew_bool
 cmp_attr_name_ (void const *attribute, void const *name)
 {
   return (scew_strcmp (scew_attribute_name ((scew_attribute *) attribute),
                        (XML_Char *) name) == 0);
 }
 
-bool
+scew_bool
 copy_children_ (scew_element *new_element, scew_element const *element)
 {
   assert (new_element != NULL);
   assert (element != NULL);
 
-  bool copied = true;
+  scew_bool copied = SCEW_TRUE;
   scew_list *list = element->children;
   while (copied && (list != NULL))
     {
@@ -713,13 +713,13 @@ copy_children_ (scew_element *new_element, scew_element const *element)
   return copied;
 }
 
-bool
+scew_bool
 copy_attributes_ (scew_element *new_element, scew_element const *element)
 {
   assert (new_element != NULL);
   assert (element != NULL);
 
-  bool copied = true;
+  scew_bool copied = SCEW_TRUE;
   scew_list *list = element->attributes;
   while (copied && (list != NULL))
     {
@@ -734,13 +734,13 @@ copy_attributes_ (scew_element *new_element, scew_element const *element)
   return copied;
 }
 
-bool
+scew_bool
 compare_children_ (scew_element const *a, scew_element const *b)
 {
   assert (a != NULL);
   assert (b != NULL);
 
-  bool equal = (a->n_children == b->n_children);
+  scew_bool equal = (a->n_children == b->n_children);
 
   scew_list *list_a = a->children;
   scew_list *list_b = b->children;
@@ -756,13 +756,13 @@ compare_children_ (scew_element const *a, scew_element const *b)
   return equal;
 }
 
-bool
+scew_bool
 compare_attributes_ (scew_element const *a, scew_element const *b)
 {
   assert (a != NULL);
   assert (b != NULL);
 
-  bool equal = (a->n_attributes == b->n_attributes);
+  scew_bool equal = (a->n_attributes == b->n_attributes);
 
   scew_list *list_a = a->attributes;
   scew_list *list_b = b->attributes;

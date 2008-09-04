@@ -235,4 +235,4 @@ extern void scew_tree_set_xml_preamble (scew_tree *tree,
 }
 #endif /* __cplusplus */
 
-#endif // TREE_H_0302202332
+#endif /* TREE_H_0302202332 */

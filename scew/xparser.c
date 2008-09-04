@@ -81,14 +81,14 @@ static scew_element* parser_stack_pop_ (scew_parser *parser);
 
 // Protected
 
-bool
+scew_bool
 scew_parser_expat_init_ (scew_parser *parser)
 {
   assert (parser != NULL);
 
   parser->parser = XML_ParserCreate (NULL);
 
-  bool result = (parser->parser != NULL);
+  scew_bool result = (parser->parser != NULL);
 
   if (result)
     {

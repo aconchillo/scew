@@ -32,8 +32,6 @@
 
 #include <check.h>
 
-#include <stdbool.h>
-
 
 // Private
 
@@ -59,7 +57,8 @@ START_TEST (test_alloc)
 
   CHECK_PTR (list, "Unable to create list");
 
-  CHECK_BOOL (scew_list_data (list) == &data, true, "Invalid data pointer");
+  CHECK_BOOL (scew_list_data (list) == &data, SCEW_TRUE,
+              "Invalid data pointer");
 
   scew_list_free (list);
 }
@@ -79,7 +78,7 @@ START_TEST (test_accessors)
       last = scew_list_append (last, &data_[i]);
 
       CHECK_PTR (last, "Unable to append item %d", i);
-      CHECK_BOOL (scew_list_data (last) == &data_[i], true,
+      CHECK_BOOL (scew_list_data (last) == &data_[i], SCEW_TRUE,
                   "Invalid data pointer (item %d)", i);
 
       item_t *tmp = scew_list_data (last);
@@ -115,7 +114,7 @@ START_TEST (test_append)
           list = item;
         }
       CHECK_PTR (item, "Unable to append item %d", i);
-      CHECK_BOOL (scew_list_data (item) == &data_[i], true,
+      CHECK_BOOL (scew_list_data (item) == &data_[i], SCEW_TRUE,
                   "Invalid data pointer (item %d)", i);
 
       item_t *tmp = scew_list_data (item);
@@ -141,7 +140,7 @@ START_TEST (test_prepend)
       list = scew_list_prepend (list, &data_[i]);
 
       CHECK_PTR (list, "Unable to prepend item %d", i);
-      CHECK_BOOL (scew_list_data (list) == &data_[i], true,
+      CHECK_BOOL (scew_list_data (list) == &data_[i], SCEW_TRUE,
                   "Invalid data pointer (item %d)", i);
 
       item_t *tmp = scew_list_data (list);
@@ -195,7 +194,7 @@ START_TEST (test_delete)
       unsigned int j = 0;
       for (j = 0; j < N_REMOVED; ++j)
         {
-          CHECK_BOOL (tmp->value != REMOVED[j], true,
+          CHECK_BOOL (tmp->value != REMOVED[j], SCEW_TRUE,
                       "Item %d should have been previously removed",
                       tmp->value);
         }
@@ -224,10 +223,10 @@ START_TEST (test_traverse)
         }
     }
 
-  CHECK_BOOL (list == scew_list_first (list), true,
+  CHECK_BOOL (list == scew_list_first (list), SCEW_TRUE,
               "First list item should be itself");
 
-  CHECK_BOOL (item == scew_list_last (list), true,
+  CHECK_BOOL (item == scew_list_last (list), SCEW_TRUE,
               "Last list item should be last item added");
 
   CHECK_NULL_PTR (scew_list_previous (list),
@@ -245,7 +244,7 @@ START_TEST (test_traverse)
 
       if (item != NULL)
         {
-          CHECK_BOOL (old_item == scew_list_previous (item), true,
+          CHECK_BOOL (old_item == scew_list_previous (item), SCEW_TRUE,
                       "Wrong previous item");
         }
     }
@@ -264,7 +263,7 @@ foreach_check_ (scew_list *item, void *user_data)
 
   item_t *tmp = scew_list_data (item);
 
-  CHECK_BOOL (tmp == &fe_data[foreach_calls_], true,
+  CHECK_BOOL (tmp == &fe_data[foreach_calls_], SCEW_TRUE,
               "Data pointer does not match in foreach call");
 
   CHECK_S_INT (tmp->value, foreach_calls_,
@@ -299,7 +298,7 @@ END_TEST
 
 // Search
 
-static bool
+static scew_bool
 search_cmp_ (void const *a, void const *b)
 {
   return (((item_t *) a)->value == ((item_t *) b)->value);
@@ -324,18 +323,18 @@ START_TEST (test_search)
         }
     }
 
-  CHECK_BOOL (item_5 == scew_list_find (list, &data_[5]), true,
+  CHECK_BOOL (item_5 == scew_list_find (list, &data_[5]), SCEW_TRUE,
               "Item 5 search failed");
 
   item_t value_5 = { 5 };
   CHECK_BOOL (item_5 == scew_list_find_custom (list, &value_5, search_cmp_),
-              true, "Item 5 custom search failed");
+              SCEW_TRUE, "Item 5 custom search failed");
 
   // Sequential indexing
   scew_list *item = list;
   for (i = 0; i < N_ELEMENTS_; ++i)
     {
-      CHECK_BOOL (item == scew_list_index (list, i), true,
+      CHECK_BOOL (item == scew_list_index (list, i), SCEW_TRUE,
                   "Sequential index item mismatch");
       item = scew_list_next (item);
     }

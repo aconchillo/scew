@@ -39,17 +39,17 @@
 
 // Private
 
-static bool print_eol_ (scew_writer *writer);
-static bool print_indent_ (scew_writer *writer);
-static bool print_element_header_ (scew_writer *writer,
-                                   scew_element const *element,
-                                   bool *closed);
+static scew_bool print_eol_ (scew_writer *writer);
+static scew_bool print_indent_ (scew_writer *writer);
+static scew_bool print_element_header_ (scew_writer *writer,
+                                        scew_element const *element,
+                                        scew_bool *closed);
 
 
 // Public
 
 void
-scew_writer_set_indented (scew_writer *writer, bool indented)
+scew_writer_set_indented (scew_writer *writer, scew_bool indented)
 {
   assert (writer != NULL);
 
@@ -64,12 +64,12 @@ scew_writer_set_indent_spaces (scew_writer *writer, unsigned int spaces)
   writer->spaces = spaces;
 }
 
-bool
+scew_bool
 scew_writer_close (scew_writer *writer)
 {
   assert (writer != NULL);
 
-  return (writer->close != NULL) ? writer->close (writer) : true;
+  return (writer->close != NULL) ? writer->close (writer) : SCEW_TRUE;
 }
 
 void
@@ -82,7 +82,7 @@ scew_writer_free (scew_writer *writer)
     }
 }
 
-bool
+scew_bool
 scew_writer_print_tree (scew_writer *writer, scew_tree const *tree)
 {
   assert (writer != NULL);
@@ -92,7 +92,9 @@ scew_writer_print_tree (scew_writer *writer, scew_tree const *tree)
   XML_Char const *encoding = scew_tree_xml_encoding (tree);
   scew_tree_standalone standalone = scew_tree_xml_standalone (tree);
 
-  bool result = writer->printf (writer, _XT("<?xml version=\"%s\""), version);
+  scew_bool result = writer->printf (writer,
+                                     _XT("<?xml version=\"%s\""),
+                                     version);
   if (encoding)
     {
       result = result && writer->printf (writer, _XT(" encoding=\"%s\""),
@@ -125,15 +127,15 @@ scew_writer_print_tree (scew_writer *writer, scew_tree const *tree)
   return result;
 }
 
-bool
+scew_bool
 scew_writer_print_element (scew_writer *writer, scew_element const *element)
 {
   assert (writer != NULL);
   assert (element != NULL);
 
-  bool result = print_indent_ (writer);
+  scew_bool result = print_indent_ (writer);
 
-  bool closed = true;
+  scew_bool closed = SCEW_TRUE;
 
   result = result && print_element_header_ (writer, element, &closed);
 
@@ -163,7 +165,7 @@ scew_writer_print_element (scew_writer *writer, scew_element const *element)
   return result;
 }
 
-bool
+scew_bool
 scew_writer_print_element_children (scew_writer *writer,
                                     scew_element const  *element)
 {
@@ -172,7 +174,7 @@ scew_writer_print_element_children (scew_writer *writer,
 
   unsigned int indent = writer->indent;
 
-  bool result = true;
+  scew_bool result = SCEW_TRUE;
   scew_list *list = scew_element_children (element);
   while (result && (list != NULL))
     {
@@ -194,14 +196,14 @@ scew_writer_print_element_children (scew_writer *writer,
 }
 
 
-bool
+scew_bool
 scew_writer_print_element_attributes (scew_writer *writer,
                                       scew_element const *element)
 {
   assert (writer != NULL);
   assert (element != NULL);
 
-  bool result = true;
+  scew_bool result = SCEW_TRUE;
   scew_list *list = scew_element_attributes (element);
   while (result && (list != NULL))
     {
@@ -218,17 +220,17 @@ scew_writer_print_element_attributes (scew_writer *writer,
   return result;
 }
 
-bool
+scew_bool
 scew_writer_print_attribute (scew_writer *writer,
                              scew_attribute const *attribute)
 {
   assert (writer != NULL);
   assert (attribute != NULL);
 
-  bool result = writer->printf (writer,
-                                _XT (" %s=\"%s\""),
-                                scew_attribute_name (attribute),
-                                scew_attribute_value (attribute));
+  scew_bool result = writer->printf (writer,
+                                     _XT (" %s=\"%s\""),
+                                     scew_attribute_name (attribute),
+                                     scew_attribute_value (attribute));
 
   if (!result)
     {
@@ -241,12 +243,12 @@ scew_writer_print_attribute (scew_writer *writer,
 
 // Private
 
-bool
+scew_bool
 print_eol_ (scew_writer *writer)
 {
   assert (writer != NULL);
 
-  bool result = true;
+  scew_bool result = SCEW_TRUE;
 
   if (writer->indented)
     {
@@ -256,12 +258,12 @@ print_eol_ (scew_writer *writer)
   return result;
 }
 
-bool
+scew_bool
 print_indent_ (scew_writer *writer)
 {
   assert (writer != NULL);
 
-  bool result = true;
+  scew_bool result = SCEW_TRUE;
 
   if (writer->indented)
     {
@@ -276,30 +278,30 @@ print_indent_ (scew_writer *writer)
   return result;
 }
 
-bool
+scew_bool
 print_element_header_ (scew_writer *writer,
                        scew_element const *element,
-                       bool *closed)
+                       scew_bool *closed)
 {
   assert (writer != NULL);
   assert (element != NULL);
 
-  bool result = writer->printf (writer,
-                                _XT ("<%s"),
-                                scew_element_name (element));
+  scew_bool result = writer->printf (writer,
+                                     _XT ("<%s"),
+                                     scew_element_name (element));
 
   result = result && scew_writer_print_element_attributes (writer, element);
 
   XML_Char const *contents = scew_element_contents (element);
   scew_element *parent = scew_element_parent (element);
 
-  *closed = false;
+  *closed = SCEW_FALSE;
   scew_list *list = scew_element_children (element);
   if ((contents == NULL) && (list == NULL) && (parent != NULL))
     {
       result = result && writer->printf (writer, _XT ("/>"));
       result = result && print_eol_ (writer);
-      *closed = true;
+      *closed = SCEW_TRUE;
     }
   else
     {

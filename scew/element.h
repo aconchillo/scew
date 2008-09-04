@@ -173,8 +173,8 @@ extern scew_list* scew_element_list_by_name (scew_element const *element,
  *
  * @ingroup SCEWElementCompare
  */
-extern bool scew_element_compare (scew_element const *a,
-                                  scew_element const *b);
+extern scew_bool scew_element_compare (scew_element const *a,
+                                       scew_element const *b);
 
 
 /**

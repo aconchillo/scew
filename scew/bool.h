@@ -1,8 +1,8 @@
 /**
- * @file     xwriter.h
- * @brief    Declaration of internal SCEW writer type
+ * @file     list.h
+ * @brief    SCEW boolean type declaration
  * @author   Aleix Conchillo Flaque <aleix@member.fsf.org>
- * @date     Tue Jul 22, 2008 22:05
+ * @date     Thu Sep 04, 2008 11:42
  *
  * @if copyright
  *
@@ -26,34 +26,15 @@
  * @endif
  **/
 
-#ifndef XWRITER_H_0807222205
-#define XWRITER_H_0807222205
+#ifndef BOOL_H_0809041142
+#define BOOL_H_0809041142
 
-#include "writer.h"
+/**
+ * This should be defined using stdbool.h when C99 is available.
+ */
+typedef unsigned char scew_bool;
 
-
-// Constants
+#define SCEW_TRUE   ((scew_bool) 1)
+#define SCEW_FALSE  ((scew_bool) 0)
 
-enum
-  {
-    DEFAULT_INDENT_SPACES_ = 3  /**< Default number of indent spaces */
-  };
-
-
-// Types
-
-typedef scew_bool (*scew_writer_close_callback) (scew_writer *);
-
-typedef scew_bool (*scew_writer_printf_callback) (scew_writer *,
-                                                  XML_Char const *, ...);
-
-struct scew_writer
-{
-  scew_writer_close_callback close;
-  scew_writer_printf_callback printf;
-  scew_bool indented;
-  unsigned int indent;
-  unsigned int spaces;
-};
-
-#endif // XWRITER_H_0807222205
+#endif /* BOOL_H_0809041142 */

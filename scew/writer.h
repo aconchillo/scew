@@ -35,10 +35,10 @@
 
 #include "tree.h"
 #include "attribute.h"
+#include "bool.h"
 
 #include <expat.h>
 
-#include <stdbool.h>
 #include <stdio.h>
 
 #ifdef __cplusplus
@@ -134,7 +134,7 @@ extern scew_writer* scew_writer_buffer_create (XML_Char *buffer,
  *
  * @ingroup SCEWWriterAlloc
  */
-extern bool scew_writer_close (scew_writer *writer);
+extern scew_bool scew_writer_close (scew_writer *writer);
 
 /**
  * Frees the memory allocated by the given SCEW @a writer. This
@@ -166,7 +166,7 @@ extern void scew_writer_free (scew_writer *writer);
  *
  * @ingroup SCEWWriterProp
  */
-extern void scew_writer_set_indented (scew_writer *writer, bool indented);
+extern void scew_writer_set_indented (scew_writer *writer, scew_bool indented);
 
 /**
  * Sets the number of @a spaces to use when indenting output for the
@@ -200,8 +200,8 @@ extern void scew_writer_set_indent_spaces (scew_writer *writer,
  *
  * @ingroup SCEWWriterOutput
  */
-extern bool scew_writer_print_tree (scew_writer *writer,
-                                    scew_tree const *tree);
+extern scew_bool scew_writer_print_tree (scew_writer *writer,
+                                         scew_tree const *tree);
 
 /**
  *
@@ -210,8 +210,8 @@ extern bool scew_writer_print_tree (scew_writer *writer,
  *
  * @ingroup SCEWWriterOutput
  */
-extern bool scew_writer_print_element (scew_writer *writer,
-                                       scew_element const *element);
+extern scew_bool scew_writer_print_element (scew_writer *writer,
+                                            scew_element const *element);
 
 /**
  *
@@ -220,8 +220,9 @@ extern bool scew_writer_print_element (scew_writer *writer,
  *
  * @ingroup SCEWWriterOutput
  */
-extern bool scew_writer_print_element_children (scew_writer *writer,
-                                                scew_element const  *element);
+extern scew_bool
+scew_writer_print_element_children (scew_writer *writer,
+                                    scew_element const  *element);
 
 /**
  *
@@ -230,8 +231,9 @@ extern bool scew_writer_print_element_children (scew_writer *writer,
  *
  * @ingroup SCEWWriterOutput
  */
-extern bool scew_writer_print_element_attributes (scew_writer *writer,
-                                                  scew_element const *element);
+extern scew_bool
+scew_writer_print_element_attributes (scew_writer *writer,
+                                      scew_element const *element);
 
 /**
  *
@@ -240,8 +242,9 @@ extern bool scew_writer_print_element_attributes (scew_writer *writer,
  *
  * @ingroup SCEWWriterOutput
  */
-extern bool scew_writer_print_attribute (scew_writer *writer,
-                                         scew_attribute const *attribute);
+extern scew_bool
+scew_writer_print_attribute (scew_writer *writer,
+                             scew_attribute const *attribute);
 
 #ifdef __cplusplus
 }

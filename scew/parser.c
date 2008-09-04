@@ -59,7 +59,7 @@ scew_parser_create (void)
     }
 
   // Ignore white spaces by default
-  parser->ignore_whitespaces = true;
+  parser->ignore_whitespaces = SCEW_TRUE;
 
   // No callback by default
   parser->stream_callback = NULL;
@@ -79,7 +79,7 @@ scew_parser_free (scew_parser *parser)
   free (parser);
 }
 
-bool
+scew_bool
 scew_parser_load_file (scew_parser *parser, char const *file_name)
 {
   assert (parser != NULL);
@@ -92,19 +92,19 @@ scew_parser_load_file (scew_parser *parser, char const *file_name)
       return 0;
     }
 
-  bool result = scew_parser_load_file_fp (parser, in);
+  scew_bool result = scew_parser_load_file_fp (parser, in);
   fclose (in);
 
   return result;
 }
 
-bool
+scew_bool
 scew_parser_load_file_fp (scew_parser *parser, FILE *in)
 {
   assert (parser != NULL);
   assert (in != NULL);
 
-  bool done = false;
+  scew_bool done = SCEW_FALSE;
   while (!done)
     {
       enum { MAX_BUFFER = 5000 };
@@ -115,21 +115,21 @@ scew_parser_load_file_fp (scew_parser *parser, FILE *in)
       if (ferror (in))
         {
 	  scew_error_set_last_error_ (scew_error_io);
-	  return false;
+	  return SCEW_FALSE;
         }
 
       done = feof (in);
       if (!XML_Parse (parser->parser, buffer, len, done))
         {
 	  scew_error_set_last_error_ (scew_error_expat);
-	  return false;
+	  return SCEW_FALSE;
         }
     }
 
-  return true;
+  return SCEW_TRUE;
 }
 
-bool
+scew_bool
 scew_parser_load_buffer (scew_parser *parser,
                          char const *buffer,
 			 unsigned int size)
@@ -141,13 +141,13 @@ scew_parser_load_buffer (scew_parser *parser,
   if (!XML_Parse (parser->parser, buffer, size, 1))
     {
       scew_error_set_last_error_ (scew_error_expat);
-      return false;
+      return SCEW_FALSE;
     }
 
-  return true;
+  return SCEW_TRUE;
 }
 
-bool
+scew_bool
 scew_parser_load_stream (scew_parser *parser,
                          char const *buffer,
 			 unsigned int size)
@@ -178,7 +178,7 @@ scew_parser_load_stream (scew_parser *parser,
 	  if (!XML_Parse (parser->parser, &buffer[start], length, 0))
             {
 	      scew_error_set_last_error_ (scew_error_expat);
-	      return false;
+	      return SCEW_FALSE;
             }
 
 	  if ((parser->tree != NULL) && (parser->current == NULL)
@@ -191,7 +191,7 @@ scew_parser_load_stream (scew_parser *parser,
 	      if (!parser->stream_callback (parser))
                 {
 		  scew_error_set_last_error_ (scew_error_callback);
-		  return false;
+		  return SCEW_FALSE;
                 }
 
 	      XML_ParserFree (parser->parser);
@@ -204,7 +204,7 @@ scew_parser_load_stream (scew_parser *parser,
       ++end;
     }
 
-  return true;
+  return SCEW_TRUE;
 }
 
 void
@@ -232,7 +232,7 @@ scew_parser_expat (scew_parser *parser)
 }
 
 void
-scew_parser_ignore_whitespaces (scew_parser *parser, bool ignore)
+scew_parser_ignore_whitespaces (scew_parser *parser, scew_bool ignore)
 {
   assert (parser != NULL);
 

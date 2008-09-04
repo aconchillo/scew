@@ -48,13 +48,12 @@
 #include <scew/scew.h>
 
 #include <stdio.h>
-#include <stdbool.h>
 
-bool
+scew_bool
 stream_cb (scew_parser *parser)
 {
   printf ("SCEW stream callback called!\n");
-  return true;
+  return SCEW_TRUE;
 }
 
 int

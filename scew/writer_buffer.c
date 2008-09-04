@@ -48,8 +48,9 @@ typedef struct
   unsigned int current;
 } scew_writer_buffer;
 
-static bool buffer_close_ (scew_writer *writer);
-static bool buffer_printf_ (scew_writer *writer, XML_Char const *format, ...);
+static scew_bool buffer_close_ (scew_writer *writer);
+static scew_bool buffer_printf_ (scew_writer *writer,
+                                 XML_Char const *format, ...);
 
 
 // Public
@@ -77,7 +78,7 @@ scew_writer_buffer_create (XML_Char *buffer, unsigned int size)
           writer->close = buffer_close_;
           writer->printf = buffer_printf_;
 
-          scew_writer_set_indented (writer, true);
+          scew_writer_set_indented (writer, SCEW_TRUE);
           scew_writer_set_indent_spaces (writer, DEFAULT_INDENT_SPACES_);
         }
       else
@@ -97,7 +98,7 @@ scew_writer_buffer_create (XML_Char *buffer, unsigned int size)
 
 // Private
 
-bool
+scew_bool
 buffer_close_ (scew_writer *writer)
 {
   scew_writer_buffer *buf_writer = (scew_writer_buffer *) writer;
@@ -107,10 +108,10 @@ buffer_close_ (scew_writer *writer)
       free (buf_writer->temp_buffer);
     }
 
-  return true;
+  return SCEW_TRUE;
 }
 
-bool
+scew_bool
 buffer_printf_ (scew_writer *writer, XML_Char const *format, ...)
 {
   assert (writer != NULL);
@@ -130,7 +131,7 @@ buffer_printf_ (scew_writer *writer, XML_Char const *format, ...)
   int written = vsprintf (buf_writer->temp_buffer, format, args);
 #endif
 
-  bool result = (written != -1) && (written <= maxlen);
+  scew_bool result = (written != -1) && (written <= maxlen);
 
   if (result)
     {

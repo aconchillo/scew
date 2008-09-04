@@ -77,7 +77,7 @@ scew_attribute_copy (scew_attribute const *attribute)
 
   if (new_attr != NULL)
     {
-      bool copied =
+      scew_bool copied =
         (scew_attribute_set_name (new_attr, attribute->name) != NULL)
         && (scew_attribute_set_value (new_attr, attribute->value) != NULL);
 
@@ -105,7 +105,7 @@ scew_attribute_free (scew_attribute *attribute)
 
 // Comparisson
 
-bool
+scew_bool
 scew_attribute_compare (scew_attribute const *a, scew_attribute const *b)
 {
   assert (a != NULL);

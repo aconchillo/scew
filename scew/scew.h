@@ -30,6 +30,7 @@
 #define SCEW_H_0211250134
 
 #include "attribute.h"
+#include "bool.h"
 #include "element.h"
 #include "error.h"
 #include "parser.h"
@@ -37,7 +38,7 @@
 #include "tree.h"
 #include "writer.h"
 
-// Automatically include the correct library on windows
+/* Automatically include the correct library on windows. */
 #ifdef _WIN32
 
 #ifdef XML_UNICODE_WCHAR_T

@@ -39,10 +39,10 @@
 #define PARSER_H_0211250057
 
 #include "tree.h"
+#include "bool.h"
 
 #include <expat.h>
 
-#include <stdbool.h>
 #include <stdio.h>
 
 #ifdef __cplusplus
@@ -63,7 +63,7 @@ typedef struct scew_parser scew_parser;
  *
  * @ingroup SCEWParserLoad
  */
-typedef bool (*scew_parser_callback) (scew_parser* parser);
+typedef scew_bool (*scew_parser_callback) (scew_parser* parser);
 
 
 /**
@@ -110,7 +110,8 @@ extern void scew_parser_free (scew_parser *parser);
  *
  * @ingroup SCEWParserLoad
  */
-extern bool scew_parser_load_file (scew_parser *parser, char const *file_name);
+extern scew_bool scew_parser_load_file (scew_parser *parser,
+                                        char const *file_name);
 
 /**
  * Loads an XML tree from the specified file pointer using the
@@ -125,7 +126,7 @@ extern bool scew_parser_load_file (scew_parser *parser, char const *file_name);
  *
  * @ingroup SCEWParserLoad
  */
-extern bool scew_parser_load_file_fp (scew_parser *parser, FILE *in);
+extern scew_bool scew_parser_load_file_fp (scew_parser *parser, FILE *in);
 
 /**
  * Loads an XML tree from the specified memory buffer of the specified
@@ -141,9 +142,9 @@ extern bool scew_parser_load_file_fp (scew_parser *parser, FILE *in);
  *
  * @ingroup SCEWParserLoad
  */
-extern bool scew_parser_load_buffer (scew_parser *parser,
-                                     char const *buffer,
-                                     unsigned int size);
+extern scew_bool scew_parser_load_buffer (scew_parser *parser,
+                                          char const *buffer,
+                                          unsigned int size);
 
 /**
  * Loads an XML tree from the specified stream buffer. Will call the
@@ -161,9 +162,9 @@ extern bool scew_parser_load_buffer (scew_parser *parser,
  *
  * @ingroup SCEWParserLoad
  */
-extern bool scew_parser_load_stream (scew_parser *parser,
-                                      char const *buffer,
-                                      unsigned int size);
+extern scew_bool scew_parser_load_stream (scew_parser *parser,
+                                          char const *buffer,
+                                          unsigned int size);
 
 /**
  * Sets the callback for use when reading streams.
@@ -197,7 +198,8 @@ extern void scew_parser_set_stream_callback (scew_parser *parser,
  *
  * @ingroup SCEWParserLoad
  */
-extern void scew_parser_ignore_whitespaces (scew_parser *parser, bool ignore);
+extern void scew_parser_ignore_whitespaces (scew_parser *parser,
+                                            scew_bool ignore);
 
 
 /**

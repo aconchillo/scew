@@ -33,6 +33,9 @@ See the end for copying conditions.
      with lists, thus no code repetition is done and there is a
      flexible and general way to work with lists.
 
+   - Added new scew_bool type. In the future, this should be changed
+     in favor of the bool type defined by C99.
+
    - Added scew_attribute_set_parent which assigns an attribute to an
      element and detaches it from the old one (if any).
 

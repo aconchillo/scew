@@ -44,14 +44,14 @@ struct scew_parser
   scew_tree* tree;		/**< XML document tree */
   scew_element* current;	/**< Current parsed element */
   stack_element* stack;		/**< Current parsed element stack */
-  bool ignore_whitespaces;	/**< Whether to ignore white spaces */
+  scew_bool ignore_whitespaces;	/**< Whether to ignore white spaces */
   scew_parser_callback stream_callback; /**< Callback for streams */
 };
 
 
 // Functions
 
-extern bool scew_parser_expat_init_ (scew_parser *parser);
+extern scew_bool scew_parser_expat_init_ (scew_parser *parser);
 
 extern void scew_parser_stack_free_ (scew_parser *parser);
 
