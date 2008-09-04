@@ -47,6 +47,13 @@
 extern "C" {
 #endif /* __cplusplus */
 
+typedef enum
+  {
+    scew_tree_standalone_unknown,
+    scew_tree_standalone_no,
+    scew_tree_standalone_yes
+  } scew_tree_standalone;
+
 /**
  * This is the type delcaration for XML trees.
  *
@@ -130,47 +137,6 @@ extern scew_element* scew_tree_set_root_element (scew_tree *tree,
 extern XML_Char const* scew_tree_xml_version (scew_tree const *tree);
 
 /**
- *
- *
- * @pre tree != NULL
- *
- * @param tree
- *
- * @return
- *
- * @ingroup SCEWTree
- */
-extern XML_Char const* scew_tree_xml_encoding (scew_tree const *tree);
-
-/**
- *
- *
- * @pre tree != NULL
- *
- * @param tree
- *
- * @return
- *
- * @ingroup SCEWTree
- */
-extern XML_Char const* scew_tree_xml_preamble (scew_tree const *tree);
-
-/**
- * Returns whether the given @a tree is an standalone document. The
- * standalone property tells the XML processor whether there are any
- * other extra files to load, such as external entities or DTDs.
- *
- * @pre tree != NULL
- *
- * @param tree the tree to check its standalone property for.
- *
- * @return true if the given tree is standalone, false otherwise.
- *
- * @ingroup SCEWTree
- */
-extern bool scew_tree_xml_standalone (scew_tree const *tree);
-
-/**
  * Sets the XML version in the XML declaration. Currently there is one
  * XML version, so the value is always 1.0. If there were more XML
  * versions, this proerty tells the XML processor which one to use.
@@ -182,6 +148,19 @@ extern bool scew_tree_xml_standalone (scew_tree const *tree);
  */
 extern void scew_tree_set_xml_version (scew_tree *tree,
 				       XML_Char const *version);
+
+/**
+ *
+ *
+ * @pre tree != NULL
+ *
+ * @param tree
+ *
+ * @return
+ *
+ * @ingroup SCEWTree
+ */
+extern XML_Char const* scew_tree_xml_encoding (scew_tree const *tree);
 
 /**
  * Sets the character encoding used in the XML document. The default is
@@ -196,16 +175,19 @@ extern void scew_tree_set_xml_encoding (scew_tree *tree,
 					XML_Char const *encoding);
 
 /**
- * Sets the preamble string for the XML document. Typically this
- * will contain a DOCTYPE declaration.
+ * Returns whether the given @a tree is an standalone document. The
+ * standalone property tells the XML processor whether there are any
+ * other extra files to load, such as external entities or DTDs.
  *
  * @pre tree != NULL
- * @pre preamble != NULL
+ *
+ * @param tree the tree to check its standalone property for.
+ *
+ * @return true if the given tree is standalone, false otherwise.
  *
  * @ingroup SCEWTree
  */
-extern void scew_tree_set_xml_preamble (scew_tree *tree,
-					XML_Char const *preamble);
+extern scew_tree_standalone scew_tree_xml_standalone (scew_tree const *tree);
 
 /**
  * The standalone property tells the XML processor whether there are
@@ -221,10 +203,36 @@ extern void scew_tree_set_xml_preamble (scew_tree *tree,
  *
  * @ingroup SCEWTree
  */
-extern void scew_tree_set_xml_standalone (scew_tree *tree, bool standalone);
+extern void scew_tree_set_xml_standalone (scew_tree *tree,
+                                          scew_tree_standalone standalone);
+
+/**
+ *
+ *
+ * @pre tree != NULL
+ *
+ * @param tree
+ *
+ * @return
+ *
+ * @ingroup SCEWTree
+ */
+extern XML_Char const* scew_tree_xml_preamble (scew_tree const *tree);
+
+/**
+ * Sets the preamble string for the XML document. Typically this
+ * will contain a DOCTYPE declaration.
+ *
+ * @pre tree != NULL
+ * @pre preamble != NULL
+ *
+ * @ingroup SCEWTree
+ */
+extern void scew_tree_set_xml_preamble (scew_tree *tree,
+					XML_Char const *preamble);
 
 #ifdef __cplusplus
 }
 #endif /* __cplusplus */
 
-#endif /* TREE_H_0302202332 */
+#endif // TREE_H_0302202332

@@ -90,7 +90,7 @@ scew_writer_print_tree (scew_writer *writer, scew_tree const *tree)
 
   XML_Char const *version = scew_tree_xml_version (tree);
   XML_Char const *encoding = scew_tree_xml_encoding (tree);
-  bool standalone = scew_tree_xml_standalone (tree);
+  scew_tree_standalone standalone = scew_tree_xml_standalone (tree);
 
   bool result = writer->printf (writer, _XT("<?xml version=\"%s\""), version);
   if (encoding)
@@ -98,8 +98,22 @@ scew_writer_print_tree (scew_writer *writer, scew_tree const *tree)
       result = result && writer->printf (writer, _XT(" encoding=\"%s\""),
                                          encoding);
     }
-  result = result && writer->printf (writer, _XT(" standalone=\"%s\"?>\n"),
-                                     standalone ? _XT ("yes") : _XT ("no"));
+  if (result)
+    {
+      switch (standalone)
+        {
+        case scew_tree_standalone_unknown:
+          break;
+        case scew_tree_standalone_no:
+          result = writer->printf (writer, _XT(" standalone=\"no\""));
+          break;
+        case scew_tree_standalone_yes:
+          result = writer->printf (writer, _XT(" standalone=\"yes\""));
+          break;
+        };
+    }
+
+  result = result && writer->printf (writer, _XT(" ?>\n"));
 
   result = result && scew_writer_print_element (writer, scew_tree_root (tree));
 
@@ -119,7 +133,7 @@ scew_writer_print_element (scew_writer *writer, scew_element const *element)
 
   bool result = print_indent_ (writer);
 
-  bool closed = false;
+  bool closed = true;
 
   result = result && print_element_header_ (writer, element, &closed);
 
@@ -188,7 +202,6 @@ scew_writer_print_element_attributes (scew_writer *writer,
   assert (element != NULL);
 
   bool result = true;
-
   scew_list *list = scew_element_attributes (element);
   while (result && (list != NULL))
     {
@@ -252,8 +265,9 @@ print_indent_ (scew_writer *writer)
 
   if (writer->indented)
     {
+      unsigned int i = 0;
       unsigned int spaces = writer->indent * writer->spaces;
-      for (unsigned int i = 0; result && (i < spaces); ++i)
+      for (i = 0; result && (i < spaces); ++i)
         {
           result = writer->printf (writer, _XT (" "));
         }
@@ -270,7 +284,8 @@ print_element_header_ (scew_writer *writer,
   assert (writer != NULL);
   assert (element != NULL);
 
-  bool result = writer->printf (writer, _XT ("<%s"),
+  bool result = writer->printf (writer,
+                                _XT ("<%s"),
                                 scew_element_name (element));
 
   result = result && scew_writer_print_element_attributes (writer, element);

@@ -43,7 +43,7 @@ struct scew_tree
   XML_Char *version;
   XML_Char *encoding;
   XML_Char *preamble;
-  bool standalone;
+  scew_tree_standalone standalone;
   scew_element *root;
 };
 
@@ -62,7 +62,7 @@ scew_tree_create (void)
     {
       tree->version = scew_strdup (DEFAULT_XML_VERSION_);
       tree->encoding = scew_strdup (DEFAULT_ENCODING_);
-      tree->standalone = true;
+      tree->standalone = scew_tree_standalone_unknown;
     }
   else
     {
@@ -134,32 +134,8 @@ scew_tree_xml_version (scew_tree const *tree)
   return tree->version;
 }
 
-XML_Char const*
-scew_tree_xml_encoding (scew_tree const *tree)
-{
-  assert(tree != NULL);
-
-  return tree->encoding;
-}
-
-XML_Char const*
-scew_tree_xml_preamble (scew_tree const *tree)
-{
-  assert (tree != NULL);
-
-  return tree->preamble;
-}
-
-bool
-scew_tree_xml_standalone (scew_tree const *tree)
-{
-  assert (tree != NULL);
-
-  return tree->standalone;
-}
-
 void
-scew_tree_set_xml_version(scew_tree *tree, XML_Char const *version)
+scew_tree_set_xml_version (scew_tree *tree, XML_Char const *version)
 {
   assert (tree != NULL);
   assert (version != NULL);
@@ -169,6 +145,14 @@ scew_tree_set_xml_version(scew_tree *tree, XML_Char const *version)
       free (tree->version);
     }
   tree->version = scew_strdup (version);
+}
+
+XML_Char const*
+scew_tree_xml_encoding (scew_tree const *tree)
+{
+  assert(tree != NULL);
+
+  return tree->encoding;
 }
 
 void
@@ -184,6 +168,30 @@ scew_tree_set_xml_encoding (scew_tree *tree, XML_Char const *encoding)
   tree->encoding = scew_strdup (encoding);
 }
 
+scew_tree_standalone
+scew_tree_xml_standalone (scew_tree const *tree)
+{
+  assert (tree != NULL);
+
+  return tree->standalone;
+}
+
+void
+scew_tree_set_xml_standalone (scew_tree *tree, scew_tree_standalone standalone)
+{
+  assert(tree != NULL);
+
+  tree->standalone = standalone;
+}
+
+XML_Char const*
+scew_tree_xml_preamble (scew_tree const *tree)
+{
+  assert (tree != NULL);
+
+  return tree->preamble;
+}
+
 void
 scew_tree_set_xml_preamble (scew_tree *tree, XML_Char const *preamble)
 {
@@ -195,12 +203,4 @@ scew_tree_set_xml_preamble (scew_tree *tree, XML_Char const *preamble)
       free (tree->preamble);
     }
   tree->preamble = scew_strdup (preamble);
-}
-
-void
-scew_tree_set_xml_standalone (scew_tree *tree, bool standalone)
-{
-  assert(tree != NULL);
-
-  tree->standalone = standalone;
 }
