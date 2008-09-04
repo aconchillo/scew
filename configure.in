@@ -8,12 +8,11 @@
 #### boilerplate and flags
 
 AC_INIT(scew/scew.h)
-AM_INIT_AUTOMAKE(scew, 1.0.0)
+AM_INIT_AUTOMAKE(scew, 1.0.0rc1)
 AM_CONFIG_HEADER(config.h)
 
 AC_ISC_POSIX
 AC_PROG_CC
-AC_PROG_CC_C99
 
 AC_DISABLE_SHARED
 AC_PROG_LIBTOOL
@@ -69,8 +68,9 @@ CFLAGS="$CFLAGS -Wall -Werror"
 
 if test "x$enable_debug" = "xno"; then
    CFLAGS="$CFLAGS -DNDEBUG"
-   AC_SUBST(CFLAGS)
 fi
+
+AC_SUBST(CFLAGS)
 
 ####
 
