@@ -1,3 +1,10 @@
+2008-09-05  Aleix Conchillo Flaque  <aleix@member.fsf.org>
+
+	* scew, examples, check: lost ChangeLog details for 1.0.0rc1. See
+	NEWS (API changes) for details.
+
+**** Changes in version 0.4.0 ****
+
 2007-10-11  Aleix Conchillo Flaque  <aleix@member.fsf.org>
 
 	* attribute.c, attribute.h, element.c, element.h, xprint.c:
