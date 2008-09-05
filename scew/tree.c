@@ -36,7 +36,7 @@
 #include <assert.h>
 
 
-// Private
+/* Private */
 
 struct scew_tree
 {
@@ -51,7 +51,7 @@ static XML_Char const *DEFAULT_XML_VERSION_ = "1.0";
 static XML_Char const *DEFAULT_ENCODING_ = "UTF-8";
 
 
-// Public
+/* Public */
 
 scew_tree*
 scew_tree_create (void)
@@ -96,12 +96,13 @@ scew_tree_root (scew_tree const *tree)
 scew_element*
 scew_tree_set_root (scew_tree *tree, XML_Char const *name)
 {
+  scew_element *root = NULL;
+  scew_element *new_root = NULL;
+
   assert (tree != NULL);
   assert (name != NULL);
 
-  scew_element *new_root = NULL;
-
-  scew_element *root = scew_element_create (name);
+  root = scew_element_create (name);
 
   if (root != NULL)
     {

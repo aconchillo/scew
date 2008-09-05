@@ -58,7 +58,8 @@ See the end for copying conditions.
 
    - XML declaration standalone attribute is now used.
 
-   - Test cases have been added using Check unit testing framework.
+   - Test cases have been added using Check unit testing framework
+     (C99 needed).
      (see http://check.sf.net)
 
    - Code has been cleaned to allow better definition of private and

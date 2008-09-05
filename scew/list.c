@@ -42,17 +42,19 @@ struct scew_list
 };
 
 
-// Public
+/* Public */
 
 
-// Allocation
+/* Allocation */
 
 scew_list*
 scew_list_create (void *data)
 {
+  scew_list *list = NULL;
+
   assert (data != NULL);
 
-  scew_list *list = calloc (1, sizeof (scew_list));
+  list = calloc (1, sizeof (scew_list));
 
   if (list != NULL)
     {
@@ -74,7 +76,7 @@ scew_list_free (scew_list *list)
 }
 
 
-// Accessors
+/* Accessors */
 
 void*
 scew_list_data (scew_list *list)
@@ -99,14 +101,16 @@ scew_list_size (scew_list *list)
 }
 
 
-// Modifiers
+/* Modifiers */
 
 scew_list*
 scew_list_append (scew_list *list, void *data)
 {
+  scew_list *item = NULL;
+
   assert (data != NULL);
 
-  scew_list *item = scew_list_create (data);
+  item = scew_list_create (data);
 
   if ((item != NULL) && (list != NULL))
     {
@@ -121,9 +125,11 @@ scew_list_append (scew_list *list, void *data)
 scew_list*
 scew_list_prepend (scew_list *list, void *data)
 {
+  scew_list *item = NULL;
+
   assert (data != NULL);
 
-  scew_list *item = scew_list_create (data);
+  item = scew_list_create (data);
 
   if ((item != NULL) && (list != NULL))
     {
@@ -138,10 +144,10 @@ scew_list_prepend (scew_list *list, void *data)
 scew_list*
 scew_list_delete (scew_list *list, void *data)
 {
+  scew_list *tmp = list;
+
   assert (list != NULL);
   assert (data != NULL);
-
-  scew_list *tmp = list;
 
   while (tmp != NULL)
     {
@@ -199,7 +205,7 @@ scew_list_delete_item (scew_list *list, scew_list *item)
 }
 
 
-// Traverse
+/* Traverse */
 
 scew_list*
 scew_list_first (scew_list *list)
@@ -246,9 +252,9 @@ scew_list_previous (scew_list *list)
 scew_list*
 scew_list_index (scew_list *list, unsigned int index)
 {
-  assert (list != NULL);
-
   unsigned int count = 0;
+
+  assert (list != NULL);
 
   while ((list != NULL) && (count < index))
     {
@@ -273,7 +279,7 @@ scew_list_foreach (scew_list *list, scew_list_function func, void *user_data)
 }
 
 
-// Search
+/* Search */
 
 scew_list*
 scew_list_find (scew_list *list, void *data)

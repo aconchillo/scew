@@ -35,7 +35,7 @@
 #include <assert.h>
 
 
-// Private
+/* Private */
 
 struct scew_attribute
 {
@@ -45,17 +45,19 @@ struct scew_attribute
 };
 
 
-// Public
+/* Public */
 
-// Allocation
+/* Allocation */
 
 scew_attribute*
 scew_attribute_create (XML_Char const *name, XML_Char const *value)
 {
+  scew_attribute *attribute = NULL;
+
   assert (name != NULL);
   assert (value != NULL);
 
-  scew_attribute *attribute = calloc (1, sizeof (scew_attribute));
+  attribute = calloc (1, sizeof (scew_attribute));
 
   if (attribute != NULL)
     {
@@ -103,7 +105,7 @@ scew_attribute_free (scew_attribute *attribute)
 }
 
 
-// Comparisson
+/* Comparisson */
 
 scew_bool
 scew_attribute_compare (scew_attribute const *a, scew_attribute const *b)
@@ -116,7 +118,7 @@ scew_attribute_compare (scew_attribute const *a, scew_attribute const *b)
 }
 
 
-// Accessors
+/* Accessors */
 
 XML_Char const*
 scew_attribute_name (scew_attribute const *attribute)
@@ -137,10 +139,12 @@ scew_attribute_value (scew_attribute const *attribute)
 XML_Char const*
 scew_attribute_set_name (scew_attribute *attribute, XML_Char const *name)
 {
+  XML_Char *new_name = NULL;
+
   assert (attribute != NULL);
   assert (name != NULL);
 
-  XML_Char *new_name = scew_strdup (name);
+  new_name = scew_strdup (name);
   if (new_name != NULL)
     {
       free (attribute->name);
@@ -157,10 +161,12 @@ scew_attribute_set_name (scew_attribute *attribute, XML_Char const *name)
 XML_Char const*
 scew_attribute_set_value (scew_attribute *attribute, XML_Char const *value)
 {
+  XML_Char *new_value = NULL;
+
   assert (attribute != NULL);
   assert (value != NULL);
 
-  XML_Char *new_value = scew_strdup (value);
+  new_value = scew_strdup (value);
   if (new_value != NULL)
     {
       free (attribute->value);

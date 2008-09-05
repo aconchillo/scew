@@ -33,7 +33,7 @@
 
 #include <stdio.h>
 
-// Indentation size (in whitespaces)
+/* Indentation size (in whitespaces). */
 static unsigned int const INDENT_SIZE = 4;
 
 void
@@ -50,8 +50,10 @@ print_attributes (scew_element *element)
 {
   if (element != NULL)
     {
-      // Iterates through the element's attribute list, printing the
-      // pair name-value.
+      /**
+       * Iterates through the element's attribute list, printing the
+       * pair name-value.
+       */
       scew_list *list = scew_element_attributes (element);
       while (list != NULL)
         {
@@ -67,27 +69,32 @@ print_attributes (scew_element *element)
 void
 print_element (scew_element *element, unsigned int indent)
 {
+  XML_Char const *contents = NULL;
+  scew_list *list = NULL;
+
   if (element == NULL)
     {
       return;
     }
 
-  // Prints the starting element tag with its attributes.
+  /* Prints the starting element tag with its attributes. */
   print_indent (indent);
   printf ("<%s", scew_element_name (element));
   print_attributes (element);
   printf (">");
 
-  XML_Char const *contents = scew_element_contents (element);
+  contents = scew_element_contents (element);
 
   if (contents == NULL)
     {
       printf ("\n");
     }
 
-  // Call print_element function again for each child of the current
-  // element.
-  scew_list *list = scew_element_children (element);
+  /**
+   * Call print_element function again for each child of the current
+   * element.
+   */
+  list = scew_element_children (element);
   while (list != NULL)
     {
       scew_element *child = scew_list_data (list);
@@ -95,7 +102,7 @@ print_element (scew_element *element, unsigned int indent)
       list = scew_list_next (list);
     }
 
-  // Prints element's content.
+  /* Prints element's content. */
   if (contents != NULL)
     {
       printf ("%s", contents);
@@ -105,25 +112,28 @@ print_element (scew_element *element, unsigned int indent)
       print_indent (indent);
     }
 
-  // Prints the closing element tag.
+  /* Prints the closing element tag. */
   printf ("</%s>\n", scew_element_name (element));
 }
 
 int
 main (int argc, char *argv[])
 {
+  scew_parser *parser = NULL;
+  scew_tree *tree = NULL;
+
   if (argc < 2)
     {
       printf ("Usage: scew_print file.xml\n");
       return EXIT_FAILURE;
     }
 
-  // Creates an SCEW parser. This is the first function to call.
-  scew_parser *parser = scew_parser_create ();
+  /* Creates an SCEW parser. This is the first function to call. */
+  parser = scew_parser_create ();
 
   scew_parser_ignore_whitespaces (parser, 1);
 
-  // Loads an XML file.
+  /* Loads an XML file. */
   if (!scew_parser_load_file (parser, argv[1]))
     {
       scew_error code = scew_error_code ();
@@ -140,15 +150,15 @@ main (int argc, char *argv[])
       return EXIT_FAILURE;
     }
 
-  scew_tree *tree = scew_parser_tree (parser);
+  tree = scew_parser_tree (parser);
 
-  // Prints full tree.
+  /* Prints full tree. */
   print_element (scew_tree_root (tree), 0);
 
-  // Remember to free tree (scew_parser_free does not free it).
+  /* Remember to free tree (scew_parser_free does not free it). */
   scew_tree_free (tree);
 
-  // Frees the SCEW parser.
+  /* Frees the SCEW parser. */
   scew_parser_free (parser);
 
   return 0;

@@ -33,9 +33,11 @@
 #include "parser.h"
 
 
-// Types
+/* Types */
 
-// Stack to keep previous parsed elements
+/**
+ * Stack to keep previous parsed elements.
+ */
 typedef struct stack_element stack_element;
 
 struct scew_parser
@@ -49,7 +51,7 @@ struct scew_parser
 };
 
 
-// Functions
+/* Functions */
 
 extern scew_bool scew_parser_expat_init_ (scew_parser *parser);
 

@@ -38,7 +38,7 @@
 #include <stdarg.h>
 
 
-// Private
+/* Private */
 
 typedef struct
 {
@@ -51,16 +51,17 @@ static scew_bool file_printf_ (scew_writer *writer,
                                XML_Char const *format, ...);
 
 
-// Public
+/* Public */
 
 scew_writer*
 scew_writer_file_create (char const *file_name)
 {
-  assert (file_name != NULL);
-
+  FILE *file = NULL;
   scew_writer *writer = NULL;
 
-  FILE *file = fopen (file_name, "wb");
+  assert (file_name != NULL);
+
+  file = fopen (file_name, "wb");
 
   if (file != NULL)
     {
@@ -77,15 +78,18 @@ scew_writer_file_create (char const *file_name)
 scew_writer*
 scew_writer_fp_create (FILE *file)
 {
+  scew_writer_fp *fp_writer = NULL;
+
   assert (file != NULL);
 
-  scew_writer_fp *fp_writer = calloc (1, sizeof (scew_writer_fp));
+  fp_writer = calloc (1, sizeof (scew_writer_fp));
 
   if (fp_writer != NULL)
     {
+      scew_writer *writer = (scew_writer *) fp_writer;
+
       fp_writer->file = file;
 
-      scew_writer *writer = (scew_writer *) fp_writer;
       writer->close = file_close_;
       writer->printf = file_printf_;
 
@@ -101,7 +105,7 @@ scew_writer_fp_create (FILE *file)
 }
 
 
-// Private
+/* Private */
 
 scew_bool
 file_close_ (scew_writer *writer)
@@ -122,15 +126,17 @@ file_close_ (scew_writer *writer)
 scew_bool
 file_printf_ (scew_writer *writer, XML_Char const *format, ...)
 {
+  va_list args;
+  int written = 0;
+  scew_writer_fp *fp_writer = NULL;
+
   assert (writer != NULL);
   assert (format != NULL);
 
-  va_list args;
-
   va_start (args, format);
 
-  scew_writer_fp *fp_writer = (scew_writer_fp *) writer;
-  int written = scew_vfprintf (fp_writer->file, format, args);
+  fp_writer = (scew_writer_fp *) writer;
+  written = scew_vfprintf (fp_writer->file, format, args);
 
   va_end (args);
 

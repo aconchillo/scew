@@ -35,7 +35,7 @@
 #include <assert.h>
 
 
-// Private
+/* Private */
 
 struct stack_element
 {
@@ -43,52 +43,72 @@ struct stack_element
   struct stack_element* prev;
 };
 
-// Expat callback for XML declaration.
+/**
+ * Expat callback for XML declaration.
+ */
 static void expat_xmldecl_handler_ (void *data,
                                     XML_Char const *version,
                                     XML_Char const *encoding,
                                     int standalone);
 
-// Expat callback for starting elements.
+/**
+ * Expat callback for starting elements.
+ */
 static void expat_start_handler_ (void *data,
                                   XML_Char const *name,
                                   XML_Char const **attr);
 
-// Expat callback for ending elements.
+/**
+ * Expat callback for ending elements.
+ */
 static void expat_end_handler_ (void *data, XML_Char const *name);
 
-// Expat callback for element contents.
+/**
+ * Expat callback for element contents.
+ */
 static void expat_char_handler_ (void *data, XML_Char const *str, int len);
 
-// Tells Expat parser to stop due to a SCEW error.
+/**
+ * Tells Expat parser to stop due to a SCEW error.
+ */
 static void stop_expat_parsing_ (scew_parser *parser, scew_error error);
 
-// Creates a new tree for the given parser (if not created already).
+/**
+ * Creates a new tree for the given parser (if not created already).
+ */
 static scew_tree* create_tree_ (scew_parser *parser);
 
-// Creates a new element with the given name and attributes.
+/**
+ * Creates a new element with the given name and attributes.
+ */
 static scew_element* create_element_ (XML_Char const *name,
                                       XML_Char const **attrs);
 
-// Pushes an element into the stack returning the pushed element.
+/**
+ * Pushes an element into the stack returning the pushed element.
+ */
 static stack_element* parser_stack_push_ (scew_parser *parser,
                                           scew_element *element);
 
-// Pops an element from the stack returning the new top element (not
-// the actual top).
+/**
+ * Pops an element from the stack returning the new top element (not
+ * the actual top).
+ */
 static scew_element* parser_stack_pop_ (scew_parser *parser);
 
 
-// Protected
+/* Protected */
 
 scew_bool
 scew_parser_expat_init_ (scew_parser *parser)
 {
+  scew_bool result = SCEW_TRUE;
+
   assert (parser != NULL);
 
   parser->parser = XML_ParserCreate (NULL);
 
-  scew_bool result = (parser->parser != NULL);
+  result = (parser->parser != NULL);
 
   if (result)
     {
@@ -98,7 +118,7 @@ scew_parser_expat_init_ (scew_parser *parser)
                              expat_end_handler_);
       XML_SetCharacterDataHandler (parser->parser, expat_char_handler_);
 
-      // Data to be passed to all handlers is the SCEW parser.
+      /* Data to be passed to all handlers is the SCEW parser. */
       XML_SetUserData (parser->parser, parser);
     }
   else
@@ -123,7 +143,7 @@ scew_parser_stack_free_ (scew_parser *parser)
 }
 
 
-// Private (handlers)
+/* Private (handlers) */
 
 void
 expat_xmldecl_handler_ (void *data,
@@ -155,8 +175,10 @@ expat_xmldecl_handler_ (void *data,
       scew_tree_set_xml_encoding (parser->tree, scew_strdup (encoding));
     }
 
-  // We need to add 1 as our standalone enumeration starts at 0. Expat
-  // returns -1, 0 or 1.
+  /**
+   * We need to add 1 as our standalone enumeration starts at 0. Expat
+   * returns -1, 0 or 1.
+   */
   scew_tree_set_xml_standalone (parser->tree, standalone + 1);
 }
 
@@ -166,6 +188,8 @@ expat_start_handler_ (void *data,
                       XML_Char const **attrs)
 {
   scew_parser *parser = (scew_parser *) data;
+  scew_element *element = NULL;
+  stack_element *stack = NULL;
 
   if (parser == NULL)
     {
@@ -173,22 +197,22 @@ expat_start_handler_ (void *data,
       return;
     }
 
-  // Create element
-  scew_element *element = create_element_ (name, attrs);
+  /* Create element. */
+  element = create_element_ (name, attrs);
   if (element == NULL)
     {
       stop_expat_parsing_ (parser, scew_error_no_memory);
       return;
     }
 
-  // Add the element to its parent (if any)
+  /* Add the element to its parent (if any). */
   if (parser->current != NULL)
     {
       (void) scew_element_add_element (parser->current, element);
     }
 
-  // Push element onto the stack
-  stack_element *stack = parser_stack_push_ (parser, element);
+  /* Push element onto the stack. */
+  stack = parser_stack_push_ (parser, element);
   if (stack == NULL)
     {
       stop_expat_parsing_ (parser, scew_error_no_memory);
@@ -202,8 +226,8 @@ void
 expat_end_handler_ (void *data, XML_Char const *elem)
 {
   scew_parser *parser = (scew_parser *) data;
-
   scew_element *current = parser->current;
+  XML_Char const *contents = NULL;
 
   if ((parser == NULL) || (current == NULL))
     {
@@ -211,12 +235,12 @@ expat_end_handler_ (void *data, XML_Char const *elem)
       return;
     }
 
-  XML_Char const *contents = scew_element_contents (current);
+  contents = scew_element_contents (current);
 
-  // Trim element contents if necessary
+  /* Trim element contents if necessary. */
   if (parser->ignore_whitespaces && (contents != NULL))
     {
-      // We use the internal const pointer for performance reasons
+      /* We use the internal const pointer for performance reasons. */
       scew_strtrim ((XML_Char *) contents);
       if (scew_strlen (contents) == 0)
         {
@@ -224,11 +248,13 @@ expat_end_handler_ (void *data, XML_Char const *elem)
         }
     }
 
-  // Go back to the previous element
+  /* Go back to the previous element. */
   parser->current = parser_stack_pop_ (parser);
 
-  // If there are no more elements (root node) we set the root
-  // element.
+  /**
+   * If there are no more elements (root node) we set the root
+   * element.
+   */
   if (parser->current == NULL)
     {
       parser->tree = create_tree_ (parser);
@@ -245,8 +271,11 @@ void
 expat_char_handler_ (void *data, XML_Char const *str, int len)
 {
   scew_parser *parser = (scew_parser *) data;
-
   scew_element *current = parser->current;
+  XML_Char const *contents = NULL;
+  XML_Char *new_contents = NULL;
+  unsigned int total_old = 0;
+  unsigned int total = 0;
 
   if ((parser == NULL) || (current == NULL))
     {
@@ -254,20 +283,21 @@ expat_char_handler_ (void *data, XML_Char const *str, int len)
       return;
     }
 
-  // Get size of current contents
-  unsigned int total_old = 0;
-  XML_Char const *contents = scew_element_contents (current);
+  /* Get size of current contents. */
+  contents = scew_element_contents (current);
   if (contents != NULL)
     {
       total_old = scew_strlen (contents);
     }
 
-  // Calculate new size and allocate enough space (+ 1 for
-  // null-terminated string)
-  unsigned int total = (total_old + len + 1) * sizeof (XML_Char);
-  XML_Char *new_contents = calloc (total, 1);
+  /**
+   * Calculate new size and allocate enough space (+ 1 for
+   * null-terminated string).
+   */
+  total = (total_old + len + 1) * sizeof (XML_Char);
+  new_contents = calloc (total, 1);
 
-  // Copy old contents (if any) and concatenate new one
+  /* Copy old contents (if any) and concatenate new one. */
   if (contents != NULL)
     {
       scew_strcpy (new_contents, contents);
@@ -279,7 +309,7 @@ expat_char_handler_ (void *data, XML_Char const *str, int len)
 }
 
 
-// Private (miscellaneous)
+/* Private (miscellaneous) */
 
 void
 stop_expat_parsing_ (scew_parser *parser, scew_error error)
@@ -323,14 +353,16 @@ create_element_ (XML_Char const *name, XML_Char const **attrs)
 }
 
 
-// Private (stack)
+/* Private (stack) */
 
 stack_element*
 parser_stack_push_ (scew_parser *parser, scew_element *element)
 {
+  stack_element *new_elem = NULL;
+
   assert (element != NULL);
 
-  stack_element *new_elem = calloc (1, sizeof (stack_element));
+  new_elem = calloc (1, sizeof (stack_element));
 
   if (new_elem != NULL)
     {
@@ -348,9 +380,11 @@ parser_stack_push_ (scew_parser *parser, scew_element *element)
 scew_element*
 parser_stack_pop_ (scew_parser *parser)
 {
+  stack_element *element = NULL;
+
   assert (stack != NULL);
 
-  stack_element *element = parser->stack;
+  element = parser->stack;
   if (element != NULL)
     {
       parser->stack = element->prev;

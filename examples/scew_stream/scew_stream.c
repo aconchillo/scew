@@ -59,13 +59,17 @@ stream_cb (scew_parser *parser)
 int
 main (int argc, char *argv[])
 {
+  int len = 1;
+  FILE *in = NULL;
+  scew_parser *parser = NULL;
+
   if (argc < 2)
     {
       printf ("Usage: scew_stream file.xml\n");
       return EXIT_FAILURE;
     }
 
-  FILE *in = fopen (argv[1], "rb");
+  in = fopen (argv[1], "rb");
 
   if (in == NULL)
     {
@@ -73,12 +77,11 @@ main (int argc, char *argv[])
       return EXIT_FAILURE;
     }
 
-  // Creates an SCEW parser. This is the first function to call.
-  scew_parser *parser = scew_parser_create ();
+  /* Creates an SCEW parser. This is the first function to call. */
+  parser = scew_parser_create ();
 
   scew_parser_set_stream_callback (parser, stream_cb);
 
-  int len = 1;
   while (len)
     {
       char buffer;
@@ -105,7 +108,7 @@ main (int argc, char *argv[])
 
   fclose (in);
 
-  // Frees the SCEW parser.
+  /* Frees the SCEW parser. */
   scew_parser_free (parser);
 
   return 0;

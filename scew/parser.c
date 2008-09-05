@@ -39,7 +39,7 @@
 
 
 
-// Public
+/* Public */
 
 scew_parser*
 scew_parser_create (void)
@@ -58,10 +58,10 @@ scew_parser_create (void)
       return NULL;
     }
 
-  // Ignore white spaces by default
+  /* Ignore white spaces by default. */
   parser->ignore_whitespaces = SCEW_TRUE;
 
-  // No callback by default
+  /* No callback by default. */
   parser->stream_callback = NULL;
 
   return parser;
@@ -82,17 +82,20 @@ scew_parser_free (scew_parser *parser)
 scew_bool
 scew_parser_load_file (scew_parser *parser, char const *file_name)
 {
+  FILE *in = NULL;
+  scew_bool result = SCEW_FALSE;
+
   assert (parser != NULL);
   assert (file_name != NULL);
 
-  FILE *in = fopen (file_name, "rb");
+  in = fopen (file_name, "rb");
   if (in == NULL)
     {
       scew_error_set_last_error_ (scew_error_io);
-      return 0;
+      return result;
     }
 
-  scew_bool result = scew_parser_load_file_fp (parser, in);
+  result = scew_parser_load_file_fp (parser, in);
   fclose (in);
 
   return result;
@@ -101,16 +104,17 @@ scew_parser_load_file (scew_parser *parser, char const *file_name)
 scew_bool
 scew_parser_load_file_fp (scew_parser *parser, FILE *in)
 {
+  scew_bool done = SCEW_FALSE;
+
   assert (parser != NULL);
   assert (in != NULL);
 
-  scew_bool done = SCEW_FALSE;
   while (!done)
     {
       enum { MAX_BUFFER = 5000 };
       char buffer[MAX_BUFFER];
 
-      // Read files in small chunks
+      /* Read files in small chunks. */
       int len = fread (buffer, 1, MAX_BUFFER, in);
       if (ferror (in))
         {
@@ -152,12 +156,12 @@ scew_parser_load_stream (scew_parser *parser,
                          char const *buffer,
 			 unsigned int size)
 {
+  unsigned int start = 0;
+  unsigned int end = 0;
+
   assert (parser != NULL);
   assert (buffer != NULL);
   assert (size > 0);
-
-  unsigned int start = 0;
-  unsigned int end = 0;
 
   /**
    * Loop through the buffer.

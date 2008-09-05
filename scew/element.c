@@ -38,7 +38,7 @@
 
 
 
-// Private
+/* Private */
 
 struct scew_element
 {
@@ -71,17 +71,19 @@ static scew_bool compare_attributes_ (scew_element const *a,
                                       scew_element const *b);
 
 
-// Public
+/* Public */
 
 
-// Allocation
+/* Allocation */
 
 scew_element*
 scew_element_create (XML_Char const *name)
 {
+  scew_element *element = NULL;
+
   assert (name != NULL);
 
-  scew_element *element = calloc (1, sizeof (scew_element));
+  element = calloc (1, sizeof (scew_element));
 
   if (element != NULL)
     {
@@ -140,15 +142,15 @@ scew_element_free (scew_element *element)
 }
 
 
-// Searching
+/* Searching */
 
 scew_element*
 scew_element_by_name (scew_element const *element, XML_Char const *name)
 {
+  scew_list *item = NULL;
+
   assert (element != NULL);
   assert (name != NULL);
-
-  scew_list *item = NULL;
 
   if (element->children != NULL)
     {
@@ -161,10 +163,12 @@ scew_element_by_name (scew_element const *element, XML_Char const *name)
 scew_element*
 scew_element_by_index (scew_element const *element, unsigned int idx)
 {
+  scew_list *item = NULL;
+
   assert (element != NULL);
   assert (idx < element->n_children);
 
-  scew_list *item = scew_list_index (element->children, idx);
+  item = scew_list_index (element->children, idx);
 
   return (item == NULL) ? NULL : (scew_element *) scew_list_data (item);
 }
@@ -172,12 +176,14 @@ scew_element_by_index (scew_element const *element, unsigned int idx)
 scew_list*
 scew_element_list_by_name (scew_element const *element, XML_Char const *name)
 {
+  scew_list *list = NULL;
+  scew_list *last = NULL;
+  scew_list *item = NULL;
+
   assert (element != NULL);
   assert (name != NULL);
 
-  scew_list *list = NULL;
-  scew_list *last = NULL;
-  scew_list *item = element->children;
+  item = element->children;
   while (item != NULL)
     {
       item = scew_list_find_custom (item, name, cmp_name_);
@@ -196,15 +202,15 @@ scew_element_list_by_name (scew_element const *element, XML_Char const *name)
 }
 
 
-// Comparisson
+/* Comparisson */
 
 scew_bool
 scew_element_compare (scew_element const *a, scew_element const *b)
 {
+  scew_bool equal = SCEW_TRUE;
+
   assert (a != NULL);
   assert (b != NULL);
-
-  scew_bool equal = SCEW_TRUE;
 
   if ((a->contents != NULL) && (b->contents != NULL))
     {
@@ -220,7 +226,7 @@ scew_element_compare (scew_element const *a, scew_element const *b)
 }
 
 
-// Accessors
+/* Accessors */
 
 XML_Char const*
 scew_element_name (scew_element const *element)
@@ -241,10 +247,12 @@ scew_element_contents (scew_element const *element)
 XML_Char const*
 scew_element_set_name (scew_element *element, XML_Char const *name)
 {
+  XML_Char *new_name = NULL;
+
   assert (element != NULL);
   assert (name != NULL);
 
-  XML_Char *new_name = scew_strdup (name);
+  new_name = scew_strdup (name);
   if (new_name != NULL)
     {
       free (element->name);
@@ -261,10 +269,12 @@ scew_element_set_name (scew_element *element, XML_Char const *name)
 XML_Char const*
 scew_element_set_contents (scew_element *element, XML_Char const *contents)
 {
+  XML_Char *new_contents = NULL;
+
   assert (element != NULL);
   assert (contents != NULL);
 
-  XML_Char *new_contents = scew_strdup (contents);
+  new_contents = scew_strdup (contents);
 
   if (new_contents != NULL)
     {
@@ -295,7 +305,7 @@ scew_element_free_contents (scew_element *element)
 }
 
 
-// Hierarchy
+/* Hierarchy */
 
 unsigned int
 scew_element_count (scew_element const *element)
@@ -324,18 +334,19 @@ scew_element_children (scew_element const *element)
 scew_element*
 scew_element_add (scew_element *element, XML_Char const *name)
 {
+  scew_element *add_elem = NULL;
+  scew_element *new_elem = NULL;
+
   assert (element != NULL);
   assert (name != NULL);
 
-  scew_element *add_elem = NULL;
-
-  scew_element *new_elem = scew_element_create (name);
+  new_elem = scew_element_create (name);
 
   if (new_elem != NULL)
     {
       add_elem = scew_element_add_element (element, new_elem);
 
-      // Delete element if it can not be added
+      /* Delete element if it can not be added */
       if (add_elem == NULL)
         {
           scew_element_free (new_elem);
@@ -354,24 +365,31 @@ scew_element_add_pair (scew_element *element,
                        XML_Char const *name,
                        XML_Char const *contents)
 {
+  scew_element *add_elem = NULL;
+  scew_element *new_elem = NULL;
+
   assert (element != NULL);
   assert (name != NULL);
   assert (contents != NULL);
 
-  scew_element *add_elem = NULL;
-  scew_element *new_elem = scew_element_create (name);
+  add_elem = NULL;
+  new_elem = scew_element_create (name);
 
   if (new_elem != NULL)
     {
       XML_Char const *add_contents = scew_element_set_contents (new_elem,
                                                                 contents);
 
-      // If contents could not be created does not affect adding an
-      // element (we will treat the error below)
+      /**
+       * If contents could not be created does not affect adding an
+       * element (we will treat the error below).
+       */
       add_elem = scew_element_add_element (element, new_elem);
 
-      // Delete element if unable t add contents or new element can
-      // not be added
+      /**
+       * Delete element if unable t add contents or new element can
+       * not be added.
+       */
       if ((add_contents == NULL) || (NULL == add_elem))
         {
           scew_element_free (new_elem);
@@ -388,11 +406,13 @@ scew_element_add_pair (scew_element *element,
 scew_element*
 scew_element_add_element (scew_element *element, scew_element *child)
 {
+  scew_list *item = NULL;
+
   assert (element != NULL);
   assert (child != NULL);
   assert (scew_element_parent (child) == NULL);
 
-  scew_list *item = scew_list_append (element->last_child, child);
+  item = scew_list_append (element->last_child, child);
 
   if (item != NULL)
     {
@@ -418,10 +438,11 @@ scew_element_add_element (scew_element *element, scew_element *child)
 void
 scew_element_delete_all (scew_element *element)
 {
+  scew_list *list = NULL;
+
   assert (element != NULL);
 
-  scew_list* list = element->children;
-
+  list = element->children;
   while (list != NULL)
     {
       scew_element *aux = scew_list_data (list);
@@ -429,7 +450,7 @@ scew_element_delete_all (scew_element *element)
       scew_element_free (aux);
     }
 
-  // Do not free element->children as childs are already detached
+  /* Do not free element->children as childs are already detached. */
 
   element->children = NULL;
   element->last_child = NULL;
@@ -439,11 +460,12 @@ scew_element_delete_all (scew_element *element)
 void
 scew_element_delete_all_by_name (scew_element *element, XML_Char const *name)
 {
+  scew_element *child = NULL;
+
   assert (element != NULL);
   assert (name != NULL);
 
-  scew_element *child = scew_element_by_name (element, name);
-
+  child = scew_element_by_name (element, name);
   while (child != NULL)
     {
       scew_element_free (child);
@@ -473,9 +495,11 @@ scew_element_delete_by_index (scew_element *element, unsigned int idx)
 void
 scew_element_detach (scew_element *element)
 {
+  scew_element *parent = NULL;
+
   assert (element != NULL);
 
-  scew_element *parent = element->parent;
+  parent = element->parent;
 
   if (parent != NULL)
     {
@@ -500,7 +524,7 @@ scew_element_detach (scew_element *element)
 }
 
 
-// Attributes
+/* Attributes */
 
 unsigned int
 scew_element_attribute_count (scew_element const *element)
@@ -522,10 +546,10 @@ scew_attribute*
 scew_element_attribute_by_name (scew_element const *element,
 				XML_Char const *name)
 {
+  scew_list *item = NULL;
+
   assert (element != NULL);
   assert (name != NULL);
-
-  scew_list *item = NULL;
 
   if (element->attributes != NULL)
     {
@@ -538,10 +562,10 @@ scew_element_attribute_by_name (scew_element const *element,
 scew_attribute*
 scew_element_attribute_by_index (scew_element const *element, unsigned int idx)
 {
+  scew_list *item = NULL;
+
   assert (element != NULL);
   assert (idx < element->n_attributes);
-
-  scew_list *item = NULL;
 
   if (element->attributes != NULL)
     {
@@ -554,12 +578,14 @@ scew_element_attribute_by_index (scew_element const *element, unsigned int idx)
 scew_attribute*
 scew_element_add_attribute (scew_element *element, scew_attribute *attribute)
 {
+  scew_list *item = NULL;
+
   assert (element != NULL);
   assert (attribute != NULL);
 
   scew_attribute_detach (attribute);
 
-  scew_list *item = scew_list_append (element->last_attribute, attribute);
+  item = scew_list_append (element->last_attribute, attribute);
 
   if (item != NULL)
     {
@@ -583,13 +609,14 @@ scew_element_add_attribute_pair (scew_element *element,
                                  XML_Char const *name,
                                  XML_Char const *value)
 {
+  scew_attribute *add_attr = NULL;
+  scew_attribute *attribute = NULL;
+
   assert (element != NULL);
   assert (name != NULL);
   assert (value != NULL);
 
-  scew_attribute *add_attr = NULL;
-
-  scew_attribute *attribute = scew_attribute_create (name, value);
+  attribute = scew_attribute_create (name, value);
 
   if (attribute != NULL)
     {
@@ -620,10 +647,11 @@ scew_element_delete_attribute (scew_element *element,
 void
 scew_element_delete_attribute_all (scew_element *element)
 {
+  scew_list *list = NULL;
+
   assert (element != NULL);
 
-  scew_list *list = element->attributes;
-
+  list = element->attributes;
   while (list != NULL)
     {
       scew_attribute *aux = scew_list_data (list);
@@ -677,12 +705,13 @@ scew_element_delete_attribute_by_index (scew_element *element,
 }
 
 
-// Private
+/* Private */
 
 scew_bool
 cmp_name_ (void const *element, void const *name)
 {
-  return (scew_strcmp (((scew_element *) element)->name, (XML_Char *) name) == 0);
+  return (scew_strcmp (((scew_element *) element)->name,
+                       (XML_Char *) name) == 0);
 }
 
 scew_bool
@@ -695,11 +724,13 @@ cmp_attr_name_ (void const *attribute, void const *name)
 scew_bool
 copy_children_ (scew_element *new_element, scew_element const *element)
 {
+  scew_bool copied = SCEW_TRUE;
+  scew_list *list = NULL;
+
   assert (new_element != NULL);
   assert (element != NULL);
 
-  scew_bool copied = SCEW_TRUE;
-  scew_list *list = element->children;
+  list = element->children;
   while (copied && (list != NULL))
     {
       scew_element *child = scew_list_data (list);
@@ -716,11 +747,13 @@ copy_children_ (scew_element *new_element, scew_element const *element)
 scew_bool
 copy_attributes_ (scew_element *new_element, scew_element const *element)
 {
+  scew_bool copied = SCEW_TRUE;
+  scew_list *list = NULL;
+
   assert (new_element != NULL);
   assert (element != NULL);
 
-  scew_bool copied = SCEW_TRUE;
-  scew_list *list = element->attributes;
+  list = element->attributes;
   while (copied && (list != NULL))
     {
       scew_attribute *attr = scew_list_data (list);
@@ -737,13 +770,17 @@ copy_attributes_ (scew_element *new_element, scew_element const *element)
 scew_bool
 compare_children_ (scew_element const *a, scew_element const *b)
 {
+  scew_bool equal = SCEW_TRUE;
+  scew_list *list_a = NULL;
+  scew_list *list_b = NULL;
+
   assert (a != NULL);
   assert (b != NULL);
 
-  scew_bool equal = (a->n_children == b->n_children);
+  equal = (a->n_children == b->n_children);
 
-  scew_list *list_a = a->children;
-  scew_list *list_b = b->children;
+  list_a = a->children;
+  list_b = b->children;
   while (equal && (list_a != NULL) && (list_b != NULL))
     {
       scew_element *child_a = scew_list_data (list_a);
@@ -759,13 +796,17 @@ compare_children_ (scew_element const *a, scew_element const *b)
 scew_bool
 compare_attributes_ (scew_element const *a, scew_element const *b)
 {
+  scew_bool equal = SCEW_TRUE;
+  scew_list *list_a = NULL;
+  scew_list *list_b = NULL;
+
   assert (a != NULL);
   assert (b != NULL);
 
-  scew_bool equal = (a->n_attributes == b->n_attributes);
+  equal = (a->n_attributes == b->n_attributes);
 
-  scew_list *list_a = a->attributes;
-  scew_list *list_b = b->attributes;
+  list_a = a->attributes;
+  list_b = b->attributes;
   while (equal && (list_a != NULL) && (list_b != NULL))
     {
       scew_attribute *attr_a = scew_list_data (list_a);

@@ -32,16 +32,16 @@
 
 #include "xerror.h"
 
-// Define a single threading macro common for all platforms
+/* Define a single threading macro common for all platforms */
 #ifndef _MT
 #ifndef HAVE_LIBPTHREAD
 #define SINGLE_THREADED
-#endif // HAVE_LIBPTHREAD
-#endif // _MT
+#endif /* HAVE_LIBPTHREAD */
+#endif /* _MT */
 
 #ifdef SINGLE_THREADED
 
-// single-threaded version
+/* Single-threaded version */
 
 static scew_error last_error = scew_error_none;
 
@@ -57,14 +57,14 @@ scew_error_last_error_ (void)
   return last_error;
 }
 
-#else // SINGLE_THREADED
+#else /* SINGLE_THREADED */
 
 
-// multi-threaded versions
+/* Multi-threaded versions */
 
 #ifdef _MSC_VER
 
-// Microsoft Visual C++ multi-thread version
+/* Microsoft Visual C++ multi-thread version */
 
 /**
  * Note: This code isn't 100% thread safe without an initializer
@@ -103,10 +103,10 @@ scew_error_last_error_ (void)
   return (scew_error) TlsGetValue (last_error_key);
 }
 
-#else // _MSC_VER
+#else /* _MSC_VER */
 
 
-// pthread multi-threaded version
+/* pthread multi-threaded version */
 
 #include <pthread.h>
 
@@ -128,11 +128,14 @@ create_keys_ (void)
 void
 scew_error_set_last_error_ (scew_error code)
 {
-  // Initialize error code per thread
+  scew_error *old_code = NULL;
+  scew_error *new_code = NULL;
+
+  /* Initialize error code per thread. */
   pthread_once (&key_once, create_keys_);
 
-  scew_error *old_code = (scew_error*) pthread_getspecific (key_error);
-  scew_error *new_code = (scew_error*) malloc (sizeof(scew_error));
+  old_code = (scew_error*) pthread_getspecific (key_error);
+  new_code = (scew_error*) malloc (sizeof(scew_error));
   *new_code = code;
   free (old_code);
   pthread_setspecific (key_error, new_code);
@@ -141,10 +144,12 @@ scew_error_set_last_error_ (scew_error code)
 scew_error
 scew_error_last_error_ (void)
 {
-  // Initialize error code per thread
+  scew_error *code = NULL;
+
+  /* Initialize error code per thread. */
   pthread_once (&key_once, create_keys_);
 
-  scew_error *code = (scew_error*) pthread_getspecific (key_error);
+  code = (scew_error*) pthread_getspecific (key_error);
   if (code == NULL)
     {
       return scew_error_none;
@@ -152,6 +157,6 @@ scew_error_last_error_ (void)
   return *code;
 }
 
-#endif // _MSC_VER
+#endif /* _MSC_VER */
 
-#endif // SINGLE_THREADED
+#endif /* SINGLE_THREADED */

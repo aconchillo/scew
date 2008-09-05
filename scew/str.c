@@ -36,10 +36,13 @@
 XML_Char*
 scew_strdup (XML_Char const *src)
 {
+  unsigned int len = 0;
+  XML_Char *out = NULL;
+
   assert (src != NULL);
 
-  unsigned int len = scew_strlen (src);
-  XML_Char *out = calloc (len + 1, sizeof (XML_Char));
+  len = scew_strlen (src);
+  out = calloc (len + 1, sizeof (XML_Char));
 
   return (XML_Char*) scew_memcpy (out, (XML_Char*) src, len);
 }
@@ -47,19 +50,23 @@ scew_strdup (XML_Char const *src)
 void
 scew_strtrim (XML_Char *src)
 {
+  unsigned int start = 0;
+  unsigned int end = 0;
+  unsigned int total = 0;
+
   assert (src != NULL);
 
-  unsigned int end = scew_strlen (src);
+  end = scew_strlen (src);
 
-  // Strip trailing whitespace
+  /* Strip trailing whitespace. */
   while (end > 0 && scew_isspace (src[end - 1]))
     {
       src[--end] = '\0';
     }
 
-  // Strip leading whitespace
-  unsigned int start = scew_strspn (src, _XT (" \n\r\t\v") );
-  unsigned int total = end - start;
+  /* Strip leading whitespace. */
+  start = scew_strspn (src, _XT (" \n\r\t\v") );
+  total = end - start;
   scew_memmove (src, &src[start], total);
   src[total] = _XT ('\0');
 }

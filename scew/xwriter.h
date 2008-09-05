@@ -32,7 +32,7 @@
 #include "writer.h"
 
 
-// Constants
+/* Constants */
 
 enum
   {
@@ -40,7 +40,7 @@ enum
   };
 
 
-// Types
+/* Types */
 
 typedef scew_bool (*scew_writer_close_callback) (scew_writer *);
 
@@ -56,4 +56,4 @@ struct scew_writer
   unsigned int spaces;
 };
 
-#endif // XWRITER_H_0807222205
+#endif /* XWRITER_H_0807222205 */
