@@ -120,7 +120,7 @@ scew_writer_print_tree (scew_writer *writer, scew_tree const *tree)
         };
     }
 
-  result = result && writer->printf (writer, _XT(" ?>\n"));
+  result = result && writer->printf (writer, _XT("?>\n"));
 
   result = result && scew_writer_print_element (writer, scew_tree_root (tree));
 
