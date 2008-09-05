@@ -33,6 +33,7 @@
 #include "bool.h"
 #include "element.h"
 #include "error.h"
+#include "list.h"
 #include "parser.h"
 #include "str.h"
 #include "tree.h"

@@ -1,5 +1,11 @@
 2008-09-05  Aleix Conchillo Flaque  <aleix@member.fsf.org>
 
+	* scew/Makefile.am (include_HEADERS): added bool.h and list.h.
+
+	* scew/scew.h: added missing header list.h.
+
+2008-09-05  Aleix Conchillo Flaque  <aleix@member.fsf.org>
+
 	* scew, examples, check: lost ChangeLog details for 1.0.0rc1. See
 	NEWS (API changes) for details.
 
