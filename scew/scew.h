@@ -38,6 +38,8 @@
 #include "str.h"
 #include "tree.h"
 #include "writer.h"
+#include "writer_buffer.h"
+#include "writer_file.h"
 
 /* Automatically include the correct library on windows. */
 #ifdef _WIN32
