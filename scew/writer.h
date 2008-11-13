@@ -6,7 +6,7 @@
  *
  * @if copyright
  *
- * Copyright (C) 2003-2008 Aleix Conchillo Flaque
+ * Copyright (C) 2008 Aleix Conchillo Flaque
  *
  * SCEW is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -39,13 +39,21 @@
 
 #include <expat.h>
 
-#include <stdio.h>
 
 #ifdef __cplusplus
 extern "C" {
 #endif /* __cplusplus */
 
+
 typedef struct scew_writer scew_writer;
+
+typedef struct
+{
+  scew_bool (*printf) (scew_writer *, XML_Char const *, ...);
+  scew_bool (*close) (scew_writer *);
+  void (*free) (scew_writer *);
+} scew_writer_interface;
+
 
 
 /**
@@ -53,70 +61,10 @@ typedef struct scew_writer scew_writer;
  * @ingroup SCEWWriter
  */
 
-/**
- * Creates a new SCEW writer for the given file name. This routine
- * will create a new file if the file does not exist or it will
- * overwrite the existing one. Once the writer is created, any of the
- * SCEW writer functions might be called in order to store some
- * information to the file.
- *
- * @pre file_name != NULL
- *
- * @param file_name the file name to create for the new SCEW writer.
- *
- * @return a new SCEW writer for the given file name or NULL if the
- * writer could not be created.
- *
- * @ingroup SCEWWriterAlloc
- */
-extern scew_writer* scew_writer_file_create (char const *file_name);
+extern scew_writer* scew_writer_create (scew_writer_interface *interface,
+                                        void *interface_data);
 
-/**
- * Creates a new SCEW writer for the given @a file stream. Once the
- * writer is created, any of the SCEW writer functions might be called
- * in order to store some information to the file.
- *
- * Note that the file stream has an orientation which might be
- * manually set immediately after creating it (see @a fwide), or is
- * automatically set with the first I/O operation. SCEW will use the
- * correct output function according to the Expat XML_Char type
- * defined in your system (to enable UTF-16 define @a XML_UNICODE or
- * @a XML_UNICODE_WCHAR_T). The orientation should not be changed
- * before any SCEW function is used on the stream (or at least it
- * should be changed according to XML_Char).
- *
- * @pre file != NULL
- *
- * @param file the file where the new SCEW writer will write to.
- *
- * @return a new SCEW writer for the given file stream or NULL if the
- * writer could not be created.
- *
- * @ingroup SCEWWriterAlloc
- */
-extern scew_writer* scew_writer_fp_create (FILE *file);
-
-/**
- * Creates a new SCEW writer for the given memory @a buffer. The
- * buffer should exist before calling this function and the @a size of
- * the buffer should enough to store the desired information (e.g. an
- * XML tree, an element...). Once the writer is created, any of the
- * SCEW writer functions might be called in order to store some
- * information to the buffer.
- *
- * @pre buffer != NULL
- * @pre size > 0
- *
- * @param buffer the memory area where the new SCEW writer will write to.
- * @param size the size of the memory area.
- *
- * @return a new SCEW writer for the given buffer or NULL if the
- * writer could not be created.
- *
- * @ingroup SCEWWriterAlloc
- */
-extern scew_writer* scew_writer_buffer_create (XML_Char *buffer,
-                                               unsigned int size);
+extern void* scew_writer_interface_data (scew_writer *writer);
 
 /**
  * Closes the given SCEW @a writer. This function will have different

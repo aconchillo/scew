@@ -1,6 +1,6 @@
 /**
  * @file     writer_file.c
- * @brief    writer.h implementation
+ * @brief    writer_file.h implementation
  * @author   Aleix Conchillo Flaque <aleix@member.fsf.org>
  * @date     Mon Jul 21, 2008 23:36
  *
@@ -26,13 +26,9 @@
  * @endif
  */
 
-#include "writer.h"
-
-#include "xwriter.h"
+#include "writer_file.h"
 
 #include "str.h"
-
-#include "xerror.h"
 
 #include <assert.h>
 #include <stdarg.h>
@@ -42,13 +38,20 @@
 
 typedef struct
 {
-  scew_writer writer;
   FILE *file;
 } scew_writer_fp;
 
-static scew_bool file_close_ (scew_writer *writer);
 static scew_bool file_printf_ (scew_writer *writer,
                                XML_Char const *format, ...);
+static scew_bool file_close_ (scew_writer *writer);
+static void file_free_ (scew_writer *writer);
+
+static scew_writer_interface interface =
+  {
+    file_printf_,
+    file_close_,
+    file_free_
+  };
 
 
 /* Public */
@@ -67,10 +70,6 @@ scew_writer_file_create (char const *file_name)
     {
       writer = scew_writer_fp_create (file);
     }
-  else
-    {
-      scew_error_set_last_error_ (scew_error_io);
-    }
 
   return writer;
 }
@@ -78,6 +77,7 @@ scew_writer_file_create (char const *file_name)
 scew_writer*
 scew_writer_fp_create (FILE *file)
 {
+  scew_writer *writer = NULL;
   scew_writer_fp *fp_writer = NULL;
 
   assert (file != NULL);
@@ -86,42 +86,20 @@ scew_writer_fp_create (FILE *file)
 
   if (fp_writer != NULL)
     {
-      scew_writer *writer = (scew_writer *) fp_writer;
-
       fp_writer->file = file;
 
-      writer->close = file_close_;
-      writer->printf = file_printf_;
-
-      scew_writer_set_indented (writer, SCEW_TRUE);
-      scew_writer_set_indent_spaces (writer, DEFAULT_INDENT_SPACES_);
-    }
-  else
-    {
-      scew_error_set_last_error_ (scew_error_no_memory);
+      writer = scew_writer_create (&interface, fp_writer);
+      if (writer == NULL)
+        {
+          free (fp_writer);
+        }
     }
 
-  return (scew_writer *) fp_writer;
+  return writer;
 }
 
 
 /* Private */
-
-scew_bool
-file_close_ (scew_writer *writer)
-{
-  scew_writer_fp *fp_writer = (scew_writer_fp *) writer;
-
-  int status = fclose (fp_writer->file);
-  scew_bool result = (status == 0);
-
-  if (!result)
-    {
-      scew_error_set_last_error_ (scew_error_io);
-    }
-
-  return result;
-}
 
 scew_bool
 file_printf_ (scew_writer *writer, XML_Char const *format, ...)
@@ -135,10 +113,36 @@ file_printf_ (scew_writer *writer, XML_Char const *format, ...)
 
   va_start (args, format);
 
-  fp_writer = (scew_writer_fp *) writer;
+  fp_writer = scew_writer_interface_data (writer);
   written = scew_vfprintf (fp_writer->file, format, args);
 
   va_end (args);
 
   return (written > 0);
+}
+
+scew_bool
+file_close_ (scew_writer *writer)
+{
+  scew_writer_fp *fp_writer = scew_writer_interface_data (writer);
+
+  /* Do not close standard output and standard error streams. */
+  if ((stdout == fp_writer->file) || (stderr == fp_writer->file))
+    {
+      return SCEW_TRUE;
+    }
+
+  int status = fclose (fp_writer->file);
+
+  return (status == 0);
+}
+
+void
+file_free_ (scew_writer *writer)
+{
+  scew_writer_fp *fp_writer = scew_writer_interface_data (writer);
+
+  (void) file_close_ (writer);
+
+  free (fp_writer);
 }
