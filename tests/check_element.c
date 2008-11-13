@@ -153,6 +153,7 @@ START_TEST (test_attributes)
   XML_Char attr_name[MAX_BUFFER];
   XML_Char attr_value[MAX_BUFFER];
 
+  // Create attributes
   for (i = 0; i < N_ATTRIBUTES; ++i)
     {
       sprintf (attr_name, "%s_%d", ATTRIBUTE, i);
@@ -167,6 +168,7 @@ START_TEST (test_attributes)
   CHECK_U_INT (scew_element_attribute_count (element), N_ATTRIBUTES,
                "Number of attributes mismatch");
 
+  // Check attributes
   i = 0;
   scew_list *list = scew_element_attributes (element);
   while (list != NULL)
@@ -185,6 +187,29 @@ START_TEST (test_attributes)
 
       i += 1;
     }
+
+  // Add attributes with same name
+  XML_Char attr_1_value[MAX_BUFFER];
+  XML_Char attr_2_value[MAX_BUFFER];
+
+  sprintf (attr_name, "%s_1", ATTRIBUTE);
+  sprintf (attr_1_value, "%s_1_new", VALUE);
+  scew_attribute *attr_1 =
+    scew_element_add_attribute_pair (element, attr_name, attr_1_value);
+
+  sprintf (attr_name, "%s_2", ATTRIBUTE);
+  sprintf (attr_2_value, "%s_2_new", VALUE);
+  scew_attribute *attr_2 =
+    scew_element_add_attribute_pair (element, attr_name, attr_2_value);
+
+  CHECK_U_INT (scew_element_attribute_count (element), N_ATTRIBUTES,
+               "Number of attributes mismatch after repetition");
+
+  // Check attributes new values
+  CHECK_STR (scew_attribute_value (attr_1), attr_1_value,
+             "Attribute 1 new value do not match");
+  CHECK_STR (scew_attribute_value (attr_2), attr_2_value,
+             "Attribute 2 new value do not match");
 
   scew_element_free (element);
 }

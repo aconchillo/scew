@@ -578,30 +578,50 @@ scew_element_attribute_by_index (scew_element const *element, unsigned int idx)
 scew_attribute*
 scew_element_add_attribute (scew_element *element, scew_attribute *attribute)
 {
-  scew_list *item = NULL;
+  scew_attribute *old_attribute = NULL;
 
   assert (element != NULL);
   assert (attribute != NULL);
 
-  scew_attribute_detach (attribute);
+  old_attribute =
+    scew_element_attribute_by_name (element, scew_attribute_name (attribute));
 
-  item = scew_list_append (element->last_attribute, attribute);
-
-  if (item != NULL)
+  /* If attribute is not in the element, append to its attributes. */
+  if (old_attribute == NULL)
     {
-      if (element->attributes == NULL)
+      scew_list *item = NULL;
+
+      /* Detach given attribute from its old element. */
+      scew_attribute_detach (attribute);
+
+      item = scew_list_append (element->last_attribute, attribute);
+
+      if (item != NULL)
         {
-          element->attributes = item;
+          if (element->attributes == NULL)
+            {
+              element->attributes = item;
+            }
+          scew_attribute_set_parent (attribute, element);
+          element->last_attribute = item;
+          ++element->n_attributes;
+
+          /* This is the return value. */
+          old_attribute = attribute;
         }
-      scew_attribute_set_parent (attribute, element);
-      element->last_attribute = item;
-      ++element->n_attributes;
+      else
+        {
+          scew_error_set_last_error_ (scew_error_no_memory);
+        }
     }
   else
     {
-      scew_error_set_last_error_ (scew_error_no_memory);
+      /* Assign new attribute value. */
+      (void) scew_attribute_set_value (old_attribute,
+                                       scew_attribute_value (attribute));
     }
-  return (item == NULL) ? NULL : attribute;
+
+  return old_attribute;
 }
 
 scew_attribute*
