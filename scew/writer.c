@@ -356,7 +356,6 @@ print_element_header_ (scew_writer *writer,
                        scew_bool *closed)
 {
   scew_bool result = SCEW_TRUE;
-  scew_element *parent = NULL;
   scew_list *list = NULL;
   XML_Char const *contents = NULL;
 
@@ -371,11 +370,10 @@ print_element_header_ (scew_writer *writer,
   result = result && scew_writer_print_element_attributes (writer, element);
 
   contents = scew_element_contents (element);
-  parent = scew_element_parent (element);
 
   *closed = SCEW_FALSE;
   list = scew_element_children (element);
-  if ((contents == NULL) && (list == NULL) && (parent != NULL))
+  if ((contents == NULL) && (list == NULL))
     {
       result = result && iface->printf (writer, _XT ("/>"));
       result = result && print_eol_ (writer);
