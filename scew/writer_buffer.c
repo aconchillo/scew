@@ -39,6 +39,7 @@
 
 typedef struct
 {
+  scew_writer_hooks hooks;
   XML_Char *buffer;
   XML_Char *temp_buffer;
   unsigned int size;
@@ -50,12 +51,13 @@ static scew_bool buffer_printf_ (scew_writer *writer,
 static scew_bool buffer_close_ (scew_writer *writer);
 static void buffer_free_ (scew_writer *writer);
 
-static scew_writer_interface interface =
+static scew_writer_hooks default_hooks_ =
   {
     buffer_printf_,
     buffer_close_,
     buffer_free_
   };
+
 
 
 /* Public */
@@ -73,7 +75,11 @@ scew_writer_buffer_create (XML_Char *buffer, unsigned int size)
 
   if (buf_writer != NULL)
     {
-      writer = scew_writer_create (&interface, buf_writer);
+      /* Set writer hooks */
+      buf_writer->hooks = default_hooks_;
+
+      /* Create writer */
+      writer = scew_writer_create (&buf_writer->hooks);
 
       buf_writer->temp_buffer = calloc (1, sizeof (XML_Char) * size);
 
@@ -111,7 +117,7 @@ buffer_printf_ (scew_writer *writer, XML_Char const *format, ...)
 
   va_start (args, format);
 
-  buf_writer = scew_writer_interface_data (writer);
+  buf_writer = scew_writer_interface (writer);
 
   maxlen = buf_writer->size - buf_writer->current;
 
@@ -143,7 +149,7 @@ buffer_close_ (scew_writer *writer)
 void
 buffer_free_ (scew_writer *writer)
 {
-  scew_writer_buffer *buf_writer = scew_writer_interface_data (writer);
+  scew_writer_buffer *buf_writer = scew_writer_interface (writer);
 
   buffer_close_ (writer);
 

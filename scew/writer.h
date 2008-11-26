@@ -52,7 +52,7 @@ typedef struct
   scew_bool (*printf) (scew_writer *, XML_Char const *, ...);
   scew_bool (*close) (scew_writer *);
   void (*free) (scew_writer *);
-} scew_writer_interface;
+} scew_writer_hooks;
 
 
 
@@ -61,10 +61,9 @@ typedef struct
  * @ingroup SCEWWriter
  */
 
-extern scew_writer* scew_writer_create (scew_writer_interface *interface,
-                                        void *interface_data);
+extern scew_writer* scew_writer_create (scew_writer_hooks *hooks);
 
-extern void* scew_writer_interface_data (scew_writer *writer);
+extern void* scew_writer_interface (scew_writer *writer);
 
 /**
  * Closes the given SCEW @a writer. This function will have different

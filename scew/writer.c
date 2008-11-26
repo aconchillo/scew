@@ -47,8 +47,7 @@ struct scew_writer
   scew_bool indented;
   unsigned int indent;
   unsigned int spaces;
-  scew_writer_interface *interface;
-  void *interface_data;
+  scew_writer_hooks *hooks;
 };
 
 static scew_bool print_eol_ (scew_writer *writer);
@@ -61,14 +60,13 @@ static scew_bool print_element_header_ (scew_writer *writer,
 /* Public */
 
 scew_writer*
-scew_writer_create (scew_writer_interface *interface, void *interface_data)
+scew_writer_create (scew_writer_hooks *hooks)
 {
   scew_writer *writer = calloc (1, sizeof (scew_writer));
 
   if (writer != NULL)
     {
-      writer->interface = interface;
-      writer->interface_data = interface_data;
+      writer->hooks = hooks;
 
       scew_writer_set_indented (writer, SCEW_TRUE);
       scew_writer_set_indent_spaces (writer, DEFAULT_INDENT_SPACES_);
@@ -78,19 +76,19 @@ scew_writer_create (scew_writer_interface *interface, void *interface_data)
 }
 
 void*
-scew_writer_interface_data (scew_writer *writer)
+scew_writer_interface (scew_writer *writer)
 {
-  return (writer != NULL) ? writer->interface_data : NULL;
+  return (writer != NULL) ? writer->hooks : NULL;
 }
 
 scew_bool
 scew_writer_close (scew_writer *writer)
 {
   assert (writer != NULL);
-  assert (writer->interface != NULL);
+  assert (writer->hooks != NULL);
 
-  scew_bool result = (writer->interface->close != NULL)
-    ? writer->interface->close (writer)
+  scew_bool result = (writer->hooks->close != NULL)
+    ? writer->hooks->close (writer)
     : SCEW_TRUE;
 
   if (!result)
@@ -105,10 +103,10 @@ void
 scew_writer_free (scew_writer *writer)
 {
   if ((writer != NULL)
-      && (writer->interface != NULL)
-      && (writer->interface->free != NULL))
+      && (writer->hooks != NULL)
+      && (writer->hooks->free != NULL))
     {
-      writer->interface->free (writer);
+      writer->hooks->free (writer);
       free (writer);
     }
 }
@@ -139,19 +137,19 @@ scew_writer_print_tree (scew_writer *writer, scew_tree const *tree)
 
   assert (writer != NULL);
   assert (tree != NULL);
-  assert (writer->interface != NULL);
+  assert (writer->hooks != NULL);
 
-  scew_writer_interface *iface = writer->interface;
+  scew_writer_hooks *hooks = writer->hooks;
 
   version = scew_tree_xml_version (tree);
   encoding = scew_tree_xml_encoding (tree);
   standalone = scew_tree_xml_standalone (tree);
 
-  result = iface->printf (writer, _XT("<?xml version=\"%s\""), version);
+  result = hooks->printf (writer, _XT("<?xml version=\"%s\""), version);
 
   if (encoding)
     {
-      result = result && iface->printf (writer, _XT(" encoding=\"%s\""),
+      result = result && hooks->printf (writer, _XT(" encoding=\"%s\""),
                                         encoding);
     }
 
@@ -162,15 +160,15 @@ scew_writer_print_tree (scew_writer *writer, scew_tree const *tree)
         case scew_tree_standalone_unknown:
           break;
         case scew_tree_standalone_no:
-          result = iface->printf (writer, _XT(" standalone=\"no\""));
+          result = hooks->printf (writer, _XT(" standalone=\"no\""));
           break;
         case scew_tree_standalone_yes:
-          result = iface->printf (writer, _XT(" standalone=\"yes\""));
+          result = hooks->printf (writer, _XT(" standalone=\"yes\""));
           break;
         };
     }
 
-  result = result && iface->printf (writer, _XT("?>\n"));
+  result = result && hooks->printf (writer, _XT("?>\n"));
 
   result = result && scew_writer_print_element (writer, scew_tree_root (tree));
 
@@ -190,9 +188,9 @@ scew_writer_print_element (scew_writer *writer, scew_element const *element)
 
   assert (writer != NULL);
   assert (element != NULL);
-  assert (writer->interface != NULL);
+  assert (writer->hooks != NULL);
 
-  scew_writer_interface *iface = writer->interface;
+  scew_writer_hooks *hooks = writer->hooks;
 
   result = print_indent_ (writer);
 
@@ -207,13 +205,13 @@ scew_writer_print_element (scew_writer *writer, scew_element const *element)
       contents = scew_element_contents (element);
       if (contents != NULL)
         {
-          result = result && iface->printf (writer, contents);
+          result = result && hooks->printf (writer, contents);
         }
       else
         {
           result = result && print_indent_ (writer);
         }
-      result = result && iface->printf (writer, _XT ("</%s>"),
+      result = result && hooks->printf (writer, _XT ("</%s>"),
                                         scew_element_name (element));
       result = result && print_eol_ (writer);
     }
@@ -295,12 +293,12 @@ scew_writer_print_attribute (scew_writer *writer,
 
   assert (writer != NULL);
   assert (attribute != NULL);
-  assert (writer->interface != NULL);
+  assert (writer->hooks != NULL);
 
-  result = writer->interface->printf (writer,
-                                      _XT (" %s=\"%s\""),
-                                      scew_attribute_name (attribute),
-                                      scew_attribute_value (attribute));
+  result = writer->hooks->printf (writer,
+                                  _XT (" %s=\"%s\""),
+                                  scew_attribute_name (attribute),
+                                  scew_attribute_value (attribute));
 
   if (!result)
     {
@@ -319,11 +317,11 @@ print_eol_ (scew_writer *writer)
   scew_bool result = SCEW_TRUE;
 
   assert (writer != NULL);
-  assert (writer->interface != NULL);
+  assert (writer->hooks != NULL);
 
   if (writer->indented)
     {
-      result = writer->interface->printf (writer, _XT ("\n"));
+      result = writer->hooks->printf (writer, _XT ("\n"));
     }
 
   return result;
@@ -335,7 +333,7 @@ print_indent_ (scew_writer *writer)
   scew_bool result = SCEW_TRUE;
 
   assert (writer != NULL);
-  assert (writer->interface != NULL);
+  assert (writer->hooks != NULL);
 
   if (writer->indented)
     {
@@ -343,7 +341,7 @@ print_indent_ (scew_writer *writer)
       unsigned int spaces = writer->indent * writer->spaces;
       for (i = 0; result && (i < spaces); ++i)
         {
-          result = writer->interface->printf (writer, _XT (" "));
+          result = writer->hooks->printf (writer, _XT (" "));
         }
     }
 
@@ -361,11 +359,11 @@ print_element_header_ (scew_writer *writer,
 
   assert (writer != NULL);
   assert (element != NULL);
-  assert (writer->interface != NULL);
+  assert (writer->hooks != NULL);
 
-  scew_writer_interface *iface = writer->interface;
+  scew_writer_hooks *hooks = writer->hooks;
 
-  result = iface->printf (writer, _XT ("<%s"), scew_element_name (element));
+  result = hooks->printf (writer, _XT ("<%s"), scew_element_name (element));
 
   result = result && scew_writer_print_element_attributes (writer, element);
 
@@ -375,13 +373,13 @@ print_element_header_ (scew_writer *writer,
   list = scew_element_children (element);
   if ((contents == NULL) && (list == NULL))
     {
-      result = result && iface->printf (writer, _XT ("/>"));
+      result = result && hooks->printf (writer, _XT ("/>"));
       result = result && print_eol_ (writer);
       *closed = SCEW_TRUE;
     }
   else
     {
-      result = result && iface->printf (writer, _XT (">"));
+      result = result && hooks->printf (writer, _XT (">"));
       if (contents == NULL)
         {
 	  result = result && print_eol_ (writer);
@@ -390,3 +388,4 @@ print_element_header_ (scew_writer *writer,
 
   return result;
 }
+

@@ -38,6 +38,7 @@
 
 typedef struct
 {
+  scew_writer_hooks hooks;
   FILE *file;
 } scew_writer_fp;
 
@@ -46,7 +47,7 @@ static scew_bool file_printf_ (scew_writer *writer,
 static scew_bool file_close_ (scew_writer *writer);
 static void file_free_ (scew_writer *writer);
 
-static scew_writer_interface interface =
+static scew_writer_hooks default_hooks_ =
   {
     file_printf_,
     file_close_,
@@ -86,9 +87,13 @@ scew_writer_fp_create (FILE *file)
 
   if (fp_writer != NULL)
     {
+      /* Set interface hooks */
+      fp_writer->hooks = default_hooks_;
+
       fp_writer->file = file;
 
-      writer = scew_writer_create (&interface, fp_writer);
+      /* Create writer */
+      writer = scew_writer_create (&fp_writer->hooks);
       if (writer == NULL)
         {
           free (fp_writer);
@@ -113,7 +118,7 @@ file_printf_ (scew_writer *writer, XML_Char const *format, ...)
 
   va_start (args, format);
 
-  fp_writer = scew_writer_interface_data (writer);
+  fp_writer = scew_writer_interface (writer);
   written = scew_vfprintf (fp_writer->file, format, args);
 
   va_end (args);
@@ -124,7 +129,7 @@ file_printf_ (scew_writer *writer, XML_Char const *format, ...)
 scew_bool
 file_close_ (scew_writer *writer)
 {
-  scew_writer_fp *fp_writer = scew_writer_interface_data (writer);
+  scew_writer_fp *fp_writer = scew_writer_interface (writer);
 
   /* Do not close standard output and standard error streams. */
   if ((stdout == fp_writer->file) || (stderr == fp_writer->file))
@@ -140,7 +145,7 @@ file_close_ (scew_writer *writer)
 void
 file_free_ (scew_writer *writer)
 {
-  scew_writer_fp *fp_writer = scew_writer_interface_data (writer);
+  scew_writer_fp *fp_writer = scew_writer_interface (writer);
 
   (void) file_close_ (writer);
 
