@@ -629,29 +629,40 @@ scew_element_add_attribute_pair (scew_element *element,
                                  XML_Char const *name,
                                  XML_Char const *value)
 {
-  scew_attribute *add_attr = NULL;
   scew_attribute *attribute = NULL;
+  scew_attribute *old_attribute = NULL;
 
   assert (element != NULL);
   assert (name != NULL);
   assert (value != NULL);
 
-  attribute = scew_attribute_create (name, value);
+  old_attribute = scew_element_attribute_by_name (element, name);
 
-  if (attribute != NULL)
+  /* If attribute is not in the element, append to its attributes. */
+  if (old_attribute == NULL)
     {
-      add_attr = scew_element_add_attribute (element, attribute);
-      if (add_attr == NULL)
+      attribute = scew_attribute_create (name, value);
+
+      if (attribute != NULL)
         {
-          scew_attribute_free (attribute);
+          old_attribute = scew_element_add_attribute (element, attribute);
+          if (old_attribute == NULL)
+            {
+              scew_attribute_free (attribute);
+            }
+        }
+      else
+        {
+          scew_error_set_last_error_ (scew_error_no_memory);
         }
     }
   else
     {
-      scew_error_set_last_error_ (scew_error_no_memory);
+      /* Assign new attribute value. */
+      (void) scew_attribute_set_value (old_attribute, value);
     }
 
-  return add_attr;
+  return old_attribute;
 }
 
 void
