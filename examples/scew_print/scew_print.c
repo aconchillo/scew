@@ -6,7 +6,7 @@
  *
  * @if copyright
  *
- * Copyright (C) 2002-2008 Aleix Conchillo Flaque
+ * Copyright (C) 2002-2009 Aleix Conchillo Flaque
  *
  * SCEW is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -36,7 +36,7 @@
 /* Indentation size (in whitespaces). */
 static unsigned int const INDENT_SIZE = 4;
 
-void
+static void
 print_indent (unsigned int indent)
 {
   if (indent > 0)
@@ -45,7 +45,7 @@ print_indent (unsigned int indent)
     }
 }
 
-void
+static void
 print_attributes (scew_element *element)
 {
   if (element != NULL)
@@ -66,7 +66,7 @@ print_attributes (scew_element *element)
     }
 }
 
-void
+static void
 print_element (scew_element *element, unsigned int indent)
 {
   XML_Char const *contents = NULL;
@@ -119,6 +119,7 @@ print_element (scew_element *element, unsigned int indent)
 int
 main (int argc, char *argv[])
 {
+  scew_reader *reader = NULL;
   scew_parser *parser = NULL;
   scew_tree *tree = NULL;
 
@@ -134,7 +135,14 @@ main (int argc, char *argv[])
   scew_parser_ignore_whitespaces (parser, 1);
 
   /* Loads an XML file. */
-  if (!scew_parser_load_file (parser, argv[1]))
+  reader = scew_reader_file_create (argv[1]);
+  if (reader == NULL)
+    {
+      scew_error code = scew_error_code ();
+      printf ("Unable to load file (error #%d: %s)\n", code,
+              scew_error_string (code));
+    }
+  else if (!scew_parser_load (parser, reader))
     {
       scew_error code = scew_error_code ();
       printf ("Unable to load file (error #%d: %s)\n", code,
@@ -158,7 +166,8 @@ main (int argc, char *argv[])
   /* Remember to free tree (scew_parser_free does not free it). */
   scew_tree_free (tree);
 
-  /* Frees the SCEW parser. */
+  /* Frees the SCEW parser and reader. */
+  scew_reader_free (reader);
   scew_parser_free (parser);
 
   return 0;

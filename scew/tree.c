@@ -6,7 +6,7 @@
  *
  * @if copyright
  *
- * Copyright (C) 2003-2008 Aleix Conchillo Flaque
+ * Copyright (C) 2003-2009 Aleix Conchillo Flaque
  *
  * SCEW is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -60,9 +60,9 @@ scew_tree_create (void)
 
   if (tree != NULL)
     {
-      tree->version = scew_strdup (DEFAULT_XML_VERSION_);
-      tree->encoding = scew_strdup (DEFAULT_ENCODING_);
-      tree->standalone = scew_tree_standalone_unknown;
+      scew_tree_set_xml_version (tree, DEFAULT_XML_VERSION_);
+      scew_tree_set_xml_encoding (tree, DEFAULT_ENCODING_);
+      scew_tree_set_xml_standalone (tree, scew_tree_standalone_unknown);
     }
   else
     {

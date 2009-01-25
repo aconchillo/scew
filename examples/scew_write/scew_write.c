@@ -6,7 +6,7 @@
  *
  * @if copyright
  *
- * Copyright (C) 2002-2008 Aleix Conchillo Flaque
+ * Copyright (C) 2002-2009 Aleix Conchillo Flaque
  *
  * SCEW is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -61,6 +61,7 @@ main(int argc, char *argv[])
   scew_element *sub_element = NULL;
   scew_element *sub_sub_element = NULL;
   scew_attribute *attribute = NULL;
+  scew_printer *printer = NULL;
   scew_writer *writer = NULL;
   XML_Char *buffer = NULL;
 
@@ -118,8 +119,16 @@ main(int argc, char *argv[])
       printf ("Unable to create %s\n", argv[1]);
       return EXIT_FAILURE;
     }
+
+  printer = scew_printer_create (writer);
+  if (printer == NULL)
+    {
+      printf ("Unable to create printer\n");
+      return EXIT_FAILURE;
+    }
+
   /* We should check for errors here. */
-  (void) scew_writer_print_tree (writer, tree);
+  (void) scew_printer_print_tree (printer, tree);
   scew_writer_free (writer);
 
   /* Save the XML tree to a buffer and print it to standard output. */
@@ -130,14 +139,18 @@ main(int argc, char *argv[])
       printf ("Unable to create writer buffer\n");
       return EXIT_FAILURE;
     }
+  /* Replace writer */
+  scew_printer_set_writer (printer, writer);
+
   /* We should check for errors here. */
-  (void) scew_writer_print_tree (writer, tree);
-  scew_writer_free (writer);
+  (void) scew_printer_print_tree (printer, tree);
 
   scew_printf (_XT("%s"), buffer);
   free (buffer);
 
-  /* Frees the SCEW tree. */
+  /* Frees the SCEW tree, printer and writer. */
+  scew_writer_free (writer);
+  scew_printer_free (printer);
   scew_tree_free (tree);
 
   return 0;

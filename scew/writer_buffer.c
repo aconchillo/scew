@@ -6,7 +6,7 @@
  *
  * @if copyright
  *
- * Copyright (C) 2008 Aleix Conchillo Flaque
+ * Copyright (C) 2008, 2009 Aleix Conchillo Flaque
  *
  * SCEW is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -31,7 +31,6 @@
 #include "str.h"
 
 #include <assert.h>
-#include <stdarg.h>
 #include <stdio.h>
 
 
@@ -39,21 +38,24 @@
 
 typedef struct
 {
-  scew_writer_hooks hooks;
   XML_Char *buffer;
-  XML_Char *temp_buffer;
-  unsigned int size;
-  unsigned int current;
+  size_t size;
+  size_t current;
 } scew_writer_buffer;
 
-static scew_bool buffer_printf_ (scew_writer *writer,
-                                 XML_Char const *format, ...);
+static size_t buffer_write_ (scew_writer *writer,
+                             void const *buffer,
+                             size_t byte_no);
+static scew_bool buffer_eow_ (scew_writer *writer);
+static scew_bool buffer_error_ (scew_writer *writer);
 static scew_bool buffer_close_ (scew_writer *writer);
 static void buffer_free_ (scew_writer *writer);
 
-static scew_writer_hooks default_hooks_ =
+static scew_writer_hooks const buffer_hooks_ =
   {
-    buffer_printf_,
+    buffer_write_,
+    buffer_eow_,
+    buffer_error_,
     buffer_close_,
     buffer_free_
   };
@@ -63,7 +65,7 @@ static scew_writer_hooks default_hooks_ =
 /* Public */
 
 scew_writer*
-scew_writer_buffer_create (XML_Char *buffer, unsigned int size)
+scew_writer_buffer_create (XML_Char *buffer, size_t size)
 {
   scew_writer *writer = NULL;
   scew_writer_buffer *buf_writer = NULL;
@@ -75,23 +77,13 @@ scew_writer_buffer_create (XML_Char *buffer, unsigned int size)
 
   if (buf_writer != NULL)
     {
-      /* Set writer hooks */
-      buf_writer->hooks = default_hooks_;
+      buf_writer->buffer = buffer;
+      buf_writer->size = size;
+      buf_writer->current = 0;
 
       /* Create writer */
-      writer = scew_writer_create (&buf_writer->hooks);
-
-      buf_writer->temp_buffer = calloc (1, sizeof (XML_Char) * size);
-
-      if ((writer != NULL) && (buf_writer->temp_buffer != NULL))
-        {
-          buffer[0] = '\0';
-          buf_writer->buffer = buffer;
-          buf_writer->size = size;
-          buf_writer->current = 0;
-
-        }
-      else
+      writer = scew_writer_create (&buffer_hooks_, buf_writer);
+      if (writer == NULL)
         {
           free (buf_writer);
         }
@@ -103,41 +95,43 @@ scew_writer_buffer_create (XML_Char *buffer, unsigned int size)
 
 /* Private */
 
-scew_bool
-buffer_printf_ (scew_writer *writer, XML_Char const *format, ...)
+size_t
+buffer_write_ (scew_writer *writer, void const *buffer, size_t byte_no)
 {
-  va_list args;
-  int written = 0;
+  size_t written = 0;
   size_t maxlen = 0;
   scew_writer_buffer *buf_writer = NULL;
-  scew_bool result = SCEW_TRUE;
 
   assert (writer != NULL);
-  assert (format != NULL);
+  assert (buffer != NULL);
 
-  va_start (args, format);
+  buf_writer = scew_writer_data (writer);
 
-  buf_writer = scew_writer_interface (writer);
+  /* Always leave one space for null-terminated buffer. */
+  maxlen = buf_writer->size - buf_writer->current - 1;
+  written = (byte_no > maxlen) ? maxlen : byte_no;
 
-  maxlen = buf_writer->size - buf_writer->current;
+  memcpy (buf_writer->buffer + buf_writer->current, buffer, written);
+  buf_writer->current += written;
 
-#ifdef XML_UNICODE_WCHAR_T
-  written = vswprintf (buf_writer->temp_buffer, maxlen, format, args);
-#else
-  written = vsprintf (buf_writer->temp_buffer, format, args);
-#endif
+  /* Set null-character to end of buffer. */
+  buf_writer->buffer[buf_writer->current] = '\0';
 
-  result = (written != -1) && (written <= maxlen);
+  return written;
+}
 
-  if (result)
-    {
-      scew_strcat (buf_writer->buffer, buf_writer->temp_buffer);
-      buf_writer->current += written;
-    }
+scew_bool
+buffer_eow_ (scew_writer *writer)
+{
+  scew_writer_buffer *buf_writer = scew_writer_data (writer);
 
-  va_end (args);
+  return (buf_writer->current >= buf_writer->size);
+}
 
-  return result;
+scew_bool
+buffer_error_ (scew_writer *writer)
+{
+  return SCEW_FALSE;
 }
 
 scew_bool
@@ -149,14 +143,9 @@ buffer_close_ (scew_writer *writer)
 void
 buffer_free_ (scew_writer *writer)
 {
-  scew_writer_buffer *buf_writer = scew_writer_interface (writer);
+  scew_writer_buffer *buf_writer = scew_writer_data (writer);
 
   buffer_close_ (writer);
-
-  if (buf_writer->temp_buffer != NULL)
-    {
-      free (buf_writer->temp_buffer);
-    }
 
   free (buf_writer);
 }

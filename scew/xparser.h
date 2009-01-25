@@ -6,7 +6,7 @@
  *
  * @if copyright
  *
- * Copyright (C) 2002-2008 Aleix Conchillo Flaque
+ * Copyright (C) 2002-2009 Aleix Conchillo Flaque
  *
  * SCEW is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -43,17 +43,19 @@ typedef struct stack_element stack_element;
 struct scew_parser
 {
   XML_Parser parser;		/**< Expat parser */
-  scew_tree* tree;		/**< XML document tree */
+  scew_tree* tree;		/**< Last parsed XML document tree */
   scew_element* current;	/**< Current parsed element */
   stack_element* stack;		/**< Current parsed element stack */
   scew_bool ignore_whitespaces;	/**< Whether to ignore white spaces */
-  scew_parser_callback stream_callback; /**< Callback for streams */
+  scew_parser_load_hook load_hook; /**< Hook for loaded elements */
 };
 
 
 /* Functions */
 
 extern scew_bool scew_parser_expat_init_ (scew_parser *parser);
+
+extern void scew_parser_expat_install_handlers_ (scew_parser *parser);
 
 extern void scew_parser_stack_free_ (scew_parser *parser);
 

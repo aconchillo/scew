@@ -1,12 +1,12 @@
 /**
  * @file     writer.h
- * @brief    SCEW writer functions
+ * @brief    SCEW writer buffer related functions
  * @author   Aleix Conchillo Flaque <aleix@member.fsf.org>
  * @date     Thu Nov 13, 2008 11:03
  *
  * @if copyright
  *
- * Copyright (C) 2008 Aleix Conchillo Flaque
+ * Copyright (C) 2008, 2009 Aleix Conchillo Flaque
  *
  * SCEW is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -36,9 +36,6 @@
 extern "C" {
 #endif /* __cplusplus */
 
-
-// Functions
-
 /**
  * Creates a new SCEW writer for the given memory @a buffer. The
  * buffer should exist before calling this function and the @a size of
@@ -66,4 +63,4 @@ extern scew_writer* scew_writer_buffer_create (XML_Char *buffer,
 }
 #endif /* __cplusplus */
 
-#endif // WRITER_BUFFER_H_0811131103
+#endif /* WRITER_BUFFER_H_0811131103 */

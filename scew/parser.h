@@ -38,8 +38,9 @@
 #ifndef PARSER_H_0211250057
 #define PARSER_H_0211250057
 
-#include "tree.h"
 #include "bool.h"
+#include "reader.h"
+#include "tree.h"
 
 #include <expat.h>
 
@@ -63,7 +64,8 @@ typedef struct scew_parser scew_parser;
  *
  * @ingroup SCEWParserLoad
  */
-typedef scew_bool (*scew_parser_callback) (scew_parser* parser);
+typedef scew_bool (*scew_parser_load_hook) (scew_parser *parser,
+                                            scew_element *element);
 
 
 /**
@@ -110,72 +112,18 @@ extern void scew_parser_free (scew_parser *parser);
  *
  * @ingroup SCEWParserLoad
  */
-extern scew_bool scew_parser_load_file (scew_parser *parser,
-                                        char const *file_name);
+extern scew_bool scew_parser_load (scew_parser *parser, scew_reader *reader);
 
 /**
- * Loads an XML tree from the specified file pointer using the
- * given parser.
- *
- * @param parser the SCEW parser.
- * @param in the file pointer to load the XML from.
- *
- * @see scew_parser_create
- *
- * @return true if file was successfully loaded, false otherwise.
- *
- * @ingroup SCEWParserLoad
- */
-extern scew_bool scew_parser_load_file_fp (scew_parser *parser, FILE *in);
-
-/**
- * Loads an XML tree from the specified memory buffer of the specified
- * size using the given parser.
- *
- * @param parser the SCEW parser.
- * @param buffer memory buffer to load XML from.
- * @param size size in bytes of the memory buffer.
- *
- * @see scew_parser_create
- *
- * @return true if buffer was successfully loaded, false otherwise.
- *
- * @ingroup SCEWParserLoad
- */
-extern scew_bool scew_parser_load_buffer (scew_parser *parser,
-                                          char const *buffer,
-                                          unsigned int size);
-
-/**
- * Loads an XML tree from the specified stream buffer. Will call the
- * callback (set using #scew_parser_set_stream_callback) at the end of
- * each message.
- *
- * @param parser the SCEW parser.
- * @param buffer memory buffer to load XML from.
- * @param size size in bytes of the memory buffer.
- *
- * @see scew_parser_create
- * @see scew_parser_set_stream_callback
- *
- * @return true if buffer was successfully loaded, false otherwise.
- *
- * @ingroup SCEWParserLoad
- */
-extern scew_bool scew_parser_load_stream (scew_parser *parser,
-                                          char const *buffer,
-                                          unsigned int size);
-
-/**
- * Sets the callback for use when reading streams.
+ * Sets the callback to be used when reading streams.
  *
  * @param parser the SCEW parser
  * @param cb the callback function
  *
  * @ingroup SCEWParserLoad
  */
-extern void scew_parser_set_stream_callback (scew_parser *parser,
-					     scew_parser_callback cb);
+extern void scew_parser_set_load_hook (scew_parser *parser,
+                                       scew_parser_load_hook hook);
 
 /**
  * Tells the parser how to treat white spaces. The default is to

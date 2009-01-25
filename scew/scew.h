@@ -6,7 +6,7 @@
  *
  * @if copyright
  *
- * Copyright (C) 2002-2008 Aleix Conchillo Flaque
+ * Copyright (C) 2002-2009 Aleix Conchillo Flaque
  *
  * SCEW is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -35,6 +35,9 @@
 #include "error.h"
 #include "list.h"
 #include "parser.h"
+#include "printer.h"
+#include "reader.h"
+#include "reader_file.h"
 #include "str.h"
 #include "tree.h"
 #include "writer.h"

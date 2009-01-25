@@ -1,12 +1,12 @@
 /**
- * @file     writer.h
- * @brief    SCEW writer functions
+ * @file     writer_file.h
+ * @brief    SCEW writer file related functions
  * @author   Aleix Conchillo Flaque <aleix@member.fsf.org>
  * @date     Thu Nov 13, 2008 11:01
  *
  * @if copyright
  *
- * Copyright (C) 2008 Aleix Conchillo Flaque
+ * Copyright (C) 2008, 2009 Aleix Conchillo Flaque
  *
  * SCEW is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -36,9 +36,6 @@
 #ifdef __cplusplus
 extern "C" {
 #endif /* __cplusplus */
-
-
-// Functions
 
 /**
  * Creates a new SCEW writer for the given file name. This routine
@@ -87,4 +84,4 @@ extern scew_writer* scew_writer_fp_create (FILE *file);
 }
 #endif /* __cplusplus */
 
-#endif // WRITER_FILE_H_0811131101
+#endif /* WRITER_FILE_H_0811131101 */

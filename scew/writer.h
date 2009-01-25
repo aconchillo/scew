@@ -6,7 +6,7 @@
  *
  * @if copyright
  *
- * Copyright (C) 2008 Aleix Conchillo Flaque
+ * Copyright (C) 2008, 2009 Aleix Conchillo Flaque
  *
  * SCEW is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -39,6 +39,8 @@
 
 #include <expat.h>
 
+#include <stddef.h>
+
 
 #ifdef __cplusplus
 extern "C" {
@@ -49,7 +51,9 @@ typedef struct scew_writer scew_writer;
 
 typedef struct
 {
-  scew_bool (*printf) (scew_writer *, XML_Char const *, ...);
+  size_t (*write) (scew_writer *, void const *, size_t);
+  scew_bool (*eow) (scew_writer *);
+  scew_bool (*error) (scew_writer *);
   scew_bool (*close) (scew_writer *);
   void (*free) (scew_writer *);
 } scew_writer_hooks;
@@ -61,9 +65,18 @@ typedef struct
  * @ingroup SCEWWriter
  */
 
-extern scew_writer* scew_writer_create (scew_writer_hooks *hooks);
+extern scew_writer* scew_writer_create (scew_writer_hooks const *hooks,
+                                        void *data);
 
-extern void* scew_writer_interface (scew_writer *writer);
+extern void* scew_writer_data (scew_writer *writer);
+
+extern size_t scew_writer_write (scew_writer *writer,
+                                 void const *buffer,
+                                 size_t byte_no);
+
+extern scew_bool scew_writer_eow (scew_writer *writer);
+
+extern scew_bool scew_writer_error (scew_writer *writer);
 
 /**
  * Closes the given SCEW @a writer. This function will have different
@@ -94,104 +107,6 @@ extern scew_bool scew_writer_close (scew_writer *writer);
  * @ingroup SCEWWriterAlloc
  */
 extern void scew_writer_free (scew_writer *writer);
-
-
-/**
- * @defgroup SCEWWriterProp Properties
- * @ingroup SCEWWriter
- */
-
-/**
- * Tells whether the output sent to the given SCEW @a writer should be
- * @a indented or not.
- *
- * @pre writer != NULL
- *
- * @param writer the SCEW writer to change its indentation for.
- * @param indented true if the output should be indented, false
- * otherwise.
- *
- * @ingroup SCEWWriterProp
- */
-extern void scew_writer_set_indented (scew_writer *writer, scew_bool indented);
-
-/**
- * Sets the number of @a spaces to use when indenting output for the
- * given SCEW @a writer.
- *
- * @pre writer != NULL
- *
- * @param writer the SCEW writer to change its indentation spaces for.
- * @param spaces the number of spaces to use for indentation.
- *
- * @ingroup SCEWWriterProp
- */
-extern void scew_writer_set_indent_spaces (scew_writer *writer,
-                                           unsigned int spaces);
-
-
-/**
- * @defgroup SCEWWriterOutput Output
- * @ingroup SCEWWriter
- */
-
-/**
- * Prints the given SCEW @a tree to @a writer. This will print the XML
- * document prolog and the root element with all its children.
- *
- * @pre writer != NULL
- * @pre tree != NULL
- *
- * @param writer
- * @param tree
- *
- * @ingroup SCEWWriterOutput
- */
-extern scew_bool scew_writer_print_tree (scew_writer *writer,
-                                         scew_tree const *tree);
-
-/**
- *
- * @pre writer != NULL
- * @pre element != NULL
- *
- * @ingroup SCEWWriterOutput
- */
-extern scew_bool scew_writer_print_element (scew_writer *writer,
-                                            scew_element const *element);
-
-/**
- *
- * @pre writer != NULL
- * @pre element != NULL
- *
- * @ingroup SCEWWriterOutput
- */
-extern scew_bool
-scew_writer_print_element_children (scew_writer *writer,
-                                    scew_element const  *element);
-
-/**
- *
- * @pre writer != NULL
- * @pre element != NULL
- *
- * @ingroup SCEWWriterOutput
- */
-extern scew_bool
-scew_writer_print_element_attributes (scew_writer *writer,
-                                      scew_element const *element);
-
-/**
- *
- * @pre writer != NULL
- * @pre attribute != NULL
- *
- * @ingroup SCEWWriterOutput
- */
-extern scew_bool
-scew_writer_print_attribute (scew_writer *writer,
-                             scew_attribute const *attribute);
 
 #ifdef __cplusplus
 }

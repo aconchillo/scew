@@ -6,7 +6,7 @@
  *
  * @if copyright
  *
- * Copyright (C) 2002-2008 Aleix Conchillo Flaque
+ * Copyright (C) 2002-2009 Aleix Conchillo Flaque
  *
  * SCEW is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -112,14 +112,7 @@ scew_parser_expat_init_ (scew_parser *parser)
 
   if (result)
     {
-      XML_SetXmlDeclHandler (parser->parser, expat_xmldecl_handler_);
-      XML_SetElementHandler (parser->parser,
-                             expat_start_handler_,
-                             expat_end_handler_);
-      XML_SetCharacterDataHandler (parser->parser, expat_char_handler_);
-
-      /* Data to be passed to all handlers is the SCEW parser. */
-      XML_SetUserData (parser->parser, parser);
+      scew_parser_expat_install_handlers_ (parser);
     }
   else
     {
@@ -127,6 +120,19 @@ scew_parser_expat_init_ (scew_parser *parser)
     }
 
   return result;
+}
+
+void
+scew_parser_expat_install_handlers_ (scew_parser *parser)
+{
+  XML_SetXmlDeclHandler (parser->parser, expat_xmldecl_handler_);
+  XML_SetElementHandler (parser->parser,
+                         expat_start_handler_,
+                         expat_end_handler_);
+  XML_SetCharacterDataHandler (parser->parser, expat_char_handler_);
+
+  /* Data to be passed to all handlers is the SCEW parser. */
+  XML_SetUserData (parser->parser, parser);
 }
 
 void
@@ -168,11 +174,11 @@ expat_xmldecl_handler_ (void *data,
 
   if (version != NULL)
     {
-      scew_tree_set_xml_version (parser->tree, scew_strdup (version));
+      scew_tree_set_xml_version (parser->tree, version);
     }
   if (encoding != NULL)
     {
-      scew_tree_set_xml_encoding (parser->tree, scew_strdup (encoding));
+      scew_tree_set_xml_encoding (parser->tree, encoding);
     }
 
   /**
@@ -248,22 +254,41 @@ expat_end_handler_ (void *data, XML_Char const *elem)
         }
     }
 
+  if (parser->load_hook != NULL)
+    {
+      if (!parser->load_hook (parser, current))
+        {
+          stop_expat_parsing_ (parser, scew_error_callback);
+          return;
+        }
+    }
+
   /* Go back to the previous element. */
   parser->current = parser_stack_pop_ (parser);
 
-  /**
-   * If there are no more elements (root node) we set the root
-   * element.
-   */
+  /* If there are no more elements (root node) ... */
   if (parser->current == NULL)
     {
-      parser->tree = create_tree_ (parser);
+      /* if (parser->reader->is_stream ()) */
+      /*   { */
+      /*     /\** */
+      /*      * ... we stop parsing if the reader is an stream. */
+      /*      *\/ */
+      /*     stop_expat_parsing_ (parser, scew_error_none); */
+      /*   } */
+      /* else */
+      /*   { */
+      /* ... we create the XML document tree. */
+      parser->tree = (parser->tree == NULL)
+        ? create_tree_ (parser)
+        : parser->tree;
       if (parser->tree == NULL)
         {
           stop_expat_parsing_ (parser, scew_error_no_memory);
           return;
         }
       (void) scew_tree_set_root_element (parser->tree, current);
+      /* } */
     }
 }
 
@@ -303,9 +328,14 @@ expat_char_handler_ (void *data, XML_Char const *str, int len)
       scew_strcpy (new_contents, contents);
     }
   scew_strncat (new_contents, str, len);
-  new_contents[total] = 0;
 
   scew_element_set_contents (current, new_contents);
+
+  /**
+   * new_contents is duplicated inside scew_element_set_contents so it
+   * is safe to free it here.
+   */
+  free (new_contents);
 }
 
 
@@ -314,7 +344,10 @@ expat_char_handler_ (void *data, XML_Char const *str, int len)
 void
 stop_expat_parsing_ (scew_parser *parser, scew_error error)
 {
-  XML_StopParser (parser->parser, XML_FALSE);
+  if (parser != NULL)
+    {
+      XML_StopParser (parser->parser, XML_FALSE);
+    }
   scew_error_set_last_error_ (error);
 }
 

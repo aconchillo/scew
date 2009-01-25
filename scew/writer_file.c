@@ -6,7 +6,7 @@
  *
  * @if copyright
  *
- * Copyright (C) 2008 Aleix Conchillo Flaque
+ * Copyright (C) 2008, 2009 Aleix Conchillo Flaque
  *
  * SCEW is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -28,28 +28,29 @@
 
 #include "writer_file.h"
 
-#include "str.h"
-
 #include <assert.h>
-#include <stdarg.h>
 
 
 /* Private */
 
 typedef struct
 {
-  scew_writer_hooks hooks;
   FILE *file;
 } scew_writer_fp;
 
-static scew_bool file_printf_ (scew_writer *writer,
-                               XML_Char const *format, ...);
+static size_t file_write_ (scew_writer *writer,
+                           void const *buffer,
+                           size_t byte_no);
+static scew_bool file_eow_ (scew_writer *reader);
+static scew_bool file_error_ (scew_writer *reader);
 static scew_bool file_close_ (scew_writer *writer);
 static void file_free_ (scew_writer *writer);
 
-static scew_writer_hooks default_hooks_ =
+static scew_writer_hooks const file_hooks_ =
   {
-    file_printf_,
+    file_write_,
+    file_eow_,
+    file_error_,
     file_close_,
     file_free_
   };
@@ -87,13 +88,10 @@ scew_writer_fp_create (FILE *file)
 
   if (fp_writer != NULL)
     {
-      /* Set interface hooks */
-      fp_writer->hooks = default_hooks_;
-
       fp_writer->file = file;
 
       /* Create writer */
-      writer = scew_writer_create (&fp_writer->hooks);
+      writer = scew_writer_create (&file_hooks_, fp_writer);
       if (writer == NULL)
         {
           free (fp_writer);
@@ -106,30 +104,54 @@ scew_writer_fp_create (FILE *file)
 
 /* Private */
 
-scew_bool
-file_printf_ (scew_writer *writer, XML_Char const *format, ...)
+size_t
+file_write_ (scew_writer *writer, void const *buffer, size_t byte_no)
 {
-  va_list args;
-  int written = 0;
+  size_t written_no = 0;
   scew_writer_fp *fp_writer = NULL;
 
   assert (writer != NULL);
-  assert (format != NULL);
+  assert (buffer != NULL);
 
-  va_start (args, format);
+  fp_writer = scew_writer_data (writer);
+  written_no = fwrite (buffer, 1, byte_no, fp_writer->file);
 
-  fp_writer = scew_writer_interface (writer);
-  written = scew_vfprintf (fp_writer->file, format, args);
+  return written_no;
+}
 
-  va_end (args);
+scew_bool
+file_eow_ (scew_writer *writer)
+{
+  scew_writer_fp *fp_writer = NULL;
 
-  return (written > 0);
+  assert (writer != NULL);
+
+  fp_writer = scew_writer_data (writer);
+
+  return (feof (fp_writer->file) != 0);
+}
+
+scew_bool
+file_error_ (scew_writer *writer)
+{
+  scew_writer_fp *fp_writer = NULL;
+
+  assert (writer != NULL);
+
+  fp_writer = scew_writer_data (writer);
+
+  return (ferror (fp_writer->file) != 0);
 }
 
 scew_bool
 file_close_ (scew_writer *writer)
 {
-  scew_writer_fp *fp_writer = scew_writer_interface (writer);
+  int status = 0;
+  scew_writer_fp *fp_writer = NULL;
+
+  assert (writer != NULL);
+
+  fp_writer = scew_writer_data (writer);
 
   /* Do not close standard output and standard error streams. */
   if ((stdout == fp_writer->file) || (stderr == fp_writer->file))
@@ -137,7 +159,7 @@ file_close_ (scew_writer *writer)
       return SCEW_TRUE;
     }
 
-  int status = fclose (fp_writer->file);
+  status = fclose (fp_writer->file);
 
   return (status == 0);
 }
@@ -145,9 +167,13 @@ file_close_ (scew_writer *writer)
 void
 file_free_ (scew_writer *writer)
 {
-  scew_writer_fp *fp_writer = scew_writer_interface (writer);
+  scew_writer_fp *fp_writer = NULL;
 
+  assert (writer != NULL);
+
+  /* Close the file before freeing the writer. */
   (void) file_close_ (writer);
 
+  fp_writer = scew_writer_data (writer);
   free (fp_writer);
 }
