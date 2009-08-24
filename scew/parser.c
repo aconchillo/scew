@@ -206,7 +206,7 @@ parse_buffer_ (scew_parser *parser, scew_reader *reader)
         {
           /* Parse read data. */
           done = scew_reader_eor (reader);
-          if (done && !XML_Parse (parser->parser, buffer, len, done))
+          if (!XML_Parse (parser->parser, buffer, len, done))
             {
               scew_error_set_last_error_ (scew_error_expat);
               result = SCEW_FALSE;
