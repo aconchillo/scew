@@ -7,7 +7,7 @@
  *
  * @if copyright
  *
- * Copyright (C) 2003-2008 Aleix Conchillo Flaque
+ * Copyright (C) 2003-2009 Aleix Conchillo Flaque
  *
  * SCEW is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -74,9 +74,9 @@ extern scew_tree* scew_tree_create (void);
 
 /**
  * Frees a tree memory structure. Call this function when you are done
- * with your XML. You need to call this function with a #scew_tree
- * obtained via a #scew_parser, as #scew_parser_free does not delete
- * it.
+ * with your XML document. If this is a tree obtained via a parser,
+ * you will need to call this function in order to free the tree, as
+ * #scew_parser_free does not delete it.
  *
  * @param tree the tree to delete.
  *
