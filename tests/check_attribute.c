@@ -141,6 +141,60 @@ START_TEST (test_hierarchy)
   CHECK_U_INT (scew_element_attribute_count (element), N_ATTRIBUTES - 1,
                "Number of attributes mismatch");
 
+  scew_attribute_free (attribute_2);
+  scew_element_free (element);
+}
+END_TEST
+
+
+// Comparisson
+
+START_TEST (test_compare)
+{
+  static XML_Char const *NAME_1 = "attribute_1";
+  static XML_Char const *NAME_1_1 = "attribute_1";
+  static XML_Char const *NAME_2 = "attribute_2";
+  static XML_Char const *VALUE_1 = "value_1";
+  static XML_Char const *VALUE_2 = "value_2";
+
+  scew_attribute *attribute = scew_attribute_create (NAME_1, VALUE_1);
+
+  CHECK_PTR (attribute, "Unable to create attribute");
+
+  // Copy
+  scew_attribute *attr_copy = scew_attribute_copy (attribute);
+
+  CHECK_PTR (attr_copy, "Unable to copy attribute");
+
+  CHECK_BOOL (scew_attribute_compare (attribute, attr_copy), SCEW_TRUE,
+              "Attribute and attribute copy should be equal");
+
+  // Update and compare (OK)
+  CHECK_STR (scew_attribute_set_name (attribute, NAME_1_1), NAME_1_1,
+             "New attribute name do not match");
+  CHECK_BOOL (scew_attribute_compare (attribute, attr_copy), SCEW_TRUE,
+              "Attribute and attribute copy should still be equal");
+
+  // Update (different name) and compare (FAIL)
+  CHECK_STR (scew_attribute_set_name (attribute, NAME_2), NAME_2,
+             "New attribute name do not match");
+  CHECK_BOOL (scew_attribute_compare (attribute, attr_copy), SCEW_FALSE,
+              "Attribute and attribute copy should be different");
+
+  // Update (fix) and compare (OK)
+  CHECK_STR (scew_attribute_set_name (attribute, NAME_1_1), NAME_1_1,
+             "New attribute name do not match");
+  CHECK_BOOL (scew_attribute_compare (attribute, attr_copy), SCEW_TRUE,
+              "Attribute and attribute copy should be different");
+
+  // Update (different value) and compare (FAIL)
+  CHECK_STR (scew_attribute_set_value (attribute, VALUE_2), VALUE_2,
+             "New attribute value do not match");
+  CHECK_BOOL (scew_attribute_compare (attribute, attr_copy), SCEW_FALSE,
+              "Attribute and attribute copy should be different");
+
+  scew_attribute_free (attribute);
+  scew_attribute_free (attr_copy);
 }
 END_TEST
 
@@ -157,6 +211,7 @@ attribute_suite (void)
   tcase_add_test (tc_core, test_alloc);
   tcase_add_test (tc_core, test_accessors);
   tcase_add_test (tc_core, test_hierarchy);
+  tcase_add_test (tc_core, test_compare);
   suite_add_tcase (s, tc_core);
 
   return s;
