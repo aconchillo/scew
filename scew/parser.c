@@ -37,6 +37,11 @@
 #include <stdio.h>
 #include <string.h>
 
+
+/* Private */
+
+static scew_bool parse_buffer_ (scew_parser *parser, scew_reader *reader);
+
 
 
 /* Public */
@@ -83,35 +88,12 @@ scew_parser_free (scew_parser *parser)
 scew_bool
 scew_parser_load (scew_parser *parser, scew_reader *reader)
 {
-  scew_bool done = SCEW_FALSE;
   scew_bool result = SCEW_TRUE;
 
   assert (parser != NULL);
-  assert (in != NULL);
+  assert (reader != NULL);
 
-  while (!done && result)
-    {
-      enum { MAX_BUFFER = 1024 };
-      char buffer[MAX_BUFFER];
-
-      /* Read files in small chunks. */
-      int len = scew_reader_read (reader, buffer, MAX_BUFFER);
-      if (scew_reader_error (reader))
-        {
-	  scew_error_set_last_error_ (scew_error_io);
-	  result = SCEW_FALSE;
-        }
-      else
-        {
-          /* Parse read data. */
-          done = scew_reader_eor (reader);
-          if (done && !XML_Parse (parser->parser, buffer, len, done))
-            {
-              scew_error_set_last_error_ (scew_error_expat);
-              result = SCEW_FALSE;
-            }
-        }
-    }
+  result = parse_buffer_ (parser, reader);
 
   if (!result)
     {
@@ -123,7 +105,7 @@ scew_parser_load (scew_parser *parser, scew_reader *reader)
 
 /* scew_bool */
 /* scew_parser_load_stream (scew_parser *parser, */
-/*                          char const *buffer, */
+/*                          scew_reader *reader, */
 /* 			 unsigned int size, */
 /*                          scew_bool is_final) */
 /* { */
@@ -131,10 +113,16 @@ scew_parser_load (scew_parser *parser, scew_reader *reader)
 /*   enum XML_Status status = XML_STATUS_OK; */
 
 /*   assert (parser != NULL); */
-/*   assert (buffer != NULL); */
+/*   assert (reader != NULL); */
 /*   assert (size > 0); */
 
-/*   parser->is_stream = SCEW_TRUE; */
+/*   size_t len = scew_reader_read (reader, buffer, MAX_BUFFER); */
+/*   if (scew_reader_error (reader)) */
+/*     { */
+/*       scew_error_set_last_error_ (scew_error_io); */
+/*       result = SCEW_FALSE; */
+/*     } */
+/*   else */
 
 /*   status = XML_Parse (parser->parser, buffer, size, is_final); */
 
@@ -188,4 +176,43 @@ scew_parser_ignore_whitespaces (scew_parser *parser, scew_bool ignore)
   assert (parser != NULL);
 
   parser->ignore_whitespaces = ignore;
+}
+
+
+/* Private */
+
+scew_bool
+parse_buffer_ (scew_parser *parser, scew_reader *reader)
+{
+  scew_bool done = SCEW_FALSE;
+  scew_bool result = SCEW_TRUE;
+
+  assert (parser != NULL);
+  assert (reader != NULL);
+
+  while (!done && result)
+    {
+      enum { MAX_BUFFER = 1024 };
+      char buffer[MAX_BUFFER];
+
+      /* Read files in small chunks. */
+      size_t len = scew_reader_read (reader, buffer, MAX_BUFFER);
+      if (scew_reader_error (reader))
+        {
+	  scew_error_set_last_error_ (scew_error_io);
+	  result = SCEW_FALSE;
+        }
+      else
+        {
+          /* Parse read data. */
+          done = scew_reader_eor (reader);
+          if (done && !XML_Parse (parser->parser, buffer, len, done))
+            {
+              scew_error_set_last_error_ (scew_error_expat);
+              result = SCEW_FALSE;
+            }
+        }
+    }
+
+  return result;
 }

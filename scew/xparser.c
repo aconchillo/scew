@@ -278,7 +278,8 @@ expat_end_handler_ (void *data, XML_Char const *elem)
       /*   } */
       /* else */
       /*   { */
-      /* ... we create the XML document tree. */
+      /* ... we create the XML document tree. If we need to create the
+         tree here it means no XML header was found. */
       parser->tree = (parser->tree == NULL)
         ? create_tree_ (parser)
         : parser->tree;

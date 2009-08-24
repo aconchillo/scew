@@ -189,18 +189,20 @@ START_TEST (test_attributes)
     }
 
   // Add attributes with same name
+  XML_Char attr_1_name[MAX_BUFFER];
+  XML_Char attr_2_name[MAX_BUFFER];
   XML_Char attr_1_value[MAX_BUFFER];
   XML_Char attr_2_value[MAX_BUFFER];
 
-  sprintf (attr_name, "%s_1", ATTRIBUTE);
+  sprintf (attr_1_name, "%s_1", ATTRIBUTE);
   sprintf (attr_1_value, "%s_1_new", VALUE);
   scew_attribute *attr_1 =
-    scew_element_add_attribute_pair (element, attr_name, attr_1_value);
+    scew_element_add_attribute_pair (element, attr_1_name, attr_1_value);
 
-  sprintf (attr_name, "%s_2", ATTRIBUTE);
+  sprintf (attr_2_name, "%s_2", ATTRIBUTE);
   sprintf (attr_2_value, "%s_2_new", VALUE);
   scew_attribute *attr_2 =
-    scew_element_add_attribute_pair (element, attr_name, attr_2_value);
+    scew_element_add_attribute_pair (element, attr_2_name, attr_2_value);
 
   CHECK_U_INT (scew_element_attribute_count (element), N_ATTRIBUTES,
                "Number of attributes mismatch after repetition");
@@ -210,6 +212,21 @@ START_TEST (test_attributes)
              "Attribute 1 new value do not match");
   CHECK_STR (scew_attribute_value (attr_2), attr_2_value,
              "Attribute 2 new value do not match");
+
+  // Delete attribute
+  scew_element_delete_attribute (element, attr_1);
+  CHECK_U_INT (scew_element_attribute_count (element), N_ATTRIBUTES - 1,
+               "Number of attributes mismatch after deleting");
+
+  // Delete attribute by name
+  scew_element_delete_attribute_by_name (element, attr_2_name);
+  CHECK_U_INT (scew_element_attribute_count (element), N_ATTRIBUTES - 2,
+               "Number of attributes mismatch after deleting by name");
+
+  // Delete all attributes
+  scew_element_delete_attribute_all (element);
+  CHECK_U_INT (scew_element_attribute_count (element), 0,
+               "Number of attributes mismatch after deleting all");
 
   scew_element_free (element);
 }

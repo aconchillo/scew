@@ -184,30 +184,6 @@ extern XML_Char const* scew_attribute_set_value (scew_attribute *attribute,
  */
 extern scew_element* scew_attribute_parent (scew_attribute const *attribute);
 
-/**
- * Sets a new @a parent to the given @a attribute. If the attribute is
- * part of another element, it is first detached.
- *
- * @pre attribute != NULL
- * @pre parent != NULL
- *
- * @ingroup SCEWAttributeHier
- */
-extern void scew_attribute_set_parent (scew_attribute *attribute,
-                                       scew_element const *parent);
-
-/**
- * Detaches the given @a attribute from its parent, if any. This is
- * the same as deleting the attribute from its parent by using
- * #scew_element_delete_attribute. If the attribute has no parent,
- * this function does not have any effect.
- *
- * @pre attribute != NULL
- *
- * @ingroup SCEWAttributeHier
- */
-extern void scew_attribute_detach (scew_attribute *attribute);
-
 #ifdef __cplusplus
 }
 #endif /* __cplusplus */

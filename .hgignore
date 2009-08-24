@@ -29,5 +29,6 @@ libtool
 ltmain.sh
 missing
 stamp-h1
+tests/check_attribute
 tests/check_element
 tests/check_list

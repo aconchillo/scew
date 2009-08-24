@@ -6,7 +6,7 @@
  *
  * @if copyright
  *
- * Copyright (C) 2002-2008 Aleix Conchillo Flaque
+ * Copyright (C) 2002-2009 Aleix Conchillo Flaque
  *
  * SCEW is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -32,6 +32,7 @@
 #include "list.h"
 #include "str.h"
 
+#include "xattribute.h"
 #include "xerror.h"
 
 #include <assert.h>
@@ -424,7 +425,7 @@ scew_element_add_element (scew_element *element, scew_element *child)
       child->myself = item;
 
       element->last_child = item;
-      ++element->n_children;
+      element->n_children += 1;
     }
   else
     {
@@ -592,7 +593,7 @@ scew_element_add_attribute (scew_element *element, scew_attribute *attribute)
       scew_list *item = NULL;
 
       /* Detach given attribute from its old element. */
-      scew_attribute_detach (attribute);
+      scew_attribute_detach_ (attribute);
 
       item = scew_list_append (element->last_attribute, attribute);
 
@@ -602,9 +603,9 @@ scew_element_add_attribute (scew_element *element, scew_attribute *attribute)
             {
               element->attributes = item;
             }
-          scew_attribute_set_parent (attribute, element);
+          scew_attribute_set_parent_ (attribute, element);
           element->last_attribute = item;
-          ++element->n_attributes;
+          element->n_attributes += 1;
 
           /* This is the return value. */
           old_attribute = attribute;
@@ -673,6 +674,8 @@ scew_element_delete_attribute (scew_element *element,
   assert (attribute != NULL);
 
   element->attributes = scew_list_delete (element->attributes, attribute);
+  scew_attribute_set_parent_ (attribute, NULL);
+  element->n_attributes -= 1;
 }
 
 void
@@ -712,6 +715,7 @@ scew_element_delete_attribute_by_name (scew_element *element,
         {
           element->attributes =
             scew_list_delete_item (element->attributes, item);
+          element->n_attributes -= 1;
         }
     }
 }
@@ -731,6 +735,7 @@ scew_element_delete_attribute_by_index (scew_element *element,
         {
           element->attributes =
             scew_list_delete_item (element->attributes, item);
+          element->n_attributes -= 1;
         }
     }
 }

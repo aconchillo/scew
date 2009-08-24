@@ -11,12 +11,12 @@ include_HEADERS = attribute.h bool.h element.h error.h list.h parser.h \
                   printer.h reader.h reader_file.h scew.h str.h tree.h \
                   writer.h writer_buffer.h writer_file.h
 
-noinst_HEADERS = xerror.h xparser.h
+noinst_HEADERS = xattribute.h xerror.h xparser.h
 
 lib_LTLIBRARIES = libscew.la
 
 libscew_la_SOURCES = attribute.c element.c error.c list.c parser.c printer.c \
                      reader.c reader_file.c str.c \
                      tree.c writer.c writer_buffer.c writer_file.c \
-                     xerror.c xparser.c
+                     xattribute.c xerror.c xparser.c
 libscew_la_LDFLAGS = -version-info 1:0:1

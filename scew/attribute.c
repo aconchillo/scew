@@ -28,21 +28,14 @@
 
 #include "attribute.h"
 
+#include "xattribute.h"
+
 #include "xerror.h"
 
 #include "str.h"
 
 #include <assert.h>
 
-
-/* Private */
-
-struct scew_attribute
-{
-  XML_Char *name;
-  XML_Char *value;
-  scew_element *parent;
-};
 
 
 /* Public */
@@ -186,27 +179,4 @@ scew_attribute_parent (scew_attribute const *attribute)
   assert (attribute != NULL);
 
   return attribute->parent;
-}
-
-void
-scew_attribute_set_parent (scew_attribute *attribute,
-                           scew_element const *parent)
-{
-  assert (attribute != NULL);
-  assert (parent != NULL);
-
-  scew_attribute_detach (attribute);
-
-  attribute->parent = (scew_element *) parent;
-}
-
-void
-scew_attribute_detach (scew_attribute *attribute)
-{
-  assert (attribute != NULL);
-
-  if (attribute->parent != NULL)
-    {
-      scew_element_delete_attribute (attribute->parent, attribute);
-    }
 }
