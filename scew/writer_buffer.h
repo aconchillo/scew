@@ -1,5 +1,5 @@
 /**
- * @file     writer.h
+ * @file     writer_buffer.h
  * @brief    SCEW writer buffer related functions
  * @author   Aleix Conchillo Flaque <aleix@member.fsf.org>
  * @date     Thu Nov 13, 2008 11:03
