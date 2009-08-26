@@ -1,8 +1,8 @@
 /**
- * @file     xattribute.h
- * @brief    SCEW private attribute type declaration
+ * @file     element.c
+ * @brief    SCEW private element type declaration
  * @author   Aleix Conchillo Flaque <aleix@member.fsf.org>
- * @date     Mon Aug 24, 2009 23:44
+ * @date     Thu Aug 27, 2009 01:47
  *
  * @if copyright
  *
@@ -26,33 +26,34 @@
  * @endif
  */
 
+#ifndef XELEMENT_H_0908270147
+#define XELEMENT_H_0908270147
 
-#ifndef XATTRIBUTE_H_0908242344
-#define XATTRIBUTE_H_0908242344
+#include "element.h"
 
-#include "attribute.h"
+#include "list.h"
+
+#include <expat.h>
 
 
 /* Types */
 
-struct scew_attribute
+struct scew_element
 {
   XML_Char *name;
-  XML_Char *value;
+  XML_Char *contents;
+
   scew_element *parent;
+  scew_list *myself;            /**< Pointer to parent's children list
+                                   (performance) */
+
+  unsigned int n_children;
+  scew_list *children;
+  scew_list *last_child;        /**< Pointer to last child (performance) */
+
+  unsigned int n_attributes;
+  scew_list *attributes;
+  scew_list *last_attribute;    /**< Pointer to last attribute (performance) */
 };
 
-
-/* Functions */
-
-/**
- * Sets a new @a parent to the given @a attribute, NULL is also
- * allowed. Note that the element should be first detached from its
- * old parent.
- *
- * @pre attribute != NULL
- */
-extern void scew_attribute_set_parent_ (scew_attribute *attribute,
-                                        scew_element const *parent);
-
-#endif // XATTRIBUTE_H_0908242344
+#endif // XELEMENT_H_0908270147

@@ -452,17 +452,18 @@ scew_element_attribute_by_index (scew_element const *element,
                                  unsigned int idx);
 
 /**
- * Adds an existent @a attribute to the given @a element. If the @a
- * attribute already exists, the old value will be overwritten. It is
+ * Adds an existent @a attribute to the given @a element. It is
  * important to note that the given attribute will be part of the
- * element's attributes (ownership is lost).
+ * element's attributes (ownership is lost), so it should not be
+ * freed, and it should not be part of another attribute element list.
  *
  * @pre element != NULL
  * @pre attribute != NULL
  *
  * @see SCEWAttribute
  *
- * @return the new attribute added to the element.
+ * @return the new attribute added to the element, or NULL if the
+ * attribute already existed or could not be added.
  *
  * @ingroup SCEWElementAttr
  */
@@ -471,8 +472,7 @@ extern scew_attribute* scew_element_add_attribute (scew_element *element,
 
 /**
  * Creates and adds a new attribute to the given @a element. An
- * attribute is formed by a pair (name, value). If the attribute
- * already exists, the old value will be overwritten.
+ * attribute is formed by a pair (name, value).
  *
  * @pre element != NULL
  * @pre name != NULL
@@ -480,7 +480,8 @@ extern scew_attribute* scew_element_add_attribute (scew_element *element,
  *
  * @see SCEWAttribute
  *
- * @return the new attribute added to the element.
+ * @return the new attribute added to the element, or NULL if the
+ * attribute already existed or could not be added.
  *
  * @ingroup SCEWElementAttr
  */

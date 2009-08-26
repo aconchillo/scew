@@ -32,7 +32,7 @@
 
 
 
-/* Public */
+/* Protected */
 
 void
 scew_attribute_set_parent_ (scew_attribute *attribute,
@@ -41,16 +41,4 @@ scew_attribute_set_parent_ (scew_attribute *attribute,
   assert (attribute != NULL);
 
   attribute->parent = (scew_element *) parent;
-}
-
-void
-scew_attribute_detach_ (scew_attribute *attribute)
-{
-  assert (attribute != NULL);
-
-  if (attribute->parent != NULL)
-    {
-      scew_element_delete_attribute (attribute->parent, attribute);
-      attribute->parent = NULL;
-    }
 }
