@@ -184,7 +184,7 @@ scew_element_delete_attribute (scew_element *element,
   element->attributes = scew_list_delete (element->attributes, attribute);
   element->n_attributes -= 1;
 
-  scew_attribute_set_parent_ (attribute, NULL);
+  scew_attribute_free (attribute);
 }
 
 void
@@ -194,6 +194,7 @@ scew_element_delete_attribute_all (scew_element *element)
 
   assert (element != NULL);
 
+  /* Free all attributes. */
   list = element->attributes;
   while (list != NULL)
     {
@@ -222,9 +223,8 @@ scew_element_delete_attribute_by_name (scew_element *element,
 
       if (item != NULL)
         {
-          element->attributes =
-            scew_list_delete_item (element->attributes, item);
-          element->n_attributes -= 1;
+          scew_attribute *attribute = scew_list_data (item);
+          scew_element_delete_attribute (element, attribute);
         }
     }
 }
@@ -242,9 +242,8 @@ scew_element_delete_attribute_by_index (scew_element *element,
 
       if (item != NULL)
         {
-          element->attributes =
-            scew_list_delete_item (element->attributes, item);
-          element->n_attributes -= 1;
+          scew_attribute *attribute = scew_list_data (item);
+          scew_element_delete_attribute (element, attribute);
         }
     }
 }

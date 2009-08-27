@@ -6,7 +6,7 @@
  *
  * @if copyright
  *
- * Copyright (C) 2007-2008 Aleix Conchillo Flaque
+ * Copyright (C) 2007-2009 Aleix Conchillo Flaque
  *
  * SCEW is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -33,7 +33,7 @@
 #include <check.h>
 
 
-// Private
+/* Private */
 
 typedef struct
 {
@@ -45,9 +45,9 @@ enum { N_ELEMENTS_ = 10 };
 static item_t data_[N_ELEMENTS_];
 
 
-// Unit tests
+/* Unit tests */
 
-// Allocation
+/* Allocation */
 
 START_TEST (test_alloc)
 {
@@ -65,11 +65,11 @@ START_TEST (test_alloc)
 END_TEST
 
 
-// Accessors
+/* Accessors */
 
 START_TEST (test_accessors)
 {
-  // Add items to list
+  /* Add items to list */
   scew_list *list = NULL;
   scew_list *last = NULL;
   unsigned int i = 0;
@@ -99,11 +99,11 @@ START_TEST (test_accessors)
 END_TEST
 
 
-// Append
+/* Append */
 
 START_TEST (test_append)
 {
-  // Append items to list
+  /* Append items to list */
   scew_list *list = NULL;
   unsigned int i = 0;
   for (i = 0; i < N_ELEMENTS_; ++i)
@@ -128,11 +128,11 @@ START_TEST (test_append)
 END_TEST
 
 
-// Prepend
+/* Prepend */
 
 START_TEST (test_prepend)
 {
-  // Prepend items to list
+  /* Prepend items to list */
   scew_list *list = NULL;
   unsigned int i = 0;
   for (i = 0; i < N_ELEMENTS_; ++i)
@@ -154,11 +154,11 @@ START_TEST (test_prepend)
 END_TEST
 
 
-// Delete
+/* Delete */
 
 START_TEST (test_delete)
 {
-  // Append items to list
+  /* Append items to list */
   scew_list *list = NULL;
   unsigned int i = 0;
   for (i = 0; i < N_ELEMENTS_; ++i)
@@ -170,21 +170,21 @@ START_TEST (test_delete)
         }
     }
 
-  // Delete items 2 and 6
+  /* Delete items 2 and 6 */
   list = scew_list_delete (list, &data_[2]);
   list = scew_list_delete (list, &data_[6]);
 
   CHECK_U_INT (scew_list_size (list), N_ELEMENTS_ - 2,
              "Number of items mismatch");
 
-  // Delete item 1
+  /* Delete item 1 */
   scew_list *item = scew_list_next (list);
   list = scew_list_delete_item (list, item);
 
   CHECK_U_INT (scew_list_size (list), N_ELEMENTS_ - 3,
              "Number of items mismatch");
 
-  // Check for all remaining items
+  /* Check for all remaining items */
   enum { N_REMOVED = 3 };
   unsigned int const REMOVED[N_REMOVED] = { 1, 2, 6 };
   item = list;
@@ -206,11 +206,11 @@ START_TEST (test_delete)
 END_TEST
 
 
-// Traverse
+/* Traverse */
 
 START_TEST (test_traverse)
 {
-  // Append items to list
+  /* Append items to list */
   scew_list *item = NULL;
   scew_list *list = NULL;
   unsigned int i = 0;
@@ -252,9 +252,9 @@ START_TEST (test_traverse)
 END_TEST
 
 
-// Traverse (foreach)
+/* Traverse (foreach) */
 
-static unsigned int foreach_calls_ = 0; // keep track of number of calls
+static unsigned int foreach_calls_ = 0; /* keep track of number of calls */
 
 static void
 foreach_check_ (scew_list *item, void *user_data)
@@ -274,7 +274,7 @@ foreach_check_ (scew_list *item, void *user_data)
 
 START_TEST (test_traverse_foreach)
 {
-  // Append items to list
+  /* Append items to list */
   scew_list *list = NULL;
   unsigned int i = 0;
   for (i = 0; i < N_ELEMENTS_; ++i)
@@ -296,7 +296,7 @@ START_TEST (test_traverse_foreach)
 END_TEST
 
 
-// Search
+/* Search */
 
 static scew_bool
 search_cmp_ (void const *a, void const *b)
@@ -306,7 +306,7 @@ search_cmp_ (void const *a, void const *b)
 
 START_TEST (test_search)
 {
-  // Append items to list
+  /* Append items to list */
   scew_list *item_5 = NULL;
   scew_list *list = NULL;
   unsigned int i = 0;
@@ -330,7 +330,7 @@ START_TEST (test_search)
   CHECK_BOOL (item_5 == scew_list_find_custom (list, &value_5, search_cmp_),
               SCEW_TRUE, "Item 5 custom search failed");
 
-  // Sequential indexing
+  /* Sequential indexing */
   scew_list *item = list;
   for (i = 0; i < N_ELEMENTS_; ++i)
     {
@@ -345,21 +345,21 @@ START_TEST (test_search)
 END_TEST
 
 
-// Suite
+/* Suite */
 
 static Suite*
 list_suite (void)
 {
   Suite *s = suite_create ("SCEW lists");
 
-  // Setup items
+  /* Setup items */
   unsigned int i = 0;
   for (i = 0; i < N_ELEMENTS_; ++i)
     {
       data_[i].value = i;
     }
 
-  // Core test case
+  /* Core test case */
   TCase *tc_core = tcase_create ("Core");
   tcase_add_test (tc_core, test_alloc);
   tcase_add_test (tc_core, test_accessors);

@@ -85,47 +85,8 @@ scew_tree_free (scew_tree *tree)
     }
 }
 
-scew_element*
-scew_tree_root (scew_tree const *tree)
-{
-  assert (tree != NULL);
-
-  return tree->root;
-}
-
-scew_element*
-scew_tree_set_root (scew_tree *tree, XML_Char const *name)
-{
-  scew_element *root = NULL;
-  scew_element *new_root = NULL;
-
-  assert (tree != NULL);
-  assert (name != NULL);
-
-  root = scew_element_create (name);
-
-  if (root != NULL)
-    {
-      new_root = scew_tree_set_root_element (tree, root);
-    }
-  else
-    {
-      scew_error_set_last_error_ (scew_error_no_memory);
-    }
-
-  return new_root;
-}
-
-scew_element*
-scew_tree_set_root_element (scew_tree *tree, scew_element *root)
-{
-  assert (tree != NULL);
-  assert (root != NULL);
-
-  tree->root = root;
-
-  return root;
-}
+
+/* Properties */
 
 XML_Char const*
 scew_tree_xml_version (scew_tree const *tree)
@@ -183,6 +144,51 @@ scew_tree_set_xml_standalone (scew_tree *tree, scew_tree_standalone standalone)
   assert(tree != NULL);
 
   tree->standalone = standalone;
+}
+
+
+/* Contents */
+
+scew_element*
+scew_tree_root (scew_tree const *tree)
+{
+  assert (tree != NULL);
+
+  return tree->root;
+}
+
+scew_element*
+scew_tree_set_root (scew_tree *tree, XML_Char const *name)
+{
+  scew_element *root = NULL;
+  scew_element *new_root = NULL;
+
+  assert (tree != NULL);
+  assert (name != NULL);
+
+  root = scew_element_create (name);
+
+  if (root != NULL)
+    {
+      new_root = scew_tree_set_root_element (tree, root);
+    }
+  else
+    {
+      scew_error_set_last_error_ (scew_error_no_memory);
+    }
+
+  return new_root;
+}
+
+scew_element*
+scew_tree_set_root_element (scew_tree *tree, scew_element *root)
+{
+  assert (tree != NULL);
+  assert (root != NULL);
+
+  tree->root = root;
+
+  return root;
 }
 
 XML_Char const*

@@ -33,9 +33,9 @@
 #include <check.h>
 
 
-// Unit tests
+/* Unit tests */
 
-// Allocation
+/* Allocation */
 
 START_TEST (test_alloc)
 {
@@ -51,7 +51,7 @@ START_TEST (test_alloc)
 END_TEST
 
 
-// Accesors
+/* Accesors */
 
 START_TEST (test_accessors)
 {
@@ -64,20 +64,20 @@ START_TEST (test_accessors)
 
   CHECK_PTR (attribute, "Unable to create attribute");
 
-  // Name
+  /* Name */
   CHECK_STR (scew_attribute_name (attribute), NAME,
              "Attribute name do not match");
-  // Value
+  /* Value */
   CHECK_STR (scew_attribute_value (attribute), VALUE,
              "Attribute value do not match");
 
-  // Name
+  /* Name */
   CHECK_STR (scew_attribute_set_name (attribute, NAME_AUX), NAME_AUX,
              "New attribute name do not match");
   CHECK_STR (scew_attribute_name (attribute), NAME_AUX,
              "Attribute name do not match");
 
-  // Value
+  /* Value */
   CHECK_STR (scew_attribute_set_value (attribute, VALUE_AUX), VALUE_AUX,
              "New attribute value do not match");
   CHECK_STR (scew_attribute_value (attribute), VALUE_AUX,
@@ -88,7 +88,7 @@ START_TEST (test_accessors)
 END_TEST
 
 
-// Hierarchy
+/* Hierarchy */
 
 START_TEST (test_hierarchy)
 {
@@ -113,7 +113,7 @@ START_TEST (test_hierarchy)
   CHECK_PTR (attribute_2, "Unable to create attribute 2");
   CHECK_PTR (attribute_3, "Unable to create attribute 3");
 
-  // Add attributes to element
+  /* Add attributes to element */
   scew_element_add_attribute (element, attribute_1);
   scew_element_add_attribute (element, attribute_2);
   scew_element_add_attribute (element, attribute_3);
@@ -121,7 +121,7 @@ START_TEST (test_hierarchy)
   CHECK_U_INT (scew_element_attribute_count (element), N_ATTRIBUTES,
                "Number of attributes mismatch");
 
-  // Check correct element
+  /* Check correct element */
   CHECK_BOOL (element == scew_attribute_parent (attribute_1), SCEW_TRUE,
               "Attribute 1 has wrong parent");
   CHECK_BOOL (element == scew_attribute_parent (attribute_2), SCEW_TRUE,
@@ -129,25 +129,22 @@ START_TEST (test_hierarchy)
   CHECK_BOOL (element == scew_attribute_parent (attribute_3), SCEW_TRUE,
               "Attribute 3 has wrong parent");
 
-  // Detaching
+  /* Detaching */
   scew_element_delete_attribute (element, attribute_2);
   CHECK_BOOL (element == scew_attribute_parent (attribute_1), SCEW_TRUE,
               "Attribute 1 has wrong parent");
-  CHECK_NULL_PTR (scew_attribute_parent (attribute_2),
-                  "Attribute has no parent");
   CHECK_BOOL (element == scew_attribute_parent (attribute_3), SCEW_TRUE,
               "Attribute 3 has wrong parent");
 
   CHECK_U_INT (scew_element_attribute_count (element), N_ATTRIBUTES - 1,
                "Number of attributes mismatch");
 
-  scew_attribute_free (attribute_2);
   scew_element_free (element);
 }
 END_TEST
 
 
-// Comparisson
+/* Comparisson */
 
 START_TEST (test_compare)
 {
@@ -161,7 +158,7 @@ START_TEST (test_compare)
 
   CHECK_PTR (attribute, "Unable to create attribute");
 
-  // Copy
+  /* Copy */
   scew_attribute *attr_copy = scew_attribute_copy (attribute);
 
   CHECK_PTR (attr_copy, "Unable to copy attribute");
@@ -169,25 +166,25 @@ START_TEST (test_compare)
   CHECK_BOOL (scew_attribute_compare (attribute, attr_copy), SCEW_TRUE,
               "Attribute and attribute copy should be equal");
 
-  // Update and compare (OK)
+  /* Update and compare (OK) */
   CHECK_STR (scew_attribute_set_name (attribute, NAME_1_1), NAME_1_1,
              "New attribute name do not match");
   CHECK_BOOL (scew_attribute_compare (attribute, attr_copy), SCEW_TRUE,
               "Attribute and attribute copy should still be equal");
 
-  // Update (different name) and compare (FAIL)
+  /* Update (different name) and compare (FAIL) */
   CHECK_STR (scew_attribute_set_name (attribute, NAME_2), NAME_2,
              "New attribute name do not match");
   CHECK_BOOL (scew_attribute_compare (attribute, attr_copy), SCEW_FALSE,
               "Attribute and attribute copy should be different");
 
-  // Update (fix) and compare (OK)
+  /* Update (fix) and compare (OK) */
   CHECK_STR (scew_attribute_set_name (attribute, NAME_1_1), NAME_1_1,
              "New attribute name do not match");
   CHECK_BOOL (scew_attribute_compare (attribute, attr_copy), SCEW_TRUE,
               "Attribute and attribute copy should be different");
 
-  // Update (different value) and compare (FAIL)
+  /* Update (different value) and compare (FAIL) */
   CHECK_STR (scew_attribute_set_value (attribute, VALUE_2), VALUE_2,
              "New attribute value do not match");
   CHECK_BOOL (scew_attribute_compare (attribute, attr_copy), SCEW_FALSE,
@@ -199,14 +196,14 @@ START_TEST (test_compare)
 END_TEST
 
 
-// Suite
+/* Suite */
 
 static Suite*
 attribute_suite (void)
 {
   Suite *s = suite_create ("SCEW attributes");
 
-  // Core test case
+  /* Core test case */
   TCase *tc_core = tcase_create ("Core");
   tcase_add_test (tc_core, test_alloc);
   tcase_add_test (tc_core, test_accessors);

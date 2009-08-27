@@ -8,7 +8,7 @@
  *
  * @if copyright
  *
- * Copyright (C) 2002-2008 Aleix Conchillo Flaque
+ * Copyright (C) 2002-2009 Aleix Conchillo Flaque
  *
  * SCEW is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -490,7 +490,8 @@ extern scew_attribute* scew_element_add_attribute_pair (scew_element *element,
                                                         XML_Char const *value);
 
 /**
- * Deletes all the attributes of the given @a element.
+ * Deletes all the attributes of the given @a element. This will
+ * also automatically free all the attributes.
  *
  * @pre element != NULL
  *
@@ -500,8 +501,7 @@ extern void scew_element_delete_attribute_all (scew_element *element);
 
 /**
  * Deletes the given @a attribute from the specified @a element. This
- * is the same as detaching the attribute from its parent by using
- * #scew_attribute_detach.
+ * will also automatically free the given attribute.
  *
  * @pre element != NULL
  * @pre attribute != NULL
@@ -513,7 +513,7 @@ extern void scew_element_delete_attribute (scew_element *element,
 
 /**
  * Deletes the first attribute of the given @a element that matches @a
- * name.
+ * name. This will also automatically free the attribute.
  *
  * @pre element != NULL
  * @pre name != NULL
@@ -525,7 +525,7 @@ extern void scew_element_delete_attribute_by_name (scew_element *element,
 
 /**
  * Deletes the attribute of the given @a element at the specified
- * position.
+ * position. This will also automatically free the attribute.
  *
  * @pre element != NULL
  * @pre idx < #scew_element_attribute_count

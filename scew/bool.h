@@ -6,7 +6,7 @@
  *
  * @if copyright
  *
- * Copyright (C) 2008 Aleix Conchillo Flaque
+ * Copyright (C) 2008, 2009 Aleix Conchillo Flaque
  *
  * SCEW is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -34,7 +34,7 @@
  */
 typedef unsigned char scew_bool;
 
-#define SCEW_TRUE   ((scew_bool) 1)
-#define SCEW_FALSE  ((scew_bool) 0)
+#define SCEW_TRUE   ((scew_bool) 1) /**< True */
+#define SCEW_FALSE  ((scew_bool) 0) /**< False */
 
 #endif /* BOOL_H_0809041142 */

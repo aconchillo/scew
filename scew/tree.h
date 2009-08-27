@@ -3,7 +3,7 @@
  * @brief    SCEW tree type declaration
  * @author   Aleix Conchillo Flaque <aleix@member.fsf.org>
  * @date     Thu Feb 20, 2003 23:32
- * @ingroup  SCEWTree
+ * @ingroup  SCEWTree, SCEWTreeAlloc, SCEWTreeProp, SCEWTreeContent
  *
  * @if copyright
  *
@@ -47,11 +47,18 @@
 extern "C" {
 #endif /* __cplusplus */
 
+/**
+ * The standalone attribute in an XML declaration defines whether the
+ * XML document is self consistent or not, that is, whether it needs
+ * to load any extra files.
+ *
+ * @ingroup SCEWTreeProp
+ */
 typedef enum
   {
-    scew_tree_standalone_unknown,
-    scew_tree_standalone_no,
-    scew_tree_standalone_yes
+    scew_tree_standalone_unknown, /**< Standalone attribute not defined. */
+    scew_tree_standalone_no,    /**< Extra files are necessary. */
+    scew_tree_standalone_yes    /**< Document stands on its own. */
   } scew_tree_standalone;
 
 /**
@@ -61,6 +68,13 @@ typedef enum
  */
 typedef struct scew_tree scew_tree;
 
+
+/**
+ * @defgroup SCEWTreeAlloc Allocation
+ * Allocate and free XML trees.
+ * @ingroup SCEWTree
+ */
+
 /**
  * Creates a new empty XML tree in memory. You can also have access to
  * the tree created by the parser when reading an XML file.
@@ -68,58 +82,30 @@ typedef struct scew_tree scew_tree;
  * By default, the XML version is set to 1.0, and the encoding to
  * UTF-8, also a standalone document is considered.
  *
- * @ingroup SCEWTree
+ * @ingroup SCEWTreeAlloc
  */
 extern scew_tree* scew_tree_create (void);
 
 /**
  * Frees a tree memory structure. Call this function when you are done
- * with your XML document. If this is a tree obtained via a parser,
- * you will need to call this function in order to free the tree, as
- * #scew_parser_free does not delete it.
+ * with your XML document. This will also free the root element.
+ *
+ * If this is a tree obtained via a parser, you will need to call this
+ * function in order to free the tree, as #scew_parser_free does not
+ * delete it.
  *
  * @param tree the tree to delete.
  *
- * @ingroup SCEWTree
+ * @ingroup SCEWTreeAlloc
  */
 extern void scew_tree_free (scew_tree *tree);
 
+
 /**
- * Returns the root element of the given @a tree.
- *
- * @pre tree != NULL
- *
+ * @defgroup SCEWTreeProp Properties
+ * Handle XML trees properties.
  * @ingroup SCEWTree
  */
-extern scew_element* scew_tree_root (scew_tree const *tree);
-
-/**
- * Creates the first element (root) of an XML tree with the given
- * name.
- *
- * @pre tree != NULL
- * @pre name != NULL
- *
- * @ingroup SCEWTree
- */
-extern scew_element* scew_tree_set_root (scew_tree *tree,
-					 XML_Char const *name);
-
-/**
- *
- *
- * @pre tree != NULL
- * @pre root != NULL
- *
- * @param tree
- * @param root
- *
- * @return
- *
- * @ingroup SCEWTree
- */
-extern scew_element* scew_tree_set_root_element (scew_tree *tree,
-                                                 scew_element *root);
 
 /**
  * Returns the current XML version for the given @a tree. This is the
@@ -132,7 +118,7 @@ extern scew_element* scew_tree_set_root_element (scew_tree *tree,
  *
  * @return a string representing the XML version.
  *
- * @ingroup SCEWTree
+ * @ingroup SCEWTreeProp
  */
 extern XML_Char const* scew_tree_xml_version (scew_tree const *tree);
 
@@ -144,7 +130,7 @@ extern XML_Char const* scew_tree_xml_version (scew_tree const *tree);
  * @pre tree != NULL
  * @pre version != NULL
  *
- * @ingroup SCEWTree
+ * @ingroup SCEWTreeProp
  */
 extern void scew_tree_set_xml_version (scew_tree *tree,
 				       XML_Char const *version);
@@ -158,7 +144,7 @@ extern void scew_tree_set_xml_version (scew_tree *tree,
  *
  * @return
  *
- * @ingroup SCEWTree
+ * @ingroup SCEWTreeProp
  */
 extern XML_Char const* scew_tree_xml_encoding (scew_tree const *tree);
 
@@ -169,7 +155,7 @@ extern XML_Char const* scew_tree_xml_encoding (scew_tree const *tree);
  * @pre tree != NULL
  * @pre encoding != NULL
  *
- * @ingroup SCEWTree
+ * @ingroup SCEWTreeProp
  */
 extern void scew_tree_set_xml_encoding (scew_tree *tree,
 					XML_Char const *encoding);
@@ -185,7 +171,7 @@ extern void scew_tree_set_xml_encoding (scew_tree *tree,
  *
  * @return true if the given tree is standalone, false otherwise.
  *
- * @ingroup SCEWTree
+ * @ingroup SCEWTreeProp
  */
 extern scew_tree_standalone scew_tree_xml_standalone (scew_tree const *tree);
 
@@ -201,11 +187,65 @@ extern scew_tree_standalone scew_tree_xml_standalone (scew_tree const *tree);
  * @param standalone true to activate standalone property, false
  * otherwise.
  *
- * @ingroup SCEWTree
+ * @ingroup SCEWTreeProp
  */
 extern void scew_tree_set_xml_standalone (scew_tree *tree,
                                           scew_tree_standalone standalone);
 
+
+/**
+ * @defgroup SCEWTreeContent Contents
+ * Accessors for XML root elements and preambles.
+ * @ingroup SCEWTree
+ */
+
+/**
+ * Returns the root element of the given @a tree.
+ *
+ * @pre tree != NULL
+ *
+ * @return the tree's root element, or NULL if the tree does not have
+ * a root element yet.
+ *
+ * @ingroup SCEWTreeContent
+ */
+extern scew_element* scew_tree_root (scew_tree const *tree);
+
+/**
+ * Creates the root element of an XML @a tree with the given @a
+ * name. Note that if the tree already had a root element, it will be
+ * overwritten, possibly causing a memory leak, as the old root
+ * element is *not* automatically freed. So, if you plan to set a new
+ * root element, remember to free the old one first.
+ *
+ * @pre tree != NULL
+ * @pre name != NULL
+ *
+ * @return the tree's root element, or NULL if the element could not
+ * be created.
+ *
+ * @ingroup SCEWTreeContent
+ */
+extern scew_element* scew_tree_set_root (scew_tree *tree,
+					 XML_Char const *name);
+
+/**
+ * Sets the root element of an XML @a tree with the given @a
+ * root. Note that if the tree already had a root element, it will be
+ * overwritten, possibly causing a memory leak, as the old root
+ * element is *not* automatically freed. So, if you plan to set a new
+ * root element, remember to free the old one first.
+ *
+ * @pre tree != NULL
+ * @pre root != NULL
+ *
+ * @return the tree's root element, or NULL if the element could not
+ * be created.
+ *
+ * @ingroup SCEWTreeContent
+ */
+extern scew_element* scew_tree_set_root_element (scew_tree *tree,
+                                                 scew_element *root);
 /**
  *
  *
@@ -215,7 +255,7 @@ extern void scew_tree_set_xml_standalone (scew_tree *tree,
  *
  * @return
  *
- * @ingroup SCEWTree
+ * @ingroup SCEWTreeContent
  */
 extern XML_Char const* scew_tree_xml_preamble (scew_tree const *tree);
 
@@ -226,10 +266,10 @@ extern XML_Char const* scew_tree_xml_preamble (scew_tree const *tree);
  * @pre tree != NULL
  * @pre preamble != NULL
  *
- * @ingroup SCEWTree
+ * @ingroup SCEWTreeContent
  */
 extern void scew_tree_set_xml_preamble (scew_tree *tree,
-					XML_Char const *preamble);
+                                        XML_Char const *preamble);
 
 #ifdef __cplusplus
 }

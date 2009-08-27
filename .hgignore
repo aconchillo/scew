@@ -32,3 +32,4 @@ stamp-h1
 tests/check_attribute
 tests/check_element
 tests/check_list
+tests/check_tree

@@ -34,9 +34,9 @@
 #include <check.h>
 
 
-// Unit tests
+/* Unit tests */
 
-// Allocation
+/* Allocation */
 
 START_TEST (test_alloc)
 {
@@ -50,7 +50,7 @@ START_TEST (test_alloc)
 
   CHECK_PTR (root, "Unable to create element");
 
-  // Create elements
+  /* Create elements */
   for (i = 0; i < N_ELEMENTS; ++i)
     {
       scew_element *child = scew_element_add (root, CHILD_NAME);
@@ -63,12 +63,12 @@ START_TEST (test_alloc)
         }
     }
 
-  // Copy
+  /* Copy */
   scew_element *root_copy = scew_element_copy (root);
 
   CHECK_PTR (root_copy, "Unable to copy root element");
 
-  // Check elements have different addresses
+  /* Check elements have different addresses */
   CHECK_BOOL ((root != root_copy), SCEW_TRUE,
               "Root element address should be different");
 
@@ -91,7 +91,7 @@ START_TEST (test_alloc)
 END_TEST
 
 
-// Accessors
+/* Accessors */
 
 START_TEST (test_accessors)
 {
@@ -103,7 +103,7 @@ START_TEST (test_accessors)
 
   CHECK_PTR (element, "Unable to create element");
 
-  // Name
+  /* Name */
   CHECK_STR (scew_element_name (element), NAME,
              "Element name do not match");
 
@@ -112,7 +112,7 @@ START_TEST (test_accessors)
   CHECK_STR (scew_element_name (element), NEW_NAME,
              "Element name do not match (NEW_NAME)");
 
-  // Contents
+  /* Contents */
   CHECK_NULL_PTR (scew_element_contents (element), "Element has no contents");
 
   scew_element_set_contents (element, CONTENTS);
@@ -129,7 +129,7 @@ START_TEST (test_accessors)
 END_TEST
 
 
-// Attributes
+/* Attributes */
 
 START_TEST (test_attributes)
 {
@@ -153,7 +153,7 @@ START_TEST (test_attributes)
   XML_Char attr_name[MAX_BUFFER];
   XML_Char attr_value[MAX_BUFFER];
 
-  // Create attributes
+  /* Create attributes */
   for (i = 0; i < N_ATTRIBUTES; ++i)
     {
       sprintf (attr_name, "%s_%d", ATTRIBUTE, i);
@@ -168,7 +168,7 @@ START_TEST (test_attributes)
   CHECK_U_INT (scew_element_attribute_count (element), N_ATTRIBUTES,
                "Number of attributes mismatch");
 
-  // Check attributes
+  /* Check attributes */
   i = 0;
   scew_list *list = scew_element_attributes (element);
   while (list != NULL)
@@ -188,7 +188,7 @@ START_TEST (test_attributes)
       i += 1;
     }
 
-  // Add attributes with same name
+  /* Add attributes with same name */
   XML_Char attr_1_name[MAX_BUFFER];
   XML_Char attr_2_name[MAX_BUFFER];
   XML_Char attr_1_value[MAX_BUFFER];
@@ -207,23 +207,23 @@ START_TEST (test_attributes)
   CHECK_U_INT (scew_element_attribute_count (element), N_ATTRIBUTES,
                "Number of attributes mismatch after repetition");
 
-  // Check attributes new values
+  /* Check attributes new values */
   CHECK_STR (scew_attribute_value (attr_1), attr_1_value,
              "Attribute 1 new value do not match");
   CHECK_STR (scew_attribute_value (attr_2), attr_2_value,
              "Attribute 2 new value do not match");
 
-  // Delete attribute
+  /* Delete attribute */
   scew_element_delete_attribute (element, attr_1);
   CHECK_U_INT (scew_element_attribute_count (element), N_ATTRIBUTES - 1,
                "Number of attributes mismatch after deleting");
 
-  // Delete attribute by name
+  /* Delete attribute by name */
   scew_element_delete_attribute_by_name (element, attr_2_name);
   CHECK_U_INT (scew_element_attribute_count (element), N_ATTRIBUTES - 2,
                "Number of attributes mismatch after deleting by name");
 
-  // Delete all attributes
+  /* Delete all attributes */
   scew_element_delete_attribute_all (element);
   CHECK_U_INT (scew_element_attribute_count (element), 0,
                "Number of attributes mismatch after deleting all");
@@ -233,7 +233,7 @@ START_TEST (test_attributes)
 END_TEST
 
 
-// Hierarchy (basic)
+/* Hierarchy (basic) */
 
 START_TEST (test_hierarchy_basic)
 {
@@ -285,7 +285,7 @@ START_TEST (test_hierarchy_basic)
 END_TEST
 
 
-// Hierarchy (delete)
+/* Hierarchy (delete) */
 
 START_TEST (test_hierarchy_delete)
 {
@@ -296,7 +296,7 @@ START_TEST (test_hierarchy_delete)
 
   CHECK_PTR (element, "Unable to create element");
 
-  // Add
+  /* Add */
   unsigned int i = 0;
   for (i = 0; i < N_ELEMENTS; ++i)
     {
@@ -311,12 +311,12 @@ START_TEST (test_hierarchy_delete)
   CHECK_U_INT (scew_element_count (element), N_ELEMENTS,
                "Number of children mismatch");
 
-  // Remove all children
+  /* Remove all children */
   scew_element_delete_all (element);
 
   CHECK_U_INT (scew_element_count (element), 0, "Number of children mismatch");
 
-  // Re-add and detach
+  /* Re-add and detach */
   for (i = 0; i < N_ELEMENTS; ++i)
     {
       scew_element *child = scew_element_add (element, NAME);
@@ -331,7 +331,7 @@ START_TEST (test_hierarchy_delete)
 
   CHECK_U_INT (scew_element_count (element), 0, "Number of children mismatch");
 
-  // Re-add
+  /* Re-add */
   for (i = 0; i < N_ELEMENTS; ++i)
     {
       scew_element *child = scew_element_add (element, NAME);
@@ -342,7 +342,7 @@ START_TEST (test_hierarchy_delete)
   CHECK_U_INT (scew_element_count (element), N_ELEMENTS,
                "Number of children mismatch");
 
-  // Delete first child
+  /* Delete first child */
   unsigned int total = N_ELEMENTS;
 
   scew_element_delete_by_name (element, NAME);
@@ -351,7 +351,7 @@ START_TEST (test_hierarchy_delete)
   CHECK_U_INT (scew_element_count (element), total,
                "Number of children mismatch");
 
-  // Delete five next child
+  /* Delete five next child */
   for (i = 0; i < 5; ++i)
     {
       scew_element_delete_by_index (element, i);
@@ -366,7 +366,7 @@ START_TEST (test_hierarchy_delete)
 END_TEST
 
 
-// Search
+/* Search */
 
 START_TEST (test_search)
 {
@@ -395,13 +395,13 @@ START_TEST (test_search)
 
   CHECK_PTR (child, "Unable to find first child");
 
-  // First child should have contents
+  /* First child should have contents */
   if (strcmp (CONTENTS, scew_element_contents (child)) != 0)
     {
       fail ("First child does not have any contents");
     }
 
-  // Obtain the list of all elements
+  /* Obtain the list of all elements */
   scew_list *list = scew_element_list_by_name (root, NAME);
 
   CHECK_PTR (list, "Unabe to find elements list by name");
@@ -411,7 +411,7 @@ START_TEST (test_search)
 
   scew_list_free (list);
 
-  // Redo search and make sure nothing has been freed
+  /* Redo search and make sure nothing has been freed */
   list = scew_element_list_by_name (root, NAME);
 
   CHECK_PTR (list, "Unabe to find elements list by name");
@@ -424,7 +424,7 @@ START_TEST (test_search)
 END_TEST
 
 
-// Comparisson
+/* Comparisson */
 
 START_TEST (test_compare)
 {
@@ -437,7 +437,7 @@ START_TEST (test_compare)
 
   CHECK_PTR (root, "Unable to create element");
 
-  // Create elements
+  /* Create elements */
   unsigned int i = 0;
   for (i = 0; i < N_ELEMENTS; ++i)
     {
@@ -451,7 +451,7 @@ START_TEST (test_compare)
         }
     }
 
-  // Copy
+  /* Copy */
   scew_element *root_copy = scew_element_copy (root);
 
   CHECK_PTR (root_copy, "Unable to copy root element");
@@ -465,14 +465,14 @@ START_TEST (test_compare)
 END_TEST
 
 
-// Suite
+/* Suite */
 
 static Suite*
 element_suite (void)
 {
   Suite *s = suite_create ("SCEW elements");
 
-  // Core test case
+  /* Core test case */
   TCase *tc_core = tcase_create ("Core");
   tcase_add_test (tc_core, test_alloc);
   tcase_add_test (tc_core, test_accessors);

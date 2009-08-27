@@ -3,6 +3,7 @@
  * @brief    SCEW reader buffer related functions
  * @author   Aleix Conchillo Flaque <aleix@member.fsf.org>
  * @date     Tue Aug 25, 2009 02:02
+ * @ingroup  SCEWReader
  *
  * @if copyright
  *

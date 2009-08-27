@@ -37,6 +37,7 @@
 #include "parser.h"
 #include "printer.h"
 #include "reader.h"
+#include "reader_buffer.h"
 #include "reader_file.h"
 #include "str.h"
 #include "tree.h"

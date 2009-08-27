@@ -3,6 +3,7 @@
  * @brief    SCEW printer
  * @author   Aleix Conchillo Flaque <aleix@member.fsf.org>
  * @date     Fri Jan 16, 2009 22:34
+ * @ingroup  SCEWPrinter
  *
  * @if copyright
  *
@@ -26,6 +27,14 @@
  * @endif
  **/
 
+/**
+ * @defgroup SCEWIO Input/Output
+ */
+
+/**
+ * @defgroup SCEWPrinter Printer
+ * @ingroup SCEWIO
+ */
 
 #ifndef PRINTER_H_0901162234
 #define PRINTER_H_0901162234

@@ -8,18 +8,18 @@
 includedir = $(prefix)/include/$(PACKAGE)
 
 include_HEADERS = attribute.h bool.h element.h error.h list.h parser.h \
-                  printer.h scew.h str.h tree.h \
-                  reader.h reader_buffer.h reader_file.h \
-                  writer.h writer_buffer.h writer_file.h
+	printer.h scew.h str.h tree.h \
+	reader.h reader_buffer.h reader_file.h \
+	writer.h writer_buffer.h writer_file.h
 
 noinst_HEADERS = xattribute.h xelement.h xerror.h xparser.h
 
 lib_LTLIBRARIES = libscew.la
 
 libscew_la_SOURCES = attribute.c error.c list.c parser.c printer.c \
-                     element.c element_attribute.c element_compare.c \
-                     element_copy.c element_search.c str.c tree.c \
-                     xattribute.c xerror.c xparser.c \
-                     reader.c reader_buffer.c reader_file.c \
-                     writer.c writer_buffer.c writer_file.c
+	element.c element_attribute.c element_compare.c \
+	element_copy.c element_search.c str.c tree.c \
+	xattribute.c xerror.c xparser.c \
+	reader.c reader_buffer.c reader_file.c \
+	writer.c writer_buffer.c writer_file.c
 libscew_la_LDFLAGS = -version-info 1:0:1

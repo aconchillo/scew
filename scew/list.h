@@ -3,10 +3,12 @@
  * @brief    SCEW general list implementation
  * @author   Aleix Conchillo Flaque <aleix@member.fsf.org>
  * @date     Thu Jul 12, 2007 20:09
+ * @ingroup  SCEWList, SCEWListAlloc, SCEWListAcc, SCEWListMod
+ * @ingroup  SCEWListTrav, SCEWListSearch, SCEWList
  *
  * @if copyright
  *
- * Copyright (C) 2007-2008 Aleix Conchillo Flaque
+ * Copyright (C) 2007-2009 Aleix Conchillo Flaque
  *
  * SCEW is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public

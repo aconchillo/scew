@@ -3,10 +3,11 @@
  * @brief    SCEW reader functions
  * @author   Aleix Conchillo Flaque <aleix@member.fsf.org>
  * @date     Sun Nov 23, 2008 13:51
+ * @ingroup  SCEWReader
  *
  * @if copyright
  *
- * Copyright (C) 2008, 2009 Aleix Conchillo Flaque
+ * Copyright (C) 2008-2009 Aleix Conchillo Flaque
  *
  * SCEW is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
