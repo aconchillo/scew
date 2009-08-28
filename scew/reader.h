@@ -48,7 +48,7 @@ typedef struct scew_reader scew_reader;
 typedef struct
 {
   size_t (*read) (scew_reader *, void *, size_t);
-  scew_bool (*eor) (scew_reader *);
+  scew_bool (*end) (scew_reader *);
   scew_bool (*error) (scew_reader *);
   scew_bool (*close) (scew_reader *);
   void (*free) (scew_reader *);
@@ -63,7 +63,7 @@ extern size_t scew_reader_read (scew_reader *reader,
                                 void *buffer,
                                 size_t byte_no);
 
-extern scew_bool scew_reader_eor (scew_reader *reader);
+extern scew_bool scew_reader_end (scew_reader *reader);
 
 extern scew_bool scew_reader_error (scew_reader *reader);
 

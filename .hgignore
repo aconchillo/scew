@@ -33,3 +33,4 @@ tests/check_attribute
 tests/check_element
 tests/check_list
 tests/check_tree
+tests/check_reader_buffer

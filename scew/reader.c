@@ -77,13 +77,13 @@ scew_reader_read (scew_reader *reader, void *buffer, size_t byte_no)
 }
 
 scew_bool
-scew_reader_eor (scew_reader *reader)
+scew_reader_end (scew_reader *reader)
 {
   assert (reader != NULL);
   assert (reader->hooks != NULL);
-  assert (reader->hooks->eor != NULL);
+  assert (reader->hooks->end != NULL);
 
-  return reader->hooks->eor (reader);
+  return reader->hooks->end (reader);
 }
 
 scew_bool

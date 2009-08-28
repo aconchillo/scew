@@ -54,7 +54,7 @@ typedef struct scew_writer scew_writer;
 typedef struct
 {
   size_t (*write) (scew_writer *, void const *, size_t);
-  scew_bool (*eow) (scew_writer *);
+  scew_bool (*end) (scew_writer *);
   scew_bool (*error) (scew_writer *);
   scew_bool (*close) (scew_writer *);
   void (*free) (scew_writer *);
@@ -76,7 +76,7 @@ extern size_t scew_writer_write (scew_writer *writer,
                                  void const *buffer,
                                  size_t byte_no);
 
-extern scew_bool scew_writer_eow (scew_writer *writer);
+extern scew_bool scew_writer_end (scew_writer *writer);
 
 extern scew_bool scew_writer_error (scew_writer *writer);
 

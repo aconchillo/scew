@@ -6,7 +6,7 @@
  *
  * @if copyright
  *
- * Copyright (C) 2002-2008 Aleix Conchillo Flaque
+ * Copyright (C) 2002-2009 Aleix Conchillo Flaque
  *
  * SCEW is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -205,7 +205,7 @@ parse_buffer_ (scew_parser *parser, scew_reader *reader)
       else
         {
           /* Parse read data. */
-          done = scew_reader_eor (reader);
+          done = scew_reader_end (reader);
           if (!XML_Parse (parser->parser, buffer, len, done))
             {
               scew_error_set_last_error_ (scew_error_expat);

@@ -41,7 +41,7 @@ typedef struct
 static size_t file_write_ (scew_writer *writer,
                            void const *buffer,
                            size_t byte_no);
-static scew_bool file_eow_ (scew_writer *reader);
+static scew_bool file_end_ (scew_writer *reader);
 static scew_bool file_error_ (scew_writer *reader);
 static scew_bool file_close_ (scew_writer *writer);
 static void file_free_ (scew_writer *writer);
@@ -49,7 +49,7 @@ static void file_free_ (scew_writer *writer);
 static scew_writer_hooks const file_hooks_ =
   {
     file_write_,
-    file_eow_,
+    file_end_,
     file_error_,
     file_close_,
     file_free_
@@ -120,7 +120,7 @@ file_write_ (scew_writer *writer, void const *buffer, size_t byte_no)
 }
 
 scew_bool
-file_eow_ (scew_writer *writer)
+file_end_ (scew_writer *writer)
 {
   scew_writer_fp *fp_writer = NULL;
 

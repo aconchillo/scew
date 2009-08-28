@@ -46,7 +46,7 @@ typedef struct
 static size_t buffer_write_ (scew_writer *writer,
                              void const *buffer,
                              size_t byte_no);
-static scew_bool buffer_eow_ (scew_writer *writer);
+static scew_bool buffer_end_ (scew_writer *writer);
 static scew_bool buffer_error_ (scew_writer *writer);
 static scew_bool buffer_close_ (scew_writer *writer);
 static void buffer_free_ (scew_writer *writer);
@@ -54,7 +54,7 @@ static void buffer_free_ (scew_writer *writer);
 static scew_writer_hooks const buffer_hooks_ =
   {
     buffer_write_,
-    buffer_eow_,
+    buffer_end_,
     buffer_error_,
     buffer_close_,
     buffer_free_
@@ -121,9 +121,13 @@ buffer_write_ (scew_writer *writer, void const *buffer, size_t byte_no)
 }
 
 scew_bool
-buffer_eow_ (scew_writer *writer)
+buffer_end_ (scew_writer *writer)
 {
-  scew_writer_buffer *buf_writer = scew_writer_data (writer);
+  scew_writer_buffer *buf_writer = NULL;
+
+  assert (writer != NULL);
+
+  buf_writer = scew_writer_data (writer);
 
   return (buf_writer->current >= buf_writer->size);
 }
@@ -137,13 +141,26 @@ buffer_error_ (scew_writer *writer)
 scew_bool
 buffer_close_ (scew_writer *writer)
 {
+  scew_writer_buffer *buf_writer = NULL;
+
+  assert (writer != NULL);
+
+  buf_writer = scew_writer_data (writer);
+
+  /* This will mark it as end of writer. */
+  buf_writer->current = buf_writer->size;
+
   return SCEW_TRUE;
 }
 
 void
 buffer_free_ (scew_writer *writer)
 {
-  scew_writer_buffer *buf_writer = scew_writer_data (writer);
+  scew_writer_buffer *buf_writer = NULL;
+
+  assert (writer != NULL);
+
+  buf_writer = scew_writer_data (writer);
 
   buffer_close_ (writer);
 

@@ -41,7 +41,7 @@ typedef struct
 } scew_reader_fp;
 
 static size_t file_read_ (scew_reader *reader, void *buffer, size_t byte_no);
-static scew_bool file_eor_ (scew_reader *reader);
+static scew_bool file_end_ (scew_reader *reader);
 static scew_bool file_error_ (scew_reader *reader);
 static scew_bool file_close_ (scew_reader *reader);
 static void file_free_ (scew_reader *reader);
@@ -49,7 +49,7 @@ static void file_free_ (scew_reader *reader);
 static scew_reader_hooks const file_hooks_ =
   {
     file_read_,
-    file_eor_,
+    file_end_,
     file_error_,
     file_close_,
     file_free_
@@ -120,7 +120,7 @@ file_read_ (scew_reader *reader, void *buffer, size_t byte_no)
 }
 
 scew_bool
-file_eor_ (scew_reader *reader)
+file_end_ (scew_reader *reader)
 {
   scew_reader_fp *fp_reader = NULL;
 

@@ -134,6 +134,15 @@ buffer_error_ (scew_reader *reader)
 scew_bool
 buffer_close_ (scew_reader *reader)
 {
+  scew_reader_buffer *buf_reader = NULL;
+
+  assert (reader != NULL);
+
+  buf_reader = scew_reader_data (reader);
+
+  /* This will mark it as EOR. */
+  buf_reader->current = buf_reader->size;
+
   return SCEW_TRUE;
 }
 

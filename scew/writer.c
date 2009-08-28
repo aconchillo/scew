@@ -75,13 +75,13 @@ scew_writer_write (scew_writer *writer, void const *buffer, size_t byte_no)
 }
 
 scew_bool
-scew_writer_eow (scew_writer *writer)
+scew_writer_end (scew_writer *writer)
 {
   assert (writer != NULL);
   assert (writer->hooks != NULL);
-  assert (writer->hooks->eow != NULL);
+  assert (writer->hooks->end != NULL);
 
-  return writer->hooks->eow (writer);
+  return writer->hooks->end (writer);
 }
 
 scew_bool
