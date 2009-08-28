@@ -79,7 +79,7 @@ scew_reader_buffer_create (XML_Char const *buffer, size_t size)
 
       /* Create reader */
       reader = scew_reader_create (&buffer_hooks_, buf_reader);
-      if (reader != NULL)
+      if (reader == NULL)
         {
           free (buf_reader);
         }
