@@ -50,6 +50,77 @@ START_TEST (test_alloc)
 }
 END_TEST
 
+/* Read */
+
+START_TEST (test_read)
+{
+  enum { MAX_BUFFER_SIZE = 255 };
+
+  static XML_Char const *BUFFER = "This is a buffer for the reader";
+
+  XML_Char read_buffer[MAX_BUFFER_SIZE] = "";
+
+  scew_reader *reader = scew_reader_buffer_create (BUFFER,
+                                                   scew_strlen (BUFFER));
+
+  CHECK_PTR (reader, "Unable to create buffer reader");
+
+  unsigned int i = 0;
+  while (i < scew_strlen (BUFFER))
+    {
+      scew_reader_read (reader, read_buffer + i, 1);
+      i += 1;
+    }
+  read_buffer[i] = '\0';
+
+  CHECK_STR (read_buffer, BUFFER, "Buffers do not match");
+
+  CHECK_BOOL (scew_reader_end (reader), SCEW_TRUE,
+              "Reader should be at the end");
+
+  scew_reader_free (reader);
+
+  /* Try to read full buffer */
+  reader = scew_reader_buffer_create (BUFFER, scew_strlen (BUFFER) + 1);
+
+  scew_reader_read (reader, read_buffer, scew_strlen (BUFFER) + 1);
+
+  CHECK_STR (read_buffer, BUFFER, "Buffers do not match");
+
+  CHECK_BOOL (scew_reader_end (reader), SCEW_TRUE,
+              "Reader should be at the end");
+
+  scew_reader_free (reader);
+}
+END_TEST
+
+/* Miscellaneous */
+
+START_TEST (test_misc)
+{
+  static XML_Char const *BUFFER = "This is a buffer for the reader";
+
+  scew_reader *reader = scew_reader_buffer_create (BUFFER,
+                                                   scew_strlen (BUFFER));
+
+  CHECK_PTR (reader, "Unable to create buffer reader");
+
+  CHECK_BOOL (scew_reader_end (reader), SCEW_FALSE,
+              "Reader should be at the beginning");
+
+  CHECK_BOOL (scew_reader_error (reader), SCEW_FALSE,
+              "Reader should have no error (nothing done yet)");
+
+  /* Close reader */
+  scew_reader_close (reader);
+
+  CHECK_BOOL (scew_reader_end (reader), SCEW_TRUE,
+              "Reader is closed, thus at the end");
+
+  scew_reader_free (reader);
+}
+END_TEST
+
 
 /* Suite */
 
@@ -61,6 +132,8 @@ reader_buffer_suite (void)
   /* Core test case */
   TCase *tc_core = tcase_create ("Core");
   tcase_add_test (tc_core, test_alloc);
+  tcase_add_test (tc_core, test_read);
+  tcase_add_test (tc_core, test_misc);
   suite_add_tcase (s, tc_core);
 
   return s;
