@@ -68,7 +68,8 @@ START_TEST (test_read)
   unsigned int i = 0;
   while (i < scew_strlen (BUFFER))
     {
-      scew_reader_read (reader, read_buffer + i, 1);
+      CHECK_U_INT (scew_reader_read (reader, read_buffer + i, 1), 1,
+                   "Invalid number of read bytes");
       i += 1;
     }
   read_buffer[i] = '\0';

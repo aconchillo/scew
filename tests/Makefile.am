@@ -12,10 +12,10 @@ if CHECK_TESTS
 COMMON = main.c test.h
 
 TESTS = check_attribute check_element check_list check_tree \
-	check_reader_buffer
+	check_reader_buffer check_writer_buffer
 
 check_PROGRAMS = check_attribute check_element check_list check_tree \
-	check_reader_buffer
+	check_reader_buffer check_writer_buffer
 
 # Attributes
 check_attribute_SOURCES = $(COMMON) check_attribute.c \
@@ -46,6 +46,12 @@ check_reader_buffer_SOURCES = $(COMMON) check_reader_buffer.c \
 	$(top_builddir)/scew/reader.h $(top_builddir)/scew/reader_buffer.h
 check_reader_buffer_CFLAGS = @CHECK_CFLAGS@
 check_reader_buffer_LDADD = @CHECK_LIBS@ $(top_builddir)/scew/libscew.la
+
+# Buffer writer
+check_writer_buffer_SOURCES = $(COMMON) check_writer_buffer.c \
+	$(top_builddir)/scew/writer.h $(top_builddir)/scew/writer_buffer.h
+check_writer_buffer_CFLAGS = @CHECK_CFLAGS@
+check_writer_buffer_LDADD = @CHECK_LIBS@ $(top_builddir)/scew/libscew.la
 
 else
 
