@@ -6,7 +6,7 @@
  *
  * @if copyright
  *
- * Copyright (C) 2003-2008 Aleix Conchillo Flaque
+ * Copyright (C) 2003-2009 Aleix Conchillo Flaque
  *
  * SCEW is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -80,7 +80,7 @@ scew_error_last_error_ (void)
 
 #include <windows.h>
 
-static DWORD last_error_key = TLS_OUT_OF_INDEXES;
+static DWORD last_error_key_ = TLS_OUT_OF_INDEXES;
 
 void
 scew_error_set_last_error_ (scew_error code)
@@ -110,19 +110,19 @@ scew_error_last_error_ (void)
 
 #include <pthread.h>
 
-static pthread_key_t key_error;
-static pthread_once_t key_once = PTHREAD_ONCE_INIT;
+static pthread_key_t key_error_;
+static pthread_once_t key_once_ = PTHREAD_ONCE_INIT;
 
 static void
 create_keys_ (void)
 {
   scew_error* code = NULL;
 
-  pthread_key_create (&key_error, free);
+  pthread_key_create (&key_error_, free);
 
-  code = (scew_error*) malloc (sizeof (scew_error));
+  code = (scew_error *) malloc (sizeof (scew_error));
   *code = scew_error_none;
-  pthread_setspecific (key_error, code);
+  pthread_setspecific (key_error_, code);
 }
 
 void
@@ -132,13 +132,13 @@ scew_error_set_last_error_ (scew_error code)
   scew_error *new_code = NULL;
 
   /* Initialize error code per thread. */
-  pthread_once (&key_once, create_keys_);
+  pthread_once (&key_once_, create_keys_);
 
-  old_code = (scew_error*) pthread_getspecific (key_error);
-  new_code = (scew_error*) malloc (sizeof(scew_error));
+  old_code = (scew_error *) pthread_getspecific (key_error_);
+  new_code = (scew_error *) malloc (sizeof (scew_error));
   *new_code = code;
   free (old_code);
-  pthread_setspecific (key_error, new_code);
+  pthread_setspecific (key_error_, new_code);
 }
 
 scew_error
@@ -147,9 +147,9 @@ scew_error_last_error_ (void)
   scew_error *code = NULL;
 
   /* Initialize error code per thread. */
-  pthread_once (&key_once, create_keys_);
+  pthread_once (&key_once_, create_keys_);
 
-  code = (scew_error*) pthread_getspecific (key_error);
+  code = (scew_error*) pthread_getspecific (key_error_);
   if (code == NULL)
     {
       return scew_error_none;
