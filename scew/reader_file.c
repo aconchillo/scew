@@ -38,6 +38,7 @@
 typedef struct
 {
   FILE *file;
+  scew_bool closed;
 } scew_reader_fp;
 
 static size_t file_read_ (scew_reader *reader, void *buffer, size_t byte_no);
@@ -89,10 +90,11 @@ scew_reader_fp_create (FILE *file)
   if (fp_reader != NULL)
     {
       fp_reader->file = file;
+      fp_reader->closed = SCEW_FALSE;
 
       /* Create reader */
       reader = scew_reader_create (&file_hooks_, fp_reader);
-      if (reader == NULL)
+      if (NULL == reader)
         {
           free (fp_reader);
         }
@@ -122,13 +124,24 @@ file_read_ (scew_reader *reader, void *buffer, size_t byte_no)
 scew_bool
 file_end_ (scew_reader *reader)
 {
+  int end = 0;
+  scew_bool closed = SCEW_FALSE;
   scew_reader_fp *fp_reader = NULL;
 
   assert (reader != NULL);
 
   fp_reader = scew_reader_data (reader);
 
-  return (feof (fp_reader->file) != 0);
+  /* If file is already closed, return true as well. */
+  closed = fp_reader->closed;
+  if (!closed)
+    {
+      /* Check end of file. */
+      end = feof (fp_reader->file);
+      closed = ((-1 == end) || (end != 0)) ? SCEW_TRUE : SCEW_FALSE;
+    }
+
+  return closed;
 }
 
 scew_bool
@@ -153,15 +166,19 @@ file_close_ (scew_reader *reader)
 
   fp_reader = scew_reader_data (reader);
 
-  /* Do not close standard input stream. */
-  if (stdin == fp_reader->file)
+  /* Do not close already closed file or standard input stream. */
+  if (fp_reader->closed || (stdin == fp_reader->file))
     {
-      return SCEW_TRUE;
+      fp_reader->closed = SCEW_TRUE;
+    }
+  else
+    {
+      /* Set closed flag if we are actually able to close it. */
+      status = fclose (fp_reader->file);
+      fp_reader->closed = (0 == status);
     }
 
-  status = fclose (fp_reader->file);
-
-  return (status == 0);
+  return fp_reader->closed;
 }
 
 void

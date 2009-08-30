@@ -159,14 +159,14 @@ expat_xmldecl_handler_ (void *data,
 {
   scew_parser *parser = (scew_parser *) data;
 
-  if (parser == NULL)
+  if (NULL == parser)
     {
       stop_expat_parsing_ (parser, scew_error_internal);
       return;
     }
 
   parser->tree = create_tree_ (parser);
-  if (parser->tree == NULL)
+  if (NULL == parser->tree)
     {
       stop_expat_parsing_ (parser, scew_error_no_memory);
       return;
@@ -197,7 +197,7 @@ expat_start_handler_ (void *data,
   scew_element *element = NULL;
   stack_element *stack = NULL;
 
-  if (parser == NULL)
+  if (NULL == parser)
     {
       stop_expat_parsing_ (parser, scew_error_internal);
       return;
@@ -205,7 +205,7 @@ expat_start_handler_ (void *data,
 
   /* Create element. */
   element = create_element_ (name, attrs);
-  if (element == NULL)
+  if (NULL == element)
     {
       stop_expat_parsing_ (parser, scew_error_no_memory);
       return;
@@ -219,7 +219,7 @@ expat_start_handler_ (void *data,
 
   /* Push element onto the stack. */
   stack = parser_stack_push_ (parser, element);
-  if (stack == NULL)
+  if (NULL == stack)
     {
       stop_expat_parsing_ (parser, scew_error_no_memory);
       return;
@@ -235,7 +235,7 @@ expat_end_handler_ (void *data, XML_Char const *elem)
   scew_element *current = parser->current;
   XML_Char const *contents = NULL;
 
-  if ((parser == NULL) || (current == NULL))
+  if ((NULL == parser) || (NULL == current))
     {
       stop_expat_parsing_ (parser, scew_error_internal);
       return;
@@ -267,7 +267,7 @@ expat_end_handler_ (void *data, XML_Char const *elem)
   parser->current = parser_stack_pop_ (parser);
 
   /* If there are no more elements (root node) ... */
-  if (parser->current == NULL)
+  if (NULL == parser->current)
     {
       /* if (parser->reader->is_stream ()) */
       /*   { */
@@ -280,10 +280,10 @@ expat_end_handler_ (void *data, XML_Char const *elem)
       /*   { */
       /* ... we create the XML document tree. If we need to create the
          tree here it means no XML header was found. */
-      parser->tree = (parser->tree == NULL)
+      parser->tree = (NULL == parser->tree)
         ? create_tree_ (parser)
         : parser->tree;
-      if (parser->tree == NULL)
+      if (NULL == parser->tree)
         {
           stop_expat_parsing_ (parser, scew_error_no_memory);
           return;
@@ -303,7 +303,7 @@ expat_char_handler_ (void *data, XML_Char const *str, int len)
   unsigned int total_old = 0;
   unsigned int total = 0;
 
-  if ((parser == NULL) || (current == NULL))
+  if ((NULL == parser) || (NULL == current))
     {
       stop_expat_parsing_ (parser, scew_error_internal);
       return;
@@ -357,7 +357,7 @@ create_tree_ (scew_parser *parser)
 {
   scew_tree *tree = parser->tree;
 
-  if (tree == NULL)
+  if (NULL == tree)
     {
       tree = scew_tree_create ();
     }
@@ -376,7 +376,7 @@ create_element_ (XML_Char const *name, XML_Char const **attrs)
       scew_attribute *attr = scew_element_add_attribute_pair (element,
                                                               attrs[i],
                                                               attrs[i + 1]);
-      if (attr == NULL)
+      if (NULL == attr)
         {
           scew_element_free (element);
           element = NULL;

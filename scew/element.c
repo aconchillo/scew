@@ -202,7 +202,7 @@ scew_element_add (scew_element *element, XML_Char const *name)
       add_elem = scew_element_add_element (element, new_elem);
 
       /* Delete element if it can not be added */
-      if (add_elem == NULL)
+      if (NULL == add_elem)
         {
           scew_element_free (new_elem);
         }
@@ -245,7 +245,7 @@ scew_element_add_pair (scew_element *element,
        * Delete element if unable to add contents or new element can
        * not be added.
        */
-      if ((add_contents == NULL) || (NULL == add_elem))
+      if ((NULL == add_contents) || (NULL == add_elem))
         {
           scew_element_free (new_elem);
         }
@@ -271,7 +271,7 @@ scew_element_add_element (scew_element *element, scew_element *child)
 
   if (item != NULL)
     {
-      if (element->children == NULL)
+      if (NULL == element->children)
         {
           element->children = item;
         }
@@ -367,7 +367,7 @@ scew_element_detach (scew_element *element)
                                                 element->myself);
 
       --parent->n_children;
-      if (parent->n_children == 0)
+      if (0 == parent->n_children)
         {
           parent->children = NULL;
           parent->last_child = NULL;

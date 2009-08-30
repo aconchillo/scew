@@ -55,7 +55,7 @@ scew_element_by_name (scew_element const *element, XML_Char const *name)
       item = scew_list_find_custom (element->children, name, cmp_name_);
     }
 
-  return (item == NULL) ? NULL : (scew_element *) scew_list_data (item);
+  return (NULL == item) ? NULL : (scew_element *) scew_list_data (item);
 }
 
 scew_element*
@@ -68,7 +68,7 @@ scew_element_by_index (scew_element const *element, unsigned int idx)
 
   item = scew_list_index (element->children, idx);
 
-  return (item == NULL) ? NULL : (scew_element *) scew_list_data (item);
+  return (NULL == item) ? NULL : (scew_element *) scew_list_data (item);
 }
 
 scew_list*
@@ -88,7 +88,7 @@ scew_element_list_by_name (scew_element const *element, XML_Char const *name)
       if (item != NULL)
         {
           last = scew_list_append (last, item);
-          if (list == NULL)
+          if (NULL == list)
             {
               list = last;
             }

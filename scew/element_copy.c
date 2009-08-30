@@ -53,7 +53,7 @@ scew_element_copy (scew_element const *element)
   if (new_elem != NULL)
     {
       scew_bool copied =
-        ((element->contents == NULL)
+        ((NULL == element->contents)
          || (scew_element_set_contents (new_elem, element->contents) != NULL));
 
       copied = copied

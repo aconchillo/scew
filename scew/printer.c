@@ -416,7 +416,7 @@ print_element_start_ (scew_printer *printer,
 
   *closed = SCEW_FALSE;
   list = scew_element_children (element);
-  if ((contents == NULL) && (list == NULL))
+  if ((NULL == contents) && (NULL == list))
     {
       result = result && scew_writer_write (writer, END_2, 2);
       result = result && print_eol_ (printer);
@@ -425,7 +425,7 @@ print_element_start_ (scew_printer *printer,
   else
     {
       result = result && scew_writer_write (writer, END_1, 1);
-      if (contents == NULL)
+      if (NULL == contents)
         {
 	  result = result && print_eol_ (printer);
         }

@@ -75,7 +75,7 @@ scew_element_attribute_by_name (scew_element const *element,
       item = scew_list_find_custom (element->attributes, name, cmp_attr_name_);
     }
 
-  return (item == NULL) ? NULL : (scew_attribute *) scew_list_data (item);
+  return (NULL == item) ? NULL : (scew_attribute *) scew_list_data (item);
 }
 
 scew_attribute*
@@ -91,7 +91,7 @@ scew_element_attribute_by_index (scew_element const *element, unsigned int idx)
       item = scew_list_index (element->attributes, idx);
     }
 
-  return (item == NULL) ? NULL : (scew_attribute *) scew_list_data (item);
+  return (NULL == item) ? NULL : (scew_attribute *) scew_list_data (item);
 }
 
 scew_attribute*
@@ -109,7 +109,7 @@ scew_element_add_attribute (scew_element *element, scew_attribute *attribute)
    * If attribute is not already in the element and is not part of
    * another element, append it to its attributes.
    */
-  if ((old_attribute == NULL) && (scew_attribute_parent (attribute) == NULL))
+  if ((NULL == old_attribute) && (scew_attribute_parent (attribute) == NULL))
     {
       scew_list *item = NULL;
 
@@ -118,7 +118,7 @@ scew_element_add_attribute (scew_element *element, scew_attribute *attribute)
       if (item != NULL)
         {
           /* Initialise attributes list. */
-          if (element->attributes == NULL)
+          if (NULL == element->attributes)
             {
               element->attributes = item;
             }
@@ -159,7 +159,7 @@ scew_element_add_attribute_pair (scew_element *element,
       scew_attribute *new_attribute = NULL;
 
       new_attribute = scew_element_add_attribute (element, attribute);
-      if (new_attribute == NULL)
+      if (NULL == new_attribute)
         {
           /* We need to free the created attribute as it could not be
              added. */

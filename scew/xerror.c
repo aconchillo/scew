@@ -85,22 +85,22 @@ static DWORD last_error_key_ = TLS_OUT_OF_INDEXES;
 void
 scew_error_set_last_error_ (scew_error code)
 {
-  if (last_error_key == TLS_OUT_OF_INDEXES)
+  if (TLS_OUT_OF_INDEXES == last_error_key_)
     {
-      last_error_key = TlsAlloc ();
+      last_error_key_ = TlsAlloc ();
     }
-  TlsSetValue (last_error_key, (LPVOID) code);
+  TlsSetValue (last_error_key_, (LPVOID) code);
 }
 
 scew_error
 scew_error_last_error_ (void)
 {
-  if (last_error_key == TLS_OUT_OF_INDEXES)
+  if (TLS_OUT_OF_INDEXES == last_error_key_)
     {
-      last_error_key = TlsAlloc ();
-      TlsSetValue (last_error_key, (LPVOID) scew_error_none);
+      last_error_key_ = TlsAlloc ();
+      TlsSetValue (last_error_key_, (LPVOID) scew_error_none);
     }
-  return (scew_error) TlsGetValue (last_error_key);
+  return (scew_error) TlsGetValue (last_error_key_);
 }
 
 #else /* _MSC_VER */
@@ -150,7 +150,7 @@ scew_error_last_error_ (void)
   pthread_once (&key_once_, create_keys_);
 
   code = (scew_error*) pthread_getspecific (key_error_);
-  if (code == NULL)
+  if (NULL == code)
     {
       return scew_error_none;
     }

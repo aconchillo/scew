@@ -92,7 +92,7 @@ scew_writer_fp_create (FILE *file)
 
       /* Create writer */
       writer = scew_writer_create (&file_hooks_, fp_writer);
-      if (writer == NULL)
+      if (NULL == writer)
         {
           free (fp_writer);
         }
@@ -161,7 +161,7 @@ file_close_ (scew_writer *writer)
 
   status = fclose (fp_writer->file);
 
-  return (status == 0);
+  return (0 == status);
 }
 
 void

@@ -83,7 +83,7 @@ scew_writer_buffer_create (XML_Char *buffer, size_t size)
 
       /* Create writer */
       writer = scew_writer_create (&buffer_hooks_, buf_writer);
-      if (writer == NULL)
+      if (NULL == writer)
         {
           free (buf_writer);
         }

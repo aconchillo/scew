@@ -51,7 +51,7 @@ scew_parser_create (void)
 {
   scew_parser *parser = calloc (1, sizeof (scew_parser));
 
-  if (parser == NULL)
+  if (NULL == parser)
     {
       scew_error_set_last_error_ (scew_error_no_memory);
       return NULL;
