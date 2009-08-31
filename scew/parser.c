@@ -40,6 +40,8 @@
 
 /* Private */
 
+static scew_parser* parser_create_ (scew_bool namespace, XML_Char separator);
+
 static scew_bool parse_buffer_ (scew_parser *parser, scew_reader *reader);
 
 
@@ -49,27 +51,13 @@ static scew_bool parse_buffer_ (scew_parser *parser, scew_reader *reader);
 scew_parser*
 scew_parser_create (void)
 {
-  scew_parser *parser = calloc (1, sizeof (scew_parser));
+  return parser_create_ (SCEW_FALSE, 0);
+}
 
-  if (NULL == parser)
-    {
-      scew_error_set_last_error_ (scew_error_no_memory);
-      return NULL;
-    }
-
-  if (!scew_parser_expat_init_ (parser))
-    {
-      scew_parser_free (parser);
-      return NULL;
-    }
-
-  /* Ignore white spaces by default. */
-  parser->ignore_whitespaces = SCEW_TRUE;
-
-  /* No load hook by default. */
-  parser->load_hook = NULL;
-
-  return parser;
+scew_parser*
+scew_parser_namespace_create (XML_Char separator)
+{
+  return parser_create_ (SCEW_TRUE, separator);
 }
 
 void
@@ -180,6 +168,32 @@ scew_parser_ignore_whitespaces (scew_parser *parser, scew_bool ignore)
 
 
 /* Private */
+
+scew_parser*
+parser_create_ (scew_bool namespace, XML_Char separator)
+{
+  scew_parser *parser = calloc (1, sizeof (scew_parser));
+
+  if (NULL == parser)
+    {
+      scew_error_set_last_error_ (scew_error_no_memory);
+      return NULL;
+    }
+
+  if (!scew_parser_expat_init_ (parser, namespace, separator))
+    {
+      scew_parser_free (parser);
+      return NULL;
+    }
+
+  /* Ignore white spaces by default. */
+  parser->ignore_whitespaces = SCEW_TRUE;
+
+  /* No load hook by default. */
+  parser->load_hook = NULL;
+
+  return parser;
+}
 
 scew_bool
 parse_buffer_ (scew_parser *parser, scew_reader *reader)

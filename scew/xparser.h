@@ -53,7 +53,9 @@ struct scew_parser
 
 /* Functions */
 
-extern scew_bool scew_parser_expat_init_ (scew_parser *parser);
+extern scew_bool scew_parser_expat_init_ (scew_parser *parser,
+                                          scew_bool namespace,
+                                          XML_Char separator);
 
 extern void scew_parser_expat_install_handlers_ (scew_parser *parser);
 

@@ -7,7 +7,7 @@
  *
  * @if copyright
  *
- * Copyright (C) 2002-2008 Aleix Conchillo Flaque
+ * Copyright (C) 2002-2009 Aleix Conchillo Flaque
  *
  * SCEW is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -75,11 +75,20 @@ typedef scew_bool (*scew_parser_load_hook) (scew_parser *parser,
  */
 
 /**
- * Creates a new parser. The parser is needed to load XML documents.
+ * Creates a new parser. A parser is necessary to load XML documents.
  *
  * @ingroup SCEWParserAlloc
  */
 extern scew_parser* scew_parser_create (void);
+
+/**
+ * Creates a new parser with namespaces support. The given @a
+ * separator will be used to separate namespaces and identifiers. A
+ * parser is necessary to load XML documents.
+ *
+ * @ingroup SCEWParserAlloc
+ */
+extern scew_parser* scew_parser_namespace_create (XML_Char separator);
 
 /**
  * Frees a parser memory structure. This function will not free the

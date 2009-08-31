@@ -100,13 +100,17 @@ static scew_element* parser_stack_pop_ (scew_parser *parser);
 /* Protected */
 
 scew_bool
-scew_parser_expat_init_ (scew_parser *parser)
+scew_parser_expat_init_ (scew_parser *parser,
+                         scew_bool namespace,
+                         XML_Char separator)
 {
   scew_bool result = SCEW_TRUE;
 
   assert (parser != NULL);
 
-  parser->parser = XML_ParserCreate (NULL);
+  parser->parser = namespace
+    ? XML_ParserCreateNS (NULL, separator)
+    : XML_ParserCreate (NULL);
 
   result = (parser->parser != NULL);
 
