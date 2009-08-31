@@ -457,13 +457,17 @@ scew_element_attribute_by_index (scew_element const *element,
  * element's attributes (ownership is lost), so it should not be
  * freed, and it should not be part of another attribute element list.
  *
+ * Also note that, if the attribute already existed, the old value
+ * will be overwritten and the given attribute will not become part of
+ * the element's attribute list (only the old value is updated).
+ *
  * @pre element != NULL
  * @pre attribute != NULL
  *
  * @see SCEWAttribute
  *
  * @return the new attribute added to the element, or NULL if the
- * attribute already existed or could not be added.
+ * attribute could not be added or updated.
  *
  * @ingroup SCEWElementAttr
  */
@@ -473,6 +477,10 @@ extern scew_attribute* scew_element_add_attribute (scew_element *element,
 /**
  * Creates and adds a new attribute to the given @a element. An
  * attribute is formed by a pair (name, value).
+ *
+ * If the attribute already existed, the old value will be
+ * overwritten, thus the new attribute will not be created (only the
+ * old value is updated).
  *
  * @pre element != NULL
  * @pre name != NULL

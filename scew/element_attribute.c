@@ -41,6 +41,12 @@
 
 static scew_bool cmp_attr_name_ (void const *attribute, void const *name);
 
+static scew_attribute* add_new_attribute_ (scew_element *element,
+                                           scew_attribute *attribute);
+
+static scew_attribute* update_attribute_ (scew_element *element,
+                                          scew_attribute *attribute,
+                                          XML_Char const *value);
 
 
 /* Public */
@@ -98,81 +104,71 @@ scew_element_attribute_by_index (scew_element const *element,
 scew_attribute*
 scew_element_add_attribute (scew_element *element, scew_attribute *attribute)
 {
-  scew_attribute *old_attribute = NULL;
+  scew_attribute *new_attribute = NULL;
 
   assert (element != NULL);
   assert (attribute != NULL);
 
-  old_attribute =
-    scew_element_attribute_by_name (element, scew_attribute_name (attribute));
-
-  /**
-   * If attribute is not already in the element and is not part of
-   * another element, append it to its attributes.
-   */
-  if ((NULL == old_attribute) && (scew_attribute_parent (attribute) == NULL))
+  if (scew_attribute_parent (attribute) == NULL)
     {
-      scew_list *item = NULL;
+      XML_Char const *name = scew_attribute_name (attribute);
+      XML_Char const *value = scew_attribute_value (attribute);
 
-      item = scew_list_append (element->last_attribute, attribute);
+      /* Try to find an existent attribute. */
+      scew_attribute *old_attribute = scew_element_attribute_by_name (element,
+                                                                      name);
 
-      if (item != NULL)
-        {
-          /* Initialise attributes list. */
-          if (NULL == element->attributes)
-            {
-              element->attributes = item;
-            }
-
-          scew_attribute_set_parent_ (attribute, element);
-
-          /* Update performance variables. */
-          element->last_attribute = item;
-          element->n_attributes += 1;
-
-          /* Update the return value. */
-          old_attribute = attribute;
-        }
-      else
-        {
-          scew_error_set_last_error_ (scew_error_no_memory);
-        }
+      /* Add new attribute or update existent one. */
+      new_attribute = (NULL == old_attribute)
+        ? add_new_attribute_ (element, attribute)
+        : update_attribute_ (element, old_attribute, value);
     }
 
-  return old_attribute;
+  return new_attribute;
 }
+
 
 scew_attribute*
 scew_element_add_attribute_pair (scew_element *element,
                                  XML_Char const *name,
                                  XML_Char const *value)
 {
-  scew_attribute *attribute = NULL;
+  scew_attribute *old_attribute = NULL;
+  scew_attribute *new_attribute = NULL;
 
   assert (element != NULL);
   assert (name != NULL);
   assert (value != NULL);
 
-  attribute = scew_attribute_create (name, value);
+  /* Try to find an existent attribute. */
+  old_attribute = scew_element_attribute_by_name (element, name);
 
-  if (attribute != NULL)
+  if (NULL == old_attribute)
     {
-      scew_attribute *new_attribute = NULL;
+      /**
+       * If the attribute does not exist, create a new one and try to
+       * add it.
+       */
+      scew_attribute *attribute = scew_attribute_create (name, value);
 
-      new_attribute = scew_element_add_attribute (element, attribute);
-      if (NULL == new_attribute)
+      if (attribute != NULL)
         {
-          /* We need to free the created attribute as it could not be
-             added. */
-          scew_attribute_free (attribute);
+          new_attribute = add_new_attribute_ (element, attribute);
+
+          if (NULL == new_attribute)
+            {
+              /* The new attribute could not be added, free it. */
+              scew_attribute_free (attribute);
+            }
         }
     }
   else
     {
-      scew_error_set_last_error_ (scew_error_no_memory);
+      /* If the attribtue already exists we update its value. */
+      new_attribute = update_attribute_ (element, old_attribute, value);
     }
 
-  return attribute;
+  return new_attribute;
 }
 
 void
@@ -257,4 +253,56 @@ cmp_attr_name_ (void const *attribute, void const *name)
 {
   return (scew_strcmp (scew_attribute_name ((scew_attribute *) attribute),
                        (XML_Char *) name) == 0);
+}
+
+scew_attribute*
+add_new_attribute_ (scew_element *element, scew_attribute *attribute)
+{
+  scew_list *item = NULL;
+  scew_attribute *new_attribute = NULL;
+
+  assert (element != NULL);
+  assert (attribute != NULL);
+
+  item = scew_list_append (element->last_attribute, attribute);
+
+  if (item != NULL)
+    {
+      /* Initialise attributes list. */
+      if (NULL == element->attributes)
+        {
+          element->attributes = item;
+        }
+
+      scew_attribute_set_parent_ (attribute, element);
+
+      /* Update performance variables. */
+      element->last_attribute = item;
+      element->n_attributes += 1;
+
+      /* Update the return value. */
+      new_attribute = attribute;
+    }
+  else
+    {
+      scew_error_set_last_error_ (scew_error_no_memory);
+    }
+
+  return new_attribute;
+}
+
+scew_attribute*
+update_attribute_ (scew_element *element,
+                   scew_attribute *attribute,
+                   XML_Char const *value)
+{
+  XML_Char const *new_value = NULL;
+
+  assert (element != NULL);
+  assert (attribute != NULL);
+  assert (value != NULL);
+
+  new_value = scew_attribute_set_value (attribute, value);
+
+  return (NULL == new_value) ? NULL : attribute;
 }
