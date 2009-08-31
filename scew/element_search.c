@@ -59,14 +59,14 @@ scew_element_by_name (scew_element const *element, XML_Char const *name)
 }
 
 scew_element*
-scew_element_by_index (scew_element const *element, unsigned int idx)
+scew_element_by_index (scew_element const *element, unsigned int index)
 {
   scew_list *item = NULL;
 
   assert (element != NULL);
-  assert (idx < element->n_children);
+  assert (index < element->n_children);
 
-  item = scew_list_index (element->children, idx);
+  item = scew_list_index (element->children, index);
 
   return (NULL == item) ? NULL : (scew_element *) scew_list_data (item);
 }

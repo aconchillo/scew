@@ -8,7 +8,7 @@
  *
  * @if copyright
  *
- * Copyright (C) 2002-2008 Aleix Conchillo Flaque
+ * Copyright (C) 2002-2009 Aleix Conchillo Flaque
  *
  * SCEW is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -91,13 +91,13 @@ extern void scew_attribute_free (scew_attribute *attribute);
 
 
 /**
- * @defgroup SCEWAttributeCompare Comparisson
- * Attribute comparisson routines.
+ * @defgroup SCEWAttributeCompare Comparison
+ * Attribute comparison routines.
  * @ingroup SCEWAttribute
  */
 
 /**
- * Performs a comparisson between the given attributes. That is, name
+ * Performs a comparison between the given attributes. That is, name
  * and value must be equal in both attributes.
  *
  * @pre a != NULL

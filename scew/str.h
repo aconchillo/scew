@@ -6,7 +6,7 @@
  *
  * @if copyright
  *
- * Copyright (C) 2002-2008 Aleix Conchillo Flaque
+ * Copyright (C) 2002-2009 Aleix Conchillo Flaque
  *
  * SCEW is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -47,7 +47,6 @@
 #define scew_fprintf fwprintf
 #define scew_vfprintf vfwprintf
 
-#define scew_strcmp(s1, s2) wcscmp (s1, s2)
 #define scew_strspn(wcs, accept) wcsspn (wcs, accept)
 #define scew_strcpy(dest, src) wcscpy (dest, src)
 #define scew_strcat(dest, src) wcscat (dest, src)
@@ -77,7 +76,6 @@
 #define scew_fprintf fprintf
 #define scew_vfprintf vfprintf
 
-#define scew_strcmp(s1, s2) strcmp (s1, s2)
 #define scew_strspn(s, accept) strspn (s, accept)
 #define scew_strcpy(dest, src) strcpy (dest, src)
 #define scew_strcat(dest, src) strcat (dest, src)
@@ -104,12 +102,27 @@ extern "C" {
 #endif /* __cplusplus */
 
 /**
- * Creates a new copy of the given string. Client must free it.
+ * Compares the two given strings @a s1 and @a s2.
+ *
+ * @return 0 if the two strings are identical or NULL, less than zero
+ * if @a s1 is less than @a s2 or greater than zero otherwise.
+ */
+extern int scew_strcmp (XML_Char const *a, XML_Char const *b);
+
+/**
+ * Creates a new copy of the given string.
+ *
+ * @param src the string to be duplicated (might be NULL).
+ *
+ * @return the duplicated string, or NULL if the given string is NULL.
  */
 extern XML_Char* scew_strdup (XML_Char const *src);
 
 /**
- * Trims off extra spaces from the beginning and end of a string.
+ * Trims off extra spaces from the beginning and end of a string. The
+ * trimming is done in place.
+ *
+ * @param src the string to be trimmed off.
  */
 extern void scew_strtrim (XML_Char *src);
 

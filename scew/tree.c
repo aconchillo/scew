@@ -51,7 +51,7 @@ static XML_Char const *DEFAULT_XML_VERSION_ = "1.0";
 static XML_Char const *DEFAULT_ENCODING_ = "UTF-8";
 
 
-/* Public */
+/* Allocation */
 
 scew_tree*
 scew_tree_create (void)
@@ -72,6 +72,35 @@ scew_tree_create (void)
   return tree;
 }
 
+scew_tree*
+scew_tree_copy (scew_tree const *tree)
+{
+  scew_tree *new_tree = calloc (1, sizeof (scew_tree));
+
+  if (new_tree != NULL)
+    {
+      new_tree->version = scew_strdup (tree->version);
+      new_tree->encoding = scew_strdup (tree->encoding);
+      new_tree->preamble = scew_strdup (tree->preamble);
+      new_tree->standalone = tree->standalone;
+      new_tree->root = scew_element_copy (tree->root);
+
+      scew_bool copied =
+        ((tree->version == NULL) || (new_tree->version != NULL))
+        && ((tree->encoding == NULL) || (new_tree->encoding != NULL))
+        && ((tree->preamble == NULL) || (new_tree->preamble != NULL))
+        && ((tree->root == NULL) || (new_tree->root != NULL));
+
+      if (!copied)
+        {
+          scew_tree_free (new_tree);
+          new_tree = NULL;
+        }
+    }
+
+  return new_tree;
+}
+
 void
 scew_tree_free (scew_tree *tree)
 {
@@ -83,6 +112,26 @@ scew_tree_free (scew_tree *tree)
       scew_element_free (tree->root);
       free (tree);
     }
+}
+
+
+/* Comparison */
+
+scew_bool
+scew_tree_compare (scew_tree const *a, scew_tree const *b)
+{
+  scew_bool equal = SCEW_FALSE;
+
+  assert (a != NULL);
+  assert (b != NULL);
+
+  equal = (scew_strcmp (a->version, b->version) == 0)
+    && (scew_strcmp (a->encoding, b->encoding) == 0)
+    && (scew_strcmp (a->preamble, b->preamble) == 0)
+    && (a->standalone == b->standalone)
+    && scew_element_compare (a->root, b->root);
+
+  return equal;
 }
 
 
@@ -102,10 +151,8 @@ scew_tree_set_xml_version (scew_tree *tree, XML_Char const *version)
   assert (tree != NULL);
   assert (version != NULL);
 
-  if (tree->version != NULL)
-    {
-      free (tree->version);
-    }
+  free (tree->version);
+
   tree->version = scew_strdup (version);
 }
 
@@ -123,10 +170,8 @@ scew_tree_set_xml_encoding (scew_tree *tree, XML_Char const *encoding)
   assert (tree != NULL);
   assert (encoding != NULL);
 
-  if (tree->encoding != NULL)
-    {
-      free (tree->encoding);
-    }
+  free (tree->encoding);
+
   tree->encoding = scew_strdup (encoding);
 }
 
@@ -205,9 +250,7 @@ scew_tree_set_xml_preamble (scew_tree *tree, XML_Char const *preamble)
   assert (tree != NULL);
   assert (preamble != NULL);
 
-  if (tree->preamble != NULL)
-    {
-      free (tree->preamble);
-    }
+  free (tree->preamble);
+
   tree->preamble = scew_strdup (preamble);
 }

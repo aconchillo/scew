@@ -49,18 +49,13 @@ static scew_bool compare_attributes_ (scew_element const *a,
 scew_bool
 scew_element_compare (scew_element const *a, scew_element const *b)
 {
-  scew_bool equal = SCEW_TRUE;
+  scew_bool equal = SCEW_FALSE;
 
   assert (a != NULL);
   assert (b != NULL);
 
-  if ((a->contents != NULL) && (b->contents != NULL))
-    {
-      equal = (scew_strcmp (a->contents, b->contents) == 0);
-    }
-
-  equal = equal
-    && (scew_strcmp (a->name, b->name) == 0)
+  equal = (scew_strcmp (a->name, b->name) == 0)
+    && (scew_strcmp (a->contents, b->contents) == 0)
     && compare_children_ (a, b)
     && compare_attributes_ (a, b);
 

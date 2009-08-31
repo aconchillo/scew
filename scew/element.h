@@ -126,17 +126,17 @@ extern scew_element* scew_element_by_name (scew_element const *element,
 
 /**
  * Returns the child of the given @a element at the specified
- * position.
+ * zero-based @a index.
  *
  * @pre element != NULL
- * @pre idx < #scew_element_count
+ * @pre index < #scew_element_count
  *
  * @return the child at the specified position, or NULL if not found.
  *
  * @ingroup SCEWElementSearch
  */
 extern scew_element* scew_element_by_index (scew_element const *element,
-                                            unsigned int idx);
+                                            unsigned int index);
 
 /**
  * Returns a list of children from the specified @a element that
@@ -156,13 +156,13 @@ extern scew_list* scew_element_list_by_name (scew_element const *element,
 
 
 /**
- * @defgroup SCEWElementCompare Comparisson
- * Element comparisson routines.
+ * @defgroup SCEWElementCompare Comparison
+ * Element comparison routines.
  * @ingroup SCEWElement
  */
 
 /**
- * Performs a deep comparisson of the given elements. That is, it
+ * Performs a deep comparison of the given elements. That is, it
  * compares that both elements have the same name, contents, children
  * (recursively), etc.
  *
@@ -367,15 +367,15 @@ extern void scew_element_delete_by_name (scew_element *element,
 
 /**
  * Deletes the child of the given @a element at the specified
- * position.
+ * zero-based @a index.
  *
  * @pre element != NULL
- * @pre idx < #scew_element_count
+ * @pre index < #scew_element_count
  *
  * @ingroup SCEWElementHier
  */
 extern void scew_element_delete_by_index (scew_element *element,
-					  unsigned int idx);
+					  unsigned int index);
 
 /**
  * Detaches the given @a element from its parent, if any. This
@@ -435,10 +435,10 @@ scew_element_attribute_by_name (scew_element const *element,
 
 /**
  * Returns the attribute of the given @a element at the specified
- * position.
+ * zero-based @a index.
  *
  * @pre element != NULL
- * @pre idx < #scew_element_attribute_count
+ * @pre index < #scew_element_attribute_count
  *
  * @see SCEWAttribute
  *
@@ -449,7 +449,7 @@ scew_element_attribute_by_name (scew_element const *element,
  */
 extern scew_attribute*
 scew_element_attribute_by_index (scew_element const *element,
-                                 unsigned int idx);
+                                 unsigned int index);
 
 /**
  * Adds an existent @a attribute to the given @a element. It is
@@ -525,15 +525,16 @@ extern void scew_element_delete_attribute_by_name (scew_element *element,
 
 /**
  * Deletes the attribute of the given @a element at the specified
- * position. This will also automatically free the attribute.
+ * zero-based @a index. This will also automatically free the
+ * attribute.
  *
  * @pre element != NULL
- * @pre idx < #scew_element_attribute_count
+ * @pre index < #scew_element_attribute_count
  *
  * @ingroup SCEWElementAttr
  */
 extern void scew_element_delete_attribute_by_index (scew_element *element,
-                                                    unsigned int idx);
+                                                    unsigned int index);
 
 #ifdef __cplusplus
 }

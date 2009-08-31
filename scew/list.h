@@ -64,10 +64,10 @@ typedef struct scew_list scew_list;
 typedef void (*scew_list_function) (scew_list *, void *);
 
 /**
- * SCEW lists comparisson functions are used by
+ * SCEW lists comparison functions are used by
  * #scew_list_find_custom. The function takes the two arguments to be
  * compared (of the same type) and it should return true in case both
- * values are equal (where equal is defined by the comparisson
+ * values are equal (where equal is defined by the comparison
  * function), false otherwise.
  *
  * @ingroup SCEWList
@@ -302,7 +302,7 @@ extern scew_list* scew_list_find (scew_list *list, void *data);
 
 /**
  * Finds the first @a list item that matches the given predicate, @a
- * func. The comparisson function takes two parameters, the first one
+ * func. The comparison function takes two parameters, the first one
  * is the data of current traversed item, the second is @a data.
  *
  * @pre list != NULL

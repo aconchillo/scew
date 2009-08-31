@@ -92,10 +92,7 @@ scew_printer_create (scew_writer *writer)
 void
 scew_printer_free (scew_printer *printer)
 {
-  if (printer != NULL)
-    {
-      free (printer);
-    }
+  free (printer);
 }
 
 scew_writer*

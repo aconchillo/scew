@@ -144,7 +144,7 @@ START_TEST (test_hierarchy)
 END_TEST
 
 
-/* Comparisson */
+/* Comparison */
 
 START_TEST (test_compare)
 {

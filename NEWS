@@ -1,12 +1,12 @@
 SCEW -- History of visible changes.
 
-Copyright (C) 2002-2008 Aleix Conchillo Flaqué
+Copyright (C) 2002-2009 Aleix Conchillo Flaqué
 
 See the end for copying conditions.
 
 ------------------------------------------------------------------------
 
-* Version 1.0.0rc1 (2008/??/??)
+* Version 1.0.0 (2009/??/??)
 
 ** API changes:
 
@@ -25,7 +25,7 @@ See the end for copying conditions.
    - Some element functions have been renamed, mostly the ones related
      to attributes.
 
-   - Added copy and comparisson functions in most SCEW types: trees,
+   - Added copy and comparison functions in most SCEW types: trees,
      elements and attributes.
 
    - A new type, scew_list, has been defined and used for scew_element

@@ -6,7 +6,7 @@
  *
  * @if copyright
  *
- * Copyright (C) 2007-2008 Aleix Conchillo Flaque
+ * Copyright (C) 2007-2009 Aleix Conchillo Flaque
  *
  * SCEW is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -424,7 +424,7 @@ START_TEST (test_search)
 END_TEST
 
 
-/* Comparisson */
+/* Comparison */
 
 START_TEST (test_compare)
 {
@@ -458,6 +458,13 @@ START_TEST (test_compare)
 
   CHECK_BOOL (scew_element_compare (root, root_copy), SCEW_TRUE,
               "Root and root copy should be equal");
+
+  /* Modify and compare again */
+  scew_element *element = scew_element_by_index (root_copy, N_ELEMENTS - 1);
+  scew_element_set_contents (element, CONTENTS);
+
+  CHECK_BOOL (scew_element_compare (root, root_copy), SCEW_FALSE,
+              "Root and root copy should be different (last child)");
 
   scew_element_free (root);
   scew_element_free (root_copy);

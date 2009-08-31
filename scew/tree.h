@@ -87,6 +87,18 @@ typedef struct scew_tree scew_tree;
 extern scew_tree* scew_tree_create (void);
 
 /**
+ * Makes a deep copy of the given @a tree. It also copies XML
+ * encoding, version and standalone attributes.
+ *
+ * @param tree the tree to be duplicated.
+ *
+ * @return a new tree, or NULL if the copy failed.
+ *
+ * @ingroup SCEWTreeAlloc
+ */
+extern scew_tree* scew_tree_copy (scew_tree const *tree);
+
+/**
  * Frees a tree memory structure. Call this function when you are done
  * with your XML document. This will also free the root element.
  *
@@ -99,6 +111,26 @@ extern scew_tree* scew_tree_create (void);
  * @ingroup SCEWTreeAlloc
  */
 extern void scew_tree_free (scew_tree *tree);
+
+
+/**
+ * @defgroup SCEWTreeCompare Comparison
+ * Tree comparison routines.
+ * @ingroup SCEWTree
+ */
+
+/**
+ * Performs a deep comparison of the given tree. That is, it compares
+ * that both trees have the same XML attributes and root element.
+ *
+ * @pre a != NULL
+ * @pre b != NULL
+ *
+ * @return true if trees are equal, false otherwise.
+ *
+ * @ingroup SCEWTreeCompare
+ */
+extern scew_bool scew_tree_compare (scew_tree const *a, scew_tree const *b);
 
 
 /**

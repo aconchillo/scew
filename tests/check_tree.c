@@ -122,6 +122,57 @@ START_TEST (test_contents)
 }
 END_TEST
 
+/* Comparison */
+
+START_TEST (test_compare)
+{
+  static XML_Char const *NAME = "root";
+  static XML_Char const *CHILD_NAME = "element";
+  static XML_Char const *CONTENTS = "first child";
+  static unsigned int const N_ELEMENTS = 12;
+
+  scew_element *root = scew_element_create (NAME);
+
+  CHECK_PTR (root, "Unable to create element");
+
+  /* Create elements */
+  unsigned int i = 0;
+  for (i = 0; i < N_ELEMENTS; ++i)
+    {
+      scew_element *child = scew_element_add (root, CHILD_NAME);
+
+      CHECK_PTR (child, "Unable to create child");
+
+      if (i == 0)
+        {
+          scew_element_set_contents (child, CONTENTS);
+        }
+    }
+
+  /* Create tree */
+  scew_tree *tree = scew_tree_create ();
+  scew_tree_set_root_element (tree, root);
+
+  /* Copy */
+  scew_tree *tree_copy = scew_tree_copy (tree);
+
+  CHECK_PTR (tree_copy, "Unable to copy tree");
+
+  CHECK_BOOL (scew_tree_compare (tree, tree_copy), SCEW_TRUE,
+              "Tree and tree copy should be equal");
+
+  /* Modify and compare again */
+  scew_tree_set_xml_standalone (tree_copy, scew_tree_standalone_no);
+
+  CHECK_BOOL (scew_tree_compare (tree, tree_copy), SCEW_FALSE,
+              "Tree and tree copy should be different (standalone)");
+
+  scew_tree_free (tree);
+  scew_tree_free (tree_copy);
+}
+END_TEST
+
+
 
 /* Suite */
 
@@ -135,6 +186,7 @@ tree_suite (void)
   tcase_add_test (tc_core, test_alloc);
   tcase_add_test (tc_core, test_properties);
   tcase_add_test (tc_core, test_contents);
+  tcase_add_test (tc_core, test_compare);
   suite_add_tcase (s, tc_core);
 
   return s;

@@ -6,7 +6,7 @@
  *
  * @if copyright
  *
- * Copyright (C) 2002-2008 Aleix Conchillo Flaque
+ * Copyright (C) 2002-2009 Aleix Conchillo Flaque
  *
  * SCEW is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -33,18 +33,54 @@
 
 #include <assert.h>
 
+int
+scew_strcmp (XML_Char const *s1, XML_Char const *s2)
+{
+  int result = ((s1 == NULL) && (s2 == NULL)) ? 0 : 1;
+
+  if (result != 0)
+    {
+      /* We don't know if s1 or s2 are NULL. */
+      result = 0;
+
+      if (s1 == NULL)
+        {
+          /* s1 is lesser than s2. */
+          result = -1;
+        }
+      if (s2 == NULL)
+        {
+          /* s1 is greater than s2. */
+          result = 1;
+        }
+
+      /* s1 and s2 are *not* NULL, so we need to compare them. */
+      if (result == 0)
+        {
+#ifdef XML_UNICODE_WCHAR_T
+          result = wcscmp (s1, s2);
+#else
+          result = strcmp (s1, s2);
+#endif
+        }
+    }
+
+  return result;
+}
+
 XML_Char*
 scew_strdup (XML_Char const *src)
 {
-  unsigned int len = 0;
   XML_Char *out = NULL;
 
-  assert (src != NULL);
+  if (src != NULL)
+    {
+      unsigned int len = scew_strlen (src);
+      out = calloc (len + 1, sizeof (XML_Char));
+      (void) scew_memcpy (out, (XML_Char*) src, len);
+    }
 
-  len = scew_strlen (src);
-  out = calloc (len + 1, sizeof (XML_Char));
-
-  return (XML_Char*) scew_memcpy (out, (XML_Char*) src, len);
+  return out;
 }
 
 void

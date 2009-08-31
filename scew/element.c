@@ -72,10 +72,7 @@ scew_element_free (scew_element *element)
       scew_element_detach (element);
 
       free (element->name);
-      if (element->contents != NULL)
-        {
-          free (element->contents);
-        }
+      free (element->contents);
       free (element);
     }
 }
@@ -130,13 +127,9 @@ scew_element_set_contents (scew_element *element, XML_Char const *contents)
   assert (contents != NULL);
 
   new_contents = scew_strdup (contents);
-
   if (new_contents != NULL)
     {
-      if (element->contents != NULL)
-        {
-          free (element->contents);
-        }
+      free (element->contents);
       element->contents = new_contents;
     }
   else
@@ -339,12 +332,12 @@ scew_element_delete_by_name (scew_element *element, XML_Char const *name)
 }
 
 void
-scew_element_delete_by_index (scew_element *element, unsigned int idx)
+scew_element_delete_by_index (scew_element *element, unsigned int index)
 {
   assert (element != NULL);
-  assert (idx < element->n_children);
+  assert (index < element->n_children);
 
-  scew_element_free (scew_element_by_index (element, idx));
+  scew_element_free (scew_element_by_index (element, index));
 }
 
 void
