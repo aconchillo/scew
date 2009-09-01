@@ -85,12 +85,13 @@ typedef scew_bool (*scew_parser_load_hook) (scew_parser *parser,
 extern scew_parser* scew_parser_create (void);
 
 /**
- * Creates a new parser with namespaces support. The given @a
- * separator will be used to separate namespaces and identifiers
- * (element or attribute names). A parser is necessary to load XML
- * documents.
+ * Creates a new parser with namespaces support. Note that Expat
+ * expands the resulting elements and attributes, that is, they are
+ * formed by the namespace URI, the given namespace @a separator and
+ * the local part of the name.
  *
- * @param separator the character between namespace and identifier.
+ * @param separator the character between namespace URI and
+ * identifier. If 0 is given, no separation is performed.
  *
  * @return a new parser with namespace support, or NULL if parser is
  * not successfully created.
