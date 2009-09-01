@@ -124,7 +124,6 @@ file_read_ (scew_reader *reader, void *buffer, size_t byte_no)
 scew_bool
 file_end_ (scew_reader *reader)
 {
-  int end = 0;
   scew_bool closed = SCEW_FALSE;
   scew_reader_fp *fp_reader = NULL;
 
@@ -137,7 +136,7 @@ file_end_ (scew_reader *reader)
   if (!closed)
     {
       /* Check end of file. */
-      end = feof (fp_reader->file);
+      int end = feof (fp_reader->file);
       closed = ((-1 == end) || (end != 0)) ? SCEW_TRUE : SCEW_FALSE;
     }
 

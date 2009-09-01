@@ -36,6 +36,7 @@
 typedef struct
 {
   FILE *file;
+  scew_bool closed;
 } scew_writer_fp;
 
 static size_t file_write_ (scew_writer *writer,
@@ -89,6 +90,7 @@ scew_writer_fp_create (FILE *file)
   if (fp_writer != NULL)
     {
       fp_writer->file = file;
+      fp_writer->closed = SCEW_FALSE;
 
       /* Create writer */
       writer = scew_writer_create (&file_hooks_, fp_writer);
@@ -122,13 +124,23 @@ file_write_ (scew_writer *writer, void const *buffer, size_t byte_no)
 scew_bool
 file_end_ (scew_writer *writer)
 {
+  scew_bool closed = SCEW_FALSE;
   scew_writer_fp *fp_writer = NULL;
 
   assert (writer != NULL);
 
   fp_writer = scew_writer_data (writer);
 
-  return (feof (fp_writer->file) != 0);
+  /* If file is already closed, return true as well. */
+  closed = fp_writer->closed;
+  if (!closed)
+    {
+      /* Check end of file. */
+      int end = feof (fp_writer->file);
+      closed = ((-1 == end) || (end != 0)) ? SCEW_TRUE : SCEW_FALSE;
+    }
+
+  return closed;
 }
 
 scew_bool
@@ -153,15 +165,24 @@ file_close_ (scew_writer *writer)
 
   fp_writer = scew_writer_data (writer);
 
-  /* Do not close standard output and standard error streams. */
-  if ((stdout == fp_writer->file) || (stderr == fp_writer->file))
+  /**
+   * Do not close already closed file or standard output and standard
+   * error streams.
+   */
+  if (fp_writer->closed
+      || (stdout == fp_writer->file)
+      || (stderr == fp_writer->file))
     {
-      return SCEW_TRUE;
+      fp_writer->closed = SCEW_TRUE;
+    }
+  else
+    {
+      /* Set closed flag if we are actually able to close it. */
+      status = fclose (fp_writer->file);
+      fp_writer->closed = (0 == status);
     }
 
-  status = fclose (fp_writer->file);
-
-  return (0 == status);
+  return fp_writer->closed;
 }
 
 void

@@ -34,5 +34,6 @@ tests/check_element
 tests/check_list
 tests/check_tree
 tests/check_reader_buffer
-tests/check_writer_buffer
 tests/check_reader_file
+tests/check_writer_buffer
+tests/check_writer_file

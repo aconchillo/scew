@@ -40,7 +40,7 @@ static char const *TEST_FILE = SCEW_TESTSDIR"/check_reader_file.txt";
 static XML_Char const *TEST_CONTENTS =
   "This is just a dummy file to test the SCEW reader for "
   "files. We don't need to use an XML file as SCEW readers "
-  "do not bother about the file's content.";
+  "do not bother about file contents.";
 
 /* Allocation */
 
