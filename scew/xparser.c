@@ -51,6 +51,8 @@ static void expat_xmldecl_handler_ (void *data,
                                     XML_Char const *encoding,
                                     int standalone);
 
+static void expat_default_handler_ (void *data, XML_Char const *str, int len);
+
 /**
  * Expat callback for starting elements.
  */
@@ -130,6 +132,7 @@ void
 scew_parser_expat_install_handlers_ (scew_parser *parser)
 {
   XML_SetXmlDeclHandler (parser->parser, expat_xmldecl_handler_);
+  XML_SetDefaultHandler (parser->parser, expat_default_handler_);
   XML_SetElementHandler (parser->parser,
                          expat_start_handler_,
                          expat_end_handler_);
@@ -193,6 +196,50 @@ expat_xmldecl_handler_ (void *data,
 }
 
 void
+expat_default_handler_ (void *data, XML_Char const *str, int len)
+{
+  scew_parser *parser = (scew_parser *) data;
+
+  if (NULL == parser)
+    {
+      stop_expat_parsing_ (parser, scew_error_internal);
+      return;
+    }
+
+  if ((parser->tree != NULL) && (NULL == parser->current))
+    {
+      unsigned int total = 0;
+      unsigned int total_old = 0;
+      XML_Char *new_preamble = NULL;
+
+      /* Get size of current preamble. */
+      XML_Char *preamble = parser->preamble;
+      if (preamble != NULL)
+        {
+          total_old = scew_strlen (preamble);
+        }
+
+      /**
+       * Calculate new size and allocate enough space (+ 1 for
+       * null-terminated string).
+       */
+      total = (total_old + len + 1) * sizeof (XML_Char);
+      new_preamble = calloc (total, 1);
+
+      /* Copy old preamble (if any) and concatenate new one. */
+      if (preamble != NULL)
+        {
+          scew_strcpy (new_preamble, preamble);
+        }
+      scew_strncat (new_preamble, str, len);
+
+      /* Get rid of old preamble and set new one. */
+      free (preamble);
+      parser->preamble = new_preamble;
+    }
+}
+
+void
 expat_start_handler_ (void *data,
                       XML_Char const *name,
                       XML_Char const **attrs)
@@ -218,7 +265,7 @@ expat_start_handler_ (void *data,
   /* Add the element to its parent (if any). */
   if (parser->current != NULL)
     {
-      (void) scew_element_add_element (parser->current, element);
+      scew_element_add_element (parser->current, element);
     }
 
   /* Push element onto the stack. */
@@ -292,7 +339,8 @@ expat_end_handler_ (void *data, XML_Char const *elem)
           stop_expat_parsing_ (parser, scew_error_no_memory);
           return;
         }
-      (void) scew_tree_set_root_element (parser->tree, current);
+      scew_tree_set_xml_preamble (parser->tree, parser->preamble);
+      scew_tree_set_root_element (parser->tree, current);
       /* } */
     }
 }

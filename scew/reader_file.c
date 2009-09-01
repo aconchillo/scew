@@ -189,7 +189,7 @@ file_free_ (scew_reader *reader)
   assert (reader != NULL);
 
   /* Close the file before freeing the reader. */
-  (void) file_close_ (reader);
+  file_close_ (reader);
 
   fp_reader = scew_reader_data (reader);
   free (fp_reader);

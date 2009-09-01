@@ -154,7 +154,7 @@ buffer_free_ (scew_reader *reader)
   assert (reader != NULL);
 
   /* Close the buffer before freeing the reader. */
-  (void) buffer_close_ (reader);
+  buffer_close_ (reader);
 
   buf_reader = scew_reader_data (reader);
   free (buf_reader);

@@ -122,6 +122,8 @@ main (int argc, char *argv[])
   scew_reader *reader = NULL;
   scew_parser *parser = NULL;
   scew_tree *tree = NULL;
+  scew_writer *writer = NULL;
+  scew_printer *printer = NULL;
 
   if (argc < 2)
     {
@@ -150,10 +152,10 @@ main (int argc, char *argv[])
       if (code == scew_error_expat)
         {
           enum XML_Error expat_code = scew_error_expat_code (parser);
-          printf("Expat error #%d (line %d, column %d): %s\n", expat_code,
-                 scew_error_expat_line (parser),
-                 scew_error_expat_column (parser),
-                 scew_error_expat_string (expat_code));
+          printf ("Expat error #%d (line %d, column %d): %s\n", expat_code,
+                  scew_error_expat_line (parser),
+                  scew_error_expat_column (parser),
+                  scew_error_expat_string (expat_code));
         }
       return EXIT_FAILURE;
     }
@@ -161,10 +163,22 @@ main (int argc, char *argv[])
   tree = scew_parser_tree (parser);
 
   /* Prints full tree. */
+  printf ("\n*** Manual print:\n\n");
   print_element (scew_tree_root (tree), 0);
+
+  /* Prints full tree using SCEW writer. */
+  printf ("\n\n*** SCEW writer (stdout) print:\n\n");
+  writer = scew_writer_fp_create (stdout);
+  printer = scew_printer_create (writer);
+  scew_printer_print_tree (printer, tree);
+  printf ("\n");
 
   /* Remember to free tree (scew_parser_free does not free it). */
   scew_tree_free (tree);
+
+  /* Also free the printer and writer. */
+  scew_writer_free (writer);
+  scew_printer_free (printer);
 
   /* Frees the SCEW parser and reader. */
   scew_reader_free (reader);

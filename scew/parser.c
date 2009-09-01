@@ -69,6 +69,8 @@ scew_parser_free (scew_parser *parser)
         {
           XML_ParserFree (parser->parser);
         }
+      scew_parser_stack_free_ (parser);
+      free (parser->preamble);
       free (parser);
     }
 }

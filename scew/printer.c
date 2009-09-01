@@ -131,6 +131,7 @@ scew_printer_print_tree (scew_printer *printer, scew_tree const *tree)
   scew_bool result = SCEW_TRUE;
   XML_Char const *version = NULL;
   XML_Char const *encoding = NULL;
+  XML_Char const *preamble = NULL;
   scew_tree_standalone standalone = scew_tree_standalone_unknown;
 
   assert (printer != NULL);
@@ -139,7 +140,9 @@ scew_printer_print_tree (scew_printer *printer, scew_tree const *tree)
   version = scew_tree_xml_version (tree);
   encoding = scew_tree_xml_encoding (tree);
   standalone = scew_tree_xml_standalone (tree);
+  preamble = scew_tree_xml_preamble (tree);
 
+  /* Start XML declaration. */
   result = print_pi_start_ (printer, STR_XML_);
   result = result && print_attribute_ (printer, STR_VERSION_, version);
 
@@ -163,8 +166,19 @@ scew_printer_print_tree (scew_printer *printer, scew_tree const *tree)
         };
     }
 
+  /* End XML declaration. */
   result = result && print_pi_end_ (printer);
 
+  /* XML preamble (DOCTYPE...). */
+  if (preamble != NULL)
+    {
+      result = result && scew_writer_write (printer->writer,
+                                            preamble,
+                                            scew_strlen (preamble));
+      result = result && print_eol_ (printer);
+    }
+
+  /* Print XML document. */
   result = result && scew_printer_print_element (printer, scew_tree_root (tree));
 
   if (!result)

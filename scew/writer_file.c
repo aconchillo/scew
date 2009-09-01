@@ -172,7 +172,7 @@ file_free_ (scew_writer *writer)
   assert (writer != NULL);
 
   /* Close the file before freeing the writer. */
-  (void) file_close_ (writer);
+  file_close_ (writer);
 
   fp_writer = scew_writer_data (writer);
   free (fp_writer);

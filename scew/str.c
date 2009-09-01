@@ -77,7 +77,7 @@ scew_strdup (XML_Char const *src)
     {
       unsigned int len = scew_strlen (src);
       out = calloc (len + 1, sizeof (XML_Char));
-      (void) scew_memcpy (out, (XML_Char*) src, len);
+      scew_memcpy (out, (XML_Char*) src, len);
     }
 
   return out;
