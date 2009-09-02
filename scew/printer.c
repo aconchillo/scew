@@ -167,7 +167,7 @@ scew_printer_print_tree (scew_printer *printer, scew_tree const *tree)
     }
 
   /* End XML declaration. */
-  result = result && print_pi_end_ (printer);
+  result = result && print_pi_end_ (printer) && print_eol_ (printer);
 
   /* XML preamble (DOCTYPE...). */
   if (preamble != NULL)

@@ -51,6 +51,11 @@ static void expat_xmldecl_handler_ (void *data,
                                     XML_Char const *encoding,
                                     int standalone);
 
+/**
+ * Expat callback for data not handled by any other handler. This
+ * handler will be used to read the preamble (between XML declaration
+ * and root element).
+ */
 static void expat_default_handler_ (void *data, XML_Char const *str, int len);
 
 /**
@@ -235,7 +240,15 @@ expat_default_handler_ (void *data, XML_Char const *str, int len)
 
       /* Get rid of old preamble and set new one. */
       free (preamble);
-      parser->preamble = new_preamble;
+
+      /* Trim preamble and only use it if length is greater than 0. */
+      scew_strtrim (new_preamble);
+      total = scew_strlen (new_preamble);
+      parser->preamble = (total > 0) ? new_preamble : NULL;
+      if (total == 0)
+        {
+          free (new_preamble);
+        }
     }
 }
 
