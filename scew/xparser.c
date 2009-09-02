@@ -241,14 +241,7 @@ expat_default_handler_ (void *data, XML_Char const *str, int len)
       /* Get rid of old preamble and set new one. */
       free (preamble);
 
-      /* Trim preamble and only use it if length is greater than 0. */
-      scew_strtrim (new_preamble);
-      total = scew_strlen (new_preamble);
-      parser->preamble = (total > 0) ? new_preamble : NULL;
-      if (total == 0)
-        {
-          free (new_preamble);
-        }
+      parser->preamble = new_preamble;
     }
 }
 
@@ -352,7 +345,16 @@ expat_end_handler_ (void *data, XML_Char const *elem)
           stop_expat_parsing_ (parser, scew_error_no_memory);
           return;
         }
+
+      /* Trim preamble and only use it if length is greater than 0. */
+      scew_strtrim (parser->preamble);
+      if (scew_strlen (parser->preamble) == 0)
+        {
+          free (parser->preamble);
+          parser->preamble = NULL;
+        }
       scew_tree_set_xml_preamble (parser->tree, parser->preamble);
+
       scew_tree_set_root_element (parser->tree, current);
       /* } */
     }

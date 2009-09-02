@@ -176,6 +176,7 @@ scew_printer_print_tree (scew_printer *printer, scew_tree const *tree)
                                             preamble,
                                             scew_strlen (preamble));
       result = result && print_eol_ (printer);
+      result = result && print_eol_ (printer);
     }
 
   /* Print XML document. */
