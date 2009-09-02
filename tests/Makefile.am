@@ -13,11 +13,13 @@ COMMON = main.c test.h
 
 TESTS = check_attribute check_element check_list check_tree \
 	check_reader_buffer check_reader_file \
-	check_writer_buffer check_writer_file
+	check_writer_buffer check_writer_file \
+	check_printer
 
 check_PROGRAMS = check_attribute check_element check_list check_tree \
 	check_reader_buffer check_reader_file \
-	check_writer_buffer check_writer_file
+	check_writer_buffer check_writer_file \
+	check_printer
 
 # Attributes
 check_attribute_SOURCES = $(COMMON) check_attribute.c \
@@ -66,6 +68,13 @@ check_writer_file_SOURCES = $(COMMON) check_writer_file.c \
 	$(top_builddir)/scew/writer.h $(top_builddir)/scew/writer_file.h
 check_writer_file_CFLAGS = @CHECK_CFLAGS@
 check_writer_file_LDADD = @CHECK_LIBS@ $(top_builddir)/scew/libscew.la
+
+# Printer
+check_printer_SOURCES = $(COMMON) check_printer.c \
+	$(top_builddir)/scew/writer.h $(top_builddir)/scew/writer_buffer.h \
+	$(top_builddir)/scew/printer.h
+check_printer_CFLAGS = @CHECK_CFLAGS@
+check_printer_LDADD = @CHECK_LIBS@ $(top_builddir)/scew/libscew.la
 
 else
 

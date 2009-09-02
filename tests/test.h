@@ -4,7 +4,7 @@
  * @author   Aleix Conchillo Flaque <aleix@member.fsf.org>
  * @date     Thu Aug 09, 2007 12:25
  *
- * Copyright (C) 2007-2008 Aleix Conchillo Flaque
+ * Copyright (C) 2007-2009 Aleix Conchillo Flaque
  *
  * This file is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -32,7 +32,7 @@
 #define CHECK_U_INT(A, B, MSG, ...)                                     \
   do                                                                    \
     {                                                                   \
-      enum { CHECK_MAX_BUFFER = 250 };                                  \
+      enum { CHECK_MAX_BUFFER = 512 };                                  \
       static char buffer[CHECK_MAX_BUFFER];                             \
       sprintf (buffer, MSG, ##__VA_ARGS__);                             \
       unsigned int v_a = (A);                                           \
@@ -46,7 +46,7 @@
 #define CHECK_S_INT(A, B, MSG, ...)                                     \
   do                                                                    \
     {                                                                   \
-      enum { CHECK_MAX_BUFFER = 250 };                                  \
+      enum { CHECK_MAX_BUFFER = 512 };                                  \
       static char buffer[CHECK_MAX_BUFFER];                             \
       sprintf (buffer, MSG, ##__VA_ARGS__);                             \
       int v_a = (A);                                                    \
@@ -66,7 +66,7 @@
       XML_Char const *str_b = (B);                                      \
       if (strcmp (str_a, str_b) != 0)                                   \
         {                                                               \
-          enum { CHECK_MAX_BUFFER = 250 };                              \
+          enum { CHECK_MAX_BUFFER = 512 };                              \
           static char buffer[CHECK_MAX_BUFFER];                         \
           sprintf (buffer, MSG, ##__VA_ARGS__);                         \
           fail ("(%s) == (%s) \n  Actual: %s \n  Expected: %s \n  %s",  \
@@ -78,7 +78,7 @@
 #define CHECK_PTR(A, MSG, ...)                                          \
   do                                                                    \
     {                                                                   \
-      enum { CHECK_MAX_BUFFER = 250 };                                  \
+      enum { CHECK_MAX_BUFFER = 512 };                                  \
       static char buffer[CHECK_MAX_BUFFER];                             \
       sprintf (buffer, MSG, ##__VA_ARGS__);                             \
       fail_unless ((A) != NULL, "(%s) != NULL \n  %s", #A, buffer);     \
@@ -88,7 +88,7 @@
 #define CHECK_NULL_PTR(A, MSG, ...)                                     \
   do                                                                    \
     {                                                                   \
-      enum { CHECK_MAX_BUFFER = 250 };                                  \
+      enum { CHECK_MAX_BUFFER = 512 };                                  \
       static char buffer[CHECK_MAX_BUFFER];                             \
       sprintf (buffer, MSG, ##__VA_ARGS__);                             \
       fail_unless ((A) == NULL, "(%s) == NULL \n  %s", #A, buffer);     \

@@ -41,7 +41,7 @@ START_TEST (test_alloc)
 {
   enum { MAX_BUFFER_SIZE = 255 };
 
-  static XML_Char buffer[MAX_BUFFER_SIZE] = "";
+  XML_Char buffer[MAX_BUFFER_SIZE] = "";
 
   scew_writer *writer = scew_writer_buffer_create (buffer, MAX_BUFFER_SIZE);
 
@@ -101,7 +101,7 @@ START_TEST (test_misc)
 {
   enum { MAX_BUFFER_SIZE = 255 };
 
-  static XML_Char buffer[MAX_BUFFER_SIZE] = "";
+  XML_Char buffer[MAX_BUFFER_SIZE] = "";
 
   scew_writer *writer = scew_writer_buffer_create (buffer, MAX_BUFFER_SIZE);
 
