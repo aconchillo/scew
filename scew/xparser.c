@@ -461,6 +461,7 @@ parser_stack_push_ (scew_parser *parser, scew_element *element)
 {
   stack_element *new_elem = NULL;
 
+  assert (parser != NULL);
   assert (element != NULL);
 
   new_elem = calloc (1, sizeof (stack_element));
@@ -483,7 +484,7 @@ parser_stack_pop_ (scew_parser *parser)
 {
   stack_element *element = NULL;
 
-  assert (stack != NULL);
+  assert (parser != NULL);
 
   element = parser->stack;
   if (element != NULL)

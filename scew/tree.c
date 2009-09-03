@@ -79,13 +79,15 @@ scew_tree_copy (scew_tree const *tree)
 
   if (new_tree != NULL)
     {
+      scew_bool copied = SCEW_FALSE;
+
       new_tree->version = scew_strdup (tree->version);
       new_tree->encoding = scew_strdup (tree->encoding);
       new_tree->preamble = scew_strdup (tree->preamble);
       new_tree->standalone = tree->standalone;
       new_tree->root = scew_element_copy (tree->root);
 
-      scew_bool copied =
+      copied =
         ((tree->version == NULL) || (new_tree->version != NULL))
         && ((tree->encoding == NULL) || (new_tree->encoding != NULL))
         && ((tree->preamble == NULL) || (new_tree->preamble != NULL))
