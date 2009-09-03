@@ -38,3 +38,9 @@ tests/check_reader_buffer
 tests/check_reader_file
 tests/check_writer_buffer
 tests/check_writer_file
+win32/build
+win32/lib
+win32/scew.ncb
+win32/scew.sln
+win32/scew.suo
+win32/scew.vcproj.*
