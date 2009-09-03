@@ -47,8 +47,8 @@ struct scew_tree
   scew_element *root;
 };
 
-static XML_Char const *DEFAULT_XML_VERSION_ = "1.0";
-static XML_Char const *DEFAULT_ENCODING_ = "UTF-8";
+static XML_Char const *DEFAULT_XML_VERSION_ = (XML_Char *) _XT("1.0");
+static XML_Char const *DEFAULT_ENCODING_ = (XML_Char *) _XT("UTF-8");
 
 
 /* Allocation */

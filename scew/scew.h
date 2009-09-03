@@ -54,20 +54,14 @@
 #define SCEW_LIB_U
 #endif /* XML_UNICODE_WCHAR_T */
 
-#ifdef XML_STATIC
-#define SCEW_LIB_S    "s"
-#else
-#define SCEW_LIB_S
-#endif /* XML_STATIC */
-
 #ifdef _DEBUG
 #define SCEW_LIB_D    "d"
 #else
 #define SCEW_LIB_D
 #endif /* _DEBUG */
 
-#if defined (SCEW_LIB_U) || defined (SCEW_LIB_S) || defined (SCEW_LIB_D)
-#pragma comment (lib, "scew_" SCEW_LIB_U SCEW_LIB_S SCEW_LIB_D ".lib")
+#if defined (SCEW_LIB_U) || defined (SCEW_LIB_D)
+#pragma comment (lib, "scew_" SCEW_LIB_U SCEW_LIB_D ".lib")
 #else
 #pragma comment (lib, "scew.lib")
 #endif
