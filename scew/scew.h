@@ -46,7 +46,7 @@
 #include "writer_file.h"
 
 /* Automatically include the correct library on windows. */
-#ifdef _WIN32
+#if defined (_WIN32) && defined(XML_SCEW_STATIC)
 
 #ifdef XML_UNICODE_WCHAR_T
 #define SCEW_LIB_U    "u"
@@ -66,6 +66,6 @@
 #pragma comment (lib, "scew.lib")
 #endif
 
-#endif /* _WIN32 */
+#endif /* _WIN32 && XML_SCEW_STATIC */
 
 #endif /* SCEW_H_0211250134 */
