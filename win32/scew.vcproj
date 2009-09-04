@@ -41,7 +41,7 @@
 			<Tool
 				Name="VCCLCompilerTool"
 				Optimization="0"
-				PreprocessorDefinitions="_WIN32;_DEBUG;SCEW_SHARED;_CRT_SECURE_NO_WARNINGS"
+				PreprocessorDefinitions="SCEW_DEBUG;SCEW_DLL;SCEW_DLL_EXPORTS;_CRT_SECURE_NO_WARNINGS"
 				MinimalRebuild="true"
 				BasicRuntimeChecks="3"
 				RuntimeLibrary="3"
@@ -62,6 +62,9 @@
 			<Tool
 				Name="VCLinkerTool"
 				OutputFile="$(OutDir)\scew_d.dll"
+				LinkIncremental="2"
+				GenerateDebugInformation="true"
+				SubSystem="2"
 			/>
 			<Tool
 				Name="VCALinkTool"
@@ -112,7 +115,7 @@
 				Name="VCCLCompilerTool"
 				Optimization="2"
 				EnableIntrinsicFunctions="true"
-				PreprocessorDefinitions="_WIN32;NDEBUG;SCEW_SHARED;_CRT_SECURE_NO_WARNINGS"
+				PreprocessorDefinitions="NDEBUG;SCEW_DLL;SCEW_DLL_EXPORTS;_CRT_SECURE_NO_WARNINGS"
 				RuntimeLibrary="2"
 				EnableFunctionLevelLinking="true"
 				UsePrecompiledHeader="0"
@@ -131,6 +134,11 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
+				OutputFile="$(OutDir)\scew.dll"
+				LinkIncremental="1"
+				SubSystem="2"
+				OptimizeReferences="2"
+				EnableCOMDATFolding="2"
 			/>
 			<Tool
 				Name="VCALinkTool"
@@ -179,7 +187,7 @@
 			<Tool
 				Name="VCCLCompilerTool"
 				Optimization="0"
-				PreprocessorDefinitions="_WIN32;_DEBUG;SCEW_SHARED;XML_UNICODE_WCHAR_T;_CRT_SECURE_NO_WARNINGS"
+				PreprocessorDefinitions="SCEW_DEBUG;SCEW_DLL;SCEW_DLL_EXPORTS;XML_UNICODE_WCHAR_T;_CRT_SECURE_NO_WARNINGS"
 				MinimalRebuild="true"
 				BasicRuntimeChecks="3"
 				RuntimeLibrary="3"
@@ -200,6 +208,9 @@
 			<Tool
 				Name="VCLinkerTool"
 				OutputFile="$(OutDir)\scew_ud.dll"
+				LinkIncremental="2"
+				GenerateDebugInformation="true"
+				SubSystem="2"
 			/>
 			<Tool
 				Name="VCALinkTool"
@@ -250,7 +261,7 @@
 				Name="VCCLCompilerTool"
 				Optimization="2"
 				EnableIntrinsicFunctions="true"
-				PreprocessorDefinitions="_WIN32;NDEBUG;SCEW_SHARED;XML_UNICODE_WCHAR_T;_CRT_SECURE_NO_WARNINGS"
+				PreprocessorDefinitions="NDEBUG;SCEW_DLL;SCEW_DLL_EXPORTS;XML_UNICODE_WCHAR_T;_CRT_SECURE_NO_WARNINGS"
 				RuntimeLibrary="2"
 				EnableFunctionLevelLinking="true"
 				UsePrecompiledHeader="0"
@@ -270,6 +281,10 @@
 			<Tool
 				Name="VCLinkerTool"
 				OutputFile="$(OutDir)\scew_u.dll"
+				LinkIncremental="1"
+				SubSystem="2"
+				OptimizeReferences="2"
+				EnableCOMDATFolding="2"
 			/>
 			<Tool
 				Name="VCALinkTool"
@@ -318,7 +333,7 @@
 			<Tool
 				Name="VCCLCompilerTool"
 				Optimization="0"
-				PreprocessorDefinitions="_WIN32;_DEBUG;SCEW_STATIC;_CRT_SECURE_NO_WARNINGS"
+				PreprocessorDefinitions="SCEW_DEBUG;SCEW_STATIC;_CRT_SECURE_NO_WARNINGS"
 				MinimalRebuild="true"
 				BasicRuntimeChecks="3"
 				RuntimeLibrary="3"
@@ -381,7 +396,7 @@
 			<Tool
 				Name="VCCLCompilerTool"
 				Optimization="0"
-				PreprocessorDefinitions="_WIN32;_DEBUG;SCEW_STATIC;XML_UNICODE_WCHAR_T;_CRT_SECURE_NO_WARNINGS"
+				PreprocessorDefinitions="SCEW_DEBUG;SCEW_STATIC;XML_UNICODE_WCHAR_T;_CRT_SECURE_NO_WARNINGS"
 				MinimalRebuild="true"
 				BasicRuntimeChecks="3"
 				RuntimeLibrary="3"
@@ -446,7 +461,7 @@
 				Name="VCCLCompilerTool"
 				Optimization="2"
 				EnableIntrinsicFunctions="true"
-				PreprocessorDefinitions="_WIN32;NDEBUG;SCEW_STATIC;_CRT_SECURE_NO_WARNINGS"
+				PreprocessorDefinitions="NDEBUG;SCEW_STATIC;_CRT_SECURE_NO_WARNINGS"
 				RuntimeLibrary="2"
 				EnableFunctionLevelLinking="true"
 				UsePrecompiledHeader="0"
@@ -510,7 +525,7 @@
 				Name="VCCLCompilerTool"
 				Optimization="2"
 				EnableIntrinsicFunctions="true"
-				PreprocessorDefinitions="_WIN32;NDEBUG;SCEW_STATIC;XML_UNICODE_WCHAR_T;_CRT_SECURE_NO_WARNINGS"
+				PreprocessorDefinitions="NDEBUG;SCEW_STATIC;XML_UNICODE_WCHAR_T;_CRT_SECURE_NO_WARNINGS"
 				RuntimeLibrary="2"
 				EnableFunctionLevelLinking="true"
 				UsePrecompiledHeader="0"
@@ -660,6 +675,10 @@
 			</File>
 			<File
 				RelativePath="..\scew\error.h"
+				>
+			</File>
+			<File
+				RelativePath="..\scew\export.h"
 				>
 			</File>
 			<File
