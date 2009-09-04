@@ -29,6 +29,8 @@
 #ifndef SCEW_H_0211250134
 #define SCEW_H_0211250134
 
+#include "export.h"
+
 #include "attribute.h"
 #include "bool.h"
 #include "element.h"
@@ -54,7 +56,7 @@
 #define SCEW_LIB_U
 #endif /* XML_UNICODE_WCHAR_T */
 
-#ifdef _DEBUG
+#ifdef SCEW_DEBUG
 #define SCEW_LIB_D    "d"
 #else
 #define SCEW_LIB_D

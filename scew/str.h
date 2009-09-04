@@ -29,6 +29,8 @@
 #ifndef STR_H_0212011305
 #define STR_H_0212011305
 
+#include "export.h"
+
 #include <expat.h>
 
 #include <string.h>
@@ -107,7 +109,7 @@ extern "C" {
  * @return 0 if the two strings are identical or NULL, less than zero
  * if @a s1 is less than @a s2 or greater than zero otherwise.
  */
-extern int scew_strcmp (XML_Char const *a, XML_Char const *b);
+extern SCEW_API int scew_strcmp (XML_Char const *a, XML_Char const *b);
 
 /**
  * Creates a new copy of the given string.
@@ -116,7 +118,7 @@ extern int scew_strcmp (XML_Char const *a, XML_Char const *b);
  *
  * @return the duplicated string, or NULL if the given string is NULL.
  */
-extern XML_Char* scew_strdup (XML_Char const *src);
+extern SCEW_API XML_Char* scew_strdup (XML_Char const *src);
 
 /**
  * Trims off extra spaces from the beginning and end of a string. The
@@ -124,7 +126,7 @@ extern XML_Char* scew_strdup (XML_Char const *src);
  *
  * @param src the string to be trimmed off.
  */
-extern void scew_strtrim (XML_Char *src);
+extern SCEW_API void scew_strtrim (XML_Char *src);
 
 #ifdef __cplusplus
 }

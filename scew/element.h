@@ -38,6 +38,8 @@
 #ifndef ELEMENT_H_0211250048
 #define ELEMENT_H_0211250048
 
+#include "export.h"
+
 #include "list.h"
 
 #include <expat.h>
@@ -79,7 +81,7 @@ typedef struct scew_attribute scew_attribute;
  *
  * @ingroup SCEWElementAlloc
  */
-extern scew_element* scew_element_create (XML_Char const *name);
+extern SCEW_API scew_element* scew_element_create (XML_Char const *name);
 
 /**
  * Makes a deep copy of the given @a element.
@@ -90,7 +92,7 @@ extern scew_element* scew_element_create (XML_Char const *name);
  *
  * @ingroup SCEWElementAlloc
  */
-extern scew_element* scew_element_copy (scew_element const *element);
+extern SCEW_API scew_element* scew_element_copy (scew_element const *element);
 
 /**
  * Frees the given @a element recursively. That is, it frees all its
@@ -100,7 +102,7 @@ extern scew_element* scew_element_copy (scew_element const *element);
  *
  * @ingroup SCEWElementAlloc
  */
-extern void scew_element_free (scew_element *element);
+extern SCEW_API void scew_element_free (scew_element *element);
 
 
 /**
@@ -121,8 +123,8 @@ extern void scew_element_free (scew_element *element);
  *
  * @ingroup SCEWElementSearch
  */
-extern scew_element* scew_element_by_name (scew_element const *element,
-					   XML_Char const *name);
+extern SCEW_API scew_element*
+scew_element_by_name (scew_element const *element, XML_Char const *name);
 
 /**
  * Returns the child of the given @a element at the specified
@@ -135,8 +137,8 @@ extern scew_element* scew_element_by_name (scew_element const *element,
  *
  * @ingroup SCEWElementSearch
  */
-extern scew_element* scew_element_by_index (scew_element const *element,
-                                            unsigned int index);
+extern SCEW_API scew_element*
+scew_element_by_index (scew_element const *element, unsigned int index);
 
 /**
  * Returns a list of children from the specified @a element that
@@ -151,8 +153,8 @@ extern scew_element* scew_element_by_index (scew_element const *element,
  *
  * @ingroup SCEWElementSearch
  */
-extern scew_list* scew_element_list_by_name (scew_element const *element,
-                                             XML_Char const *name);
+extern SCEW_API scew_list*
+scew_element_list_by_name (scew_element const *element, XML_Char const *name);
 
 
 /**
@@ -173,8 +175,8 @@ extern scew_list* scew_element_list_by_name (scew_element const *element,
  *
  * @ingroup SCEWElementCompare
  */
-extern scew_bool scew_element_compare (scew_element const *a,
-                                       scew_element const *b);
+extern SCEW_API scew_bool scew_element_compare (scew_element const *a,
+                                                scew_element const *b);
 
 
 /**
@@ -190,7 +192,8 @@ extern scew_bool scew_element_compare (scew_element const *a,
  *
  * @ingroup SCEWElementAcc
  */
-extern XML_Char const* scew_element_name (scew_element const *element);
+extern SCEW_API XML_Char const*
+scew_element_name (scew_element const *element);
 
 /**
  * Returns the given @a element's value. That is, the contents between
@@ -202,7 +205,8 @@ extern XML_Char const* scew_element_name (scew_element const *element);
  *
  * @ingroup SCEWElementAcc
  */
-extern XML_Char const* scew_element_contents (scew_element const *element);
+extern SCEW_API XML_Char const*
+scew_element_contents (scew_element const *element);
 
 /**
  * Sets a new @a name to the given @a element and frees the old
@@ -215,8 +219,8 @@ extern XML_Char const* scew_element_contents (scew_element const *element);
  *
  * @ingroup SCEWElementAcc
  */
-extern XML_Char const* scew_element_set_name (scew_element *element,
-					      XML_Char const *name);
+extern SCEW_API XML_Char const* scew_element_set_name (scew_element *element,
+                                                       XML_Char const *name);
 
 /**
  * Sets a new @a contents to the given element and frees the old
@@ -229,8 +233,8 @@ extern XML_Char const* scew_element_set_name (scew_element *element,
  *
  * @ingroup SCEWElementAcc
  */
-extern XML_Char const* scew_element_set_contents (scew_element *element,
-						  XML_Char const *contents);
+extern SCEW_API XML_Char const*
+scew_element_set_contents (scew_element *element, XML_Char const *contents);
 
 /**
  * Frees the current contents of the given @a element. If the element
@@ -240,7 +244,7 @@ extern XML_Char const* scew_element_set_contents (scew_element *element,
  *
  * @ingroup SCEWElementAcc
  */
-extern void scew_element_free_contents (scew_element *element);
+extern SCEW_API void scew_element_free_contents (scew_element *element);
 
 
 /**
@@ -257,7 +261,7 @@ extern void scew_element_free_contents (scew_element *element);
  *
  * @ingroup SCEWElementHier
  */
-extern unsigned int scew_element_count (scew_element const *element);
+extern SCEW_API unsigned int scew_element_count (scew_element const *element);
 
 /**
  * Returns the parent of the given @a element.
@@ -269,7 +273,8 @@ extern unsigned int scew_element_count (scew_element const *element);
  *
  * @ingroup SCEWElementHier
  */
-extern scew_element* scew_element_parent (scew_element const *element);
+extern SCEW_API scew_element*
+scew_element_parent (scew_element const *element);
 
 /**
  * Returns the list of all the @a element's children. This is the
@@ -282,7 +287,7 @@ extern scew_element* scew_element_parent (scew_element const *element);
  *
  * @ingroup SCEWElementHier
  */
-extern scew_list* scew_element_children (scew_element const *element);
+extern SCEW_API scew_list* scew_element_children (scew_element const *element);
 
 /**
  * Creates and adds, as a child of @a element, a new element with the
@@ -295,8 +300,8 @@ extern scew_list* scew_element_children (scew_element const *element);
  *
  * @ingroup SCEWElementHier
  */
-extern scew_element* scew_element_add (scew_element *element,
-				       XML_Char const *name);
+extern SCEW_API scew_element* scew_element_add (scew_element *element,
+                                                XML_Char const *name);
 
 /**
  * Creates and adds, as a child of @a element, a new element with the
@@ -310,9 +315,9 @@ extern scew_element* scew_element_add (scew_element *element,
  *
  * @ingroup SCEWElementHier
  */
-extern scew_element* scew_element_add_pair (scew_element *element,
-                                            XML_Char const *name,
-                                            XML_Char const *contents);
+extern SCEW_API scew_element* scew_element_add_pair (scew_element *element,
+                                                     XML_Char const *name,
+                                                     XML_Char const *contents);
 
 /**
  * Adds a @a child to given @a element. Note that the element being
@@ -328,8 +333,8 @@ extern scew_element* scew_element_add_pair (scew_element *element,
  *
  * @ingroup SCEWElementHier
  */
-extern scew_element* scew_element_add_element (scew_element *element,
-					       scew_element *child);
+extern SCEW_API scew_element* scew_element_add_element (scew_element *element,
+                                                        scew_element *child);
 
 /**
  * Deletes all the children for the given @a element. This function
@@ -339,7 +344,7 @@ extern scew_element* scew_element_add_element (scew_element *element,
  *
  * @ingroup SCEWElementHier
  */
-extern void scew_element_delete_all (scew_element *element);
+extern SCEW_API void scew_element_delete_all (scew_element *element);
 
 /**
  * Deletes all the children of the given @a element that matches @a
@@ -350,8 +355,8 @@ extern void scew_element_delete_all (scew_element *element);
  *
  * @ingroup SCEWElementHier
  */
-extern void scew_element_delete_all_by_name (scew_element *element,
-                                             XML_Char const *name);
+extern SCEW_API void scew_element_delete_all_by_name (scew_element *element,
+                                                      XML_Char const *name);
 
 /**
  * Deletes the first child of the given @a element that matches @a
@@ -362,8 +367,8 @@ extern void scew_element_delete_all_by_name (scew_element *element,
  *
  * @ingroup SCEWElementHier
  */
-extern void scew_element_delete_by_name (scew_element *element,
-					 XML_Char const *name);
+extern SCEW_API void scew_element_delete_by_name (scew_element *element,
+                                                  XML_Char const *name);
 
 /**
  * Deletes the child of the given @a element at the specified
@@ -374,8 +379,8 @@ extern void scew_element_delete_by_name (scew_element *element,
  *
  * @ingroup SCEWElementHier
  */
-extern void scew_element_delete_by_index (scew_element *element,
-					  unsigned int index);
+extern SCEW_API void scew_element_delete_by_index (scew_element *element,
+                                                   unsigned int index);
 
 /**
  * Detaches the given @a element from its parent, if any. This
@@ -386,7 +391,7 @@ extern void scew_element_delete_by_index (scew_element *element,
  *
  * @ingroup SCEWElementHier
  */
-extern void scew_element_detach (scew_element *element);
+extern SCEW_API void scew_element_detach (scew_element *element);
 
 
 /**
@@ -403,7 +408,8 @@ extern void scew_element_detach (scew_element *element);
  *
  * @ingroup SCEWElementAttr
  */
-extern unsigned int scew_element_attribute_count (scew_element const *element);
+extern SCEW_API unsigned int
+scew_element_attribute_count (scew_element const *element);
 
 /**
  * Returns the list of all the @a element's attributes. This is the
@@ -416,7 +422,8 @@ extern unsigned int scew_element_attribute_count (scew_element const *element);
  *
  * @ingroup SCEWElementAttr
  */
-extern scew_list* scew_element_attributes (scew_element const *element);
+extern SCEW_API scew_list*
+scew_element_attributes (scew_element const *element);
 
 /**
  * Returns the first attribute from the specified @a element that matches
@@ -429,7 +436,7 @@ extern scew_list* scew_element_attributes (scew_element const *element);
  *
  * @ingroup SCEWElementAttr
  */
-extern scew_attribute*
+extern SCEW_API scew_attribute*
 scew_element_attribute_by_name (scew_element const *element,
 				XML_Char const *name);
 
@@ -447,7 +454,7 @@ scew_element_attribute_by_name (scew_element const *element,
  *
  * @ingroup SCEWElementAttr
  */
-extern scew_attribute*
+extern SCEW_API scew_attribute*
 scew_element_attribute_by_index (scew_element const *element,
                                  unsigned int index);
 
@@ -471,8 +478,8 @@ scew_element_attribute_by_index (scew_element const *element,
  *
  * @ingroup SCEWElementAttr
  */
-extern scew_attribute* scew_element_add_attribute (scew_element *element,
-						   scew_attribute *attribute);
+extern SCEW_API scew_attribute*
+scew_element_add_attribute (scew_element *element, scew_attribute *attribute);
 
 /**
  * Creates and adds a new attribute to the given @a element. An
@@ -493,9 +500,10 @@ extern scew_attribute* scew_element_add_attribute (scew_element *element,
  *
  * @ingroup SCEWElementAttr
  */
-extern scew_attribute* scew_element_add_attribute_pair (scew_element *element,
-                                                        XML_Char const *name,
-                                                        XML_Char const *value);
+extern SCEW_API scew_attribute*
+scew_element_add_attribute_pair (scew_element *element,
+                                 XML_Char const *name,
+                                 XML_Char const *value);
 
 /**
  * Deletes all the attributes of the given @a element. This will
@@ -505,7 +513,7 @@ extern scew_attribute* scew_element_add_attribute_pair (scew_element *element,
  *
  * @ingroup SCEWElementAttr
  */
-extern void scew_element_delete_attribute_all (scew_element *element);
+extern SCEW_API void scew_element_delete_attribute_all (scew_element *element);
 
 /**
  * Deletes the given @a attribute from the specified @a element. This
@@ -516,8 +524,8 @@ extern void scew_element_delete_attribute_all (scew_element *element);
  *
  * @ingroup SCEWElementAttr
  */
-extern void scew_element_delete_attribute (scew_element *element,
-                                           scew_attribute *attribute);
+extern SCEW_API void scew_element_delete_attribute (scew_element *element,
+                                                    scew_attribute *attribute);
 
 /**
  * Deletes the first attribute of the given @a element that matches @a
@@ -528,8 +536,9 @@ extern void scew_element_delete_attribute (scew_element *element,
  *
  * @ingroup SCEWElementAttr
  */
-extern void scew_element_delete_attribute_by_name (scew_element *element,
-                                                   XML_Char const* name);
+extern SCEW_API void
+scew_element_delete_attribute_by_name (scew_element *element,
+                                       XML_Char const* name);
 
 /**
  * Deletes the attribute of the given @a element at the specified
@@ -541,8 +550,9 @@ extern void scew_element_delete_attribute_by_name (scew_element *element,
  *
  * @ingroup SCEWElementAttr
  */
-extern void scew_element_delete_attribute_by_index (scew_element *element,
-                                                    unsigned int index);
+extern SCEW_API void
+scew_element_delete_attribute_by_index (scew_element *element,
+                                        unsigned int index);
 
 #ifdef __cplusplus
 }

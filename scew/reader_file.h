@@ -30,6 +30,8 @@
 #ifndef READER_FILE_H_0811231351
 #define READER_FILE_H_0811231351
 
+#include "export.h"
+
 #include "reader.h"
 
 #include <stdio.h>
@@ -38,10 +40,9 @@
 extern "C" {
 #endif /* __cplusplus */
 
-extern scew_reader* scew_reader_file_create (char const *file_name);
+extern SCEW_API scew_reader* scew_reader_file_create (char const *file_name);
 
-extern scew_reader* scew_reader_fp_create (FILE *file);
-
+extern SCEW_API scew_reader* scew_reader_fp_create (FILE *file);
 
 #ifdef __cplusplus
 }

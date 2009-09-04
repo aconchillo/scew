@@ -35,6 +35,8 @@
 #ifndef READER_H_0811231336
 #define READER_H_0811231336
 
+#include "export.h"
+
 #include "bool.h"
 
 #include <stddef.h>
@@ -54,22 +56,22 @@ typedef struct
   void (*free) (scew_reader *);
 } scew_reader_hooks;
 
-extern scew_reader* scew_reader_create (scew_reader_hooks const *hooks,
-                                        void *data);
+extern SCEW_API scew_reader*
+scew_reader_create (scew_reader_hooks const *hooks, void *data);
 
-extern void* scew_reader_data (scew_reader *reader);
+extern SCEW_API void* scew_reader_data (scew_reader *reader);
 
-extern size_t scew_reader_read (scew_reader *reader,
-                                void *buffer,
-                                size_t byte_no);
+extern SCEW_API size_t scew_reader_read (scew_reader *reader,
+                                         void *buffer,
+                                         size_t byte_no);
 
-extern scew_bool scew_reader_end (scew_reader *reader);
+extern SCEW_API scew_bool scew_reader_end (scew_reader *reader);
 
-extern scew_bool scew_reader_error (scew_reader *reader);
+extern SCEW_API scew_bool scew_reader_error (scew_reader *reader);
 
-extern scew_bool scew_reader_close (scew_reader *reader);
+extern SCEW_API scew_bool scew_reader_close (scew_reader *reader);
 
-extern void scew_reader_free (scew_reader *reader);
+extern SCEW_API void scew_reader_free (scew_reader *reader);
 
 #ifdef __cplusplus
 }

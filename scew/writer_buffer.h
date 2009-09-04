@@ -30,8 +30,9 @@
 #ifndef WRITER_BUFFER_H_0811131103
 #define WRITER_BUFFER_H_0811131103
 
-#include "writer.h"
+#include "export.h"
 
+#include "writer.h"
 
 #ifdef __cplusplus
 extern "C" {
@@ -56,8 +57,8 @@ extern "C" {
  *
  * @ingroup SCEWWriterAlloc
  */
-extern scew_writer* scew_writer_buffer_create (XML_Char *buffer,
-                                               unsigned int size);
+extern SCEW_API scew_writer* scew_writer_buffer_create (XML_Char *buffer,
+                                                        unsigned int size);
 
 
 #ifdef __cplusplus

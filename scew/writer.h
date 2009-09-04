@@ -35,6 +35,8 @@
 #ifndef WRITER_H_0309110036
 #define WRITER_H_0309110036
 
+#include "export.h"
+
 #include "tree.h"
 #include "attribute.h"
 #include "bool.h"
@@ -67,18 +69,18 @@ typedef struct
  * @ingroup SCEWWriter
  */
 
-extern scew_writer* scew_writer_create (scew_writer_hooks const *hooks,
-                                        void *data);
+extern SCEW_API scew_writer*
+scew_writer_create (scew_writer_hooks const *hooks, void *data);
 
-extern void* scew_writer_data (scew_writer *writer);
+extern SCEW_API void* scew_writer_data (scew_writer *writer);
 
-extern size_t scew_writer_write (scew_writer *writer,
-                                 void const *buffer,
-                                 size_t byte_no);
+extern SCEW_API size_t scew_writer_write (scew_writer *writer,
+                                          void const *buffer,
+                                          size_t byte_no);
 
-extern scew_bool scew_writer_end (scew_writer *writer);
+extern SCEW_API scew_bool scew_writer_end (scew_writer *writer);
 
-extern scew_bool scew_writer_error (scew_writer *writer);
+extern SCEW_API scew_bool scew_writer_error (scew_writer *writer);
 
 /**
  * Closes the given SCEW @a writer. This function will have different
@@ -96,7 +98,7 @@ extern scew_bool scew_writer_error (scew_writer *writer);
  *
  * @ingroup SCEWWriterAlloc
  */
-extern scew_bool scew_writer_close (scew_writer *writer);
+extern SCEW_API scew_bool scew_writer_close (scew_writer *writer);
 
 /**
  * Frees the memory allocated by the given SCEW @a writer. This
@@ -108,7 +110,7 @@ extern scew_bool scew_writer_close (scew_writer *writer);
  *
  * @ingroup SCEWWriterAlloc
  */
-extern void scew_writer_free (scew_writer *writer);
+extern SCEW_API void scew_writer_free (scew_writer *writer);
 
 #ifdef __cplusplus
 }

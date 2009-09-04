@@ -30,6 +30,8 @@
 #ifndef WRITER_FILE_H_0811131101
 #define WRITER_FILE_H_0811131101
 
+#include "export.h"
+
 #include "writer.h"
 
 #include <stdio.h>
@@ -54,7 +56,7 @@ extern "C" {
  *
  * @ingroup SCEWWriterAlloc
  */
-extern scew_writer* scew_writer_file_create (char const *file_name);
+extern SCEW_API scew_writer* scew_writer_file_create (char const *file_name);
 
 /**
  * Creates a new SCEW writer for the given @a file stream. Once the
@@ -79,7 +81,7 @@ extern scew_writer* scew_writer_file_create (char const *file_name);
  *
  * @ingroup SCEWWriterAlloc
  */
-extern scew_writer* scew_writer_fp_create (FILE *file);
+extern SCEW_API scew_writer* scew_writer_fp_create (FILE *file);
 
 #ifdef __cplusplus
 }

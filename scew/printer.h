@@ -39,6 +39,8 @@
 #ifndef PRINTER_H_0901162234
 #define PRINTER_H_0901162234
 
+#include "export.h"
+
 #include "writer.h"
 
 #ifdef __cplusplus
@@ -48,12 +50,12 @@ extern "C" {
 
 typedef struct scew_printer scew_printer;
 
-extern scew_printer* scew_printer_create (scew_writer *writer);
+extern SCEW_API scew_printer* scew_printer_create (scew_writer *writer);
 
-extern void scew_printer_free (scew_printer *printer);
+extern SCEW_API void scew_printer_free (scew_printer *printer);
 
-extern scew_writer* scew_printer_set_writer (scew_printer *printer,
-                                             scew_writer *writer);
+extern SCEW_API scew_writer* scew_printer_set_writer (scew_printer *printer,
+                                                      scew_writer *writer);
 
 
 /**
@@ -73,8 +75,8 @@ extern scew_writer* scew_printer_set_writer (scew_printer *printer,
  *
  * @ingroup SCEWPrinterProp
  */
-extern void scew_printer_set_indented (scew_printer *printer,
-                                       scew_bool indented);
+extern SCEW_API void scew_printer_set_indented (scew_printer *printer,
+                                                scew_bool indented);
 
 /**
  * Sets the number of @a spaces to use when indenting output for the
@@ -87,8 +89,8 @@ extern void scew_printer_set_indented (scew_printer *printer,
  *
  * @ingroup SCEWPrinterProp
  */
-extern void scew_printer_set_indentation (scew_printer *printer,
-                                          unsigned int spaces);
+extern SCEW_API void scew_printer_set_indentation (scew_printer *printer,
+                                                   unsigned int spaces);
 
 
 /**
@@ -108,8 +110,8 @@ extern void scew_printer_set_indentation (scew_printer *printer,
  *
  * @ingroup SCEWPrinterOutput
  */
-extern scew_bool scew_printer_print_tree (scew_printer *printer,
-                                          scew_tree const *tree);
+extern SCEW_API scew_bool scew_printer_print_tree (scew_printer *printer,
+                                                   scew_tree const *tree);
 
 /**
  *
@@ -118,8 +120,9 @@ extern scew_bool scew_printer_print_tree (scew_printer *printer,
  *
  * @ingroup SCEWPrinterOutput
  */
-extern scew_bool scew_printer_print_element (scew_printer *printer,
-                                             scew_element const *element);
+extern SCEW_API scew_bool
+scew_printer_print_element (scew_printer *printer,
+                            scew_element const *element);
 
 /**
  *
@@ -128,7 +131,7 @@ extern scew_bool scew_printer_print_element (scew_printer *printer,
  *
  * @ingroup SCEWPrinterOutput
  */
-extern scew_bool
+extern SCEW_API scew_bool
 scew_printer_print_element_children (scew_printer *printer,
                                      scew_element const  *element);
 
@@ -139,7 +142,7 @@ scew_printer_print_element_children (scew_printer *printer,
  *
  * @ingroup SCEWPrinterOutput
  */
-extern scew_bool
+extern SCEW_API scew_bool
 scew_printer_print_element_attributes (scew_printer *printer,
                                        scew_element const *element);
 
@@ -150,7 +153,7 @@ scew_printer_print_element_attributes (scew_printer *printer,
  *
  * @ingroup SCEWPrinterOutput
  */
-extern scew_bool
+extern SCEW_API scew_bool
 scew_printer_print_attribute (scew_printer *printer,
                               scew_attribute const *attribute);
 

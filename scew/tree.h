@@ -39,6 +39,8 @@
 #ifndef TREE_H_0302202332
 #define TREE_H_0302202332
 
+#include "export.h"
+
 #include "element.h"
 
 #include <expat.h>
@@ -84,7 +86,7 @@ typedef struct scew_tree scew_tree;
  *
  * @ingroup SCEWTreeAlloc
  */
-extern scew_tree* scew_tree_create (void);
+extern SCEW_API scew_tree* scew_tree_create (void);
 
 /**
  * Makes a deep copy of the given @a tree. It also copies XML
@@ -96,7 +98,7 @@ extern scew_tree* scew_tree_create (void);
  *
  * @ingroup SCEWTreeAlloc
  */
-extern scew_tree* scew_tree_copy (scew_tree const *tree);
+extern SCEW_API scew_tree* scew_tree_copy (scew_tree const *tree);
 
 /**
  * Frees a tree memory structure. Call this function when you are done
@@ -110,7 +112,7 @@ extern scew_tree* scew_tree_copy (scew_tree const *tree);
  *
  * @ingroup SCEWTreeAlloc
  */
-extern void scew_tree_free (scew_tree *tree);
+extern SCEW_API void scew_tree_free (scew_tree *tree);
 
 
 /**
@@ -130,7 +132,8 @@ extern void scew_tree_free (scew_tree *tree);
  *
  * @ingroup SCEWTreeCompare
  */
-extern scew_bool scew_tree_compare (scew_tree const *a, scew_tree const *b);
+extern SCEW_API scew_bool scew_tree_compare (scew_tree const *a,
+                                             scew_tree const *b);
 
 
 /**
@@ -152,7 +155,8 @@ extern scew_bool scew_tree_compare (scew_tree const *a, scew_tree const *b);
  *
  * @ingroup SCEWTreeProp
  */
-extern XML_Char const* scew_tree_xml_version (scew_tree const *tree);
+extern SCEW_API XML_Char const*
+scew_tree_xml_version (scew_tree const *tree);
 
 /**
  * Sets the XML version in the XML declaration. Currently there is one
@@ -164,8 +168,8 @@ extern XML_Char const* scew_tree_xml_version (scew_tree const *tree);
  *
  * @ingroup SCEWTreeProp
  */
-extern void scew_tree_set_xml_version (scew_tree *tree,
-				       XML_Char const *version);
+extern SCEW_API void scew_tree_set_xml_version (scew_tree *tree,
+                                                XML_Char const *version);
 
 /**
  *
@@ -178,7 +182,7 @@ extern void scew_tree_set_xml_version (scew_tree *tree,
  *
  * @ingroup SCEWTreeProp
  */
-extern XML_Char const* scew_tree_xml_encoding (scew_tree const *tree);
+extern SCEW_API XML_Char const* scew_tree_xml_encoding (scew_tree const *tree);
 
 /**
  * Sets the character encoding used in the XML document. The default is
@@ -189,8 +193,8 @@ extern XML_Char const* scew_tree_xml_encoding (scew_tree const *tree);
  *
  * @ingroup SCEWTreeProp
  */
-extern void scew_tree_set_xml_encoding (scew_tree *tree,
-					XML_Char const *encoding);
+extern SCEW_API void scew_tree_set_xml_encoding (scew_tree *tree,
+                                                 XML_Char const *encoding);
 
 /**
  * Returns whether the given @a tree is an standalone document. The
@@ -205,7 +209,8 @@ extern void scew_tree_set_xml_encoding (scew_tree *tree,
  *
  * @ingroup SCEWTreeProp
  */
-extern scew_tree_standalone scew_tree_xml_standalone (scew_tree const *tree);
+extern SCEW_API scew_tree_standalone
+scew_tree_xml_standalone (scew_tree const *tree);
 
 /**
  * The standalone property tells the XML processor whether there are
@@ -221,8 +226,9 @@ extern scew_tree_standalone scew_tree_xml_standalone (scew_tree const *tree);
  *
  * @ingroup SCEWTreeProp
  */
-extern void scew_tree_set_xml_standalone (scew_tree *tree,
-                                          scew_tree_standalone standalone);
+extern SCEW_API void
+scew_tree_set_xml_standalone (scew_tree *tree,
+                              scew_tree_standalone standalone);
 
 
 /**
@@ -241,7 +247,7 @@ extern void scew_tree_set_xml_standalone (scew_tree *tree,
  *
  * @ingroup SCEWTreeContent
  */
-extern scew_element* scew_tree_root (scew_tree const *tree);
+extern SCEW_API scew_element* scew_tree_root (scew_tree const *tree);
 
 /**
  * Creates the root element of an XML @a tree with the given @a
@@ -258,8 +264,8 @@ extern scew_element* scew_tree_root (scew_tree const *tree);
  *
  * @ingroup SCEWTreeContent
  */
-extern scew_element* scew_tree_set_root (scew_tree *tree,
-					 XML_Char const *name);
+extern SCEW_API scew_element* scew_tree_set_root (scew_tree *tree,
+                                                  XML_Char const *name);
 
 /**
  * Sets the root element of an XML @a tree with the given @a
@@ -276,8 +282,8 @@ extern scew_element* scew_tree_set_root (scew_tree *tree,
  *
  * @ingroup SCEWTreeContent
  */
-extern scew_element* scew_tree_set_root_element (scew_tree *tree,
-                                                 scew_element *root);
+extern SCEW_API scew_element* scew_tree_set_root_element (scew_tree *tree,
+                                                          scew_element *root);
 /**
  *
  *
@@ -289,7 +295,7 @@ extern scew_element* scew_tree_set_root_element (scew_tree *tree,
  *
  * @ingroup SCEWTreeContent
  */
-extern XML_Char const* scew_tree_xml_preamble (scew_tree const *tree);
+extern SCEW_API XML_Char const* scew_tree_xml_preamble (scew_tree const *tree);
 
 /**
  * Sets the preamble string for the XML document. Typically this
@@ -300,8 +306,8 @@ extern XML_Char const* scew_tree_xml_preamble (scew_tree const *tree);
  *
  * @ingroup SCEWTreeContent
  */
-extern void scew_tree_set_xml_preamble (scew_tree *tree,
-                                        XML_Char const *preamble);
+extern SCEW_API void scew_tree_set_xml_preamble (scew_tree *tree,
+                                                 XML_Char const *preamble);
 
 #ifdef __cplusplus
 }

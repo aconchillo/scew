@@ -39,6 +39,8 @@
 #ifndef LIST_H_0707122009
 #define LIST_H_0707122009
 
+#include "export.h"
+
 #include "bool.h"
 
 #ifdef __cplusplus
@@ -92,7 +94,7 @@ typedef scew_bool (*scew_cmp_function) (void const *, void const *);
  *
  * @ingroup SCEWListAlloc
  */
-extern scew_list* scew_list_create (void *data);
+extern SCEW_API scew_list* scew_list_create (void *data);
 
 /**
  * Frees all the items from the given @a list. The data pointers are
@@ -100,7 +102,7 @@ extern scew_list* scew_list_create (void *data);
  *
  * @ingroup SCEWListAlloc
  */
-extern void scew_list_free (scew_list *list);
+extern SCEW_API void scew_list_free (scew_list *list);
 
 
 /**
@@ -120,7 +122,7 @@ extern void scew_list_free (scew_list *list);
  *
  * @ingroup SCEWListAcc
  */
-extern void* scew_list_data (scew_list *list);
+extern SCEW_API void* scew_list_data (scew_list *list);
 
 /**
  * Returns the number of items in the given @a list.
@@ -130,7 +132,7 @@ extern void* scew_list_data (scew_list *list);
  *
  * @ingroup SCEWListAcc
  */
-extern unsigned int scew_list_size (scew_list *list);
+extern SCEW_API unsigned int scew_list_size (scew_list *list);
 
 
 /**
@@ -151,7 +153,7 @@ extern unsigned int scew_list_size (scew_list *list);
  *
  * @ingroup SCEWListMod
  */
-extern scew_list* scew_list_append (scew_list *list, void *data);
+extern SCEW_API scew_list* scew_list_append (scew_list *list, void *data);
 
 /**
  * Creates a new list item with the given @a data and prepends it to
@@ -165,7 +167,7 @@ extern scew_list* scew_list_append (scew_list *list, void *data);
  *
  * @ingroup SCEWListMod
  */
-extern scew_list* scew_list_prepend (scew_list *list, void *data);
+extern SCEW_API scew_list* scew_list_prepend (scew_list *list, void *data);
 
 /**
  * Deletes the first item pointing to @a data from the given @a
@@ -180,7 +182,7 @@ extern scew_list* scew_list_prepend (scew_list *list, void *data);
  *
  * @ingroup SCEWListMod
  */
-extern scew_list* scew_list_delete (scew_list *list, void *data);
+extern SCEW_API scew_list* scew_list_delete (scew_list *list, void *data);
 
 /**
  * Deletes the given list @a item from @a list.
@@ -192,8 +194,8 @@ extern scew_list* scew_list_delete (scew_list *list, void *data);
  *
  * @ingroup SCEWListMod
  */
-extern scew_list* scew_list_delete_item (scew_list *list,
-                                         scew_list *item);
+extern SCEW_API scew_list* scew_list_delete_item (scew_list *list,
+                                                  scew_list *item);
 
 
 /**
@@ -214,7 +216,7 @@ extern scew_list* scew_list_delete_item (scew_list *list,
  *
  * @ingroup SCEWListTrav
  */
-extern scew_list* scew_list_first (scew_list *list);
+extern SCEW_API scew_list* scew_list_first (scew_list *list);
 
 /**
  * Finds the last item of the given @a list. This function travreses
@@ -228,7 +230,7 @@ extern scew_list* scew_list_first (scew_list *list);
  *
  * @ingroup SCEWListTrav
  */
-extern scew_list* scew_list_last (scew_list *list);
+extern SCEW_API scew_list* scew_list_last (scew_list *list);
 
 /**
  * Obtains the next item of the given @a list item.
@@ -239,7 +241,7 @@ extern scew_list* scew_list_last (scew_list *list);
  *
  * @ingroup SCEWListTrav
  */
-extern scew_list* scew_list_next (scew_list *list);
+extern SCEW_API scew_list* scew_list_next (scew_list *list);
 
 /**
  * Obtains the previous item of the given @a list item.
@@ -251,7 +253,7 @@ extern scew_list* scew_list_next (scew_list *list);
  *
  * @ingroup SCEWListTrav
  */
-extern scew_list* scew_list_previous (scew_list *list);
+extern SCEW_API scew_list* scew_list_previous (scew_list *list);
 
 /**
  * Gets the @a list item at the given @a index.
@@ -263,7 +265,8 @@ extern scew_list* scew_list_previous (scew_list *list);
  *
  * @ingroup SCEWListSearch
  */
-extern scew_list* scew_list_index (scew_list *list, unsigned int index);
+extern SCEW_API scew_list* scew_list_index (scew_list *list,
+                                            unsigned int index);
 
 /**
  * Traverses all @a list items and executes the given function, @a
@@ -277,9 +280,9 @@ extern scew_list* scew_list_index (scew_list *list, unsigned int index);
  *
  * @ingroup SCEWListTrav
  */
-extern void scew_list_foreach (scew_list *list,
-                               scew_list_function func,
-                               void *user_data);
+extern SCEW_API void scew_list_foreach (scew_list *list,
+                                        scew_list_function func,
+                                        void *user_data);
 
 /**
  * @defgroup SCEWListSearch Search
@@ -298,7 +301,7 @@ extern void scew_list_foreach (scew_list *list,
  *
  * @ingroup SCEWListSearch
  */
-extern scew_list* scew_list_find (scew_list *list, void *data);
+extern SCEW_API scew_list* scew_list_find (scew_list *list, void *data);
 
 /**
  * Finds the first @a list item that matches the given predicate, @a
@@ -316,9 +319,9 @@ extern scew_list* scew_list_find (scew_list *list, void *data);
  *
  * @ingroup SCEWListSearch
  */
-extern scew_list* scew_list_find_custom (scew_list *list,
-                                         void const *data,
-                                         scew_cmp_function func);
+extern SCEW_API scew_list* scew_list_find_custom (scew_list *list,
+                                                  void const *data,
+                                                  scew_cmp_function func);
 
 #ifdef __cplusplus
 }

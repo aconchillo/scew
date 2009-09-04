@@ -38,6 +38,8 @@
 #ifndef PARSER_H_0211250057
 #define PARSER_H_0211250057
 
+#include "export.h"
+
 #include "bool.h"
 #include "reader.h"
 #include "tree.h"
@@ -82,7 +84,7 @@ typedef scew_bool (*scew_parser_load_hook) (scew_parser *parser,
  *
  * @ingroup SCEWParserAlloc
  */
-extern scew_parser* scew_parser_create (void);
+extern SCEW_API scew_parser* scew_parser_create (void);
 
 /**
  * Creates a new parser with namespaces support. Note that Expat
@@ -98,7 +100,7 @@ extern scew_parser* scew_parser_create (void);
  *
  * @ingroup SCEWParserAlloc
  */
-extern scew_parser* scew_parser_namespace_create (XML_Char separator);
+extern SCEW_API scew_parser* scew_parser_namespace_create (XML_Char separator);
 
 /**
  * Frees a parser memory structure. This function will not free the
@@ -109,7 +111,7 @@ extern scew_parser* scew_parser_namespace_create (XML_Char separator);
  *
  * @ingroup SCEWParserAlloc
  */
-extern void scew_parser_free (scew_parser *parser);
+extern SCEW_API void scew_parser_free (scew_parser *parser);
 
 
 /**
@@ -131,7 +133,8 @@ extern void scew_parser_free (scew_parser *parser);
  *
  * @ingroup SCEWParserLoad
  */
-extern scew_bool scew_parser_load (scew_parser *parser, scew_reader *reader);
+extern SCEW_API scew_bool scew_parser_load (scew_parser *parser,
+                                            scew_reader *reader);
 
 /**
  * Sets the callback to be used when reading streams.
@@ -141,8 +144,8 @@ extern scew_bool scew_parser_load (scew_parser *parser, scew_reader *reader);
  *
  * @ingroup SCEWParserLoad
  */
-extern void scew_parser_set_load_hook (scew_parser *parser,
-                                       scew_parser_load_hook hook);
+extern SCEW_API void scew_parser_set_load_hook (scew_parser *parser,
+                                                scew_parser_load_hook hook);
 
 /**
  * Tells the parser how to treat white spaces. The default is to
@@ -165,8 +168,8 @@ extern void scew_parser_set_load_hook (scew_parser *parser,
  *
  * @ingroup SCEWParserLoad
  */
-extern void scew_parser_ignore_whitespaces (scew_parser *parser,
-                                            scew_bool ignore);
+extern SCEW_API void scew_parser_ignore_whitespaces (scew_parser *parser,
+                                                     scew_bool ignore);
 
 
 /**
@@ -183,7 +186,7 @@ extern void scew_parser_ignore_whitespaces (scew_parser *parser,
  *
  * @ingroup SCEWParserAcc
  */
-extern scew_tree* scew_parser_tree (scew_parser const *parser);
+extern SCEW_API scew_tree* scew_parser_tree (scew_parser const *parser);
 
 /**
  * Returns the internal Expat parser. Probably some low-level Expat
@@ -194,7 +197,7 @@ extern scew_tree* scew_parser_tree (scew_parser const *parser);
  *
  * @ingroup SCEWParserAcc
  */
-extern XML_Parser scew_parser_expat (scew_parser *parser);
+extern SCEW_API XML_Parser scew_parser_expat (scew_parser *parser);
 
 #ifdef __cplusplus
 }

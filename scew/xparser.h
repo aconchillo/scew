@@ -30,6 +30,8 @@
 #ifndef XPARSER_H_0211250057
 #define XPARSER_H_0211250057
 
+#include "export.h"
+
 #include "parser.h"
 
 
@@ -54,12 +56,13 @@ struct scew_parser
 
 /* Functions */
 
-extern scew_bool scew_parser_expat_init_ (scew_parser *parser,
-                                          scew_bool namespace,
-                                          XML_Char separator);
+extern SCEW_LOCAL scew_bool scew_parser_expat_init_ (scew_parser *parser,
+                                                     scew_bool namespace,
+                                                     XML_Char separator);
 
-extern void scew_parser_expat_install_handlers_ (scew_parser *parser);
+extern SCEW_LOCAL void
+scew_parser_expat_install_handlers_ (scew_parser *parser);
 
-extern void scew_parser_stack_free_ (scew_parser *parser);
+extern SCEW_LOCAL void scew_parser_stack_free_ (scew_parser *parser);
 
 #endif /* XPARSER_H_0211250057 */

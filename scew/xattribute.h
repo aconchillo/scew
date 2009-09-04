@@ -30,6 +30,8 @@
 #ifndef XATTRIBUTE_H_0908242344
 #define XATTRIBUTE_H_0908242344
 
+#include "export.h"
+
 #include "attribute.h"
 
 
@@ -52,7 +54,7 @@ struct scew_attribute
  *
  * @pre attribute != NULL
  */
-extern void scew_attribute_set_parent_ (scew_attribute *attribute,
-                                        scew_element const *parent);
+extern SCEW_LOCAL void scew_attribute_set_parent_ (scew_attribute *attribute,
+                                                   scew_element const *parent);
 
 #endif // XATTRIBUTE_H_0908242344

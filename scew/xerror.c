@@ -62,9 +62,9 @@ scew_error_last_error_ (void)
 
 /* Multi-threaded versions */
 
-#ifdef _MSC_VER
+#ifdef _WIN32
 
-/* Microsoft Visual C++ multi-thread version */
+/* Microsoft Windows multi-thread version */
 
 /**
  * Note: This code isn't 100% thread safe without an initializer
@@ -103,7 +103,7 @@ scew_error_last_error_ (void)
   return (scew_error) TlsGetValue (last_error_key_);
 }
 
-#else /* _MSC_VER */
+#else /* _WIN32 */
 
 
 /* pthread multi-threaded version */
@@ -157,6 +157,6 @@ scew_error_last_error_ (void)
   return *code;
 }
 
-#endif /* _MSC_VER */
+#endif /* _WIN32 */
 
 #endif /* SINGLE_THREADED */

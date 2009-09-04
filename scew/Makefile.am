@@ -7,8 +7,8 @@
 
 includedir = $(prefix)/include/$(PACKAGE)
 
-include_HEADERS = attribute.h bool.h element.h error.h list.h parser.h \
-	printer.h scew.h str.h tree.h \
+include_HEADERS = attribute.h bool.h element.h error.h export.h \
+	list.h parser.h	printer.h scew.h str.h tree.h \
 	reader.h reader_buffer.h reader_file.h \
 	writer.h writer_buffer.h writer_file.h
 

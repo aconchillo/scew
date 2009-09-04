@@ -30,6 +30,8 @@
 #ifndef READER_BUFFER_H_0908250202
 #define READER_BUFFER_H_0908250202
 
+#include "export.h"
+
 #include "reader.h"
 
 #include <expat.h>
@@ -38,8 +40,8 @@
 extern "C" {
 #endif /* __cplusplus */
 
-extern scew_reader* scew_reader_buffer_create (XML_Char const *buffer,
-                                               size_t size);
+extern SCEW_API scew_reader* scew_reader_buffer_create (XML_Char const *buffer,
+                                                        size_t size);
 
 #ifdef __cplusplus
 }

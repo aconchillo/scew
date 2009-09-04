@@ -65,8 +65,8 @@ extern "C" {
  *
  * @ingroup SCEWAttributeAlloc
  */
-extern scew_attribute* scew_attribute_create (XML_Char const *name,
-					      XML_Char const *value);
+extern SCEW_API scew_attribute* scew_attribute_create (XML_Char const *name,
+                                                       XML_Char const *value);
 
 /**
  * Makes a copy of the given @a attribute.
@@ -77,7 +77,8 @@ extern scew_attribute* scew_attribute_create (XML_Char const *name,
  *
  * @ingroup SCEWAttributeAlloc
  */
-extern scew_attribute* scew_attribute_copy (scew_attribute const *attribute);
+extern SCEW_API scew_attribute*
+scew_attribute_copy (scew_attribute const *attribute);
 
 /**
  * Frees the given @a attribute. That is, its name and value. You
@@ -87,7 +88,7 @@ extern scew_attribute* scew_attribute_copy (scew_attribute const *attribute);
  *
  * @ingroup SCEWAttributeAlloc
  */
-extern void scew_attribute_free (scew_attribute *attribute);
+extern SCEW_API void scew_attribute_free (scew_attribute *attribute);
 
 
 /**
@@ -107,8 +108,8 @@ extern void scew_attribute_free (scew_attribute *attribute);
  *
  * @ingroup SCEWAttributeCompare
  */
-extern scew_bool scew_attribute_compare (scew_attribute const *a,
-                                         scew_attribute const *b);
+extern SCEW_API scew_bool scew_attribute_compare (scew_attribute const *a,
+                                                  scew_attribute const *b);
 
 
 /**
@@ -124,7 +125,8 @@ extern scew_bool scew_attribute_compare (scew_attribute const *a,
  *
  * @ingroup SCEWAttributeAcc
  */
-extern XML_Char const* scew_attribute_name (scew_attribute const *attribute);
+extern SCEW_API XML_Char const*
+scew_attribute_name (scew_attribute const *attribute);
 
 /**
  * Returns the given @a attribute's value.
@@ -133,7 +135,8 @@ extern XML_Char const* scew_attribute_name (scew_attribute const *attribute);
  *
  * @ingroup SCEWAttributeAcc
  */
-extern XML_Char const* scew_attribute_value (scew_attribute const *attribute);
+extern SCEW_API XML_Char const*
+scew_attribute_value (scew_attribute const *attribute);
 
 /**
  * Sets a new @a name to the given @a attribute and frees the old
@@ -147,8 +150,8 @@ extern XML_Char const* scew_attribute_value (scew_attribute const *attribute);
  *
  * @ingroup SCEWAttributeAcc
  */
-extern XML_Char const* scew_attribute_set_name (scew_attribute *attribute,
-						XML_Char const *name);
+extern SCEW_API XML_Char const*
+scew_attribute_set_name (scew_attribute *attribute, XML_Char const *name);
 
 /**
  * Sets a new @a value to the given @a attribute and frees the old
@@ -162,8 +165,8 @@ extern XML_Char const* scew_attribute_set_name (scew_attribute *attribute,
  *
  * @ingroup SCEWAttributeAcc
  */
-extern XML_Char const* scew_attribute_set_value (scew_attribute *attribute,
-						 XML_Char const *value);
+extern SCEW_API XML_Char const*
+scew_attribute_set_value (scew_attribute *attribute, XML_Char const *value);
 
 
 /**
@@ -182,7 +185,8 @@ extern XML_Char const* scew_attribute_set_value (scew_attribute *attribute,
  *
  * @ingroup SCEWAttributeHier
  */
-extern scew_element* scew_attribute_parent (scew_attribute const *attribute);
+extern SCEW_API scew_element*
+scew_attribute_parent (scew_attribute const *attribute);
 
 #ifdef __cplusplus
 }

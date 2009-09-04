@@ -7,7 +7,7 @@
  *
  * @if copyright
  *
- * Copyright (C) 2003-2008 Aleix Conchillo Flaque
+ * Copyright (C) 2003-2009 Aleix Conchillo Flaque
  *
  * SCEW is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -36,6 +36,8 @@
 
 #ifndef ERROR_H_0305051029
 #define ERROR_H_0305051029
+
+#include "export.h"
 
 #include "parser.h"
 
@@ -79,7 +81,7 @@ typedef enum
  *
  * @ingroup SCEWErrorCodes
  */
-extern scew_error scew_error_code (void);
+extern SCEW_API scew_error scew_error_code (void);
 
 /**
  * Returns a string describing the internal SCEW error.
@@ -89,7 +91,7 @@ extern scew_error scew_error_code (void);
  *
  * @ingroup SCEWErrorCodes
  */
-extern XML_Char const* scew_error_string (scew_error code);
+extern SCEW_API XML_Char const* scew_error_string (scew_error code);
 
 
 /**
@@ -105,28 +107,28 @@ extern XML_Char const* scew_error_string (scew_error code);
  *
  * @ingroup SCEWErrorExpat
  */
-extern enum XML_Error scew_error_expat_code (scew_parser *parser);
+extern SCEW_API enum XML_Error scew_error_expat_code (scew_parser *parser);
 
 /**
  * Returns a string describing the internal Expat error.
  *
  * @ingroup SCEWErrorExpat
  */
-extern XML_Char const* scew_error_expat_string (enum XML_Error code);
+extern SCEW_API XML_Char const* scew_error_expat_string (enum XML_Error code);
 
 /**
  * Returns the current line at which the error was detected.
  *
  * @ingroup SCEWErrorExpat
  */
-extern int scew_error_expat_line (scew_parser *parser);
+extern SCEW_API int scew_error_expat_line (scew_parser *parser);
 
 /**
  * Returns the current column at which the error was detected.
  *
  * @ingroup SCEWErrorExpat
  */
-extern int scew_error_expat_column (scew_parser *parser);
+extern SCEW_API int scew_error_expat_column (scew_parser *parser);
 
 #ifdef __cplusplus
 }
