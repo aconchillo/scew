@@ -47,13 +47,13 @@
 #include "writer_buffer.h"
 #include "writer_file.h"
 
-/* Automatically include the correct library on windows. */
-#if defined (_WIN32) && defined(SCEW_STATIC)
+/* Automatically include the correct library on Windows. */
+#if defined (_MSC_VER) && defined(XML_STATIC)
 
 #ifdef XML_UNICODE_WCHAR_T
-#define SCEW_LIB_U    "u"
+#define SCEW_LIB_W    "w"
 #else
-#define SCEW_LIB_U
+#define SCEW_LIB_W
 #endif /* XML_UNICODE_WCHAR_T */
 
 #ifdef SCEW_DEBUG
@@ -62,12 +62,12 @@
 #define SCEW_LIB_D
 #endif /* _DEBUG */
 
-#if defined (SCEW_LIB_U) || defined (SCEW_LIB_D)
-#pragma comment (lib, "scew_" SCEW_LIB_U SCEW_LIB_D ".lib")
+#if defined (SCEW_LIB_W) || defined (SCEW_LIB_D)
+#pragma comment (lib, "libscew_" SCEW_LIB_W SCEW_LIB_D ".lib")
 #else
-#pragma comment (lib, "scew.lib")
+#pragma comment (lib, "libscew.lib")
 #endif
 
-#endif /* _WIN32 && SCEW_STATIC */
+#endif /* _MSC_VER && XML_STATIC */
 
 #endif /* SCEW_H_0211250134 */

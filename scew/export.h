@@ -29,7 +29,7 @@
 #ifndef EXPORT_H_0909040014
 #define EXPORT_H_0909040014
 
-#if defined (_WIN32) || defined (__CYGWIN__)
+#if defined (_MSC_VER) || defined (__CYGWIN__)
 
   #define SCEW_DLL_IMPORT __declspec(dllimport)
   #define SCEW_DLL_EXPORT __declspec(dllexport)
@@ -51,7 +51,7 @@
     #define SCEW_DLL
   #endif /* PIC */
 
-#endif /* _WIN32 || __CYGWIN__ */
+#endif /* _MSC_VER || __CYGWIN__ */
 
 #ifdef SCEW_DLL /* Defined if SCEW is compiled as a DLL. */
 

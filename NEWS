@@ -56,6 +56,11 @@ See the end for copying conditions.
 
 ** Changes:
 
+   - Windows support has been updated for Visual C++ 2008.
+
+   - XML preamble (anything between XML declaration and root element)
+     is now parsed.
+
    - XML declaration standalone attribute is now used.
 
    - Test cases have been added using Check unit testing framework
