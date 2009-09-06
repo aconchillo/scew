@@ -51,22 +51,24 @@
 #if defined (_MSC_VER) && defined(XML_STATIC)
 
 #ifdef XML_UNICODE_WCHAR_T
-#define SCEW_LIB_W    "w"
+#define SCEW_LIB_W "w"
 #else
 #define SCEW_LIB_W
 #endif /* XML_UNICODE_WCHAR_T */
 
-#ifdef SCEW_DEBUG
-#define SCEW_LIB_D    "d"
+#ifdef _DEBUG
+#define SCEW_LIB_D "d"
 #else
 #define SCEW_LIB_D
 #endif /* _DEBUG */
 
-#if defined (SCEW_LIB_W) || defined (SCEW_LIB_D)
-#pragma comment (lib, "libscew_" SCEW_LIB_W SCEW_LIB_D ".lib")
-#else
-#pragma comment (lib, "libscew.lib")
-#endif
+/**
+ * By default SCEW uses "Multi-threaded (/MT)" run-time library. See
+ * 'win32/README' if you wish to use a different run-time library.
+ */
+#define SCEW_LIB_M "MT"
+
+#pragma comment (lib, "libscew" SCEW_LIB_M SCEW_LIB_W SCEW_LIB_D ".lib")
 
 #endif /* _MSC_VER && XML_STATIC */
 

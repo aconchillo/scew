@@ -61,9 +61,9 @@
 			<Tool
 				Name="VCLinkerTool"
 				AdditionalDependencies="libexpat.lib"
-				OutputFile="$(OutDir)\libscew_d.dll"
+				OutputFile="$(OutDir)\libscewd.dll"
 				LinkIncremental="1"
-				SubSystem="2"
+				GenerateManifest="false"
 			/>
 			<Tool
 				Name="VCALinkTool"
@@ -135,7 +135,7 @@
 				AdditionalDependencies="libexpat.lib"
 				OutputFile="$(OutDir)\libscew.dll"
 				LinkIncremental="1"
-				SubSystem="2"
+				GenerateManifest="false"
 				OptimizeReferences="2"
 				EnableCOMDATFolding="2"
 			/>
@@ -206,9 +206,9 @@
 			<Tool
 				Name="VCLinkerTool"
 				AdditionalDependencies="libexpatw.lib"
-				OutputFile="$(OutDir)\libscew_wd.dll"
+				OutputFile="$(OutDir)\libscewwd.dll"
 				LinkIncremental="1"
-				SubSystem="2"
+				GenerateManifest="false"
 			/>
 			<Tool
 				Name="VCALinkTool"
@@ -278,9 +278,9 @@
 			<Tool
 				Name="VCLinkerTool"
 				AdditionalDependencies="libexpatw.lib"
-				OutputFile="$(OutDir)\libscew_w.dll"
+				OutputFile="$(OutDir)\libsceww.dll"
 				LinkIncremental="1"
-				SubSystem="2"
+				GenerateManifest="false"
 				OptimizeReferences="2"
 				EnableCOMDATFolding="2"
 			/>
@@ -334,7 +334,7 @@
 				PreprocessorDefinitions="SCEW_DEBUG;XML_STATIC;_CRT_SECURE_NO_WARNINGS"
 				MinimalRebuild="true"
 				BasicRuntimeChecks="3"
-				RuntimeLibrary="3"
+				RuntimeLibrary="1"
 				UsePrecompiledHeader="0"
 				WarningLevel="3"
 				DebugInformationFormat="4"
@@ -350,7 +350,7 @@
 			/>
 			<Tool
 				Name="VCLibrarianTool"
-				OutputFile="$(OutDir)\libscew_d.lib"
+				OutputFile="$(OutDir)\libscewMTd.lib"
 			/>
 			<Tool
 				Name="VCALinkTool"
@@ -396,7 +396,7 @@
 				PreprocessorDefinitions="SCEW_DEBUG;XML_STATIC;XML_UNICODE_WCHAR_T;_CRT_SECURE_NO_WARNINGS"
 				MinimalRebuild="true"
 				BasicRuntimeChecks="3"
-				RuntimeLibrary="3"
+				RuntimeLibrary="1"
 				UsePrecompiledHeader="0"
 				WarningLevel="3"
 				DebugInformationFormat="4"
@@ -412,7 +412,7 @@
 			/>
 			<Tool
 				Name="VCLibrarianTool"
-				OutputFile="$(OutDir)\libscew_wd.lib"
+				OutputFile="$(OutDir)\libscewMTwd.lib"
 			/>
 			<Tool
 				Name="VCALinkTool"
@@ -458,7 +458,7 @@
 				Optimization="2"
 				EnableIntrinsicFunctions="true"
 				PreprocessorDefinitions="NDEBUG;XML_STATIC;_CRT_SECURE_NO_WARNINGS"
-				RuntimeLibrary="2"
+				RuntimeLibrary="0"
 				EnableFunctionLevelLinking="true"
 				UsePrecompiledHeader="0"
 				WarningLevel="3"
@@ -475,7 +475,7 @@
 			/>
 			<Tool
 				Name="VCLibrarianTool"
-				OutputFile="$(OutDir)\libscew.lib"
+				OutputFile="$(OutDir)\libscewMT.lib"
 			/>
 			<Tool
 				Name="VCALinkTool"
@@ -521,7 +521,7 @@
 				Optimization="2"
 				EnableIntrinsicFunctions="true"
 				PreprocessorDefinitions="NDEBUG;XML_STATIC;XML_UNICODE_WCHAR_T;_CRT_SECURE_NO_WARNINGS"
-				RuntimeLibrary="2"
+				RuntimeLibrary="0"
 				EnableFunctionLevelLinking="true"
 				UsePrecompiledHeader="0"
 				WarningLevel="3"
@@ -538,7 +538,7 @@
 			/>
 			<Tool
 				Name="VCLibrarianTool"
-				OutputFile="$(OutDir)\libscew_w.lib"
+				OutputFile="$(OutDir)\libscewMTw.lib"
 			/>
 			<Tool
 				Name="VCALinkTool"

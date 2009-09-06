@@ -76,41 +76,41 @@ main(int argc, char *argv[])
    * "scew_test".
    */
   tree = scew_tree_create ();
-  root = scew_tree_set_root (tree, "test");
+  root = scew_tree_set_root (tree, _XT("test"));
 
   /* Add an element and set element contents. */
-  element = scew_element_add (root, "element");
-  scew_element_set_contents (element, "element contents");
+  element = scew_element_add (root, _XT("element"));
+  scew_element_set_contents (element, _XT("element contents"));
 
   /* Add an element with an attribute pair (name, value). */
-  element = scew_element_add (root, "element");
-  scew_element_add_attribute_pair (element, "attribute", "value");
+  element = scew_element_add (root, _XT("element"));
+  scew_element_add_attribute_pair (element, _XT("attribute"), _XT("value"));
 
-  element = scew_element_add (root, "element");
-  scew_element_add_attribute_pair (element, "attribute1", "value1");
+  element = scew_element_add (root, _XT("element"));
+  scew_element_add_attribute_pair (element, _XT("attribute1"), _XT("value1"));
 
   /**
    * Another way to add an attribute. You loose attribute ownership,
    * so there is no need to free it.
    */
-  attribute = scew_attribute_create ("attribute2", "value2");
+  attribute = scew_attribute_create (_XT("attribute2"), _XT("value2"));
   scew_element_add_attribute (element, attribute);
 
-  element = scew_element_add (root, "element");
-  sub_element = scew_element_add (element, "subelement");
-  scew_element_add_attribute_pair (sub_element, "attribute", "value");
+  element = scew_element_add (root, _XT("element"));
+  sub_element = scew_element_add (element, _XT("subelement"));
+  scew_element_add_attribute_pair (sub_element, _XT("attribute"), _XT("value"));
 
-  sub_element = scew_element_add (element, "subelement");
-  scew_element_add_attribute_pair (sub_element, "attribute1", "value1");
-  scew_element_add_attribute_pair (sub_element, "attribute2", "value2");
+  sub_element = scew_element_add (element, _XT("subelement"));
+  scew_element_add_attribute_pair (sub_element, _XT("attribute1"), _XT("value1"));
+  scew_element_add_attribute_pair (sub_element, _XT("attribute2"), _XT("value2"));
 
-  sub_sub_element = scew_element_add (sub_element, "subsubelement");
-  scew_element_add_attribute_pair (sub_sub_element, "attribute1", "value1");
-  scew_element_add_attribute_pair (sub_sub_element, "attribute2", "value2");
-  scew_element_add_attribute_pair (sub_sub_element, "attribute3", "value3");
+  sub_sub_element = scew_element_add (sub_element, _XT("subsubelement"));
+  scew_element_add_attribute_pair (sub_sub_element, _XT("attribute1"), _XT("value1"));
+  scew_element_add_attribute_pair (sub_sub_element, _XT("attribute2"), _XT("value2"));
+  scew_element_add_attribute_pair (sub_sub_element, _XT("attribute3"), _XT("value3"));
   /* Check attribute2 replacement. */
-  scew_element_add_attribute_pair (sub_sub_element, "attribute2", "new_value2");
-  scew_element_set_contents (sub_sub_element, "With accents: à é è í ó ú");
+  scew_element_add_attribute_pair (sub_sub_element, _XT("attribute2"), _XT("new_value2"));
+  scew_element_set_contents (sub_sub_element, _XT("With accents: à é è í ó ú"));
 
   /* Save the XML tree to a file. */
   writer = scew_writer_file_create (argv[1]);
