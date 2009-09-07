@@ -58,7 +58,7 @@ extern "C" {
  * @ingroup SCEWWriterAlloc
  */
 extern SCEW_API scew_writer* scew_writer_buffer_create (XML_Char *buffer,
-                                                        unsigned int size);
+                                                        size_t size);
 
 
 #ifdef __cplusplus
