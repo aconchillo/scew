@@ -14,11 +14,14 @@ the following configurations:
 
 The "Debug" configurations will build the library without
 optimizations. By contrast, the "Release" configuration will build the
-library with optmizations enabled.
+library with optmizations enabled. The UTF-16 configurations add
+support for this encoding by including the XML_UNICODE_WCHAR_T Expat
+preprocessor define. This define is also needed in your application if
+you want to support UTF-16.
 
-It is also necessary to add a preprocessor define "XML_STATIC" which
-is also the one used by Expat (thus, Expat and SCEW will be statically
-linked). This define will also enable automatic static library
+It is also necessary to add another Expat preprocessor define to your
+application, XML_STATIC. Thus, both, Expat and SCEW will be statically
+linked. This define will also enable SCEW automatic static library
 inclusion for your application, so there is no need to add a library
 dependency in your project properties. You only need to include
 "scew/scew.h" in your source code.
@@ -31,9 +34,9 @@ The output files for the static libraries are:
 
 where:
 
-  "MT"          Multi-threaded runtime library.
-  "w"           indicates the UTF-16 version.
-  "d"           indicates the debug version.
+  "MT" indicates Multi-threaded runtime library.
+  "w"  indicates the UTF-16 version.
+  "d"  indicates the debug version.
 
 Note that, by default, SCEW will be built for the "Multi-threaded"
 (/MT) runtime library. If you want to build SCEW for another runtime
@@ -46,7 +49,6 @@ As SCEW will automatically try to include the correct static library
 for your application, "scew/scew.h" should be also updated:
 
 #define SCEW_LIB_M "MD"
-
 
 
 Shared library
@@ -74,9 +76,10 @@ where:
   "w" indicates the UTF-16 version.
   "d" indicates the debug version.
 
-Then, in a your application, you need to include a library depency
+Then, in your application, you need to include a library depency
 (Linker) to "libscew(w)(d).lib". Note that, here, we are using the
 ".lib" file, not the ".dll" one.
 
-Finally, you just need to copy your SCEW DLL library in a system path
-or, simply, in the directory where your executable resides.
+Finally, you just need to copy your desired SCEW DLL library in a
+system path or, simply, in the directory where your executable
+resides.

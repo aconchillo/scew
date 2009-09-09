@@ -23,10 +23,10 @@ directory, so the compiler can find the SCEW headers and an additional
 and build your application successfully.
 
   Include directory
-    SCEW top level, e.g. "c:\lib\scew-0.3.2"
+    SCEW top level, e.g. "c:\lib\scew-1.0.0"
 
   Library directory
-    SCEW win32 lib, e.g. "c:\lib\scew-0.3.2\win32\lib"
+    SCEW win32 lib, e.g. "c:\lib\scew-1.0.0\win32\lib"
 
 You will also have to do the same for Expat:
 
