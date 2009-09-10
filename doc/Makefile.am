@@ -2,7 +2,7 @@
 # Author: Aleix Conchillo Flaque <aleix@member.fsf.org>
 # Date:   Sun Jul 06, 2003 04:51
 #
-# Copyright (C) 2003-2008 Aleix Conchillo Flaque
+# Copyright (C) 2002-2009 Aleix Conchillo Flaque
 #
 
 DOXYGEN_LOG = doxygen.log

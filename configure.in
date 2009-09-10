@@ -88,6 +88,10 @@ examples/Makefile \
 examples/scew_print/Makefile \
 examples/scew_stream/Makefile \
 examples/scew_write/Makefile
+examples/win32/Makefile
+examples/win32/scew_print/Makefile \
+examples/win32/scew_stream/Makefile \
+examples/win32/scew_write/Makefile
 tests/Makefile \
 )
 
