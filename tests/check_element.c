@@ -409,6 +409,15 @@ START_TEST (test_search)
   CHECK_U_INT (scew_list_size (list), N_ELEMENTS,
              "Number of children found searching by name");
 
+  /* Make sure we have the right elements. */
+  for (i = 0; i < N_ELEMENTS; ++i)
+    {
+      scew_element *child = scew_element_by_index (root, i);
+
+      CHECK_STR (scew_element_name (child), NAME,
+                 "Searched elements do not match");
+    }
+
   scew_list_free (list);
 
   /* Redo search and make sure nothing has been freed */
