@@ -371,6 +371,7 @@ END_TEST
 START_TEST (test_search)
 {
   static XML_Char const *NAME = "element";
+  static XML_Char const *NAME_AUX = "element_aux";
   static XML_Char const *CONTENTS = "first child";
   static unsigned int const N_ELEMENTS = 12;
 
@@ -378,20 +379,21 @@ START_TEST (test_search)
 
   CHECK_PTR (root, "Unable to create element");
 
+  scew_element *child = scew_element_add (root, NAME);
+
+  CHECK_PTR (child, "Unable to create child");
+
+  scew_element_set_contents (child, CONTENTS);
+
   unsigned int i = 0;
-  for (i = 0; i < N_ELEMENTS; ++i)
+  for (i = 1; i < N_ELEMENTS; ++i)
     {
-      scew_element *child = scew_element_add (root, NAME);
+      child = scew_element_add (root, ((i % 2) == 0) ? NAME : NAME_AUX);
 
       CHECK_PTR (child, "Unable to create child");
-
-      if (i == 0)
-        {
-          scew_element_set_contents (child, CONTENTS);
-        }
     }
 
-  scew_element *child = scew_element_by_name (root, NAME);
+  child = scew_element_by_name (root, NAME);
 
   CHECK_PTR (child, "Unable to find first child");
 
@@ -406,15 +408,17 @@ START_TEST (test_search)
 
   CHECK_PTR (list, "Unabe to find elements list by name");
 
-  CHECK_U_INT (scew_list_size (list), N_ELEMENTS,
+  /* / 2 because we only insert NAME elements % 2 */
+  CHECK_U_INT (scew_list_size (list), N_ELEMENTS / 2,
              "Number of children found searching by name");
 
   /* Make sure we have the right elements. */
   for (i = 0; i < N_ELEMENTS; ++i)
     {
-      scew_element *child = scew_element_by_index (root, i);
+      child = scew_element_by_index (root, i);
 
-      CHECK_STR (scew_element_name (child), NAME,
+      CHECK_STR (scew_element_name (child),
+                 ((i % 2) == 0) ? NAME : NAME_AUX,
                  "Searched elements do not match");
     }
 
@@ -425,7 +429,7 @@ START_TEST (test_search)
 
   CHECK_PTR (list, "Unabe to find elements list by name");
 
-  CHECK_U_INT (scew_list_size (list), N_ELEMENTS,
+  CHECK_U_INT (scew_list_size (list), N_ELEMENTS / 2,
              "Number of children found searching by name");
 
   scew_element_free (root);
