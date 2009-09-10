@@ -23,8 +23,8 @@ It is also necessary to add another Expat preprocessor define to your
 application, XML_STATIC. Thus, both, Expat and SCEW will be statically
 linked. This define will also enable SCEW automatic static library
 inclusion for your application, so there is no need to add a library
-dependency in your project properties. You only need to include
-"scew/scew.h" in your source code.
+dependency in your project properties. You only need to include the
+main SCEW header in your source code.
 
 #include <scew/scew.h>
 
@@ -46,7 +46,7 @@ generation), and then, to avoid confusion, update the output file name
 "Multi-threaded DLL" (/MD) runtime library.
 
 As SCEW will automatically try to include the correct static library
-for your application, "scew/scew.h" should be also updated:
+for your application, "SCEW_HOME/scew/scew.h" should be also updated:
 
 #define SCEW_LIB_M "MD"
 

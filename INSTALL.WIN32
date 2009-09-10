@@ -10,10 +10,10 @@ example, the scew-1.0.0 distribution may be extracted to:
   c:\lib\scew-1.0.0
 
 Open the 'scew.sln' (Microsoft Visual Studio Solution) or
-'scew.vcproj' (Visual C++ Project) files from the 'win32'
-directory. Go to the 'Build' menu and choose 'Batch Build...'. Select
-all the desired configurations (see 'win32\README') to be built and
-click 'Rebuild'. This will build all selected libraries in:
+'scew.vcproj' (Visual C++ Project) files. Go to the 'Build' menu and
+choose 'Batch Build...'. Select all the desired configurations (see
+README.txt) to be built and click 'Rebuild'. This will build all
+selected libraries in:
 
   c:\lib\scew-1.0.0\win32\lib
 
@@ -37,4 +37,4 @@ You will also have to do the same for Expat:
     <expat_install>\bin e.g. "c:\lib\expat\bin"
 
 For more information about how to link SCEW as a static or shared
-library with your application read 'win32\README'.
+library with your application read the README.txt.
