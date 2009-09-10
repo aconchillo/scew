@@ -1,26 +1,21 @@
 Welcome to SCEW (Simple C Expat Wrapper)
 ========================================
 
-    The aim of SCEW is to provide an easy interface around the XML
-Expat parser. It provides functions to load and access XML elements
+   The aim of SCEW is to provide an easy interface around the XML
+Expat parser, as well as a simple interface for creating new XML
+documents. It provides functions to load and access XML elements
 without the need to create Expat event handling routines every time
-you want to load a new XML document. It also lets you access to the
-internal Expat parser, that means you still have all the functionality
-that Expat gives you.
+you want to load a new XML document.
 
-    These are the main SCEW features:
+These are the main SCEW features:
 
+    - New XML documents can be created from scratch.
     - Loads XML documents into memory and allows working with them.
     - Writes XML documents to multiple outputs.
-    - New XML documents can be created from scratch (no load needed).
     - Can copy and compare full XML documents, elements or attributes.
-    - Allows the creation of new input and output interfaces.
-
-    What does it not support?
-
-    - Only supports Expat character encodings (i.e. UTF-8 and UTF-16).
-    - XML comments (a user handler can be provided).
-    - CDATA sections (a user handler can be provided).
+    - Has an I/O system that allows adding new input and output
+      sources easily.
+    - Supports UTF-8 and UTF-16 character encodings.
 
 Project homepage: http://www.nongnu.org/scew/
 

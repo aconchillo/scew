@@ -7,4 +7,4 @@
 
 SUBDIRS = scew_print scew_stream scew_write
 
-EXTRA_DIST = scew_examples.sln
+EXTRA_DIST = README.txt scew_examples.sln
