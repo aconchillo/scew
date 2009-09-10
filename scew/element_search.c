@@ -77,7 +77,6 @@ scew_element_list_by_name (scew_element const *element, XML_Char const *name)
   scew_list *list = NULL;
   scew_list *last = NULL;
   scew_list *item = NULL;
-  scew_list *found = NULL;
 
   assert (element != NULL);
   assert (name != NULL);
@@ -85,18 +84,14 @@ scew_element_list_by_name (scew_element const *element, XML_Char const *name)
   item = element->children;
   while (item != NULL)
     {
-      found = scew_list_find_custom (item, name, cmp_name_);
-      if (found != NULL)
+      item = scew_list_find_custom (item, name, cmp_name_);
+      if (item != NULL)
         {
-          last = scew_list_append (last, scew_list_data (found));
+          last = scew_list_append (last, scew_list_data (item));
           if (NULL == list)
             {
               list = last;
             }
-          item = scew_list_next (found);
-        }
-      else
-        {
           item = scew_list_next (item);
         }
     }
