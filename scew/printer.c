@@ -182,7 +182,8 @@ scew_printer_print_tree (scew_printer *printer, scew_tree const *tree)
     }
 
   /* Print XML document. */
-  result = result && scew_printer_print_element (printer, scew_tree_root (tree));
+  result = result && scew_printer_print_element (printer,
+                                                 scew_tree_root (tree));
 
   if (!result)
     {

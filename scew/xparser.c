@@ -318,13 +318,16 @@ expat_end_handler_ (void *data, XML_Char const *elem)
         }
 
       /* Trim preamble and only use it if length is greater than 0. */
-      scew_strtrim (parser->preamble);
-      if (scew_strlen (parser->preamble) == 0)
+      if (parser->preamble != NULL)
         {
-          free (parser->preamble);
-          parser->preamble = NULL;
+          scew_strtrim (parser->preamble);
+          if (scew_strlen (parser->preamble) == 0)
+            {
+              free (parser->preamble);
+              parser->preamble = NULL;
+            }
+          scew_tree_set_xml_preamble (parser->tree, parser->preamble);
         }
-      scew_tree_set_xml_preamble (parser->tree, parser->preamble);
 
       scew_tree_set_root_element (parser->tree, current);
       /* } */
