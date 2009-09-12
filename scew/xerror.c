@@ -116,45 +116,42 @@ static pthread_once_t key_once_ = PTHREAD_ONCE_INIT;
 static void
 create_keys_ (void)
 {
-  scew_error* code = NULL;
+  scew_error* error = NULL;
 
   pthread_key_create (&key_error_, free);
 
-  code = (scew_error *) malloc (sizeof (scew_error));
-  *code = scew_error_none;
-  pthread_setspecific (key_error_, code);
+  error = (scew_error *) malloc (sizeof (scew_error));
+  *error = scew_error_none;
+  pthread_setspecific (key_error_, error);
 }
 
 void
 scew_error_set_last_error_ (scew_error code)
 {
-  scew_error *old_code = NULL;
-  scew_error *new_code = NULL;
+  scew_error *error = NULL;
 
   /* Initialize error code per thread. */
   pthread_once (&key_once_, create_keys_);
 
-  old_code = (scew_error *) pthread_getspecific (key_error_);
-  new_code = (scew_error *) malloc (sizeof (scew_error));
-  *new_code = code;
-  free (old_code);
-  pthread_setspecific (key_error_, new_code);
+  error = (scew_error *) pthread_getspecific (key_error_);
+  *error = code;
 }
 
 scew_error
 scew_error_last_error_ (void)
 {
-  scew_error *code = NULL;
+  scew_error *error = NULL;
 
   /* Initialize error code per thread. */
   pthread_once (&key_once_, create_keys_);
 
-  code = (scew_error*) pthread_getspecific (key_error_);
-  if (NULL == code)
+  error = (scew_error*) pthread_getspecific (key_error_);
+  if (NULL == error)
     {
       return scew_error_none;
     }
-  return *code;
+
+  return *error;
 }
 
 #endif /* _MSC_VER */

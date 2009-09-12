@@ -6,7 +6,7 @@
  *
  * @if copyright
  *
- * Copyright (C) 2003-2008 Aleix Conchillo Flaque
+ * Copyright (C) 2003-2009 Aleix Conchillo Flaque
  *
  * SCEW is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -50,7 +50,7 @@ scew_error_string (scew_error code)
       _XT("No error"),
       _XT("Out of memory"),
       _XT("Input/Output error"),
-      _XT("Callback error"),
+      _XT("Error while calling hook"),
       _XT("Internal Expat parser error"),
       _XT("Internal SCEW error")
     };

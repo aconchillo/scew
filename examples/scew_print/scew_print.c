@@ -144,7 +144,9 @@ main (int argc, char *argv[])
       printf ("Unable to load file (error #%d: %s)\n", code,
               scew_error_string (code));
     }
-  else if (!scew_parser_load (parser, reader))
+
+  tree = scew_parser_load (parser, reader);
+  if (tree == NULL)
     {
       scew_error code = scew_error_code ();
       printf ("Unable to load file (error #%d: %s)\n", code,
@@ -157,10 +159,13 @@ main (int argc, char *argv[])
                   scew_error_expat_column (parser),
                   scew_error_expat_string (expat_code));
         }
+
+      /* Frees the SCEW parser and reader. */
+      scew_reader_free (reader);
+      scew_parser_free (parser);
+
       return EXIT_FAILURE;
     }
-
-  tree = scew_parser_tree (parser);
 
   /* Prints full tree. */
   printf ("\n*** Manual print:\n\n");

@@ -42,6 +42,8 @@
 
 static scew_parser* parser_create_ (scew_bool namespace, XML_Char separator);
 
+static void parser_reset_ (scew_parser *parser);
+
 static scew_bool parse_buffer_ (scew_parser *parser, scew_reader *reader);
 
 
@@ -65,32 +67,41 @@ scew_parser_free (scew_parser *parser)
 {
   if (parser != NULL)
     {
+      /* Free all intermediate parser data (if used before). */
+      parser_reset_ (parser);
+
+      /* Free Expat parser. */
       if (parser->parser)
         {
           XML_ParserFree (parser->parser);
         }
-      scew_parser_stack_free_ (parser);
-      free (parser->preamble);
+
       free (parser);
     }
 }
 
-scew_bool
+scew_tree*
 scew_parser_load (scew_parser *parser, scew_reader *reader)
 {
-  scew_bool result = SCEW_TRUE;
+  scew_tree *tree = NULL;
 
   assert (parser != NULL);
   assert (reader != NULL);
 
-  result = parse_buffer_ (parser, reader);
+  parser_reset_ (parser);
 
-  if (!result)
+  if (!parse_buffer_ (parser, reader))
     {
-      scew_parser_stack_free_ (parser);
+      /* Free the allocated tree if something goes wrong. */
+      scew_tree_free (parser->tree);
+      parser->tree = NULL;
+    }
+  else
+    {
+      tree = parser->tree;
     }
 
-  return result;
+  return tree;
 }
 
 /* scew_bool */
@@ -144,14 +155,6 @@ scew_parser_set_load_hook (scew_parser *parser, scew_parser_load_hook hook)
   parser->load_hook = hook;
 }
 
-scew_tree*
-scew_parser_tree (scew_parser const *parser)
-{
-  assert (parser != NULL);
-
-  return parser->tree;
-}
-
 XML_Parser
 scew_parser_expat (scew_parser *parser)
 {
@@ -182,19 +185,48 @@ parser_create_ (scew_bool namespace, XML_Char separator)
       return NULL;
     }
 
-  if (!scew_parser_expat_init_ (parser, namespace, separator))
+  /* Create Expat parser. */
+  parser->parser = namespace
+    ? XML_ParserCreateNS (NULL, separator)
+    : XML_ParserCreate (NULL);
+
+  if (parser->parser != NULL)
     {
+      /* Ignore white spaces by default. */
+      parser->ignore_whitespaces = SCEW_TRUE;
+
+      /* No load hook by default. */
+      parser->load_hook = NULL;
+    }
+  else
+    {
+      scew_error_set_last_error_ (scew_error_no_memory);
       scew_parser_free (parser);
-      return NULL;
+      parser = NULL;
     }
 
-  /* Ignore white spaces by default. */
-  parser->ignore_whitespaces = SCEW_TRUE;
-
-  /* No load hook by default. */
-  parser->load_hook = NULL;
-
   return parser;
+}
+
+void
+parser_reset_ (scew_parser *parser)
+{
+  assert (parser != NULL);
+
+  /* Free stack (to avoid memory leak if last load went wrong). */
+  scew_parser_stack_free_ (parser);
+
+  /* Free last loaded preamble. */
+  free (parser->preamble);
+
+  /* Reset Expat parser. */
+  XML_ParserReset (parser->parser, NULL);
+  scew_parser_expat_install_handlers_ (parser);
+
+  /* Initialise structure fields to NULL. */
+  parser->tree = NULL;
+  parser->preamble = NULL;
+  parser->stack = NULL;
 }
 
 scew_bool

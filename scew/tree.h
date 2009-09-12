@@ -102,11 +102,8 @@ extern SCEW_API scew_tree* scew_tree_copy (scew_tree const *tree);
 
 /**
  * Frees a tree memory structure. Call this function when you are done
- * with your XML document. This will also free the root element.
- *
- * If this is a tree obtained via a parser, you will need to call this
- * function in order to free the tree, as #scew_parser_free does not
- * delete it.
+ * with your XML document. This will also free the root element
+ * recursively.
  *
  * @param tree the tree to delete.
  *
