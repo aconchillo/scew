@@ -63,7 +63,9 @@ static scew_bool print_attribute_ (scew_printer *printer,
                                    XML_Char const* name,
                                    XML_Char const* value);
 static scew_bool print_eol_ (scew_printer *printer);
-static scew_bool print_indent_ (scew_printer *printer);
+static scew_bool print_current_indent_ (scew_printer *printer);
+static scew_bool print_next_indent_ (scew_printer *printer);
+static scew_bool print_indent_ (scew_printer *printer, unsigned int indent);
 static scew_bool print_element_start_ (scew_printer *printer,
                                        scew_element const *element,
                                        scew_bool *closed);
@@ -199,18 +201,20 @@ scew_printer_print_element (scew_printer *printer, scew_element const *element)
   assert (printer != NULL);
   assert (element != NULL);
 
-  result = print_indent_ (printer);
+  result = print_current_indent_ (printer);
 
   result = result && print_element_start_ (printer, element, &closed);
 
   if (!closed)
     {
-      XML_Char const *contents = NULL;
+      XML_Char const *contents = scew_element_contents (element);
 
-      result = result && scew_printer_print_element_children (printer,
-                                                              element);
+      /* Always indent when we have children elements. */
+      if (scew_element_count (element) > 0)
+        {
+          result = result && print_next_indent_ (printer);
+        }
 
-      contents = scew_element_contents (element);
       if (contents != NULL)
         {
           result = result && scew_writer_write (printer->writer,
@@ -221,10 +225,9 @@ scew_printer_print_element (scew_printer *printer, scew_element const *element)
               result = result && print_eol_ (printer);
             }
         }
-      else
-        {
-          result = result && print_indent_ (printer);
-        }
+
+      result = result && scew_printer_print_element_children (printer,
+                                                              element);
       result = result && print_element_end_ (printer, element);
       result = result && print_eol_ (printer);
     }
@@ -391,7 +394,19 @@ print_eol_ (scew_printer *printer)
 }
 
 scew_bool
-print_indent_ (scew_printer *printer)
+print_current_indent_ (scew_printer *printer)
+{
+  return print_indent_ (printer, printer->indent);
+}
+
+scew_bool
+print_next_indent_ (scew_printer *printer)
+{
+  return print_indent_ (printer, printer->indent + 1);
+}
+
+scew_bool
+print_indent_ (scew_printer *printer, unsigned int indent)
 {
   scew_bool result = SCEW_TRUE;
 
@@ -400,7 +415,7 @@ print_indent_ (scew_printer *printer)
   if (printer->indented)
     {
       unsigned int i = 0;
-      unsigned int spaces = printer->indent * printer->spaces;
+      unsigned int spaces = indent * printer->spaces;
       for (i = 0; result && (i < spaces); ++i)
         {
           result = scew_writer_write (printer->writer, " ", 1);
