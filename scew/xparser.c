@@ -185,7 +185,8 @@ expat_default_handler_ (void *data, XML_Char const *str, int len)
       return;
     }
 
-  if ((parser->tree != NULL) && (NULL == parser->stack))
+  /* Only analyze data if we still have reach the root element. */
+  if (NULL == parser->stack)
     {
       unsigned int total = 0;
       unsigned int total_old = 0;

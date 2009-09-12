@@ -216,6 +216,10 @@ scew_printer_print_element (scew_printer *printer, scew_element const *element)
           result = result && scew_writer_write (printer->writer,
                                                 contents,
                                                 scew_strlen (contents));
+          if (scew_element_count (element) > 0)
+            {
+              result = result && print_eol_ (printer);
+            }
         }
       else
         {
@@ -445,7 +449,7 @@ print_element_start_ (scew_printer *printer,
   else
     {
       result = result && scew_writer_write (writer, END_1, 1);
-      if (NULL == contents)
+      if (list != NULL)
         {
 	  result = result && print_eol_ (printer);
         }
