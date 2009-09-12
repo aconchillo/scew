@@ -201,26 +201,26 @@ scew_printer_print_element (scew_printer *printer, scew_element const *element)
   assert (printer != NULL);
   assert (element != NULL);
 
-  result = print_current_indent_ (printer);
-
-  result = result && print_element_start_ (printer, element, &closed);
+  result = print_element_start_ (printer, element, &closed);
 
   if (!closed)
     {
       XML_Char const *contents = scew_element_contents (element);
 
-      /* Always indent when we have children elements. */
-      if (scew_element_count (element) > 0)
-        {
-          result = result && print_next_indent_ (printer);
-        }
-
       if (contents != NULL)
         {
+          unsigned int children_no = scew_element_count (element);
+
+          /* Only indent contents if we have children elements. */
+          if (children_no > 0)
+            {
+              result = result && print_next_indent_ (printer);
+            }
+
           result = result && scew_writer_write (printer->writer,
                                                 contents,
                                                 scew_strlen (contents));
-          if (scew_element_count (element) > 0)
+          if (children_no > 0)
             {
               result = result && print_eol_ (printer);
             }
@@ -447,7 +447,8 @@ print_element_start_ (scew_printer *printer,
 
   name = scew_element_name (element);
 
-  result = scew_writer_write (writer, START, 1);
+  result = print_current_indent_ (printer);
+  result = result && scew_writer_write (writer, START, 1);
   result = result && scew_writer_write (writer, name, scew_strlen (name));
   result = result && scew_printer_print_element_attributes (printer, element);
 
@@ -488,7 +489,11 @@ print_element_end_ (scew_printer *printer, scew_element const *element)
 
   writer = printer->writer;
 
-  result = scew_writer_write (writer, START, 2);
+  if (scew_element_count (element) > 0)
+    {
+      result = print_current_indent_ (printer);
+    }
+  result = result && scew_writer_write (writer, START, 2);
   result = result && scew_writer_write (writer, name, scew_strlen (name));
   result = result && scew_writer_write (writer, END, 1);
 
