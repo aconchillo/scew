@@ -350,6 +350,7 @@ print_attribute_ (scew_printer *printer,
                   XML_Char const* name,
                   XML_Char const* value)
 {
+  size_t len_value = 0;
   scew_bool result = SCEW_FALSE;
 
   scew_writer *writer = printer->writer;
@@ -357,7 +358,14 @@ print_attribute_ (scew_printer *printer,
   result = scew_writer_write (writer, " ", 1);
   result = result && scew_writer_write (writer, name, scew_strlen (name));
   result = result && scew_writer_write (writer, "=\"", 2);
-  result = result && scew_writer_write (writer, value, scew_strlen (value));
+
+  /* It is possible that an attribute's value is empty. */
+  len_value = scew_strlen (value);
+  if (len_value > 0)
+    {
+      result = result && scew_writer_write (writer, value, len_value);
+    }
+
   result = result && scew_writer_write (writer, "\"", 1);
 
   return result;
