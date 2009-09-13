@@ -13,9 +13,9 @@ These are the main SCEW features:
     - Loads XML documents into memory and allows working with them.
     - Writes XML documents to multiple outputs.
     - Can copy and compare full XML documents, elements or attributes.
-    - Has an I/O system that allows adding new input and output
-      sources easily.
-    - Supports UTF-8 and UTF-16 character encodings.
+    - Allows adding new I/O sources easily.
+    - Supports loading concatenated XML documents.
+    - UTF-8 and UTF-16 character encodings.
 
 Project homepage: http://www.nongnu.org/scew/
 
