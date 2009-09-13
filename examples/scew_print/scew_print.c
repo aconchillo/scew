@@ -33,12 +33,12 @@
 
 #include <stdio.h>
 
-/* Indentation size (in whitespaces). */
-static unsigned int const INDENT_SIZE = 4;
-
 static void
 print_indent (unsigned int indent)
 {
+  /* Indentation size (in whitespaces). */
+  static unsigned int const INDENT_SIZE = 4;
+
   if (indent > 0)
     {
       printf ("%*s", indent * INDENT_SIZE, " ");
@@ -134,7 +134,7 @@ main (int argc, char *argv[])
   /* Creates an SCEW parser. This is the first function to call. */
   parser = scew_parser_create ();
 
-  scew_parser_ignore_whitespaces (parser, 1);
+  scew_parser_ignore_whitespaces (parser, SCEW_TRUE);
 
   /* Loads an XML file. */
   reader = scew_reader_file_create (argv[1]);
@@ -149,12 +149,13 @@ main (int argc, char *argv[])
   if (tree == NULL)
     {
       scew_error code = scew_error_code ();
-      printf ("Unable to load file (error #%d: %s)\n", code,
-              scew_error_string (code));
+      printf ("Unable to load file (error #%d: %s)\n",
+              code, scew_error_string (code));
       if (code == scew_error_expat)
         {
           enum XML_Error expat_code = scew_error_expat_code (parser);
-          printf ("Expat error #%d (line %d, column %d): %s\n", expat_code,
+          printf ("Expat error #%d (line %d, column %d): %s\n",
+                  expat_code,
                   scew_error_expat_line (parser),
                   scew_error_expat_column (parser),
                   scew_error_expat_string (expat_code));

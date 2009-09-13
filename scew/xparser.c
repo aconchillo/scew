@@ -107,20 +107,6 @@ static scew_element* parser_stack_pop_ (scew_parser *parser);
 /* Protected */
 
 void
-scew_parser_expat_install_handlers_ (scew_parser *parser)
-{
-  XML_SetXmlDeclHandler (parser->parser, expat_xmldecl_handler_);
-  XML_SetDefaultHandler (parser->parser, expat_default_handler_);
-  XML_SetElementHandler (parser->parser,
-                         expat_start_handler_,
-                         expat_end_handler_);
-  XML_SetCharacterDataHandler (parser->parser, expat_char_handler_);
-
-  /* Data to be passed to all handlers is the SCEW parser. */
-  XML_SetUserData (parser->parser, parser);
-}
-
-void
 scew_parser_stack_free_ (scew_parser *parser)
 {
   if (parser != NULL)
@@ -132,6 +118,20 @@ scew_parser_stack_free_ (scew_parser *parser)
           element = parser_stack_pop_ (parser);
         }
     }
+}
+
+void
+scew_parser_expat_install_handlers_ (scew_parser *parser)
+{
+  XML_SetXmlDeclHandler (parser->parser, expat_xmldecl_handler_);
+  XML_SetDefaultHandler (parser->parser, expat_default_handler_);
+  XML_SetElementHandler (parser->parser,
+                         expat_start_handler_,
+                         expat_end_handler_);
+  XML_SetCharacterDataHandler (parser->parser, expat_char_handler_);
+
+  /* Data to be passed to all handlers is the SCEW parser. */
+  XML_SetUserData (parser->parser, parser);
 }
 
 
@@ -185,7 +185,7 @@ expat_default_handler_ (void *data, XML_Char const *str, int len)
       return;
     }
 
-  /* Only analyze data if we still have reach the root element. */
+  /* Only analyze data if we still have to reach the root element. */
   if (NULL == parser->stack)
     {
       unsigned int total = 0;
@@ -285,9 +285,10 @@ expat_end_handler_ (void *data, XML_Char const *elem)
         }
     }
 
-  if (parser->load_hook != NULL)
+  /* Call loaded element hook. */
+  if (parser->element_hook != NULL)
     {
-      if (!parser->load_hook (parser, current))
+      if (!parser->element_hook (parser, current))
         {
           stop_expat_parsing_ (parser, scew_error_hook);
           return;
@@ -297,17 +298,10 @@ expat_end_handler_ (void *data, XML_Char const *elem)
   /* If there are no more elements (root node) ... */
   if (NULL == parser->stack)
     {
-      /* if (parser->reader->is_stream ()) */
-      /*   { */
-      /*     /\** */
-      /*      * ... we stop parsing if the reader is an stream. */
-      /*      *\/ */
-      /*     stop_expat_parsing_ (parser, scew_error_none); */
-      /*   } */
-      /* else */
-      /*   { */
-      /* ... we create the XML document tree. If we need to create the
-         tree here it means no XML header was found. */
+      /**
+       * ... we create the XML document tree. If we need to create the
+       * tree here it means no XML declaration was found.
+       */
       parser->tree = (NULL == parser->tree)
         ? create_tree_ (parser)
         : parser->tree;
@@ -330,7 +324,16 @@ expat_end_handler_ (void *data, XML_Char const *elem)
         }
 
       scew_tree_set_root_element (parser->tree, current);
-      /* } */
+
+      /* Call loaded tree hook. */
+      if (parser->tree_hook != NULL)
+        {
+          if (!parser->tree_hook (parser, parser->tree))
+            {
+              stop_expat_parsing_ (parser, scew_error_hook);
+              return;
+            }
+        }
     }
 }
 

@@ -40,11 +40,21 @@
 
 /* Private */
 
+enum
+  {
+    MAX_PARSE_BUFFER_ = 1024    /**< Size (bytes) of the internal buffer */
+  };
+
 static scew_parser* parser_create_ (scew_bool namespace, XML_Char separator);
 
-static void parser_reset_ (scew_parser *parser);
+static scew_bool parse_reader_ (scew_parser *parser, scew_reader *reader);
 
-static scew_bool parse_buffer_ (scew_parser *parser, scew_reader *reader);
+static scew_bool parse_stream_reader_ (scew_parser *parser,
+                                       scew_reader *reader);
+
+static scew_bool parse_stream_buffer_ (scew_parser *parser,
+                                       char const *buffer,
+                                       size_t size);
 
 
 
@@ -68,7 +78,7 @@ scew_parser_free (scew_parser *parser)
   if (parser != NULL)
     {
       /* Free all intermediate parser data (if used before). */
-      parser_reset_ (parser);
+      scew_parser_reset (parser);
 
       /* Free Expat parser. */
       if (parser->parser)
@@ -88,9 +98,9 @@ scew_parser_load (scew_parser *parser, scew_reader *reader)
   assert (parser != NULL);
   assert (reader != NULL);
 
-  parser_reset_ (parser);
+  scew_parser_reset (parser);
 
-  if (!parse_buffer_ (parser, reader))
+  if (!parse_reader_ (parser, reader))
     {
       /* Free the allocated tree if something goes wrong. */
       scew_tree_free (parser->tree);
@@ -104,55 +114,60 @@ scew_parser_load (scew_parser *parser, scew_reader *reader)
   return tree;
 }
 
-/* scew_bool */
-/* scew_parser_load_stream (scew_parser *parser, */
-/*                          scew_reader *reader, */
-/* 			 unsigned int size, */
-/*                          scew_bool is_final) */
-/* { */
-/*   scew_bool result = SCEW_TRUE; */
-/*   enum XML_Status status = XML_STATUS_OK; */
+scew_bool
+scew_parser_load_stream (scew_parser *parser, scew_reader *reader)
+{
+  scew_bool result = SCEW_TRUE;
 
-/*   assert (parser != NULL); */
-/*   assert (reader != NULL); */
-/*   assert (size > 0); */
+  assert (parser != NULL);
+  assert (reader != NULL);
 
-/*   size_t len = scew_reader_read (reader, buffer, MAX_BUFFER); */
-/*   if (scew_reader_error (reader)) */
-/*     { */
-/*       scew_error_set_last_error_ (scew_error_io); */
-/*       result = SCEW_FALSE; */
-/*     } */
-/*   else */
+  result = parse_stream_reader_ (parser, reader);
+  if (!result)
+    {
+      /* Free the last allocated tree if something goes wrong. */
+      scew_tree_free (parser->tree);
+      parser->tree = NULL;
+    }
 
-/*   status = XML_Parse (parser->parser, buffer, size, is_final); */
-
-/*   result = (XML_STATUS_OK == status); */
-
-/*   printf ("\n----------\n%c - status: %d - is_final: %d - error: %s\n", */
-/*           buffer[0], status, is_final, XML_ErrorString (XML_GetErrorCode (parser->parser))); */
-/*   if (result) */
-/*     { */
-/*       XML_ParsingStatus parsing_status; */
-/*       XML_GetParsingStatus(parser->parser, &parsing_status); */
-
-/*       if (XML_FINISHED == parsing_status.parsing) */
-/*         { */
-/*           printf ("document finished!\n"); */
-/*           XML_ParserReset (parser->parser, NULL); */
-/*           scew_parser_expat_install_handlers_ (parser); */
-/*         } */
-/*     } */
-
-/*   return result; */
-/* } */
+  return result;
+}
 
 void
-scew_parser_set_load_hook (scew_parser *parser, scew_parser_load_hook hook)
+scew_parser_reset (scew_parser *parser)
 {
   assert (parser != NULL);
 
-  parser->load_hook = hook;
+  /* Free stack (to avoid memory leak if last load went wrong). */
+  scew_parser_stack_free_ (parser);
+
+  /* Free last loaded preamble. */
+  free (parser->preamble);
+
+  /* Reset Expat parser. */
+  XML_ParserReset (parser->parser, NULL);
+  scew_parser_expat_install_handlers_ (parser);
+
+  /* Initialise structure fields to NULL. */
+  parser->tree = NULL;
+  parser->preamble = NULL;
+  parser->stack = NULL;
+}
+
+void
+scew_parser_set_element_hook (scew_parser *parser, scew_parser_load_hook hook)
+{
+  assert (parser != NULL);
+
+  parser->element_hook = hook;
+}
+
+void
+scew_parser_set_tree_hook (scew_parser *parser, scew_parser_load_hook hook)
+{
+  assert (parser != NULL);
+
+  parser->tree_hook = hook;
 }
 
 XML_Parser
@@ -195,8 +210,11 @@ parser_create_ (scew_bool namespace, XML_Char separator)
       /* Ignore white spaces by default. */
       parser->ignore_whitespaces = SCEW_TRUE;
 
-      /* No load hook by default. */
-      parser->load_hook = NULL;
+      /* No load hooks by default. */
+      parser->element_hook = NULL;
+      parser->tree_hook = NULL;
+
+      scew_parser_reset (parser);
     }
   else
     {
@@ -208,29 +226,8 @@ parser_create_ (scew_bool namespace, XML_Char separator)
   return parser;
 }
 
-void
-parser_reset_ (scew_parser *parser)
-{
-  assert (parser != NULL);
-
-  /* Free stack (to avoid memory leak if last load went wrong). */
-  scew_parser_stack_free_ (parser);
-
-  /* Free last loaded preamble. */
-  free (parser->preamble);
-
-  /* Reset Expat parser. */
-  XML_ParserReset (parser->parser, NULL);
-  scew_parser_expat_install_handlers_ (parser);
-
-  /* Initialise structure fields to NULL. */
-  parser->tree = NULL;
-  parser->preamble = NULL;
-  parser->stack = NULL;
-}
-
 scew_bool
-parse_buffer_ (scew_parser *parser, scew_reader *reader)
+parse_reader_ (scew_parser *parser, scew_reader *reader)
 {
   scew_bool done = SCEW_FALSE;
   scew_bool result = SCEW_TRUE;
@@ -240,11 +237,10 @@ parse_buffer_ (scew_parser *parser, scew_reader *reader)
 
   while (!done && result)
     {
-      enum { MAX_BUFFER = 1024 };
-      char buffer[MAX_BUFFER];
+      char buffer[MAX_PARSE_BUFFER_];
 
       /* Read files in small chunks. */
-      size_t len = scew_reader_read (reader, buffer, MAX_BUFFER);
+      size_t length = scew_reader_read (reader, buffer, MAX_PARSE_BUFFER_);
       if (scew_reader_error (reader))
         {
 	  scew_error_set_last_error_ (scew_error_io);
@@ -252,9 +248,8 @@ parse_buffer_ (scew_parser *parser, scew_reader *reader)
         }
       else
         {
-          /* Parse read data. */
           done = scew_reader_end (reader);
-          if (!XML_Parse (parser->parser, buffer, len, done))
+          if (!XML_Parse (parser->parser, buffer, length, done))
             {
               scew_error_set_last_error_ (scew_error_expat);
               result = SCEW_FALSE;
@@ -263,4 +258,91 @@ parse_buffer_ (scew_parser *parser, scew_reader *reader)
     }
 
   return result;
+}
+
+scew_bool
+parse_stream_reader_ (scew_parser *parser, scew_reader *reader)
+{
+  scew_bool done = SCEW_FALSE;
+  scew_bool result = SCEW_TRUE;
+
+  assert(parser != NULL);
+  assert(reader != NULL);
+
+  while (!done && result)
+    {
+      char buffer[MAX_PARSE_BUFFER_];
+
+      /* Read files in small chunks. */
+      size_t length = scew_reader_read (reader, buffer, MAX_PARSE_BUFFER_);
+      if (scew_reader_error (reader))
+        {
+	  scew_error_set_last_error_ (scew_error_io);
+	  result = SCEW_FALSE;
+        }
+      else
+        {
+          result = parse_stream_buffer_ (parser, buffer, length);
+          done = (0 == length);
+        }
+    }
+
+  return result;
+}
+
+scew_bool
+parse_stream_buffer_ (scew_parser *parser, char const *buffer, size_t size)
+{
+  unsigned int start = 0;
+  unsigned int end = 0;
+  unsigned int length = 0;
+
+  assert(parser != NULL);
+  assert(buffer != NULL);
+
+  /**
+   * Loop through the buffer and:
+   *    if we encounter a '>', send the chunk to Expat.
+   *    if we hit the end of the buffer, send whatever remains to Expat.
+   */
+  while ((start < size) && (end <= size))
+    {
+      if ((end == size) || (buffer[end] == '>'))
+        {
+          length = end - start;
+          if (end < size)
+            {
+              length += 1;
+            }
+
+          if (!XML_Parse (parser->parser, &buffer[start], length, 0))
+            {
+              scew_error_set_last_error_ (scew_error_expat);
+              return SCEW_FALSE;
+            }
+
+          if ((parser->tree != NULL) && (NULL == parser->stack))
+            {
+              /* Tell Expat we're done. */
+              if (!XML_Parse (parser->parser, "", 0, 1))
+                {
+                  scew_error_set_last_error_ (scew_error_expat);
+                  return SCEW_FALSE;
+                }
+
+              /**
+               * We don't need to free last loaded XML, as it's the
+               * users responsibility.
+               */
+              parser->tree = NULL;
+
+              /* Reset parser to continue using it. */
+              scew_parser_reset (parser);
+            }
+          start = end + 1;
+        }
+      end += 1;
+    }
+
+  return SCEW_TRUE;
 }

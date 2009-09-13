@@ -49,15 +49,16 @@ struct scew_parser
   XML_Char *preamble;           /**< Current XML document tree preamble */
   stack_element *stack;		/**< Current parsed element stack */
   scew_bool ignore_whitespaces;	/**< Whether to ignore white spaces */
-  scew_parser_load_hook load_hook; /**< Hook for loaded elements */
+  scew_parser_load_hook element_hook; /**< Hook for loaded elements */
+  scew_parser_load_hook tree_hook; /**< Hook for loaded trees */
 };
 
 
 /* Functions */
 
+extern SCEW_LOCAL void scew_parser_stack_free_ (scew_parser *parser);
+
 extern SCEW_LOCAL void
 scew_parser_expat_install_handlers_ (scew_parser *parser);
-
-extern SCEW_LOCAL void scew_parser_stack_free_ (scew_parser *parser);
 
 #endif /* XPARSER_H_0211250057 */

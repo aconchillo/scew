@@ -66,8 +66,7 @@ typedef struct scew_parser scew_parser;
  *
  * @ingroup SCEWParserLoad
  */
-typedef scew_bool (*scew_parser_load_hook) (scew_parser *parser,
-                                            scew_element *element);
+typedef scew_bool (*scew_parser_load_hook) (scew_parser *, void *);
 
 
 /**
@@ -130,15 +129,15 @@ extern SCEW_API void scew_parser_free (scew_parser *parser);
 extern SCEW_API scew_tree* scew_parser_load (scew_parser *parser,
                                              scew_reader *reader);
 
-/**
- * Sets the callback to be used when reading streams.
- *
- * @param parser the SCEW parser
- * @param cb the callback function
- *
- * @ingroup SCEWParserLoad
- */
-extern SCEW_API void scew_parser_set_load_hook (scew_parser *parser,
+extern SCEW_API scew_bool scew_parser_load_stream (scew_parser *parser,
+                                                   scew_reader *reader);
+
+extern SCEW_API void scew_parser_reset (scew_parser *parser);
+
+extern SCEW_API void scew_parser_set_element_hook (scew_parser *parser,
+                                                   scew_parser_load_hook hook);
+
+extern SCEW_API void scew_parser_set_tree_hook (scew_parser *parser,
                                                 scew_parser_load_hook hook);
 
 /**

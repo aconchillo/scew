@@ -51,10 +51,11 @@
 
 #include <stdio.h>
 
+enum { MAX_OUTPUT_BUFFER_ = 2000 };
+
 int
 main(int argc, char *argv[])
 {
-  enum { MAX_BUFFER = 2000 };
   scew_tree *tree = NULL;
   scew_element *root = NULL;
   scew_element *element = NULL;
@@ -98,19 +99,27 @@ main(int argc, char *argv[])
 
   element = scew_element_add (root, _XT("element"));
   sub_element = scew_element_add (element, _XT("subelement"));
-  scew_element_add_attribute_pair (sub_element, _XT("attribute"), _XT("value"));
+  scew_element_add_attribute_pair (sub_element,
+                                   _XT("attribute"), _XT("value"));
 
   sub_element = scew_element_add (element, _XT("subelement"));
-  scew_element_add_attribute_pair (sub_element, _XT("attribute1"), _XT("value1"));
-  scew_element_add_attribute_pair (sub_element, _XT("attribute2"), _XT("value2"));
+  scew_element_add_attribute_pair (sub_element,
+                                   _XT("attribute1"), _XT("value1"));
+  scew_element_add_attribute_pair (sub_element,
+                                   _XT("attribute2"), _XT("value2"));
 
   sub_sub_element = scew_element_add (sub_element, _XT("subsubelement"));
-  scew_element_add_attribute_pair (sub_sub_element, _XT("attribute1"), _XT("value1"));
-  scew_element_add_attribute_pair (sub_sub_element, _XT("attribute2"), _XT("value2"));
-  scew_element_add_attribute_pair (sub_sub_element, _XT("attribute3"), _XT("value3"));
+  scew_element_add_attribute_pair (sub_sub_element,
+                                   _XT("attribute1"), _XT("value1"));
+  scew_element_add_attribute_pair (sub_sub_element,
+                                   _XT("attribute2"), _XT("value2"));
+  scew_element_add_attribute_pair (sub_sub_element,
+                                   _XT("attribute3"), _XT("value3"));
   /* Check attribute2 replacement. */
-  scew_element_add_attribute_pair (sub_sub_element, _XT("attribute2"), _XT("new_value2"));
-  scew_element_set_contents (sub_sub_element, _XT("With accents: à é è í ó ú"));
+  scew_element_add_attribute_pair (sub_sub_element,
+                                   _XT("attribute2"), _XT("new_value2"));
+  scew_element_set_contents (sub_sub_element,
+                             _XT("With accents: à é è í ó ú"));
 
   /* Save the XML tree to a file. */
   writer = scew_writer_file_create (argv[1]);
@@ -132,8 +141,8 @@ main(int argc, char *argv[])
   scew_writer_free (writer);
 
   /* Save the XML tree to a buffer and print it to standard output. */
-  buffer = (XML_Char *) malloc (MAX_BUFFER);
-  writer = scew_writer_buffer_create (buffer, MAX_BUFFER);
+  buffer = (XML_Char *) malloc (MAX_OUTPUT_BUFFER_);
+  writer = scew_writer_buffer_create (buffer, MAX_OUTPUT_BUFFER_);
   if (writer == NULL)
     {
       printf ("Unable to create writer buffer\n");

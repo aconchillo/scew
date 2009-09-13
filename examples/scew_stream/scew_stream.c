@@ -33,42 +33,55 @@
  *
  * Example 1:
  *
- *   <command>command_1</command>                <-- callback called
- *   <command><option>option2</option></command> <-- callback called
- *   <command>command_3</command>                <-- callback called
+ *   <command>command_1</command>                <-- element hook
+ *   <command><option>option2</option></command> <-- element, element hook
+ *   <command>command_3</command>                <-- element hook
  *
  * Example 2:
  *
  *   <commands>
- *     <command>command_1</command>
- *     <command>command_2</command>
- *   </commands>                                 <-- callback called
+ *     <command>command_1</command>              <-- element hook
+ *     <command>command_2</command>              <-- element hook
+ *   </commands>                                 <-- tree, element hook
  */
 
 #include <scew/scew.h>
 
 #include <stdio.h>
 
+static scew_printer *stdout_printer_ = NULL;
 static scew_writer *stdout_writer_ = NULL;
 
-/* static scew_bool */
-/* stream_cb (scew_parser *parser, scew_element *element) */
-/* { */
-/*   printf ("*** SCEW stream callback called!\n"); */
+static scew_bool
+tree_hook_ (scew_parser *parser, void *tree)
+{
+  printf ("*** SCEW stream tree loaded!\n\n");
 
-/*   /\* scew_writer_print_element (stdout_writer_, element); *\/ */
+  scew_printer_print_tree (stdout_printer_, (scew_tree *) tree);
 
-/*   // This is just a test and we want to free parsed element. */
-/*   /\* scew_element_free (element); *\/ */
+  printf ("\n-----------------------------------------------------\n");
 
-/*   return SCEW_TRUE; */
-/* } */
+  /**
+   * We free the tree here as we are not going to using it. We should
+   * save the pointer if we want to play with it.
+   */
+  scew_tree_free ((scew_tree *) tree);
+
+  return SCEW_TRUE;
+}
+
+static scew_bool
+element_hook_ (scew_parser *parser, void *element)
+{
+  printf ("*** SCEW stream element loaded!\n");
+
+  return SCEW_TRUE;
+}
 
 int
 main (int argc, char *argv[])
 {
-  /* int len = 1; */
-  FILE *in = NULL;
+  scew_reader *reader = NULL;
   scew_parser *parser = NULL;
 
   if (argc < 2)
@@ -77,57 +90,58 @@ main (int argc, char *argv[])
       return EXIT_FAILURE;
     }
 
-  in = fopen (argv[1], "rb");
-
-  if (in == NULL)
-    {
-      perror ("Unable to open file");
-      return EXIT_FAILURE;
-    }
-
-  /* Create a write for the standard output. */
+  /* Create a writer for the standard output. */
   stdout_writer_ = scew_writer_fp_create (stdout);
+
+  /* Create a writer for the standard output. */
+  stdout_printer_ = scew_printer_create (stdout_writer_);
 
   /* Creates an SCEW parser. This is the first function to call. */
   parser = scew_parser_create ();
 
-  /* scew_parser_set_stream_callback (parser, stream_cb); */
+  scew_parser_ignore_whitespaces (parser, SCEW_TRUE);
 
-  /* while (len) */
-  /*   { */
-  /*     char buffer; */
-  /*     len = fread (&buffer, 1, 1, in); */
+  /* Loads an XML file. */
+  reader = scew_reader_file_create (argv[1]);
+  if (reader == NULL)
+    {
+      scew_error code = scew_error_code ();
+      printf ("Unable to load file (error #%d: %s)\n", code,
+              scew_error_string (code));
+    }
 
-  /*     scew_bool is_final = (feof (in) != 0); */
+  /* Setup element and tree hooks. */
+  scew_parser_set_tree_hook (parser, tree_hook_);
+  scew_parser_set_element_hook (parser, element_hook_);
+  if (!scew_parser_load_stream (parser, reader))
+    {
+      scew_error code = scew_error_code ();
+      printf ("Unable to load file (error #%d: %s)\n",
+              code, scew_error_string (code));
+      if (code == scew_error_expat)
+        {
+          enum XML_Error expat_code = scew_error_expat_code (parser);
+          printf ("Expat error #%d (line %d, column %d): %s\n",
+                  expat_code,
+                  scew_error_expat_line (parser),
+                  scew_error_expat_column (parser),
+                  scew_error_expat_string (expat_code));
+        }
 
-  /*     if (!scew_parser_load_stream (parser, &buffer, len, is_final)) */
-  /*       { */
-  /*         scew_error code = scew_error_code (); */
-  /*         printf ("Unable to load stream (error #%d: %s)\n", */
-  /*                 code, */
-  /*                 scew_error_string (code)); */
-  /*         if (code == scew_error_expat) */
-  /*           { */
-  /*             enum XML_Error expat_code = scew_error_expat_code (parser); */
-  /*             printf ("Expat error #%d (line %d, column %d): %s\n", */
-  /*                     expat_code, */
-  /*                     scew_error_expat_line (parser), */
-  /*                     scew_error_expat_column (parser), */
-  /*                     scew_error_expat_string (expat_code)); */
-  /*           } */
-  /*         return EXIT_FAILURE; */
-  /*       } */
-  /*   } */
+      /* Frees the SCEW parser, printer, reader and writer. */
+      scew_reader_free (reader);
+      scew_parser_free (parser);
+      scew_writer_free (stdout_writer_);
+      scew_printer_free (stdout_printer_);
 
-  fclose (in);
+      return EXIT_FAILURE;
+    }
 
-  /* Frees the SCEW parser. */
+  /* Frees the SCEW parser, printer, reader and writer. */
+  scew_reader_free (reader);
   scew_parser_free (parser);
-
-  /* Frees the SCEW writer. */
   scew_writer_free (stdout_writer_);
-
-  printf ("bye bye!!!\n");
+  scew_printer_free (stdout_printer_);
 
   return 0;
 }
