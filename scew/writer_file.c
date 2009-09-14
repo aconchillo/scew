@@ -40,7 +40,7 @@ typedef struct
 } scew_writer_fp;
 
 static size_t file_write_ (scew_writer *writer,
-                           void const *buffer,
+                           XML_Char const *buffer,
                            size_t byte_no);
 static scew_bool file_end_ (scew_writer *reader);
 static scew_bool file_error_ (scew_writer *reader);
@@ -107,7 +107,7 @@ scew_writer_fp_create (FILE *file)
 /* Private */
 
 size_t
-file_write_ (scew_writer *writer, void const *buffer, size_t byte_no)
+file_write_ (scew_writer *writer, XML_Char const *buffer, size_t char_no)
 {
   size_t written_no = 0;
   scew_writer_fp *fp_writer = NULL;
@@ -116,7 +116,7 @@ file_write_ (scew_writer *writer, void const *buffer, size_t byte_no)
   assert (buffer != NULL);
 
   fp_writer = scew_writer_data (writer);
-  written_no = fwrite (buffer, 1, byte_no, fp_writer->file);
+  written_no = fwrite (buffer, sizeof (XML_Char), char_no, fp_writer->file);
 
   return written_no;
 }

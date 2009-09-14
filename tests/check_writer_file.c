@@ -90,7 +90,7 @@ START_TEST (test_write)
   scew_writer_free (writer);
 
   /* Try to read the whole file */
-  enum { MAX_BUFFER_SIZE = 255 };
+  enum { MAX_BUFFER_SIZE = 512 };
 
   XML_Char read_buffer[MAX_BUFFER_SIZE] = _XT ("");
 

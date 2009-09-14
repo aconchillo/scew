@@ -67,13 +67,13 @@ scew_reader_data (scew_reader *reader)
 }
 
 size_t
-scew_reader_read (scew_reader *reader, void *buffer, size_t byte_no)
+scew_reader_read (scew_reader *reader, XML_Char *buffer, size_t char_no)
 {
   assert (reader != NULL);
   assert (reader->hooks != NULL);
   assert (reader->hooks->read != NULL);
 
-  return reader->hooks->read (reader, buffer, byte_no);
+  return reader->hooks->read (reader, buffer, char_no);
 }
 
 scew_bool

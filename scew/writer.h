@@ -55,7 +55,7 @@ typedef struct scew_writer scew_writer;
 
 typedef struct
 {
-  size_t (*write) (scew_writer *, void const *, size_t);
+  size_t (*write) (scew_writer *, XML_Char const *, size_t);
   scew_bool (*end) (scew_writer *);
   scew_bool (*error) (scew_writer *);
   scew_bool (*close) (scew_writer *);
@@ -75,8 +75,8 @@ scew_writer_create (scew_writer_hooks const *hooks, void *data);
 extern SCEW_API void* scew_writer_data (scew_writer *writer);
 
 extern SCEW_API size_t scew_writer_write (scew_writer *writer,
-                                          void const *buffer,
-                                          size_t byte_no);
+                                          XML_Char const *buffer,
+                                          size_t char_no);
 
 extern SCEW_API scew_bool scew_writer_end (scew_writer *writer);
 

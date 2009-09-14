@@ -41,7 +41,9 @@ typedef struct
   scew_bool closed;
 } scew_reader_fp;
 
-static size_t file_read_ (scew_reader *reader, void *buffer, size_t byte_no);
+static size_t file_read_ (scew_reader *reader,
+                          XML_Char *buffer,
+                          size_t char_no);
 static scew_bool file_end_ (scew_reader *reader);
 static scew_bool file_error_ (scew_reader *reader);
 static scew_bool file_close_ (scew_reader *reader);
@@ -107,7 +109,7 @@ scew_reader_fp_create (FILE *file)
 /* Private */
 
 size_t
-file_read_ (scew_reader *reader, void *buffer, size_t byte_no)
+file_read_ (scew_reader *reader, XML_Char *buffer, size_t char_no)
 {
   size_t read_no = 0;
   scew_reader_fp *fp_reader = NULL;
@@ -116,7 +118,7 @@ file_read_ (scew_reader *reader, void *buffer, size_t byte_no)
   assert (buffer != NULL);
 
   fp_reader = scew_reader_data (reader);
-  read_no = fread (buffer, 1, byte_no, fp_reader->file);
+  read_no = fread (buffer, sizeof (XML_Char), char_no, fp_reader->file);
 
   return read_no;
 }

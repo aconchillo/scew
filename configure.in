@@ -83,7 +83,7 @@ CFLAGS="$CFLAGS -Wall -Werror"
 AM_CONDITIONAL(SCEW_UNICODE_WCHAR_T, test x$enable_utf16 = xyes)
 
 if test "x$enable_utf16" = "xyes"; then
-   CFLAGS="$CFLAGS -std=c99 -fshort-wchar"
+   CFLAGS="$CFLAGS -std=c99"
    CPPFLAGS="$CPPFLAGS -DXML_UNICODE_WCHAR_T"
 fi
 

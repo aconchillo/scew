@@ -35,7 +35,11 @@
 
 /* Unit tests */
 
+#ifdef XML_UNICODE_WCHAR_T
+static char const *TEST_FILE = SCEW_TESTSDIR"/check_reader_file_utf16.txt";
+#else
 static char const *TEST_FILE = SCEW_TESTSDIR"/check_reader_file.txt";
+#endif
 
 static XML_Char const *TEST_CONTENTS =
   _XT ("This is just a dummy file to test the SCEW reader for "
@@ -68,7 +72,7 @@ END_TEST
 
 START_TEST (test_read)
 {
-  enum { MAX_BUFFER_SIZE = 255 };
+  enum { MAX_BUFFER_SIZE = 512 };
 
   XML_Char read_buffer[MAX_BUFFER_SIZE] = _XT ("");
 
@@ -83,7 +87,7 @@ START_TEST (test_read)
                    "Invalid number of read bytes");
       i += 1;
     }
-  read_buffer[i] = '\0';
+  read_buffer[i] = _XT ('\0');
 
   CHECK_STR (read_buffer, TEST_CONTENTS, "Buffers do not match");
 

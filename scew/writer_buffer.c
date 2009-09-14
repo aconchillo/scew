@@ -44,8 +44,8 @@ typedef struct
 } scew_writer_buffer;
 
 static size_t buffer_write_ (scew_writer *writer,
-                             void const *buffer,
-                             size_t byte_no);
+                             XML_Char const *buffer,
+                             size_t char_no);
 static scew_bool buffer_end_ (scew_writer *writer);
 static scew_bool buffer_error_ (scew_writer *writer);
 static scew_bool buffer_close_ (scew_writer *writer);
@@ -96,7 +96,7 @@ scew_writer_buffer_create (XML_Char *buffer, size_t size)
 /* Private */
 
 size_t
-buffer_write_ (scew_writer *writer, void const *buffer, size_t byte_no)
+buffer_write_ (scew_writer *writer, XML_Char const *buffer, size_t char_no)
 {
   size_t written = 0;
   size_t maxlen = 0;
@@ -109,13 +109,13 @@ buffer_write_ (scew_writer *writer, void const *buffer, size_t byte_no)
 
   /* Always leave one space for null-terminated buffer. */
   maxlen = buf_writer->size - buf_writer->current - 1;
-  written = (byte_no > maxlen) ? maxlen : byte_no;
+  written = (char_no > maxlen) ? maxlen : char_no;
 
-  memcpy (buf_writer->buffer + buf_writer->current, buffer, written);
+  scew_memcpy (buf_writer->buffer + buf_writer->current, buffer, written);
   buf_writer->current += written;
 
   /* Set null-character to end of buffer. */
-  buf_writer->buffer[buf_writer->current] = '\0';
+  buf_writer->buffer[buf_writer->current] = _XT ('\0');
 
   return written;
 }

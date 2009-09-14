@@ -65,13 +65,13 @@ scew_writer_data (scew_writer *writer)
 }
 
 size_t
-scew_writer_write (scew_writer *writer, void const *buffer, size_t byte_no)
+scew_writer_write (scew_writer *writer, XML_Char const *buffer, size_t char_no)
 {
   assert (writer != NULL);
   assert (writer->hooks != NULL);
   assert (writer->hooks->write != NULL);
 
-  return writer->hooks->write (writer, buffer, byte_no);
+  return writer->hooks->write (writer, buffer, char_no);
 }
 
 scew_bool

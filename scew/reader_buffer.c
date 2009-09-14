@@ -28,6 +28,8 @@
 
 #include "reader_buffer.h"
 
+#include "str.h"
+
 #include <assert.h>
 
 #include <stdlib.h>
@@ -43,7 +45,9 @@ typedef struct
   size_t current;
 } scew_reader_buffer;
 
-static size_t buffer_read_ (scew_reader *reader, void *buffer, size_t byte_no);
+static size_t buffer_read_ (scew_reader *reader,
+                            XML_Char *buffer,
+                            size_t char_no);
 static scew_bool buffer_eor_ (scew_reader *reader);
 static scew_bool buffer_error_ (scew_reader *reader);
 static scew_bool buffer_close_ (scew_reader *reader);
@@ -92,7 +96,7 @@ scew_reader_buffer_create (XML_Char const *buffer, size_t size)
 /* Private */
 
 size_t
-buffer_read_ (scew_reader *reader, void *buffer, size_t byte_no)
+buffer_read_ (scew_reader *reader, XML_Char *buffer, size_t char_no)
 {
   size_t read_no = 0;
   size_t maxlen = 0;
@@ -105,9 +109,9 @@ buffer_read_ (scew_reader *reader, void *buffer, size_t byte_no)
 
   /* Get maximum number of available bytes in buffer. */
   maxlen = buf_reader->size - buf_reader->current;
-  read_no = (byte_no > maxlen) ? maxlen : byte_no;
+  read_no = (char_no > maxlen) ? maxlen : char_no;
 
-  memcpy (buffer, buf_reader->buffer + buf_reader->current, read_no);
+  scew_memcpy (buffer, buf_reader->buffer + buf_reader->current, read_no);
   buf_reader->current += read_no;
 
   return read_no;

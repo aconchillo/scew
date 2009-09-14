@@ -54,7 +54,7 @@ END_TEST
 
 START_TEST (test_read)
 {
-  enum { MAX_BUFFER_SIZE = 255 };
+  enum { MAX_BUFFER_SIZE = 512 };
 
   static XML_Char const *BUFFER = _XT ("This is a buffer for the reader");
 
@@ -72,7 +72,7 @@ START_TEST (test_read)
                    "Invalid number of read bytes");
       i += 1;
     }
-  read_buffer[i] = '\0';
+  read_buffer[i] = _XT ('\0');
 
   CHECK_STR (read_buffer, BUFFER, "Buffers do not match");
 

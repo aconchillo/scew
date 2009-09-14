@@ -39,7 +39,7 @@
 
 START_TEST (test_alloc)
 {
-  enum { MAX_BUFFER_SIZE = 255 };
+  enum { MAX_BUFFER_SIZE = 512 };
 
   XML_Char buffer[MAX_BUFFER_SIZE] = _XT ("");
 
@@ -55,7 +55,7 @@ END_TEST
 
 START_TEST (test_write)
 {
-  enum { MAX_BUFFER_SIZE = 255 };
+  enum { MAX_BUFFER_SIZE = 512 };
 
   static XML_Char const *BUFFER = _XT ("This is a buffer for the reader");
 
@@ -99,7 +99,7 @@ END_TEST
 
 START_TEST (test_misc)
 {
-  enum { MAX_BUFFER_SIZE = 255 };
+  enum { MAX_BUFFER_SIZE = 512 };
 
   XML_Char buffer[MAX_BUFFER_SIZE] = _XT ("");
 

@@ -237,7 +237,7 @@ parse_reader_ (scew_parser *parser, scew_reader *reader)
 
   while (!done && result)
     {
-      char buffer[MAX_PARSE_BUFFER_];
+      XML_Char buffer[MAX_PARSE_BUFFER_];
 
       /* Read files in small chunks. */
       size_t length = scew_reader_read (reader, buffer, MAX_PARSE_BUFFER_);
@@ -249,7 +249,7 @@ parse_reader_ (scew_parser *parser, scew_reader *reader)
       else
         {
           done = scew_reader_end (reader);
-          if (!XML_Parse (parser->parser, buffer, length, done))
+          if (!XML_Parse (parser->parser, (char *) buffer, length, done))
             {
               scew_error_set_last_error_ (scew_error_expat);
               result = SCEW_FALSE;
@@ -271,7 +271,7 @@ parse_stream_reader_ (scew_parser *parser, scew_reader *reader)
 
   while (!done && result)
     {
-      char buffer[MAX_PARSE_BUFFER_];
+      XML_Char buffer[MAX_PARSE_BUFFER_];
 
       /* Read files in small chunks. */
       size_t length = scew_reader_read (reader, buffer, MAX_PARSE_BUFFER_);
@@ -282,7 +282,7 @@ parse_stream_reader_ (scew_parser *parser, scew_reader *reader)
         }
       else
         {
-          result = parse_stream_buffer_ (parser, buffer, length);
+          result = parse_stream_buffer_ (parser, (char *) buffer, length);
           done = (0 == length);
         }
     }

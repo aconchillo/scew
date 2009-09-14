@@ -39,6 +39,8 @@
 
 #include "bool.h"
 
+#include <expat.h>
+
 #include <stddef.h>
 
 #ifdef __cplusplus
@@ -49,7 +51,7 @@ typedef struct scew_reader scew_reader;
 
 typedef struct
 {
-  size_t (*read) (scew_reader *, void *, size_t);
+  size_t (*read) (scew_reader *, XML_Char *, size_t);
   scew_bool (*end) (scew_reader *);
   scew_bool (*error) (scew_reader *);
   scew_bool (*close) (scew_reader *);
@@ -62,8 +64,8 @@ scew_reader_create (scew_reader_hooks const *hooks, void *data);
 extern SCEW_API void* scew_reader_data (scew_reader *reader);
 
 extern SCEW_API size_t scew_reader_read (scew_reader *reader,
-                                         void *buffer,
-                                         size_t byte_no);
+                                         XML_Char *buffer,
+                                         size_t char_no);
 
 extern SCEW_API scew_bool scew_reader_end (scew_reader *reader);
 
