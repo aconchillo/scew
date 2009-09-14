@@ -49,9 +49,16 @@ AM_CONDITIONAL(DOC, test x$enable_doc = xyes)
 AC_CHECK_HEADER(expat.h, ,
                 AC_MSG_ERROR(Unable to find Expat library.
                 Download lastest version at http://www.libexpat.org))
-AC_CHECK_LIB(expat, XML_Parse, ,
-             AC_MSG_ERROR(Unable to find Expat library.
-             Download lastest version at http://www.libexpat.org))
+
+if test "x$enable_utf16" = "xno"; then
+   AC_CHECK_LIB(expat, XML_Parse, ,
+                AC_MSG_ERROR(Unable to find Expat library.
+                Download lastest version at http://www.libexpat.org))
+else
+   AC_CHECK_LIB(expatw, XML_Parse, ,
+                AC_MSG_ERROR(Unable to find Expat library (UTF-16).
+                Download lastest version at http://www.libexpat.org))
+fi
 
 if test "x$enable_threads" = "xyes"; then
    AC_CHECK_LIB(pthread, pthread_key_create, ,
