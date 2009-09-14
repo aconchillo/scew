@@ -32,6 +32,7 @@
 #include "xerror.h"
 
 #include "tree.h"
+#include "str.h"
 
 #include <assert.h>
 #include <stdio.h>
@@ -53,7 +54,7 @@ static scew_bool parse_stream_reader_ (scew_parser *parser,
                                        scew_reader *reader);
 
 static scew_bool parse_stream_buffer_ (scew_parser *parser,
-                                       char const *buffer,
+                                       XML_Char const *buffer,
                                        size_t size);
 
 
@@ -248,8 +249,9 @@ parse_reader_ (scew_parser *parser, scew_reader *reader)
         }
       else
         {
+          size_t byte_no = length * sizeof (XML_Char);
           done = scew_reader_end (reader);
-          if (!XML_Parse (parser->parser, (char *) buffer, length, done))
+          if (!XML_Parse (parser->parser, (char *) buffer, byte_no, done))
             {
               scew_error_set_last_error_ (scew_error_expat);
               result = SCEW_FALSE;
@@ -282,7 +284,7 @@ parse_stream_reader_ (scew_parser *parser, scew_reader *reader)
         }
       else
         {
-          result = parse_stream_buffer_ (parser, (char *) buffer, length);
+          result = parse_stream_buffer_ (parser, buffer, length);
           done = (0 == length);
         }
     }
@@ -291,11 +293,12 @@ parse_stream_reader_ (scew_parser *parser, scew_reader *reader)
 }
 
 scew_bool
-parse_stream_buffer_ (scew_parser *parser, char const *buffer, size_t size)
+parse_stream_buffer_ (scew_parser *parser, XML_Char const *buffer, size_t size)
 {
   unsigned int start = 0;
   unsigned int end = 0;
   unsigned int length = 0;
+  unsigned int byte_no = 0;
 
   assert(parser != NULL);
   assert(buffer != NULL);
@@ -307,7 +310,7 @@ parse_stream_buffer_ (scew_parser *parser, char const *buffer, size_t size)
    */
   while ((start < size) && (end <= size))
     {
-      if ((end == size) || (buffer[end] == '>'))
+      if ((end == size) || (buffer[end] == _XT ('>')))
         {
           length = end - start;
           if (end < size)
@@ -315,7 +318,8 @@ parse_stream_buffer_ (scew_parser *parser, char const *buffer, size_t size)
               length += 1;
             }
 
-          if (!XML_Parse (parser->parser, &buffer[start], length, 0))
+          byte_no = length * sizeof (XML_Char);
+          if (!XML_Parse (parser->parser, (char *) &buffer[start], length, 0))
             {
               scew_error_set_last_error_ (scew_error_expat);
               return SCEW_FALSE;
