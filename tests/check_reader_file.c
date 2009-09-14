@@ -35,11 +35,7 @@
 
 /* Unit tests */
 
-#ifdef XML_UNICODE_WCHAR_T
-static char const *TEST_FILE = SCEW_TESTSDIR"/check_reader_file_utf16.txt";
-#else
 static char const *TEST_FILE = SCEW_TESTSDIR"/check_reader_file.txt";
-#endif
 
 static XML_Char const *TEST_CONTENTS =
   _XT ("This is just a dummy file to test the SCEW reader for "
