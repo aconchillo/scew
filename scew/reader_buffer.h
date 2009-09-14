@@ -47,4 +47,4 @@ extern SCEW_API scew_reader* scew_reader_buffer_create (XML_Char const *buffer,
 }
 #endif /* __cplusplus */
 
-#endif // READER_BUFFER_H_0908250202
+#endif /* READER_BUFFER_H_0908250202 */

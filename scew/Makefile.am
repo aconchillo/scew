@@ -14,12 +14,23 @@ include_HEADERS = attribute.h bool.h element.h error.h export.h \
 
 noinst_HEADERS = xattribute.h xelement.h xerror.h xparser.h
 
-lib_LTLIBRARIES = libscew.la
-
-libscew_la_SOURCES = attribute.c error.c list.c parser.c printer.c \
+SCEW_SOURCES = attribute.c error.c list.c parser.c printer.c \
 	element.c element_attribute.c element_compare.c \
 	element_copy.c element_search.c str.c tree.c \
 	xattribute.c xerror.c xparser.c \
 	reader.c reader_buffer.c reader_file.c \
 	writer.c writer_buffer.c writer_file.c
+
+if SCEW_UNICODE_WCHAR_T
+
+lib_LTLIBRARIES = libsceww.la
+libsceww_la_SOURCES = $(SCEW_SOURCES)
+libsceww_la_LDFLAGS = -version-info 1:0:1
+
+else
+
+lib_LTLIBRARIES = libscew.la
+libscew_la_SOURCES = $(SCEW_SOURCES)
 libscew_la_LDFLAGS = -version-info 1:0:1
+
+endif

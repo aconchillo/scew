@@ -7,14 +7,16 @@
 
 #### boilerplate and flags
 
-AC_INIT(scew/scew.h)
-AM_INIT_AUTOMAKE(scew, 1.0.0)
+define([scew_version], [1.0.0])
+
+AC_INIT(scew/scew.h, scew_version)
+AM_INIT_AUTOMAKE(scew, scew_version)
 AM_CONFIG_HEADER(config.h)
 
 AC_ISC_POSIX
 AC_PROG_CC
 
-LT_INIT([disable-shared,win32-dll])
+LT_INIT([win32-dll])
 AC_PROG_LIBTOOL
 
 AM_PROG_CC_C_O
@@ -30,6 +32,11 @@ AC_ARG_ENABLE([threads],
    AC_HELP_STRING([--enable-threads],
       [turn on basic thread support @<:@default=yes@:>@]),
       [], [enable_threads=yes])
+
+AC_ARG_ENABLE([utf16],
+   AC_HELP_STRING([--enable-utf16],
+      [turn on UTF-16 support (wchar_t) @<:@default=no@:>@]),
+      [], [enable_utf16=no])
 
 # doxygen
 
@@ -66,8 +73,15 @@ fi
 
 CFLAGS="$CFLAGS -Wall -Werror"
 
+AM_CONDITIONAL(SCEW_UNICODE_WCHAR_T, test x$enable_utf16 = xyes)
+
+if test "x$enable_utf16" = "xyes"; then
+   CFLAGS="$CFLAGS -std=c99 -fshort-wchar"
+   CPPFLAGS="$CPPFLAGS -DXML_UNICODE_WCHAR_T"
+fi
+
 if test "x$enable_debug" = "xno"; then
-   CFLAGS="$CFLAGS -DNDEBUG"
+   CPPFLAGS="$CPPFLAGS -DNDEBUG"
 fi
 
 AC_SUBST(CFLAGS)

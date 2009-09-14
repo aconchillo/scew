@@ -39,9 +39,9 @@
 static char const *TEST_FILE = SCEW_TESTSDIR"/check_writer_file.txt";
 
 static XML_Char const *TEST_CONTENTS =
-  "This is just a dummy file to test the SCEW writer for "
-  "files. We don't need to use an XML file as SCEW writers "
-  "do not bother about file contents.";
+  _XT ("This is just a dummy file to test the SCEW writer for "
+       "files. We don't need to use an XML file as SCEW writers "
+       "do not bother about file contents.");
 
 /* Allocation */
 
@@ -92,7 +92,7 @@ START_TEST (test_write)
   /* Try to read the whole file */
   enum { MAX_BUFFER_SIZE = 255 };
 
-  XML_Char read_buffer[MAX_BUFFER_SIZE] = "";
+  XML_Char read_buffer[MAX_BUFFER_SIZE] = _XT ("");
 
   scew_reader *reader = scew_reader_file_create (TEST_FILE);
 

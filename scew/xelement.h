@@ -56,4 +56,4 @@ struct scew_element
   scew_list *last_attribute;    /**< Pointer to last attribute (performance) */
 };
 
-#endif // XELEMENT_H_0908270147
+#endif /* XELEMENT_H_0908270147 */

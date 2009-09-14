@@ -41,7 +41,7 @@ START_TEST (test_alloc)
 {
   enum { MAX_BUFFER_SIZE = 255 };
 
-  XML_Char buffer[MAX_BUFFER_SIZE] = "";
+  XML_Char buffer[MAX_BUFFER_SIZE] = _XT ("");
 
   scew_writer *writer = scew_writer_buffer_create (buffer, MAX_BUFFER_SIZE);
 
@@ -57,9 +57,9 @@ START_TEST (test_write)
 {
   enum { MAX_BUFFER_SIZE = 255 };
 
-  static XML_Char const *BUFFER = "This is a buffer for the reader";
+  static XML_Char const *BUFFER = _XT ("This is a buffer for the reader");
 
-  XML_Char write_buffer[MAX_BUFFER_SIZE] = "";
+  XML_Char write_buffer[MAX_BUFFER_SIZE] = _XT ("");
 
   scew_writer *writer = scew_writer_buffer_create (write_buffer,
                                                    scew_strlen (BUFFER) + 1);
@@ -101,7 +101,7 @@ START_TEST (test_misc)
 {
   enum { MAX_BUFFER_SIZE = 255 };
 
-  XML_Char buffer[MAX_BUFFER_SIZE] = "";
+  XML_Char buffer[MAX_BUFFER_SIZE] = _XT ("");
 
   scew_writer *writer = scew_writer_buffer_create (buffer, MAX_BUFFER_SIZE);
 

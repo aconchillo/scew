@@ -57,4 +57,4 @@ struct scew_attribute
 extern SCEW_LOCAL void scew_attribute_set_parent_ (scew_attribute *attribute,
                                                    scew_element const *parent);
 
-#endif // XATTRIBUTE_H_0908242344
+#endif /* XATTRIBUTE_H_0908242344 */

@@ -106,8 +106,8 @@ main (int argc, char *argv[])
   if (reader == NULL)
     {
       scew_error code = scew_error_code ();
-      printf ("Unable to load file (error #%d: %s)\n", code,
-              scew_error_string (code));
+      scew_printf (_XT ("Unable to load file (error #%d: %s)\n"),
+                   code, scew_error_string (code));
     }
 
   /* Setup element and tree hooks. */
@@ -116,16 +116,16 @@ main (int argc, char *argv[])
   if (!scew_parser_load_stream (parser, reader))
     {
       scew_error code = scew_error_code ();
-      printf ("Unable to load file (error #%d: %s)\n",
-              code, scew_error_string (code));
+      scew_printf (_XT ("Unable to load file (error #%d: %s)\n"),
+                   code, scew_error_string (code));
       if (code == scew_error_expat)
         {
           enum XML_Error expat_code = scew_error_expat_code (parser);
-          printf ("Expat error #%d (line %d, column %d): %s\n",
-                  expat_code,
-                  scew_error_expat_line (parser),
-                  scew_error_expat_column (parser),
-                  scew_error_expat_string (expat_code));
+          scew_printf (_XT ("Expat error #%d (line %d, column %d): %s\n"),
+                       expat_code,
+                       scew_error_expat_line (parser),
+                       scew_error_expat_column (parser),
+                       scew_error_expat_string (expat_code));
         }
 
       /* Frees the SCEW parser, printer, reader and writer. */

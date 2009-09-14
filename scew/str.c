@@ -75,9 +75,9 @@ scew_strdup (XML_Char const *src)
 
   if (src != NULL)
     {
-      unsigned int len = scew_strlen (src);
+      size_t len = scew_strlen (src);
       out = calloc (len + 1, sizeof (XML_Char));
-      scew_memcpy (out, (XML_Char*) src, len);
+      scew_strcpy (out, src);
     }
 
   return out;
@@ -86,9 +86,9 @@ scew_strdup (XML_Char const *src)
 void
 scew_strtrim (XML_Char *src)
 {
-  unsigned int start = 0;
-  unsigned int end = 0;
-  unsigned int total = 0;
+  size_t start = 0;
+  size_t end = 0;
+  size_t total = 0;
 
   assert (src != NULL);
 
@@ -97,11 +97,11 @@ scew_strtrim (XML_Char *src)
   /* Strip trailing whitespace. */
   while (end > 0 && scew_isspace (src[end - 1]))
     {
-      src[--end] = '\0';
+      src[--end] = _XT ('\0');
     }
 
   /* Strip leading whitespace. */
-  start = scew_strspn (src, _XT (" \n\r\t\v") );
+  start = scew_strspn (src, _XT (" \n\r\t\v"));
   total = end - start;
   scew_memmove (src, &src[start], total);
   src[total] = _XT ('\0');

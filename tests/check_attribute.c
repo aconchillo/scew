@@ -39,8 +39,8 @@
 
 START_TEST (test_alloc)
 {
-  static XML_Char const *NAME = "attribute1";
-  static XML_Char const *VALUE = "value1";
+  static XML_Char const *NAME = _XT ("attribute1");
+  static XML_Char const *VALUE = _XT ("value1");
 
   scew_attribute *attribute = scew_attribute_create (NAME, VALUE);
 
@@ -55,10 +55,10 @@ END_TEST
 
 START_TEST (test_accessors)
 {
-  static XML_Char const *NAME = "attribute1";
-  static XML_Char const *NAME_AUX = "attribute2";
-  static XML_Char const *VALUE = "value1";
-  static XML_Char const *VALUE_AUX = "value2";
+  static XML_Char const *NAME = _XT ("attribute1");
+  static XML_Char const *NAME_AUX = _XT ("attribute2");
+  static XML_Char const *VALUE = _XT ("value1");
+  static XML_Char const *VALUE_AUX = _XT ("value2");
 
   scew_attribute *attribute = scew_attribute_create (NAME, VALUE);
 
@@ -67,6 +67,7 @@ START_TEST (test_accessors)
   /* Name */
   CHECK_STR (scew_attribute_name (attribute), NAME,
              "Attribute name do not match");
+
   /* Value */
   CHECK_STR (scew_attribute_value (attribute), VALUE,
              "Attribute value do not match");
@@ -92,13 +93,13 @@ END_TEST
 
 START_TEST (test_hierarchy)
 {
-  static XML_Char const *ELEMENT_NAME = "element";
-  static XML_Char const *NAME_1 = "attribute1";
-  static XML_Char const *VALUE_1 = "value1";
-  static XML_Char const *NAME_2 = "attribute2";
-  static XML_Char const *VALUE_2 = "value2";
-  static XML_Char const *NAME_3 = "attribute3";
-  static XML_Char const *VALUE_3 = "value3";
+  static XML_Char const *ELEMENT_NAME = _XT ("element");
+  static XML_Char const *NAME_1 = _XT ("attribute1");
+  static XML_Char const *VALUE_1 = _XT ("value1");
+  static XML_Char const *NAME_2 = _XT ("attribute2");
+  static XML_Char const *VALUE_2 = _XT ("value2");
+  static XML_Char const *NAME_3 = _XT ("attribute3");
+  static XML_Char const *VALUE_3 = _XT ("value3");
   static unsigned int const N_ATTRIBUTES = 3;
 
   scew_element *element = scew_element_create (ELEMENT_NAME);
@@ -148,11 +149,11 @@ END_TEST
 
 START_TEST (test_compare)
 {
-  static XML_Char const *NAME_1 = "attribute_1";
-  static XML_Char const *NAME_1_1 = "attribute_1";
-  static XML_Char const *NAME_2 = "attribute_2";
-  static XML_Char const *VALUE_1 = "value_1";
-  static XML_Char const *VALUE_2 = "value_2";
+  static XML_Char const *NAME_1 = _XT ("attribute_1");
+  static XML_Char const *NAME_1_1 = _XT ("attribute_1");
+  static XML_Char const *NAME_2 = _XT ("attribute_2");
+  static XML_Char const *VALUE_1 = _XT ("value_1");
+  static XML_Char const *VALUE_2 = _XT ("value_2");
 
   scew_attribute *attribute = scew_attribute_create (NAME_1, VALUE_1);
 
