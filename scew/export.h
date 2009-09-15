@@ -55,11 +55,11 @@
 
 #ifdef SCEW_DLL /* Defined if SCEW is compiled as a DLL. */
 
-  #ifdef SCEW_DLL_EXPORTS /* Defined if we are building the SCEW DLL. */
+  #ifdef DLL_EXPORTS /* Defined if we are building the SCEW DLL. */
     #define SCEW_API SCEW_DLL_EXPORT
   #else
     #define SCEW_API SCEW_DLL_IMPORT
-  #endif /* SCEW_DLL_EXPORTS */
+  #endif /* DLL_EXPORTS */
 
   #define SCEW_LOCAL SCEW_DLL_LOCAL
 
