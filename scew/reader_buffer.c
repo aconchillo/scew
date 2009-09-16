@@ -48,7 +48,7 @@ typedef struct
 static size_t buffer_read_ (scew_reader *reader,
                             XML_Char *buffer,
                             size_t char_no);
-static scew_bool buffer_eor_ (scew_reader *reader);
+static scew_bool buffer_end_ (scew_reader *reader);
 static scew_bool buffer_error_ (scew_reader *reader);
 static scew_bool buffer_close_ (scew_reader *reader);
 static void buffer_free_ (scew_reader *reader);
@@ -56,7 +56,7 @@ static void buffer_free_ (scew_reader *reader);
 static scew_reader_hooks const buffer_hooks_ =
   {
     buffer_read_,
-    buffer_eor_,
+    buffer_end_,
     buffer_error_,
     buffer_close_,
     buffer_free_
@@ -118,7 +118,7 @@ buffer_read_ (scew_reader *reader, XML_Char *buffer, size_t char_no)
 }
 
 scew_bool
-buffer_eor_ (scew_reader *reader)
+buffer_end_ (scew_reader *reader)
 {
   scew_reader_buffer *buf_reader = NULL;
 

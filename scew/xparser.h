@@ -44,11 +44,11 @@ typedef struct stack_element stack_element;
 
 struct scew_parser
 {
-  XML_Parser parser;		/**< Expat parser */
-  scew_tree *tree;		/**< Current parsed XML document tree */
+  XML_Parser parser;            /**< Expat parser */
+  scew_tree *tree;              /**< Current parsed XML document tree */
   XML_Char *preamble;           /**< Current XML document tree preamble */
-  stack_element *stack;		/**< Current parsed element stack */
-  scew_bool ignore_whitespaces;	/**< Whether to ignore white spaces */
+  stack_element *stack;         /**< Current parsed element stack */
+  scew_bool ignore_whitespaces; /**< Whether to ignore white spaces */
   scew_parser_load_hook element_hook; /**< Hook for loaded elements */
   scew_parser_load_hook tree_hook; /**< Hook for loaded trees */
 };

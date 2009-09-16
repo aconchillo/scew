@@ -49,10 +49,13 @@ enum
 static scew_parser* parser_create_ (scew_bool namespace, XML_Char separator);
 
 static scew_bool parse_reader_ (scew_parser *parser, scew_reader *reader);
+static scew_bool parse_buffer_ (scew_parser *parser,
+                                XML_Char const *buffer,
+                                size_t size,
+                                scew_bool done);
 
 static scew_bool parse_stream_reader_ (scew_parser *parser,
                                        scew_reader *reader);
-
 static scew_bool parse_stream_buffer_ (scew_parser *parser,
                                        XML_Char const *buffer,
                                        size_t size);
@@ -193,6 +196,11 @@ scew_parser_ignore_whitespaces (scew_parser *parser, scew_bool ignore)
 scew_parser*
 parser_create_ (scew_bool namespace, XML_Char separator)
 {
+#ifdef XML_UNICODE_WCHAR_T
+  static XML_Char *encoding = _XT("UTF-16");
+#else
+  static XML_Char *encoding = NULL;
+#endif
   scew_parser *parser = calloc (1, sizeof (scew_parser));
 
   if (NULL == parser)
@@ -203,8 +211,8 @@ parser_create_ (scew_bool namespace, XML_Char separator)
 
   /* Create Expat parser. */
   parser->parser = namespace
-    ? XML_ParserCreateNS (NULL, separator)
-    : XML_ParserCreate (NULL);
+    ? XML_ParserCreateNS (encoding, separator)
+    : XML_ParserCreate (encoding);
 
   if (parser->parser != NULL)
     {
@@ -238,24 +246,40 @@ parse_reader_ (scew_parser *parser, scew_reader *reader)
 
   while (!done && result)
     {
-      XML_Char buffer[MAX_PARSE_BUFFER_];
+      XML_Char buffer[MAX_PARSE_BUFFER_ + 1];
 
       /* Read files in small chunks. */
       size_t length = scew_reader_read (reader, buffer, MAX_PARSE_BUFFER_);
       if (scew_reader_error (reader))
         {
-	  scew_error_set_last_error_ (scew_error_io);
-	  result = SCEW_FALSE;
+          scew_error_set_last_error_ (scew_error_io);
+          result = SCEW_FALSE;
         }
       else
         {
-          size_t byte_no = length * sizeof (XML_Char);
           done = scew_reader_end (reader);
-          if (!XML_Parse (parser->parser, (char *) buffer, byte_no, done))
-            {
-              scew_error_set_last_error_ (scew_error_expat);
-              result = SCEW_FALSE;
-            }
+          result = parse_buffer_ (parser, buffer, length, done);
+        }
+    }
+
+  return result;
+}
+
+scew_bool
+parse_buffer_ (scew_parser *parser,
+               XML_Char const *buffer,
+               size_t size,
+               scew_bool done)
+{
+  scew_bool result = SCEW_TRUE;
+  size_t byte_no = size * sizeof (XML_Char);
+
+  if (done || !scew_isempty (buffer))
+    {
+      if (!XML_Parse (parser->parser, (char *) buffer, byte_no, done))
+        {
+          scew_error_set_last_error_ (scew_error_expat);
+          result = SCEW_FALSE;
         }
     }
 
@@ -273,14 +297,14 @@ parse_stream_reader_ (scew_parser *parser, scew_reader *reader)
 
   while (!done && result)
     {
-      XML_Char buffer[MAX_PARSE_BUFFER_];
+      XML_Char buffer[MAX_PARSE_BUFFER_ + 1];
 
       /* Read files in small chunks. */
       size_t length = scew_reader_read (reader, buffer, MAX_PARSE_BUFFER_);
       if (scew_reader_error (reader))
         {
-	  scew_error_set_last_error_ (scew_error_io);
-	  result = SCEW_FALSE;
+          scew_error_set_last_error_ (scew_error_io);
+          result = SCEW_FALSE;
         }
       else
         {
@@ -298,7 +322,6 @@ parse_stream_buffer_ (scew_parser *parser, XML_Char const *buffer, size_t size)
   unsigned int start = 0;
   unsigned int end = 0;
   unsigned int length = 0;
-  unsigned int byte_no = 0;
 
   assert(parser != NULL);
   assert(buffer != NULL);
@@ -310,7 +333,7 @@ parse_stream_buffer_ (scew_parser *parser, XML_Char const *buffer, size_t size)
    */
   while ((start < size) && (end <= size))
     {
-      if ((end == size) || (buffer[end] == _XT ('>')))
+      if ((end == size) || (buffer[end] == _XT('>')))
         {
           length = end - start;
           if (end < size)
@@ -318,19 +341,18 @@ parse_stream_buffer_ (scew_parser *parser, XML_Char const *buffer, size_t size)
               length += 1;
             }
 
-          byte_no = length * sizeof (XML_Char);
-          if (!XML_Parse (parser->parser, (char *) &buffer[start], length, 0))
+          if (!parse_buffer_ (parser, &buffer[start], length, SCEW_FALSE))
             {
-              scew_error_set_last_error_ (scew_error_expat);
               return SCEW_FALSE;
             }
 
-          if ((parser->tree != NULL) && (NULL == parser->stack))
+          if ((parser->tree != NULL)
+              && (scew_tree_root (parser->tree) != NULL)
+              && (NULL == parser->stack))
             {
               /* Tell Expat we're done. */
-              if (!XML_Parse (parser->parser, "", 0, 1))
+              if (!parse_buffer_ (parser, _XT(""), 0, SCEW_TRUE))
                 {
-                  scew_error_set_last_error_ (scew_error_expat);
                   return SCEW_FALSE;
                 }
 

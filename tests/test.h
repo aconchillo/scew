@@ -51,7 +51,7 @@ enum
   do                                                                    \
     {                                                                   \
       static XML_Char buffer[CHECK_MAX_BUFFER_];                        \
-      check_sprintf (buffer, _XT (MSG), ##__VA_ARGS__);                 \
+      check_sprintf (buffer, _XT(MSG), ##__VA_ARGS__);                  \
       unsigned int v_a = (A);                                           \
       unsigned int v_b = (B);                                           \
       fail_unless ((v_a) == (v_b),                                      \
@@ -64,7 +64,7 @@ enum
   do                                                                    \
     {                                                                   \
       static XML_Char buffer[CHECK_MAX_BUFFER_];                        \
-      check_sprintf (buffer, _XT (MSG), ##__VA_ARGS__);                 \
+      check_sprintf (buffer, _XT(MSG), ##__VA_ARGS__);                  \
       int v_a = (A);                                                    \
       int v_b = (B);                                                    \
       fail_unless (v_a == v_b,                                          \
@@ -83,7 +83,7 @@ enum
       if (scew_strcmp (str_a, str_b) != 0)                              \
         {                                                               \
           static XML_Char buffer[CHECK_MAX_BUFFER_];                    \
-          check_sprintf (buffer, _XT (MSG), ##__VA_ARGS__);             \
+          check_sprintf (buffer, _XT(MSG), ##__VA_ARGS__);              \
           fail ("(%s) == (%s) \n  Actual: %s \n  Expected: %s \n  %s",  \
                 #A, #B, str_a, str_b, buffer);                          \
         }                                                               \
@@ -94,7 +94,7 @@ enum
   do                                                                    \
     {                                                                   \
       static XML_Char buffer[CHECK_MAX_BUFFER_];                        \
-      check_sprintf (buffer, _XT (MSG), ##__VA_ARGS__);                 \
+      check_sprintf (buffer, _XT(MSG), ##__VA_ARGS__);                  \
       fail_unless ((A) != NULL, "(%s) != NULL \n  %s", #A, buffer);     \
     }                                                                   \
   while (0);
@@ -103,7 +103,7 @@ enum
   do                                                                    \
     {                                                                   \
       static XML_Char buffer[CHECK_MAX_BUFFER_];                        \
-      check_sprintf (buffer, _XT (MSG), ##__VA_ARGS__);                 \
+      check_sprintf (buffer, _XT(MSG), ##__VA_ARGS__);                  \
       fail_unless ((A) == NULL, "(%s) == NULL \n  %s", #A, buffer);     \
     }                                                                   \
   while (0);

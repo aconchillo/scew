@@ -41,7 +41,7 @@ print_indent (unsigned int indent)
 
   if (indent > 0)
     {
-      scew_printf (_XT ("%*s"), indent * INDENT_SIZE, " ");
+      scew_printf (_XT("%*s"), indent * INDENT_SIZE, " ");
     }
 }
 
@@ -58,7 +58,7 @@ print_attributes (scew_element *element)
       while (list != NULL)
         {
           scew_attribute *attribute = scew_list_data (list);
-          scew_printf (_XT (" %s=\"%s\""),
+          scew_printf (_XT(" %s=\"%s\""),
                        scew_attribute_name (attribute),
                        scew_attribute_value (attribute));
           list = scew_list_next (list);
@@ -79,15 +79,15 @@ print_element (scew_element *element, unsigned int indent)
 
   /* Prints the starting element tag with its attributes. */
   print_indent (indent);
-  scew_printf (_XT ("<%s"), scew_element_name (element));
+  scew_printf (_XT("<%s"), scew_element_name (element));
   print_attributes (element);
-  scew_printf (_XT (">"));
+  scew_printf (_XT(">"));
 
   contents = scew_element_contents (element);
 
   if (contents == NULL)
     {
-      scew_printf (_XT ("\n"));
+      scew_printf (_XT("\n"));
     }
 
   /**
@@ -105,7 +105,7 @@ print_element (scew_element *element, unsigned int indent)
   /* Prints element's content. */
   if (contents != NULL)
     {
-      scew_printf (_XT ("%s"), contents);
+      scew_printf (_XT("%s"), contents);
     }
   else
     {
@@ -113,7 +113,7 @@ print_element (scew_element *element, unsigned int indent)
     }
 
   /* Prints the closing element tag. */
-  scew_printf (_XT ("</%s>\n"), scew_element_name (element));
+  scew_printf (_XT("</%s>\n"), scew_element_name (element));
 }
 
 int
@@ -141,7 +141,7 @@ main (int argc, char *argv[])
   if (reader == NULL)
     {
       scew_error code = scew_error_code ();
-      scew_printf (_XT ("Unable to load file (error #%d: %s)\n"),
+      scew_printf (_XT("Unable to load file (error #%d: %s)\n"),
                    code, scew_error_string (code));
     }
 
@@ -149,12 +149,12 @@ main (int argc, char *argv[])
   if (tree == NULL)
     {
       scew_error code = scew_error_code ();
-      scew_printf (_XT ("Unable to load file (error #%d: %s)\n"),
+      scew_printf (_XT("Unable to parse file (error #%d: %s)\n"),
                    code, scew_error_string (code));
       if (code == scew_error_expat)
         {
           enum XML_Error expat_code = scew_error_expat_code (parser);
-          scew_printf (_XT ("Expat error #%d (line %d, column %d): %s\n"),
+          scew_printf (_XT("Expat error #%d (line %d, column %d): %s\n"),
                        expat_code,
                        scew_error_expat_line (parser),
                        scew_error_expat_column (parser),

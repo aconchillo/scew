@@ -37,40 +37,40 @@
 /* Unit tests */
 
 static XML_Char const *TEST_TREE_CONTENTS =
-  _XT ("<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n\n"
-       "<test>\n"
-       "   <element>element contents</element>\n"
-       "   <element attribute=\"value\"/>\n"
-       "   <element attribute1=\"value1\" attribute2=\"value2\"/>\n"
-       "   <element>\n"
-       "      <subelement attribute=\"value\"/>\n"
-       "      <subelement attribute1=\"value1\" attribute2=\"value2\">\n"
-       "         <subsubelement>With accents: à é è í ó ú</subsubelement>\n"
-       "      </subelement>\n"
-       "   </element>\n"
-       "</test>\n");
+  _XT("<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n\n"
+      "<test>\n"
+      "   <element>element contents</element>\n"
+      "   <element attribute=\"value\"/>\n"
+      "   <element attribute1=\"value1\" attribute2=\"value2\"/>\n"
+      "   <element>\n"
+      "      <subelement attribute=\"value\"/>\n"
+      "      <subelement attribute1=\"value1\" attribute2=\"value2\">\n"
+      "         <subsubelement>With accents: à é è í ó ú</subsubelement>\n"
+      "      </subelement>\n"
+      "   </element>\n"
+      "</test>\n");
 
 static XML_Char const *TEST_ROOT_CONTENTS =
-  _XT ("<test>\n"
-       "   <element>element contents</element>\n"
-       "   <element attribute=\"value\"/>\n"
-       "   <element attribute1=\"value1\" attribute2=\"value2\"/>\n"
-       "   <element>\n"
-       "      <subelement attribute=\"value\"/>\n"
-       "      <subelement attribute1=\"value1\" attribute2=\"value2\">\n"
-       "         <subsubelement>With accents: à é è í ó ú</subsubelement>\n"
-       "      </subelement>\n"
-       "   </element>\n"
-       "</test>\n");
+  _XT("<test>\n"
+      "   <element>element contents</element>\n"
+      "   <element attribute=\"value\"/>\n"
+      "   <element attribute1=\"value1\" attribute2=\"value2\"/>\n"
+      "   <element>\n"
+      "      <subelement attribute=\"value\"/>\n"
+      "      <subelement attribute1=\"value1\" attribute2=\"value2\">\n"
+      "         <subsubelement>With accents: à é è í ó ú</subsubelement>\n"
+      "      </subelement>\n"
+      "   </element>\n"
+      "</test>\n");
 
 static XML_Char const *TEST_CHILDREN_CONTENTS =
-  _XT ("   <subelement attribute=\"value\"/>\n"
-       "   <subelement attribute1=\"value1\" attribute2=\"value2\">\n"
-       "      <subsubelement>With accents: à é è í ó ú</subsubelement>\n"
-       "   </subelement>\n");
+  _XT("   <subelement attribute=\"value\"/>\n"
+      "   <subelement attribute1=\"value1\" attribute2=\"value2\">\n"
+      "      <subsubelement>With accents: à é è í ó ú</subsubelement>\n"
+      "   </subelement>\n");
 
 static XML_Char const *TEST_ATTRIBUTE_CONTENTS =
-  _XT (" attribute1=\"value1\" attribute2=\"value2\"");
+  _XT(" attribute1=\"value1\" attribute2=\"value2\"");
 
 static scew_writer* test_writer_create_ (XML_Char **buffer);
 
@@ -82,7 +82,7 @@ START_TEST (test_alloc)
 {
   enum { MAX_BUFFER = 512 };
 
-  XML_Char BUFFER[MAX_BUFFER] = _XT ("");
+  XML_Char BUFFER[MAX_BUFFER] = _XT("");
 
   scew_writer *writer = scew_writer_buffer_create (BUFFER, MAX_BUFFER);
 
@@ -217,7 +217,7 @@ test_writer_create_ (XML_Char **buffer)
 {
   enum { MAX_BUFFER = 512 };
 
-  static XML_Char write_buffer[MAX_BUFFER] = _XT ("");
+  static XML_Char write_buffer[MAX_BUFFER] = _XT("");
 
   scew_writer *writer = scew_writer_buffer_create (write_buffer, MAX_BUFFER);
 
@@ -237,43 +237,43 @@ test_tree_create_ (void)
    * "scew_test".
    */
   scew_tree *tree = scew_tree_create ();
-  scew_element *root = scew_tree_set_root (tree, _XT ("test"));
+  scew_element *root = scew_tree_set_root (tree, _XT("test"));
 
   /* Add an element and set element contents. */
-  scew_element *element = scew_element_add (root, _XT ("element"));
-  scew_element_set_contents (element, _XT ("element contents"));
+  scew_element *element = scew_element_add (root, _XT("element"));
+  scew_element_set_contents (element, _XT("element contents"));
 
   /* Add an element with an attribute pair (name, value). */
-  element = scew_element_add (root, _XT ("element"));
-  scew_element_add_attribute_pair (element, _XT ("attribute"), _XT ("value"));
+  element = scew_element_add (root, _XT("element"));
+  scew_element_add_attribute_pair (element, _XT("attribute"), _XT("value"));
 
-  element = scew_element_add (root, _XT ("element"));
+  element = scew_element_add (root, _XT("element"));
   scew_element_add_attribute_pair (element,
-                                   _XT ("attribute1"), _XT ("value1"));
+                                   _XT("attribute1"), _XT("value1"));
 
   /**
    * Another way to add an attribute. You loose attribute ownership,
    * so there is no need to free it.
    */
   scew_attribute *attribute =
-    scew_attribute_create (_XT ("attribute2"), _XT ("value2"));
+    scew_attribute_create (_XT("attribute2"), _XT("value2"));
   scew_element_add_attribute (element, attribute);
 
-  element = scew_element_add (root, _XT ("element"));
-  scew_element *sub_element = scew_element_add (element, _XT ("subelement"));
+  element = scew_element_add (root, _XT("element"));
+  scew_element *sub_element = scew_element_add (element, _XT("subelement"));
   scew_element_add_attribute_pair (sub_element,
-                                   _XT ("attribute"), _XT ("value"));
+                                   _XT("attribute"), _XT("value"));
 
-  sub_element = scew_element_add (element, _XT ("subelement"));
+  sub_element = scew_element_add (element, _XT("subelement"));
   scew_element_add_attribute_pair (sub_element,
-                                   _XT ("attribute1"), _XT ("value1"));
+                                   _XT("attribute1"), _XT("value1"));
   scew_element_add_attribute_pair (sub_element,
-                                   _XT ("attribute2"), _XT ("value2"));
+                                   _XT("attribute2"), _XT("value2"));
 
   scew_element *sub_sub_element = scew_element_add (sub_element,
-                                                    _XT ("subsubelement"));
+                                                    _XT("subsubelement"));
   scew_element_set_contents (sub_sub_element,
-                             _XT ("With accents: à é è í ó ú"));
+                             _XT("With accents: à é è í ó ú"));
 
   return tree;
 }

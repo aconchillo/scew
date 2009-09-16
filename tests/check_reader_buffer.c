@@ -39,7 +39,7 @@
 
 START_TEST (test_alloc)
 {
-  static XML_Char const *BUFFER = _XT ("This is a buffer for the reader");
+  static XML_Char const *BUFFER = _XT("This is a buffer for the reader");
 
   scew_reader *reader = scew_reader_buffer_create (BUFFER,
                                                    scew_strlen (BUFFER));
@@ -56,9 +56,9 @@ START_TEST (test_read)
 {
   enum { MAX_BUFFER_SIZE = 512 };
 
-  static XML_Char const *BUFFER = _XT ("This is a buffer for the reader");
+  static XML_Char const *BUFFER = _XT("This is a buffer for the reader");
 
-  XML_Char read_buffer[MAX_BUFFER_SIZE] = _XT ("");
+  XML_Char read_buffer[MAX_BUFFER_SIZE] = _XT("");
 
   scew_reader *reader = scew_reader_buffer_create (BUFFER,
                                                    scew_strlen (BUFFER));
@@ -72,7 +72,7 @@ START_TEST (test_read)
                    "Invalid number of read bytes");
       i += 1;
     }
-  read_buffer[i] = _XT ('\0');
+  read_buffer[i] = _XT('\0');
 
   CHECK_STR (read_buffer, BUFFER, "Buffers do not match");
 
@@ -99,7 +99,7 @@ END_TEST
 
 START_TEST (test_misc)
 {
-  static XML_Char const *BUFFER = _XT ("This is a buffer for the reader");
+  static XML_Char const *BUFFER = _XT("This is a buffer for the reader");
 
   scew_reader *reader = scew_reader_buffer_create (BUFFER,
                                                    scew_strlen (BUFFER));

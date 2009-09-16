@@ -29,6 +29,10 @@
 #ifndef EXPORT_H_0909040014
 #define EXPORT_H_0909040014
 
+#if !defined (_MSC_VER) && defined (XML_UNICODE_WCHAR_T)
+#error UTF-16 support is only available in Windows platforms
+#endif
+
 #if defined (_MSC_VER) || defined (__CYGWIN__)
 
   #define SCEW_DLL_IMPORT __declspec(dllimport)

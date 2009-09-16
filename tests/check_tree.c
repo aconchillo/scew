@@ -51,12 +51,12 @@ END_TEST
 
 START_TEST (test_properties)
 {
-  static XML_Char const *DEF_VERSION = _XT ("1.0");
-  static XML_Char const *DEF_ENCODING = _XT ("UTF-8");
+  static XML_Char const *DEF_VERSION = _XT("1.0");
+  static XML_Char const *DEF_ENCODING = _XT("UTF-8");
   static scew_tree_standalone DEF_STANDALONE = scew_tree_standalone_unknown;
 
-  static XML_Char const *NEW_VERSION = _XT ("1.1");
-  static XML_Char const *NEW_ENCODING = _XT ("UTF-16");
+  static XML_Char const *NEW_VERSION = _XT("1.1");
+  static XML_Char const *NEW_ENCODING = _XT("UTF-16");
   static scew_tree_standalone NEW_STANDALONE = scew_tree_standalone_yes;
 
   scew_tree *tree = scew_tree_create ();
@@ -90,8 +90,8 @@ END_TEST
 
 START_TEST (test_contents)
 {
-  static XML_Char const *NAME = _XT ("root");
-  static XML_Char const *PREAMBLE = _XT ("Completly wrong dummy preamble");
+  static XML_Char const *NAME = _XT("root");
+  static XML_Char const *PREAMBLE = _XT("Completly wrong dummy preamble");
 
   scew_tree *tree = scew_tree_create ();
 
@@ -126,9 +126,9 @@ END_TEST
 
 START_TEST (test_compare)
 {
-  static XML_Char const *NAME = _XT ("root");
-  static XML_Char const *CHILD_NAME = _XT ("element");
-  static XML_Char const *CONTENTS = _XT ("first child");
+  static XML_Char const *NAME = _XT("root");
+  static XML_Char const *CHILD_NAME = _XT("element");
+  static XML_Char const *CONTENTS = _XT("first child");
   static unsigned int const N_ELEMENTS = 12;
 
   scew_element *root = scew_element_create (NAME);

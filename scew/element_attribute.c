@@ -69,7 +69,7 @@ scew_element_attributes (scew_element const *element)
 
 scew_attribute*
 scew_element_attribute_by_name (scew_element const *element,
-				XML_Char const *name)
+                                XML_Char const *name)
 {
   scew_list *item = NULL;
 

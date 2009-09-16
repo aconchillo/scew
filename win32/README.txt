@@ -32,13 +32,13 @@ code, you only need to include the main SCEW header:
 The output files for the static libraries follow a similar Expat
 approach:
 
-  libscewMT(w)(d).lib           The static library
+  libscew(w)(d)MT.lib           The static library
 
 where:
 
-  "MT" indicates Multi-threaded runtime library.
   "w"  indicates the UTF-16 version.
   "d"  indicates the debug version.
+  "MT" indicates Multi-threaded runtime library.
 
    Note that, by default, SCEW will be built for the "Multi-threaded"
 (/MT) runtime library. If you want to build SCEW for another runtime

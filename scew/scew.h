@@ -68,7 +68,7 @@
  */
 #define SCEW_LIB_M "MT"
 
-#pragma comment (lib, "libscew" SCEW_LIB_M SCEW_LIB_W SCEW_LIB_D ".lib")
+#pragma comment (lib, "libscew" SCEW_LIB_W SCEW_LIB_D SCEW_LIB_M ".lib")
 
 #endif /* _MSC_VER && XML_STATIC */
 

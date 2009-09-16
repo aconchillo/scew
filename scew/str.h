@@ -29,6 +29,8 @@
 #ifndef STR_H_0212011305
 #define STR_H_0212011305
 
+#include "bool.h"
+
 #include "export.h"
 
 #include <expat.h>
@@ -48,6 +50,8 @@
 #define scew_printf wprintf
 #define scew_fprintf fwprintf
 #define scew_vfprintf vfwprintf
+#define scew_fputs fputws
+#define scew_fgets fgetws
 
 #define scew_strspn(wcs, accept) wcsspn (wcs, accept)
 #define scew_strcpy(dest, src) wcscpy (dest, src)
@@ -77,6 +81,8 @@
 #define scew_printf printf
 #define scew_fprintf fprintf
 #define scew_vfprintf vfprintf
+#define scew_fputs fputs
+#define scew_fgets fgets
 
 #define scew_strspn(s, accept) strspn (s, accept)
 #define scew_strcpy(dest, src) strcpy (dest, src)
@@ -127,6 +133,8 @@ extern SCEW_API XML_Char* scew_strdup (XML_Char const *src);
  * @param src the string to be trimmed off.
  */
 extern SCEW_API void scew_strtrim (XML_Char *src);
+
+extern SCEW_API scew_bool scew_isempty (XML_Char const *src);
 
 #ifdef __cplusplus
 }

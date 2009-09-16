@@ -28,6 +28,8 @@
 
 #include "writer_file.h"
 
+#include "str.h"
+
 #include <assert.h>
 
 
@@ -67,7 +69,11 @@ scew_writer_file_create (char const *file_name)
 
   assert (file_name != NULL);
 
-  file = fopen (file_name, "wb");
+#ifdef XML_UNICODE_WCHAR_T
+  file = fopen (file_name, "w, ccs=UNICODE");
+#else
+  file = fopen (file_name, "w");
+#endif
 
   if (file != NULL)
     {
@@ -111,12 +117,28 @@ file_write_ (scew_writer *writer, XML_Char const *buffer, size_t char_no)
 {
   size_t written_no = 0;
   scew_writer_fp *fp_writer = NULL;
+#ifdef XML_UNICODE_WCHAR_T
+  scew_bool write_ok = SCEW_TRUE;
+#endif
 
   assert (writer != NULL);
   assert (buffer != NULL);
 
   fp_writer = scew_writer_data (writer);
+
+#ifdef XML_UNICODE_WCHAR_T
+  for (written_no = 0; write_ok && (written_no < char_no); written_no++)
+    {
+      int c = scew_fgetc (buffer[writte_no], fp_reader->file);
+      write_ok = (EOF != c) && (WEOF != c);
+    }
+#else
+  /**
+   * We could use the same XML_UNICODE_WCHAR_T mechanism, but this
+   * will be much faster.
+   */
   written_no = fwrite (buffer, sizeof (XML_Char), char_no, fp_writer->file);
+#endif
 
   return written_no;
 }

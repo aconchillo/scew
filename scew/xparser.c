@@ -151,6 +151,12 @@ expat_xmldecl_handler_ (void *data,
       return;
     }
 
+  /* If version is NULL this is a text declaration. */
+  if (NULL == version)
+    {
+      return;
+    }
+
   parser->tree = create_tree_ (parser);
   if (NULL == parser->tree)
     {
@@ -158,10 +164,8 @@ expat_xmldecl_handler_ (void *data,
       return;
     }
 
-  if (version != NULL)
-    {
-      scew_tree_set_xml_version (parser->tree, version);
-    }
+  scew_tree_set_xml_version (parser->tree, version);
+
   if (encoding != NULL)
     {
       scew_tree_set_xml_encoding (parser->tree, encoding);
@@ -406,7 +410,6 @@ scew_tree*
 create_tree_ (scew_parser *parser)
 {
   scew_tree *tree = parser->tree;
-
   if (NULL == tree)
     {
       tree = scew_tree_create ();
@@ -454,7 +457,7 @@ parser_stack_push_ (scew_parser *parser, scew_element *element)
       stack->element = element;
       if (parser->stack != NULL)
         {
-	  stack->prev = parser->stack;
+          stack->prev = parser->stack;
         }
       parser->stack = stack;
     }

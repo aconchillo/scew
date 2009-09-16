@@ -71,9 +71,9 @@ scew_error_string (scew_error code)
       static XML_Char unk_message[MAX_BUF];
 
 #ifdef XML_UNICODE_WCHAR_T
-      swprintf (unk_message, MAX_BUF, _XT ("Unknown error code (%d)"), code);
+      swprintf (unk_message, MAX_BUF, _XT("Unknown error code (%d)"), code);
 #else
-      sprintf (unk_message, _XT ("Unknown error code (%d)"), code);
+      sprintf (unk_message, _XT("Unknown error code (%d)"), code);
 #endif
       return unk_message;
     }

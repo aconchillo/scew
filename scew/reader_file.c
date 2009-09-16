@@ -28,6 +28,8 @@
 
 #include "reader_file.h"
 
+#include "str.h"
+
 #include <assert.h>
 
 #include <stdlib.h>
@@ -69,7 +71,11 @@ scew_reader_file_create (char const *file_name)
 
   assert (file_name != NULL);
 
-  file = fopen (file_name, "rb");
+#ifdef XML_UNICODE_WCHAR_T
+  file = fopen (file_name, "r, ccs=UNICODE");
+#else
+  file = fopen (file_name, "r");
+#endif
 
   if (file != NULL)
     {
@@ -113,12 +119,31 @@ file_read_ (scew_reader *reader, XML_Char *buffer, size_t char_no)
 {
   size_t read_no = 0;
   scew_reader_fp *fp_reader = NULL;
+#ifdef XML_UNICODE_WCHAR_T
+  scew_bool read_ok = SCEW_TRUE;
+#endif
 
   assert (reader != NULL);
   assert (buffer != NULL);
 
   fp_reader = scew_reader_data (reader);
+
+#ifdef XML_UNICODE_WCHAR_T
+  for (read_no = 0; read_ok && (read_no < char_no); read_no++)
+    {
+      int c = scew_fgetc (fp_reader->file);
+      read_ok = (EOF != c) && (WEOF != c);
+      buffer[read_no] = (read_ok ? c : _XT('\0'));
+    }
+#else
+  /**
+   * We could use the same XML_UNICODE_WCHAR_T mechanism, but this
+   * will be much faster.
+   */
   read_no = fread (buffer, sizeof (XML_Char), char_no, fp_reader->file);
+#endif
+
+  buffer[read_no] = _XT('\0');
 
   return read_no;
 }

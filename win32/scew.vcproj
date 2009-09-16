@@ -350,7 +350,7 @@
 			/>
 			<Tool
 				Name="VCLibrarianTool"
-				OutputFile="$(OutDir)\libscewMTd.lib"
+				OutputFile="$(OutDir)\libscewdMT.lib"
 			/>
 			<Tool
 				Name="VCALinkTool"
@@ -412,7 +412,7 @@
 			/>
 			<Tool
 				Name="VCLibrarianTool"
-				OutputFile="$(OutDir)\libscewMTwd.lib"
+				OutputFile="$(OutDir)\libscewwdMT.lib"
 			/>
 			<Tool
 				Name="VCALinkTool"
@@ -538,7 +538,7 @@
 			/>
 			<Tool
 				Name="VCLibrarianTool"
-				OutputFile="$(OutDir)\libscewMTw.lib"
+				OutputFile="$(OutDir)\libscewwMT.lib"
 			/>
 			<Tool
 				Name="VCALinkTool"

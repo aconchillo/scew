@@ -40,9 +40,9 @@
 
 START_TEST (test_alloc)
 {
-  static XML_Char const *NAME = _XT ("root");
-  static XML_Char const *CHILD_NAME = _XT ("element");
-  static XML_Char const *CONTENTS = _XT ("first child");
+  static XML_Char const *NAME = _XT("root");
+  static XML_Char const *CHILD_NAME = _XT("element");
+  static XML_Char const *CONTENTS = _XT("first child");
   static unsigned int const N_ELEMENTS = 12;
   unsigned int i = 0;
 
@@ -95,9 +95,9 @@ END_TEST
 
 START_TEST (test_accessors)
 {
-  static XML_Char const *NAME = _XT ("root");
-  static XML_Char const *NEW_NAME = _XT ("new_root");
-  static XML_Char const *CONTENTS = _XT ("root element contents");
+  static XML_Char const *NAME = _XT("root");
+  static XML_Char const *NEW_NAME = _XT("new_root");
+  static XML_Char const *CONTENTS = _XT("root element contents");
 
   scew_element *element = scew_element_create (NAME);
 
@@ -133,9 +133,9 @@ END_TEST
 
 START_TEST (test_attributes)
 {
-  static XML_Char const *NAME = _XT ("root");
-  static XML_Char const *ATTRIBUTE = _XT ("attribute");
-  static XML_Char const *VALUE = _XT ("value");
+  static XML_Char const *NAME = _XT("root");
+  static XML_Char const *ATTRIBUTE = _XT("attribute");
+  static XML_Char const *VALUE = _XT("value");
   static unsigned int const N_ATTRIBUTES = 5;
   unsigned int i = 0;
 
@@ -156,8 +156,8 @@ START_TEST (test_attributes)
   /* Create attributes */
   for (i = 0; i < N_ATTRIBUTES; ++i)
     {
-      check_sprintf (attr_name, _XT ("%s_%d"), ATTRIBUTE, i);
-      check_sprintf (attr_value, _XT ("%s_%d"), VALUE, i);
+      check_sprintf (attr_name, _XT("%s_%d"), ATTRIBUTE, i);
+      check_sprintf (attr_value, _XT("%s_%d"), VALUE, i);
 
       scew_attribute *attr =
         scew_element_add_attribute_pair (element, attr_name, attr_value);
@@ -175,8 +175,8 @@ START_TEST (test_attributes)
     {
       scew_attribute *attr = scew_list_data (list);
 
-      check_sprintf (attr_name, _XT ("%s_%d"), ATTRIBUTE, i);
-      check_sprintf (attr_value, _XT ("%s_%d"), VALUE, i);
+      check_sprintf (attr_name, _XT("%s_%d"), ATTRIBUTE, i);
+      check_sprintf (attr_value, _XT("%s_%d"), VALUE, i);
 
       CHECK_STR (scew_attribute_name (attr), attr_name,
                  "Attribute name do not match");
@@ -194,13 +194,13 @@ START_TEST (test_attributes)
   XML_Char attr_1_value[MAX_BUFFER];
   XML_Char attr_2_value[MAX_BUFFER];
 
-  check_sprintf (attr_1_name, _XT ("%s_1"), ATTRIBUTE);
-  check_sprintf (attr_1_value, _XT ("%s_1_new"), VALUE);
+  check_sprintf (attr_1_name, _XT("%s_1"), ATTRIBUTE);
+  check_sprintf (attr_1_value, _XT("%s_1_new"), VALUE);
   scew_attribute *attr_1 =
     scew_element_add_attribute_pair (element, attr_1_name, attr_1_value);
 
-  check_sprintf (attr_2_name, _XT ("%s_2"), ATTRIBUTE);
-  check_sprintf (attr_2_value, _XT ("%s_2_new"), VALUE);
+  check_sprintf (attr_2_name, _XT("%s_2"), ATTRIBUTE);
+  check_sprintf (attr_2_value, _XT("%s_2_new"), VALUE);
   scew_attribute *attr_2 =
     scew_element_add_attribute_pair (element, attr_2_name, attr_2_value);
 
@@ -237,13 +237,13 @@ END_TEST
 
 START_TEST (test_hierarchy_basic)
 {
-  static XML_Char const *NAME = _XT ("element");
-  static XML_Char const *SUB_NAME = _XT ("subelement");
-  static XML_Char const *CONTENTS = _XT ("contents");
+  static XML_Char const *NAME = _XT("element");
+  static XML_Char const *SUB_NAME = _XT("subelement");
+  static XML_Char const *CONTENTS = _XT("contents");
   static unsigned int const N_ELEMENTS = 12;
   unsigned int i = 0;
 
-  scew_element *element = scew_element_create (_XT ("root"));
+  scew_element *element = scew_element_create (_XT("root"));
 
   CHECK_PTR (element, "Unable to create element");
 
@@ -289,10 +289,10 @@ END_TEST
 
 START_TEST (test_hierarchy_delete)
 {
-  static XML_Char const *NAME = _XT ("element");
+  static XML_Char const *NAME = _XT("element");
   static unsigned int const N_ELEMENTS = 12;
 
-  scew_element *element = scew_element_create (_XT ("root"));
+  scew_element *element = scew_element_create (_XT("root"));
 
   CHECK_PTR (element, "Unable to create element");
 
@@ -370,12 +370,12 @@ END_TEST
 
 START_TEST (test_search)
 {
-  static XML_Char const *NAME = _XT ("element");
-  static XML_Char const *NAME_AUX = _XT ("element_aux");
-  static XML_Char const *CONTENTS = _XT ("first child");
+  static XML_Char const *NAME = _XT("element");
+  static XML_Char const *NAME_AUX = _XT("element_aux");
+  static XML_Char const *CONTENTS = _XT("first child");
   static unsigned int const N_ELEMENTS = 12;
 
-  scew_element *root = scew_element_create (_XT ("root"));
+  scew_element *root = scew_element_create (_XT("root"));
 
   CHECK_PTR (root, "Unable to create element");
 
@@ -441,9 +441,9 @@ END_TEST
 
 START_TEST (test_compare)
 {
-  static XML_Char const *NAME = _XT ("root");
-  static XML_Char const *CHILD_NAME = _XT ("element");
-  static XML_Char const *CONTENTS = _XT ("first child");
+  static XML_Char const *NAME = _XT("root");
+  static XML_Char const *CHILD_NAME = _XT("element");
+  static XML_Char const *CONTENTS = _XT("first child");
   static unsigned int const N_ELEMENTS = 12;
 
   scew_element *root = scew_element_create (NAME);

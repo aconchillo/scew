@@ -115,7 +115,7 @@ buffer_write_ (scew_writer *writer, XML_Char const *buffer, size_t char_no)
   buf_writer->current += written;
 
   /* Set null-character to end of buffer. */
-  buf_writer->buffer[buf_writer->current] = _XT ('\0');
+  buf_writer->buffer[buf_writer->current] = _XT('\0');
 
   return written;
 }

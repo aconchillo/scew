@@ -60,13 +60,13 @@ extern "C" {
  */
 typedef enum
   {
-    scew_error_none,		/**< No error has occured. */
+    scew_error_none,            /**< No error has occured. */
     scew_error_no_memory,       /**< No more memory available. */
-    scew_error_io,		/**< General Input/Output error. */
+    scew_error_io,              /**< General Input/Output error. */
     scew_error_hook,            /**< Hook error. */
-    scew_error_expat,		/**< Expat parser error. */
+    scew_error_expat,           /**< Expat parser error. */
     scew_error_internal,        /**< Internal SCEW error. */
-    scew_error_unknown		/**< end of list marker */
+    scew_error_unknown          /**< end of list marker */
   } scew_error;
 
 /**

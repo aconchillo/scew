@@ -39,8 +39,8 @@
 
 START_TEST (test_alloc)
 {
-  static XML_Char const *NAME = _XT ("attribute1");
-  static XML_Char const *VALUE = _XT ("value1");
+  static XML_Char const *NAME = _XT("attribute1");
+  static XML_Char const *VALUE = _XT("value1");
 
   scew_attribute *attribute = scew_attribute_create (NAME, VALUE);
 
@@ -55,10 +55,10 @@ END_TEST
 
 START_TEST (test_accessors)
 {
-  static XML_Char const *NAME = _XT ("attribute1");
-  static XML_Char const *NAME_AUX = _XT ("attribute2");
-  static XML_Char const *VALUE = _XT ("value1");
-  static XML_Char const *VALUE_AUX = _XT ("value2");
+  static XML_Char const *NAME = _XT("attribute1");
+  static XML_Char const *NAME_AUX = _XT("attribute2");
+  static XML_Char const *VALUE = _XT("value1");
+  static XML_Char const *VALUE_AUX = _XT("value2");
 
   scew_attribute *attribute = scew_attribute_create (NAME, VALUE);
 
@@ -93,13 +93,13 @@ END_TEST
 
 START_TEST (test_hierarchy)
 {
-  static XML_Char const *ELEMENT_NAME = _XT ("element");
-  static XML_Char const *NAME_1 = _XT ("attribute1");
-  static XML_Char const *VALUE_1 = _XT ("value1");
-  static XML_Char const *NAME_2 = _XT ("attribute2");
-  static XML_Char const *VALUE_2 = _XT ("value2");
-  static XML_Char const *NAME_3 = _XT ("attribute3");
-  static XML_Char const *VALUE_3 = _XT ("value3");
+  static XML_Char const *ELEMENT_NAME = _XT("element");
+  static XML_Char const *NAME_1 = _XT("attribute1");
+  static XML_Char const *VALUE_1 = _XT("value1");
+  static XML_Char const *NAME_2 = _XT("attribute2");
+  static XML_Char const *VALUE_2 = _XT("value2");
+  static XML_Char const *NAME_3 = _XT("attribute3");
+  static XML_Char const *VALUE_3 = _XT("value3");
   static unsigned int const N_ATTRIBUTES = 3;
 
   scew_element *element = scew_element_create (ELEMENT_NAME);
@@ -149,11 +149,11 @@ END_TEST
 
 START_TEST (test_compare)
 {
-  static XML_Char const *NAME_1 = _XT ("attribute_1");
-  static XML_Char const *NAME_1_1 = _XT ("attribute_1");
-  static XML_Char const *NAME_2 = _XT ("attribute_2");
-  static XML_Char const *VALUE_1 = _XT ("value_1");
-  static XML_Char const *VALUE_2 = _XT ("value_2");
+  static XML_Char const *NAME_1 = _XT("attribute_1");
+  static XML_Char const *NAME_1_1 = _XT("attribute_1");
+  static XML_Char const *NAME_2 = _XT("attribute_2");
+  static XML_Char const *VALUE_1 = _XT("value_1");
+  static XML_Char const *VALUE_2 = _XT("value_2");
 
   scew_attribute *attribute = scew_attribute_create (NAME_1, VALUE_1);
 

@@ -97,12 +97,29 @@ scew_strtrim (XML_Char *src)
   /* Strip trailing whitespace. */
   while (end > 0 && scew_isspace (src[end - 1]))
     {
-      src[--end] = _XT ('\0');
+      src[--end] = _XT('\0');
     }
 
   /* Strip leading whitespace. */
-  start = scew_strspn (src, _XT (" \n\r\t\v"));
+  start = scew_strspn (src, _XT(" \n\r\t\v"));
   total = end - start;
   scew_memmove (src, &src[start], total);
-  src[total] = _XT ('\0');
+  src[total] = _XT('\0');
+}
+
+scew_bool
+scew_isempty (XML_Char const *src)
+{
+  scew_bool empty = SCEW_TRUE;
+  XML_Char *p = (XML_Char *) src;
+
+  assert (src != NULL);
+
+  while (empty && (*p != _XT('\0')))
+    {
+      empty = (scew_isspace (*p) != 0);
+      p += 1;
+    }
+
+  return empty;
 }

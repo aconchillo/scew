@@ -363,9 +363,9 @@ print_attribute_ (scew_printer *printer,
 
   scew_writer *writer = printer->writer;
 
-  result = scew_writer_write (writer, _XT (" "), 1);
+  result = scew_writer_write (writer, _XT(" "), 1);
   result = result && scew_writer_write (writer, name, scew_strlen (name));
-  result = result && scew_writer_write (writer, _XT ("=\""), 2);
+  result = result && scew_writer_write (writer, _XT("=\""), 2);
 
   /* It is possible that an attribute's value is empty. */
   len_value = scew_strlen (value);
@@ -374,7 +374,7 @@ print_attribute_ (scew_printer *printer,
       result = result && scew_writer_write (writer, value, len_value);
     }
 
-  result = result && scew_writer_write (writer, _XT ("\""), 1);
+  result = result && scew_writer_write (writer, _XT("\""), 1);
 
   return result;
 }
@@ -388,7 +388,7 @@ print_eol_ (scew_printer *printer)
 
   if (printer->indented)
     {
-      result = scew_writer_write (printer->writer, _XT ("\n"), 1);
+      result = scew_writer_write (printer->writer, _XT("\n"), 1);
     }
 
   return result;
@@ -419,7 +419,7 @@ print_indent_ (scew_printer *printer, unsigned int indent)
       unsigned int spaces = indent * printer->spaces;
       for (i = 0; result && (i < spaces); ++i)
         {
-          result = scew_writer_write (printer->writer, _XT (" "), 1);
+          result = scew_writer_write (printer->writer, _XT(" "), 1);
         }
     }
 
@@ -468,7 +468,7 @@ print_element_start_ (scew_printer *printer,
       result = result && scew_writer_write (writer, END_1, 1);
       if (list != NULL)
         {
-	  result = result && print_eol_ (printer);
+          result = result && print_eol_ (printer);
         }
     }
 
