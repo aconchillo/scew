@@ -129,11 +129,15 @@ file_read_ (scew_reader *reader, XML_Char *buffer, size_t char_no)
   fp_reader = scew_reader_data (reader);
 
 #ifdef XML_UNICODE_WCHAR_T
-  for (read_no = 0; read_ok && (read_no < char_no); read_no++)
+  for (read_no = 0; read_ok && (read_no < char_no); )
     {
       int c = scew_fgetc (fp_reader->file);
-      read_ok = (EOF != c) && (WEOF != c);
-      buffer[read_no] = (read_ok ? c : _XT('\0'));
+      read_ok = (c != EOF) && (c != WEOF);
+      if (read_ok)
+        {
+          buffer[read_no] = c;
+          read_no += 1;
+        }
     }
 #else
   /**

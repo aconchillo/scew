@@ -52,6 +52,8 @@
 #define scew_vfprintf vfwprintf
 #define scew_fputs fputws
 #define scew_fgets fgetws
+#define scew_fputc fputwc
+#define scew_fgetc fgetwc
 
 #define scew_strspn(wcs, accept) wcsspn (wcs, accept)
 #define scew_strcpy(dest, src) wcscpy (dest, src)
@@ -83,6 +85,8 @@
 #define scew_vfprintf vfprintf
 #define scew_fputs fputs
 #define scew_fgets fgets
+#define scew_fputc fputc
+#define scew_fgetc fgetc
 
 #define scew_strspn(s, accept) strspn (s, accept)
 #define scew_strcpy(dest, src) strcpy (dest, src)

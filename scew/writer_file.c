@@ -129,7 +129,7 @@ file_write_ (scew_writer *writer, XML_Char const *buffer, size_t char_no)
 #ifdef XML_UNICODE_WCHAR_T
   for (written_no = 0; write_ok && (written_no < char_no); written_no++)
     {
-      int c = scew_fgetc (buffer[writte_no], fp_reader->file);
+      int c = scew_fputc (buffer[written_no], fp_writer->file);
       write_ok = (EOF != c) && (WEOF != c);
     }
 #else

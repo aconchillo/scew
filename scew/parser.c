@@ -309,7 +309,7 @@ parse_stream_reader_ (scew_parser *parser, scew_reader *reader)
       else
         {
           result = parse_stream_buffer_ (parser, buffer, length);
-          done = (0 == length);
+          done = ((0 == length) || scew_reader_end (reader));
         }
     }
 
