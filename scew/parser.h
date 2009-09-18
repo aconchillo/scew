@@ -66,7 +66,7 @@ typedef struct scew_parser scew_parser;
  *
  * @ingroup SCEWParserLoad
  */
-typedef scew_bool (*scew_parser_load_hook) (scew_parser *, void *);
+typedef scew_bool (*scew_parser_load_hook) (scew_parser *, void *, void *);
 
 
 /**
@@ -135,10 +135,12 @@ extern SCEW_API scew_bool scew_parser_load_stream (scew_parser *parser,
 extern SCEW_API void scew_parser_reset (scew_parser *parser);
 
 extern SCEW_API void scew_parser_set_element_hook (scew_parser *parser,
-                                                   scew_parser_load_hook hook);
+                                                   scew_parser_load_hook hook,
+                                                   void *user_data);
 
 extern SCEW_API void scew_parser_set_tree_hook (scew_parser *parser,
-                                                scew_parser_load_hook hook);
+                                                scew_parser_load_hook hook,
+                                                void *user_data);
 
 /**
  * Tells the parser how to treat white spaces. The default is to

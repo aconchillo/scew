@@ -159,19 +159,25 @@ scew_parser_reset (scew_parser *parser)
 }
 
 void
-scew_parser_set_element_hook (scew_parser *parser, scew_parser_load_hook hook)
+scew_parser_set_element_hook (scew_parser *parser,
+                              scew_parser_load_hook hook,
+                              void *user_data)
 {
   assert (parser != NULL);
 
-  parser->element_hook = hook;
+  parser->element_hook.hook = hook;
+  parser->element_hook.data = user_data;
 }
 
 void
-scew_parser_set_tree_hook (scew_parser *parser, scew_parser_load_hook hook)
+scew_parser_set_tree_hook (scew_parser *parser,
+                           scew_parser_load_hook hook,
+                           void *user_data)
 {
   assert (parser != NULL);
 
-  parser->tree_hook = hook;
+  parser->tree_hook.hook = hook;
+  parser->tree_hook.data = user_data;
 }
 
 XML_Parser
@@ -220,8 +226,10 @@ parser_create_ (scew_bool namespace, XML_Char separator)
       parser->ignore_whitespaces = SCEW_TRUE;
 
       /* No load hooks by default. */
-      parser->element_hook = NULL;
-      parser->tree_hook = NULL;
+      parser->element_hook.hook = NULL;
+      parser->element_hook.data = NULL;
+      parser->tree_hook.hook = NULL;
+      parser->tree_hook.data = NULL;
 
       scew_parser_reset (parser);
     }

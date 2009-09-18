@@ -290,9 +290,10 @@ expat_end_handler_ (void *data, XML_Char const *elem)
     }
 
   /* Call loaded element hook. */
-  if (parser->element_hook != NULL)
+  if (parser->element_hook.hook != NULL)
     {
-      if (!parser->element_hook (parser, current))
+      void *user_data = parser->element_hook.data;
+      if (!parser->element_hook.hook (parser, current, user_data))
         {
           stop_expat_parsing_ (parser, scew_error_hook);
           return;
@@ -330,9 +331,10 @@ expat_end_handler_ (void *data, XML_Char const *elem)
       scew_tree_set_root_element (parser->tree, current);
 
       /* Call loaded tree hook. */
-      if (parser->tree_hook != NULL)
+      if (parser->tree_hook.hook != NULL)
         {
-          if (!parser->tree_hook (parser, parser->tree))
+          void *user_data = parser->tree_hook.data;
+          if (!parser->tree_hook.hook (parser, parser->tree, user_data))
             {
               stop_expat_parsing_ (parser, scew_error_hook);
               return;

@@ -53,7 +53,7 @@ static scew_printer *stdout_printer_ = NULL;
 static scew_writer *stdout_writer_ = NULL;
 
 static scew_bool
-tree_hook_ (scew_parser *parser, void *tree)
+tree_hook_ (scew_parser *parser, void *tree, void *user_data)
 {
   printf ("*** SCEW stream tree loaded!\n\n");
 
@@ -71,7 +71,7 @@ tree_hook_ (scew_parser *parser, void *tree)
 }
 
 static scew_bool
-element_hook_ (scew_parser *parser, void *element)
+element_hook_ (scew_parser *parser, void *element, void *user_data)
 {
   printf ("*** SCEW stream element loaded!\n");
 
@@ -111,8 +111,8 @@ main (int argc, char *argv[])
     }
 
   /* Setup element and tree hooks. */
-  scew_parser_set_tree_hook (parser, tree_hook_);
-  scew_parser_set_element_hook (parser, element_hook_);
+  scew_parser_set_tree_hook (parser, tree_hook_, NULL);
+  scew_parser_set_element_hook (parser, element_hook_, NULL);
   if (!scew_parser_load_stream (parser, reader))
     {
       scew_error code = scew_error_code ();
