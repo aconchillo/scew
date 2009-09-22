@@ -60,9 +60,19 @@ extern "C" {
 typedef struct scew_parser scew_parser;
 
 /**
- * Callback function type.
+ * SCEW parser hooks might be used as notifications to know when XML
+ * elements or trees are parsed. Two types of hooks might be
+ * registered, one for elements (#scew_parser_set_element_hook) and
+ * one for trees (#scew_parser_set_tree_hook) . Whenever the parser
+ * loads a complete element (until the end of tag) the user will be
+ * notified via the registered hook, and the same for XML trees.
  *
- * @return true if callback call had no errors, false otherwise.
+ * @param parser the parser that is loading the XML contents.
+ * @param data this is the pointer to an SCEW element or tree.
+ * @param user_data an optional user data pointer to be used by the
+ * hook (might be NULL).
+ *
+ * @return true if the hook call had no errors, false otherwise.
  *
  * @ingroup SCEWParserLoad
  */
@@ -102,7 +112,8 @@ extern SCEW_API scew_parser* scew_parser_create (void);
 extern SCEW_API scew_parser* scew_parser_namespace_create (XML_Char separator);
 
 /**
- * Frees a parser memory structure.
+ * Frees a @a parser memory structure. If a NULL @a parser is given,
+ * this function takes no action.
  *
  * @ingroup SCEWParserAlloc
  */
@@ -116,10 +127,24 @@ extern SCEW_API void scew_parser_free (scew_parser *parser);
  */
 
 /**
- * Loads an XML tree from the specified file name using the given
- * parser.
+ * Loads an XML tree from the specified @a reader. This will get data
+ * from the reader and it will try to parse it. The reader might be of
+ * any type. Once the parser loads elements or the complete XML tree,
+ * the appropiate registered hooks will be called.
  *
- * @param parser the SCEW parser.
+ * Note that this function can only load one XML tree. Concatenated
+ * XML documents might be loaded via #scew_parser_load_stream.
+ *
+ * XML declarations are not mandatory, so if none is found, the SCEW
+ * tree will still be created with a default one.
+ *
+ * At startup, the @a parser is reset (via #scew_parser_reset).
+ *
+ * @pre parser != NULL
+ * @pre reader != NULL
+ *
+ * @param parser the SCEW @a parser that parses the @a reader
+ * contents.
  * @param reader the reader from where to load the XML.
  *
  * @return the XML parsed tree or NULL if an error was found.
@@ -129,37 +154,121 @@ extern SCEW_API void scew_parser_free (scew_parser *parser);
 extern SCEW_API scew_tree* scew_parser_load (scew_parser *parser,
                                              scew_reader *reader);
 
+/**
+ * Loads multiple XML trees from the specified stream @a reader. This
+ * will get data from the reader and it will try to parse it. The
+ * difference between #scew_parser_load and this function is that,
+ * here, at some point the reader might not have any more data to be
+ * read, thus once more data is available subsequent calls to this
+ * function are allowed to continue parsing.
+ *
+ * Another important difference is that concatenated XML documents are
+ * allowed. Once the parser loads elements or complete XML trees, the
+ * appropiate registered hooks will be called.
+ *
+ * It is necessary to register an XML tree hook, otherwise it will not
+ * be possible to get a reference to parsed XML trees.
+ *
+ * @pre parser != NULL
+ * @pre reader != NULL
+ * @pre tree hook registered (#scew_parser_set_tree_hook)
+ *
+ * @param parser the SCEW @a parser that parses the @a reader
+ * contents.
+ * @param reader the stream @a reader from where to load XML
+ * information.
+ *
+ * @return true if the parsing is being successful, false if an error
+ * is found.
+ *
+ * @ingroup SCEWParserLoad
+ */
 extern SCEW_API scew_bool scew_parser_load_stream (scew_parser *parser,
                                                    scew_reader *reader);
 
+/**
+ * Resets the given @a parser for further uses. Resetting a parser
+ * allows the parser to be re-used. This is useful when loading
+ * streams, as #scew_parser_load_stream does not reset the parser when
+ * called.
+ *
+ * @pre parser != NULL
+ *
+ * @param parser the parser to reset.
+ *
+ * @ingroup SCEWParserLoad
+ */
 extern SCEW_API void scew_parser_reset (scew_parser *parser);
 
+/**
+ * Registers a @a hook to be called once an XML element is
+ * successfully parsed. The hook will only be called once the complete
+ * element is parsed, that is, when the end tag is found.
+ *
+ * This hook might be useful as a notification mechanism when parsing
+ * big XML documents.
+ *
+ * Note that no modification or deletion should be performed on the
+ * elements as they might still be needed by the parser.
+ *
+ * @pre parser != NULL
+ * @pre hook != NULL
+ *
+ * @param parser the parser that is loading the XML contents.
+ * @param hook this is the hook to be called once an XML element is
+ * parsed.
+ * @param user_data an optional user data pointer to be used by the
+ * hook (might be NULL).
+ *
+ * @ingroup SCEWParserLoad
+ */
 extern SCEW_API void scew_parser_set_element_hook (scew_parser *parser,
                                                    scew_parser_load_hook hook,
                                                    void *user_data);
 
+/**
+ * Registers a @a hook to be called once an XML tree is successfully
+ * parsed. The hook will only be called once the complete XML tree is
+ * parsed.
+ *
+ * This hook is necessary when loading streams (via
+ * #scew_parser_load_stream), as no XML tree is returned there.
+ *
+ * @pre parser != NULL
+ * @pre hook != NULL
+ *
+ * @param parser the parser that is loading the XML contents.
+ * @param hook this is the hook to be called once an XML tree is
+ * parsed.
+ * @param user_data an optional user data pointer to be used by the
+ * hook (might be NULL).
+ *
+ * @ingroup SCEWParserLoad
+ */
 extern SCEW_API void scew_parser_set_tree_hook (scew_parser *parser,
                                                 scew_parser_load_hook hook,
                                                 void *user_data);
 
 /**
- * Tells the parser how to treat white spaces. The default is to
+ * Tells the @a parser how to treat white spaces. The default is to
  * ignore heading and trailing white spaces.
  *
  * There is a new section in XML specification which talks about how
  * to handle white spaces in XML. One can set an optional attribtue to
- * an element, this attribute is called 'xml:space', and it can be set
- * to 'default' or 'preserve', and it inherits its value from parent
- * elements. 'preserve' means to leave white spaces as their are
- * found, and 'default' means that white spaces are handled by the XML
- * processor (Expat in our case) the way it wants to.
+ * an element which is called @a xml:space, and it can be set to @a
+ * default or @a preserve, and it inherits its value from parent
+ * elements.
+ *
+ * - @b preserve: leave white spaces as their are found.
+ * - @b default: white spaces are handled by the XML processor (Expat in
+ *  our case) the way it wants to.
  *
  * This function gives the possibility to change the XML processor
  * behaviour.
  *
  * @param parser the parser to set the option to.
- * @param ignore whether the parser should ignore white spaces, false
- * otherwise.
+ * @param ignore whether the @a parser should ignore white spaces,
+ * false otherwise.
  *
  * @ingroup SCEWParserLoad
  */
@@ -174,11 +283,13 @@ extern SCEW_API void scew_parser_ignore_whitespaces (scew_parser *parser,
  */
 
 /**
- * Returns the internal Expat parser. Probably some low-level Expat
- * functions need to be called. This function gives you access to the
- * Expat parser so you will be able to call those functions. If you
- * modify the Expat parser event handling routines, SCEW will not be
- * able to load the XML tree.
+ * Returns the internal Expat parser being used by the given SCEW @a
+ * parser. Probably some extra low-level Expat functions need to be
+ * called by the user. This function gives access to the Expat parser
+ * so it is possible to call these functions.
+ *
+ * Note that if the Expat parser event handling routines are modified,
+ * SCEW will not be able to load XML documents.
  *
  * @ingroup SCEWParserAcc
  */

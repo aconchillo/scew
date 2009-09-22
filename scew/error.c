@@ -63,18 +63,8 @@ scew_error_string (scew_error code)
     }
   else
     {
-      /**
-       * This is not thread safe. Even though, no one else should get
-       * in here.
-       */
-      enum { MAX_BUF = 200 };
-      static XML_Char unk_message[MAX_BUF];
+      static XML_Char const *unk_message = _XT("Unknown error code");
 
-#ifdef XML_UNICODE_WCHAR_T
-      swprintf (unk_message, MAX_BUF, _XT("Unknown error code (%d)"), code);
-#else
-      sprintf (unk_message, _XT("Unknown error code (%d)"), code);
-#endif
       return unk_message;
     }
 }

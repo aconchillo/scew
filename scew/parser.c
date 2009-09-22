@@ -125,6 +125,7 @@ scew_parser_load_stream (scew_parser *parser, scew_reader *reader)
 
   assert (parser != NULL);
   assert (reader != NULL);
+  assert (parser->tree_hook.hook != NULL);
 
   result = parse_stream_reader_ (parser, reader);
   if (!result)

@@ -32,8 +32,7 @@
  * @defgroup SCEWAttribute Attributes
  *
  * SCEW provides functions to access and manipulate the attributes of
- * all the elements in a tree. XML element attributes are basically a
- * name-value pair.
+ * an element. XML element attributes are basically a name-value pair.
  */
 
 #ifndef ATTRIBUTE_H_0211250039
@@ -69,7 +68,8 @@ extern SCEW_API scew_attribute* scew_attribute_create (XML_Char const *name,
                                                        XML_Char const *value);
 
 /**
- * Makes a copy of the given @a attribute.
+ * Makes a copy of the given @a attribute. Note that the new copy does
+ * not belong to any element.
  *
  * @pre attribute != NULL
  *
@@ -98,8 +98,9 @@ extern SCEW_API void scew_attribute_free (scew_attribute *attribute);
  */
 
 /**
- * Performs a comparison between the given attributes. That is, name
- * and value must be equal in both attributes.
+ * Performs a comparison between the two given attributes. That is,
+ * name and value must be equal in both attributes. Attribute's
+ * elements are not compared.
  *
  * @pre a != NULL
  * @pre b != NULL
@@ -145,8 +146,8 @@ scew_attribute_value (scew_attribute const *attribute);
  * @pre attribute != NULL
  * @pre name != NULL
  *
- * @return the new attribute's name, or NULL if the new name can not
- * be set.
+ * @return the new @a attribute's name, or NULL if the new name can
+ * not be set.
  *
  * @ingroup SCEWAttributeAcc
  */
@@ -160,8 +161,8 @@ scew_attribute_set_name (scew_attribute *attribute, XML_Char const *name);
  * @pre attribute != NULL
  * @pre name != NULL
  *
- * @return the new attribute's value, or NULL if the new value could
- * not be set.
+ * @return the new @a attribute's value, or NULL if the new value
+ * could not be set.
  *
  * @ingroup SCEWAttributeAcc
  */
@@ -176,12 +177,12 @@ scew_attribute_set_value (scew_attribute *attribute, XML_Char const *value);
  */
 
 /**
- * Returns the given @a attribute's parent.
+ * Returns the element that the given @a attribute belongs to.
  *
  * @pre attribute != NULL
  *
- * @return the given attribute's parent, or NULL if attribute has no
- * parent.
+ * @return the given @a attribute's element, or NULL if the @a
+ * attribute is an standalone attribute.
  *
  * @ingroup SCEWAttributeHier
  */

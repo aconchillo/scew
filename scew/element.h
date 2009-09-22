@@ -75,8 +75,6 @@ typedef struct scew_attribute scew_attribute;
  *
  * @pre name != NULL
  *
- * @param name the name of the new element.
- *
  * @return the created element, or NULL if an error is found.
  *
  * @ingroup SCEWElementAlloc
@@ -84,7 +82,9 @@ typedef struct scew_attribute scew_attribute;
 extern SCEW_API scew_element* scew_element_create (XML_Char const *name);
 
 /**
- * Makes a deep copy of the given @a element.
+ * Makes a deep copy of the given @a element. Attributes and children
+ * elements will be copied. The new element will not belong to any XML
+ * tree.
  *
  * @pre element != NULL
  *
@@ -133,7 +133,8 @@ scew_element_by_name (scew_element const *element, XML_Char const *name);
  * @pre element != NULL
  * @pre index < #scew_element_count
  *
- * @return the child at the specified position, or NULL if not found.
+ * @return the child at the specified position, or NULL if there are
+ * no children elements.
  *
  * @ingroup SCEWElementSearch
  */
@@ -143,7 +144,8 @@ scew_element_by_index (scew_element const *element, unsigned int index);
 /**
  * Returns a list of children from the specified @a element that
  * matches the given @a name. This list must be freed after using it
- * via #scew_list_free (the elements will not be freed).
+ * via #scew_list_free (the elements will not be freed, only the list
+ * pointing to them).
  *
  * @pre element != NULL
  * @pre name != NULL
@@ -164,14 +166,14 @@ scew_element_list_by_name (scew_element const *element, XML_Char const *name);
  */
 
 /**
- * Performs a deep comparison of the given elements. That is, it
- * compares that both elements have the same name, contents, children
- * (recursively), etc.
+ * Performs a deep comparison of the two given elements. That is, it
+ * compares that both elements have the same name, attributes,
+ * contents, children (recursively), etc.
  *
  * @pre a != NULL
  * @pre b != NULL
  *
- * @return true if elements are equal, false otherwise.
+ * @return true if both elements are equal, false otherwise.
  *
  * @ingroup SCEWElementCompare
  */
@@ -190,18 +192,22 @@ extern SCEW_API scew_bool scew_element_compare (scew_element const *a,
  *
  * @pre element != NULL
  *
+ * @return the @a element's name. It is not possible to get a NULL
+ * value, as element names are mandatory.
+ *
  * @ingroup SCEWElementAcc
  */
 extern SCEW_API XML_Char const*
 scew_element_name (scew_element const *element);
 
 /**
- * Returns the given @a element's value. That is, the contents between
+ * Returns the given @a element's contents. That is, the text between
  * the start and end element tags.
  *
  * @pre element != NULL
  *
- * @return the element's value, or NULL if the element has no value.
+ * @return the @a element's contents, or NULL if the element has no
+ * contents.
  *
  * @ingroup SCEWElementAcc
  */
@@ -215,7 +221,8 @@ scew_element_contents (scew_element const *element);
  * @pre element != NULL
  * @pre name != NULL
  *
- * @return the new element's name or, NULL if the name can not be set.
+ * @return the new @a element's name, or NULL if the name can not be
+ * set.
  *
  * @ingroup SCEWElementAcc
  */
@@ -228,8 +235,8 @@ extern SCEW_API XML_Char const* scew_element_set_name (scew_element *element,
  *
  * @pre element != NULL
  *
- * @return the new element's contents, or NULL if the contents can not
- * be set.
+ * @return the new @a element's contents, or NULL if the contents can
+ * not be set.
  *
  * @ingroup SCEWElementAcc
  */
@@ -237,8 +244,8 @@ extern SCEW_API XML_Char const*
 scew_element_set_contents (scew_element *element, XML_Char const *contents);
 
 /**
- * Frees the current contents of the given @a element. If the element
- * has no contents, this functions does not have any effect.
+ * Frees the current contents of the given @a element. If the @a
+ * element has no contents, this functions does not have any effect.
  *
  * @pre element != NULL
  *
@@ -259,6 +266,9 @@ extern SCEW_API void scew_element_free_contents (scew_element *element);
  *
  * @pre element != NULL
  *
+ * @return the number of children, or 0 if the @a element has no
+ * children.
+ *
  * @ingroup SCEWElementHier
  */
 extern SCEW_API unsigned int scew_element_count (scew_element const *element);
@@ -268,8 +278,8 @@ extern SCEW_API unsigned int scew_element_count (scew_element const *element);
  *
  * @pre element != NULL
  *
- * @return the element's parent, or NULL if the given @a element has no
- * parent (e.g. root element).
+ * @return the @a element's parent, or NULL if the given @a element
+ * has no parent (e.g. root element).
  *
  * @ingroup SCEWElementHier
  */
@@ -278,12 +288,13 @@ scew_element_parent (scew_element const *element);
 
 /**
  * Returns the list of all the @a element's children. This is the
- * internal list where @a element's children are stored, so no delete
- * operations shold be performed on this list.
+ * internal list where @a element's children are stored, so no
+ * modifications or deletions should be performed on this list.
  *
  * @pre element != NULL
  *
- * @return the list of the given element's children.
+ * @return the list of the given @a element's children, or NULL if the
+ * @a element has no children.
  *
  * @ingroup SCEWElementHier
  */
@@ -320,16 +331,17 @@ extern SCEW_API scew_element* scew_element_add_pair (scew_element *element,
                                                      XML_Char const *contents);
 
 /**
- * Adds a @a child to given @a element. Note that the element being
- * added should be a clean element, that is, an element created with
- * #scew_element_create or an element detached from another tree with
- * #scew_element_detach.
+ * Adds a @a child to the given @a element. Note that the element
+ * being added should be a clean element, that is, an element created
+ * with #scew_element_create or an element detached from another tree
+ * after being detached (via #scew_element_detach).
  *
  * @pre element != NULL
  * @pre child != NULL
  * @pre #scew_element_parent (child) == NULL
  *
- * @return the element being added.
+ * @return the element being added, or NULL if the element could not
+ * be added.
  *
  * @ingroup SCEWElementHier
  */
@@ -338,7 +350,8 @@ extern SCEW_API scew_element* scew_element_add_element (scew_element *element,
 
 /**
  * Deletes all the children for the given @a element. This function
- * deletes all sub-children recursively.
+ * deletes all subchildren recursively. This will automatically free
+ * the elements.
  *
  * @pre element != NULL
  *
@@ -348,7 +361,7 @@ extern SCEW_API void scew_element_delete_all (scew_element *element);
 
 /**
  * Deletes all the children of the given @a element that matches @a
- * name.
+ * name. This will automatically free the element.
  *
  * @pre element != NULL
  * @pre name != NULL
@@ -360,7 +373,7 @@ extern SCEW_API void scew_element_delete_all_by_name (scew_element *element,
 
 /**
  * Deletes the first child of the given @a element that matches @a
- * name.
+ * name. This will automatically free the element.
  *
  * @pre element != NULL
  * @pre name != NULL
@@ -372,7 +385,7 @@ extern SCEW_API void scew_element_delete_by_name (scew_element *element,
 
 /**
  * Deletes the child of the given @a element at the specified
- * zero-based @a index.
+ * zero-based @a index. This will automatically free the element.
  *
  * @pre element != NULL
  * @pre index < #scew_element_count
@@ -384,7 +397,7 @@ extern SCEW_API void scew_element_delete_by_index (scew_element *element,
 
 /**
  * Detaches the given @a element from its parent, if any. This
- * function only detaches the element, but does not free it. If the
+ * function only detaches the element, but does not free it. If the @a
  * element has no parent, this function does not have any effect.
  *
  * @pre element != NULL
@@ -414,11 +427,11 @@ scew_element_attribute_count (scew_element const *element);
 /**
  * Returns the list of all the @a element's attributes. This is the
  * internal list where @a element's attributes are stored, so no
- * delete operations shold be performed on this list.
+ * modifications or deletions should be performed on this list.
  *
  * @pre element != NULL
  *
- * @return the list of the given element's attributes.
+ * @return the list of the given @a element's attributes.
  *
  * @ingroup SCEWElementAttr
  */
@@ -447,10 +460,8 @@ scew_element_attribute_by_name (scew_element const *element,
  * @pre element != NULL
  * @pre index < #scew_element_attribute_count
  *
- * @see SCEWAttribute
- *
- * @return the attribute at the specified position, or NULL if not
- * found.
+ * @return the attribute at the specified position, or NULL if the @a
+ * element has not attributes.
  *
  * @ingroup SCEWElementAttr
  */
@@ -460,20 +471,18 @@ scew_element_attribute_by_index (scew_element const *element,
 
 /**
  * Adds an existent @a attribute to the given @a element. It is
- * important to note that the given attribute will be part of the
- * element's attributes (ownership is lost), so it should not be
+ * important to note that the given @a attribute will be part of the
+ * element's attributes (ownership is lost), so it should not be later
  * freed, and it should not be part of another attribute element list.
  *
- * Also note that, if the attribute already existed, the old value
+ * Also note that, if the @a attribute already existed, the old value
  * will be overwritten and the given attribute will not become part of
  * the element's attribute list (only the old value is updated).
  *
  * @pre element != NULL
  * @pre attribute != NULL
  *
- * @see SCEWAttribute
- *
- * @return the new attribute added to the element, or NULL if the
+ * @return the new attribute added to the element, or NULL if the @a
  * attribute could not be added or updated.
  *
  * @ingroup SCEWElementAttr
@@ -493,10 +502,8 @@ scew_element_add_attribute (scew_element *element, scew_attribute *attribute);
  * @pre name != NULL
  * @pre value != NULL
  *
- * @see SCEWAttribute
- *
  * @return the new attribute added to the element, or NULL if the
- * attribute already existed or could not be added.
+ * attribute could not be added or updated.
  *
  * @ingroup SCEWElementAttr
  */
@@ -517,7 +524,7 @@ extern SCEW_API void scew_element_delete_attribute_all (scew_element *element);
 
 /**
  * Deletes the given @a attribute from the specified @a element. This
- * will also automatically free the given attribute.
+ * will also automatically free the given @a attribute.
  *
  * @pre element != NULL
  * @pre attribute != NULL

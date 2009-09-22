@@ -6,7 +6,7 @@
  *
  * @if copyright
  *
- * Copyright (C) 2007-2008 Aleix Conchillo Flaque
+ * Copyright (C) 2007-2009 Aleix Conchillo Flaque
  *
  * SCEW is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -266,14 +266,14 @@ scew_list_index (scew_list *list, unsigned int index)
 }
 
 void
-scew_list_foreach (scew_list *list, scew_list_function func, void *user_data)
+scew_list_foreach (scew_list *list, scew_list_hook hook, void *user_data)
 {
   assert (list != NULL);
   assert (func != NULL);
 
   while (list != NULL)
     {
-      func (list, user_data);
+      hook (list, user_data);
       list = list->next;
     }
 }
@@ -302,7 +302,7 @@ scew_list_find (scew_list *list, void *data)
 scew_list*
 scew_list_find_custom (scew_list *list,
                        void const *data,
-                       scew_cmp_function func)
+                       scew_cmp_hook hook)
 {
   assert (list != NULL);
   assert (data != NULL);
@@ -310,7 +310,7 @@ scew_list_find_custom (scew_list *list,
 
   while (list != NULL)
     {
-      if (func (list->data, data))
+      if (hook (list->data, data))
         {
           break;
         }

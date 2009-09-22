@@ -243,7 +243,7 @@ scew_printer_print_element (scew_printer *printer, scew_element const *element)
 
 scew_bool
 scew_printer_print_element_children (scew_printer *printer,
-                                    scew_element const  *element)
+                                     scew_element const  *element)
 {
   unsigned int indent = 0;
   scew_list *list = NULL;

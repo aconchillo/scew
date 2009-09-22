@@ -49,6 +49,9 @@ extern "C" {
 
 /**
  * @defgroup SCEWErrorCodes Codes and descriptions
+ *
+ * SCEW internal error codes and associated descriptions.
+ *
  * @ingroup SCEWError
  */
 
@@ -63,7 +66,7 @@ typedef enum
     scew_error_none,            /**< No error has occured. */
     scew_error_no_memory,       /**< No more memory available. */
     scew_error_io,              /**< General Input/Output error. */
-    scew_error_hook,            /**< Hook error. */
+    scew_error_hook,            /**< Hook returned error. */
     scew_error_expat,           /**< Expat parser error. */
     scew_error_internal,        /**< Internal SCEW error. */
     scew_error_unknown          /**< end of list marker */
@@ -71,23 +74,20 @@ typedef enum
 
 /**
  * Returns the SCEW internal error code. If the error code returned is
- * <code>scew_error_expat</code> it means that an internal Expat error
- * has occurred, so you will probably want to check Expat error using
- * <code>scew_error_expat_code</code> and
- * <code>scew_error_expat_string</code>.
+ * #scew_error_expat it means that an internal Expat error has
+ * occurred, so you will probably want to check Expat error using
+ * #scew_error_expat_code and #scew_error_expat_string.
  *
- * @see scew_error_expat_code
- * @see scew_error_expat_string
+ * @return the current internal SCEW error code, if any.
  *
  * @ingroup SCEWErrorCodes
  */
 extern SCEW_API scew_error scew_error_code (void);
 
 /**
- * Returns a string describing the internal SCEW error.
+ * Returns a string describing the given internal SCEW error @a code.
  *
- * @note if an unknown error code is given a non thread safe string is
- * returned.
+ * @return the associated string for the given error @a code.
  *
  * @ingroup SCEWErrorCodes
  */
@@ -105,12 +105,18 @@ extern SCEW_API XML_Char const* scew_error_string (scew_error code);
 /**
  * Returns the Expat internal error code.
  *
+ * @return the internal Expat error code.
+ *
  * @ingroup SCEWErrorExpat
  */
 extern SCEW_API enum XML_Error scew_error_expat_code (scew_parser *parser);
 
 /**
- * Returns a string describing the internal Expat error.
+ * Returns a string describing the internal Expat error for the given
+ * error @a code.
+ *
+ * @return the internal Expat error string for the given error @a
+ * code.
  *
  * @ingroup SCEWErrorExpat
  */
@@ -119,12 +125,16 @@ extern SCEW_API XML_Char const* scew_error_expat_string (enum XML_Error code);
 /**
  * Returns the current line at which the error was detected.
  *
+ * @return the line where Expat detected the error.
+ *
  * @ingroup SCEWErrorExpat
  */
 extern SCEW_API int scew_error_expat_line (scew_parser *parser);
 
 /**
  * Returns the current column at which the error was detected.
+ *
+ * @return the column where Expat detected the error.
  *
  * @ingroup SCEWErrorExpat
  */

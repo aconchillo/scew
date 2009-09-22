@@ -31,9 +31,9 @@
 /**
  * @defgroup SCEWList Lists
  *
- * This is a generic list implementation to be used by element's
+ * This is a generic list implementation currenlty used by element's
  * children and attributes, though, as a generic list, it can be used
- * with any type of data.
+ * with any other type of data.
  */
 
 #ifndef LIST_H_0707122009
@@ -55,26 +55,30 @@ extern "C" {
 typedef struct scew_list scew_list;
 
 /**
- * SCEW lists functions are used by #scew_list_foreach to perform some
- * custom action, defined by the function, to list items. These
- * functions take two arguments, the list item where the action should
- * be performed and an additional argument for any data that could be
- * of use to the action.
+ * SCEW lists hooks (functions) are used by #scew_list_foreach. The
+ * hook will be used to perform some custom action, defined by the
+ * hook, to every list item. These functions take two arguments, the
+ * list item where the action should be performed and an additional
+ * argument for any data that could be of use to the action.
+ *
+ * @param item the list item currently being traversed.
+ * @param user_data an optional user data pointer to be used by the
+ * hook (might be NULL).
  *
  * @ingroup SCEWList
  */
-typedef void (*scew_list_function) (scew_list *, void *);
+typedef void (*scew_list_hook) (scew_list *, void *);
 
 /**
- * SCEW lists comparison functions are used by
- * #scew_list_find_custom. The function takes the two arguments to be
- * compared (of the same type) and it should return true in case both
- * values are equal (where equal is defined by the comparison
- * function), false otherwise.
+ * SCEW lists comparison hooks are used by #scew_list_find_custom. The
+ * hook takes the two arguments to be compared (of the same type).
+ *
+ * @return true if the given arguments are considered (by the provided
+ * comparison hook) equal, false otherwise.
  *
  * @ingroup SCEWList
  */
-typedef scew_bool (*scew_cmp_function) (void const *, void const *);
+typedef scew_bool (*scew_cmp_hook) (void const *, void const *);
 
 
 /**
@@ -113,12 +117,13 @@ extern SCEW_API void scew_list_free (scew_list *list);
 
 /**
  * Returns the data pointer of the given @a list item. Note that this
- * routine does not know if the data pointed by the list item has been
- * freed, so it might return a valid address without useful content.
+ * routine does not know if the data pointed by the @a list item has
+ * been freed, so it might return a valid address without useful
+ * content.
  *
  * @pre list != NULL
  *
- * @return the data pointer for the given list.
+ * @return the data pointer for the given @a list.
  *
  * @ingroup SCEWListAcc
  */
@@ -205,9 +210,9 @@ extern SCEW_API scew_list* scew_list_delete_item (scew_list *list,
  */
 
 /**
- * Finds the first item of the given @a list. This function travreses
- * all the list backwards until it finds an item whose previous item
- * is NULL.
+ * Finds the first item of the given @a list. This function traverses
+ * all the @a list backwards until it finds an item whose previous
+ * item is NULL.
  *
  * @pre list != NULL
  *
@@ -219,8 +224,8 @@ extern SCEW_API scew_list* scew_list_delete_item (scew_list *list,
 extern SCEW_API scew_list* scew_list_first (scew_list *list);
 
 /**
- * Finds the last item of the given @a list. This function travreses
- * all the list forwards until it finds an item whose next item is
+ * Finds the last item of the given @a list. This function traverses
+ * all the @a list forwards until it finds an item whose next item is
  * NULL.
  *
  * @pre list != NULL
@@ -269,19 +274,21 @@ extern SCEW_API scew_list* scew_list_index (scew_list *list,
                                             unsigned int index);
 
 /**
- * Traverses all @a list items and executes the given function, @a
- * func, for each item found. The function takes an extra paramter (@a
- * user_data) which might be NULL.
+ * Traverses all @a list items and executes the given @a hook for each
+ * item found. The hook takes an extra paramter, @a user_data, which
+ * might be NULL.
  *
  * @pre list != NULL
  * @pre func != NULL
  *
- * @see scew_list_function
+ * @param list the list to traverse.
+ * @param hook the action to be executed for every traversed item.
+ * @param user_data an optional user data pointer (might be NULL).
  *
  * @ingroup SCEWListTrav
  */
 extern SCEW_API void scew_list_foreach (scew_list *list,
-                                        scew_list_function func,
+                                        scew_list_hook hook,
                                         void *user_data);
 
 /**
@@ -305,23 +312,28 @@ extern SCEW_API scew_list* scew_list_find (scew_list *list, void *data);
 
 /**
  * Finds the first @a list item that matches the given predicate, @a
- * func. The comparison function takes two parameters, the first one
- * is the data of current traversed item, the second is @a data.
+ * hook. That is, all the @a list will be traversed calling the
+ * comparison hook for every @a list item. The comparison hook takes
+ * two parameters, the first one is the data of current traversed
+ * item, the second is @a data.
  *
  * @pre list != NULL
  * @pre data != NULL
  * @pre func != NULL
  *
+ * @param list the list to traverse.
+ * @param data the user data to be used as one of the arguments for
+ * the comparison.
+ * @param hook the comparison function.
+ *
  * @return the first @a list item that matches the predicate @a func,
  * or NULL if the predicate is never true.
- *
- * @see scew_cmp_function
  *
  * @ingroup SCEWListSearch
  */
 extern SCEW_API scew_list* scew_list_find_custom (scew_list *list,
                                                   void const *data,
-                                                  scew_cmp_function func);
+                                                  scew_cmp_hook hook);
 
 #ifdef __cplusplus
 }
