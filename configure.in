@@ -16,6 +16,9 @@ AM_CONFIG_HEADER(config.h)
 AC_ISC_POSIX
 AC_PROG_CC
 
+# Next macro is deprecated and should be substituted in
+# future releases by LT_INIT([win32-dll]).
+# Packages in Debian 5.0 still do not support it.
 AC_LIBTOOL_WIN32_DLL
 AC_PROG_LIBTOOL
 
