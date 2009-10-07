@@ -15,7 +15,7 @@ These are the main SCEW features:
     - Can copy and compare full XML documents, elements or attributes.
     - Allows adding new I/O sources easily.
     - Supports loading concatenated XML documents.
-    - UTF-8 character encoding (and UTF-16 in Windows platforms).
+    - UTF-8, ISO-8859-1 and US-ASCII encodings (and UTF-16 in Windows).
 
 Project homepage: http://www.nongnu.org/scew/
 
