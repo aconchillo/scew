@@ -31,8 +31,8 @@
 /**
  * @defgroup SCEWParser Parser
  *
- * These are the parser functions that allow to read an XML tree from a
- * file or a memory buffer.
+ * These are the parser functions that allow reading XML documents
+ * from a given SCEW writer (file, memory...).
  */
 
 #ifndef PARSER_H_0211250057
@@ -64,8 +64,9 @@ typedef struct scew_parser scew_parser;
  * elements or trees are parsed. Two types of hooks might be
  * registered, one for elements (#scew_parser_set_element_hook) and
  * one for trees (#scew_parser_set_tree_hook) . Whenever the parser
- * loads a complete element (until the end of tag) the user will be
- * notified via the registered hook, and the same for XML trees.
+ * loads a complete element (when the end of tag is found) the user
+ * will be notified via the registered hook, and the same for XML
+ * trees.
  *
  * @param parser the parser that is loading the XML contents.
  * @param data this is the pointer to an SCEW element or tree.
@@ -86,7 +87,10 @@ typedef scew_bool (*scew_parser_load_hook) (scew_parser *, void *, void *);
  */
 
 /**
- * Creates a new parser. A parser is necessary to load XML documents.
+ * Creates a new parser. A parser is necessary to load XML
+ * documents. Note that a parser might be re-used to load multiple XML
+ * documents, thus it is not necessary to create a parser for each XML
+ * document, but to call #scew_parser_load.
  *
  * @return a new parser, or NULL if parser is not successfully
  * created.
@@ -135,7 +139,7 @@ extern SCEW_API void scew_parser_free (scew_parser *parser);
  * Note that this function can only load one XML tree. Concatenated
  * XML documents might be loaded via #scew_parser_load_stream.
  *
- * XML declarations are not mandatory, so if none is found, the SCEW
+ * XML declarations are not mandatory, and if none is found, the SCEW
  * tree will still be created with a default one.
  *
  * At startup, the @a parser is reset (via #scew_parser_reset).
@@ -159,15 +163,16 @@ extern SCEW_API scew_tree* scew_parser_load (scew_parser *parser,
  * will get data from the reader and it will try to parse it. The
  * difference between #scew_parser_load and this function is that,
  * here, at some point the reader might not have any more data to be
- * read, thus once more data is available subsequent calls to this
- * function are allowed to continue parsing.
+ * read, so the function will return. Once more data becomes available
+ * subsequent calls to this function are needed to continue parsing.
  *
  * Another important difference is that concatenated XML documents are
  * allowed. Once the parser loads elements or complete XML trees, the
  * appropiate registered hooks will be called.
  *
  * It is necessary to register an XML tree hook, otherwise it will not
- * be possible to get a reference to parsed XML trees.
+ * be possible to get a reference to parsed XML trees, causing a
+ * memory leak.
  *
  * @pre parser != NULL
  * @pre reader != NULL
@@ -188,9 +193,9 @@ extern SCEW_API scew_bool scew_parser_load_stream (scew_parser *parser,
 
 /**
  * Resets the given @a parser for further uses. Resetting a parser
- * allows the parser to be re-used. This is useful when loading
- * streams, as #scew_parser_load_stream does not reset the parser when
- * called.
+ * allows the parser to be re-used. This function is automatically
+ * called in #scew_parser_load, but needs to be called when loading
+ * streams, as #scew_parser_load_stream does not reset the parser.
  *
  * @pre parser != NULL
  *

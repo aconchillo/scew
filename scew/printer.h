@@ -29,10 +29,28 @@
 
 /**
  * @defgroup SCEWIO Input/Output
+ *
+ * The SCEW I/O system is based on SCEW @ref SCEWReader, @ref
+ * SCEWWriter and @ref SCEWPrinter. A reader is a common mechanism to
+ * load data from different sources (files, memory, ...). A common
+ * mechanism means that the functions to read data, for example, from
+ * a file or from a memory buffer, are the same. SCEW writers follows
+ * the same idea behind the readers, that is, common routines are used
+ * to write data to any kind of sources (files, memory, ...).
+ *
+ * It is worth mentioning that a user might implement its own SCEW
+ * readers and writers.
+ *
+ * The SCEW printer provides routines to write SCEW XML data (trees,
+ * elements and attributes) to a SCEW writer.
  */
 
 /**
  * @defgroup SCEWPrinter Printer
+ *
+ * A SCEW printer provides a set of routines to send XML data to a
+ * given SCEW writer.
+ *
  * @ingroup SCEWIO
  */
 
@@ -47,19 +65,51 @@
 extern "C" {
 #endif /* __cplusplus */
 
-
+/**
+ * This is the type delcaration for the SCEW printer.
+ *
+ * @ingroup SCEWPrinter
+ */
 typedef struct scew_printer scew_printer;
 
+
+/**
+ * @defgroup SCEWPrinterAlloc Allocation
+ * Allocate and free printers.
+ * @ingroup SCEWPrinter
+ */
+
+/**
+ * Creates a new SCEW printer that will use the given @a writer by
+ * default. The SCEW writer will be used by the @ref SCEWPrinterOutput
+ * calls. It is possible to re-use a SCEW printer by setting a new
+ * writer via #scew_printer_set_writer.
+ *
+ * @pre writer != NULL
+ *
+ * @param writer the SCEW writer to be used by the putput functions.
+ *
+ * @return a new SCEW printer or NULL if the printer could not be
+ * created.
+ *
+ * @ingroup SCEWPrinterAlloc
+ */
 extern SCEW_API scew_printer* scew_printer_create (scew_writer *writer);
 
+/**
+ * Frees the given SCEW @a printer. This will not free the writer
+ * being used by the printer.
+ *
+ * @param printer the SCEW printer to free.
+ *
+ * @ingroup SCEWPrinterAlloc
+ */
 extern SCEW_API void scew_printer_free (scew_printer *printer);
-
-extern SCEW_API scew_writer* scew_printer_set_writer (scew_printer *printer,
-                                                      scew_writer *writer);
 
 
 /**
  * @defgroup SCEWPrinterProp Properties
+ * Set printer properties.
  * @ingroup SCEWPrinter
  */
 
@@ -95,18 +145,35 @@ extern SCEW_API void scew_printer_set_indentation (scew_printer *printer,
 
 /**
  * @defgroup SCEWPrinterOutput Output
+ * A set of routines to print XML data.
  * @ingroup SCEWPrinter
  */
 
 /**
- * Prints the given SCEW @a tree to @a printer. This will print the XML
- * document prolog and the root element with all its children.
+ * Sets the given SCEW @a writer to the specified @a printer. After
+ * this call, subsequent calls to output functions will use the given
+ * writer internally. This means that the printer can be used to
+ * writer to a file or memory buffer indistinctly.
+ *
+ * @param printer the SCEW printer to change its writer for.
+ * @param writer the SCEW writer to be used in next output calls.
+ *
+ * @return the old SCEW writer.
+ *
+ * @ingroup SCEWPrinterOutput
+ */
+extern SCEW_API scew_writer* scew_printer_set_writer (scew_printer *printer,
+                                                      scew_writer *writer);
+/**
+ * Prints the given SCEW @a tree to the specified @a printer. This
+ * will print the XML declaration, the preamble and the root element
+ * with all its children.
  *
  * @pre printer != NULL
  * @pre tree != NULL
  *
- * @param printer
- * @param tree
+ * @param printer the printer to be used for printing data.
+ * @param tree the SCEW tree to print.
  *
  * @ingroup SCEWPrinterOutput
  */
@@ -114,9 +181,15 @@ extern SCEW_API scew_bool scew_printer_print_tree (scew_printer *printer,
                                                    scew_tree const *tree);
 
 /**
+ * Prints the given SCEW @a element to the specified @a printer. This
+ * will print the element (with its attributes) and all its children
+ * recursively.
  *
  * @pre printer != NULL
  * @pre element != NULL
+ *
+ * @param printer the printer to be used for printing data.
+ * @param element the SCEW element to print.
  *
  * @ingroup SCEWPrinterOutput
  */
@@ -125,31 +198,50 @@ scew_printer_print_element (scew_printer *printer,
                             scew_element const *element);
 
 /**
+ * Prints the given SCEW @a element children to the specified @a
+ * printer. This will print the element children recursively.
  *
  * @pre printer != NULL
  * @pre element != NULL
+ *
+ * @param printer the printer to be used for printing data.
+ * @param element the SCEW element to print its children for. The
+ * element itself is not printed.
  *
  * @ingroup SCEWPrinterOutput
  */
 extern SCEW_API scew_bool
 scew_printer_print_element_children (scew_printer *printer,
-                                     scew_element const  *element);
+                                     scew_element const *element);
 
 /**
+ * Prints the given SCEW @a element attributes to the specified @a
+ * printer. This will print the list of the element attributes. Note
+ * that this will note generate any valid XML data, but might be
+ * useful in some cases.
  *
  * @pre printer != NULL
  * @pre element != NULL
  *
- * @ingroup SCEWPrinterOutput
+ * @param printer the printer to be used for printing data.
+ * @param element the SCEW element to print its attributes for.
+ *
+ @ingroup SCEWPrinterOutput
  */
 extern SCEW_API scew_bool
 scew_printer_print_element_attributes (scew_printer *printer,
                                        scew_element const *element);
 
 /**
+ * Prints the given SCEW @a attribute to the specified @a
+ * printer. Note that this will note generate any valid XML data, but
+ * might be useful in some cases.
  *
  * @pre printer != NULL
  * @pre attribute != NULL
+ *
+ * @param printer the printer to be used for printing data.
+ * @param attribute the SCEW attribute to print.
  *
  * @ingroup SCEWPrinterOutput
  */
