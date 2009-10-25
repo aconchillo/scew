@@ -29,6 +29,7 @@
 
 /**
  * @defgroup SCEWWriter Writers
+ * Write data to different sources: files, memory, etc.
  * @ingroup SCEWIO
  */
 
@@ -50,9 +51,22 @@
 extern "C" {
 #endif /* __cplusplus */
 
-
+/**
+ *
+ *
+ * @ingroup SCEWWriter
+ */
 typedef struct scew_writer scew_writer;
 
+/**
+ *
+ *
+ * @param write
+ *
+ * @return
+ *
+ * @ingroup SCEWWriter
+ */
 typedef struct
 {
   size_t (*write) (scew_writer *, XML_Char const *, size_t);
@@ -63,23 +77,65 @@ typedef struct
 } scew_writer_hooks;
 
 
-
 /**
- * @defgroup SCEWWriterAlloc Allocation
+ *
+ *
+ * @param hooks
+ * @param data
+ *
+ * @return
+ *
  * @ingroup SCEWWriter
  */
-
 extern SCEW_API scew_writer*
 scew_writer_create (scew_writer_hooks const *hooks, void *data);
 
+/**
+ *
+ *
+ * @param writer
+ *
+ * @return
+ *
+ * @ingroup SCEWWriter
+ */
 extern SCEW_API void* scew_writer_data (scew_writer *writer);
 
+/**
+ *
+ *
+ * @param writer
+ * @param buffer
+ * @param char_no
+ *
+ * @return
+ *
+ * @ingroup SCEWWriter
+ */
 extern SCEW_API size_t scew_writer_write (scew_writer *writer,
                                           XML_Char const *buffer,
                                           size_t char_no);
 
+/**
+ *
+ *
+ * @param writer
+ *
+ * @return
+ *
+ * @ingroup SCEWWriter
+ */
 extern SCEW_API scew_bool scew_writer_end (scew_writer *writer);
 
+/**
+ *
+ *
+ * @param writer
+ *
+ * @return
+ *
+ * @ingroup SCEWWriter
+ */
 extern SCEW_API scew_bool scew_writer_error (scew_writer *writer);
 
 /**
@@ -96,7 +152,7 @@ extern SCEW_API scew_bool scew_writer_error (scew_writer *writer);
  * @return true if the writer could be successfully closed, false
  * otherwise.
  *
- * @ingroup SCEWWriterAlloc
+ * @ingroup SCEWWriter
  */
 extern SCEW_API scew_bool scew_writer_close (scew_writer *writer);
 
@@ -108,7 +164,7 @@ extern SCEW_API scew_bool scew_writer_close (scew_writer *writer);
  *
  * @param writer the SCEW writer to free.
  *
- * @ingroup SCEWWriterAlloc
+ * @ingroup SCEWWriter
  */
 extern SCEW_API void scew_writer_free (scew_writer *writer);
 

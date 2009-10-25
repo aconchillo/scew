@@ -29,6 +29,7 @@
 
 /**
  * @defgroup SCEWReader Readers
+ * Read data from different sources: files, memory, etc.
  * @ingroup SCEWIO
  */
 
@@ -47,8 +48,21 @@
 extern "C" {
 #endif /* __cplusplus */
 
+/**
+ *
+ * @ingroup SCEWReader
+ */
 typedef struct scew_reader scew_reader;
 
+/**
+ *
+ *
+ * @param read
+ *
+ * @return
+ *
+ * @ingroup SCEWReader
+ */
 typedef struct
 {
   size_t (*read) (scew_reader *, XML_Char *, size_t);
@@ -58,21 +72,85 @@ typedef struct
   void (*free) (scew_reader *);
 } scew_reader_hooks;
 
+/**
+ *
+ *
+ * @param hooks
+ * @param data
+ *
+ * @return
+ *
+ * @ingroup SCEWReader
+ */
 extern SCEW_API scew_reader*
 scew_reader_create (scew_reader_hooks const *hooks, void *data);
 
+/**
+ *
+ *
+ * @param reader
+ *
+ * @return
+ *
+ * @ingroup SCEWReader
+ */
 extern SCEW_API void* scew_reader_data (scew_reader *reader);
 
+/**
+ *
+ *
+ * @param reader
+ * @param buffer
+ * @param char_no
+ *
+ * @return
+ *
+ * @ingroup SCEWReader
+ */
 extern SCEW_API size_t scew_reader_read (scew_reader *reader,
                                          XML_Char *buffer,
                                          size_t char_no);
 
+/**
+ *
+ *
+ * @param reader
+ *
+ * @return
+ *
+ * @ingroup SCEWReader
+ */
 extern SCEW_API scew_bool scew_reader_end (scew_reader *reader);
 
+/**
+ *
+ *
+ * @param reader
+ *
+ * @return
+ *
+ * @ingroup SCEWReader
+ */
 extern SCEW_API scew_bool scew_reader_error (scew_reader *reader);
 
+/**
+ *
+ *
+ * @param reader
+ *
+ * @return
+ *
+ * @ingroup SCEWReader
+ */
 extern SCEW_API scew_bool scew_reader_close (scew_reader *reader);
 
+/**
+ *
+ *
+ * @param reader
+ *
+ * @ingroup SCEWReader
+ */
 extern SCEW_API void scew_reader_free (scew_reader *reader);
 
 #ifdef __cplusplus

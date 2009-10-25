@@ -3,7 +3,7 @@
  * @brief    SCEW writer file related functions
  * @author   Aleix Conchillo Flaque <aleix@member.fsf.org>
  * @date     Thu Nov 13, 2008 11:01
- * @ingroup  SCEWWriter
+ * @ingroup  SCEWWriterFile
  *
  * @if copyright
  *
@@ -25,6 +25,12 @@
  * 02110-1301, USA.
  *
  * @endif
+ */
+
+/**
+ * @defgroup SCEWWriterFile Files
+ * Write data to files.
+ * @ingroup SCEWWriter
  */
 
 #ifndef WRITER_FILE_H_0811131101
@@ -54,7 +60,7 @@ extern "C" {
  * @return a new SCEW writer for the given file name or NULL if the
  * writer could not be created.
  *
- * @ingroup SCEWWriterAlloc
+ * @ingroup SCEWWriterFile
  */
 extern SCEW_API scew_writer* scew_writer_file_create (char const *file_name);
 
@@ -79,7 +85,7 @@ extern SCEW_API scew_writer* scew_writer_file_create (char const *file_name);
  * @return a new SCEW writer for the given file stream or NULL if the
  * writer could not be created.
  *
- * @ingroup SCEWWriterAlloc
+ * @ingroup SCEWWriterFile
  */
 extern SCEW_API scew_writer* scew_writer_fp_create (FILE *file);
 

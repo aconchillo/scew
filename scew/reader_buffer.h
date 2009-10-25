@@ -3,7 +3,7 @@
  * @brief    SCEW reader buffer related functions
  * @author   Aleix Conchillo Flaque <aleix@member.fsf.org>
  * @date     Tue Aug 25, 2009 02:02
- * @ingroup  SCEWReader
+ * @ingroup  SCEWReaderMemory
  *
  * @if copyright
  *
@@ -27,6 +27,12 @@
  * @endif
  */
 
+/**
+ * @defgroup SCEWReaderMemory Memory
+ * Read data from memory buffers.
+ * @ingroup SCEWReader
+ */
+
 #ifndef READER_BUFFER_H_0908250202
 #define READER_BUFFER_H_0908250202
 
@@ -40,6 +46,16 @@
 extern "C" {
 #endif /* __cplusplus */
 
+/**
+ *
+ *
+ * @param buffer
+ * @param size
+ *
+ * @return
+ *
+ * @ingroup SCEWReaderMemory
+ */
 extern SCEW_API scew_reader* scew_reader_buffer_create (XML_Char const *buffer,
                                                         size_t size);
 

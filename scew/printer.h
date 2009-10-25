@@ -3,7 +3,7 @@
  * @brief    SCEW printer
  * @author   Aleix Conchillo Flaque <aleix@member.fsf.org>
  * @date     Fri Jan 16, 2009 22:34
- * @ingroup  SCEWPrinter
+ * @ingroup  SCEWPrinter, SCEWPrinterAlloc, SCEWPrinterProp, SCEWPrinterOutput
  *
  * @if copyright
  *

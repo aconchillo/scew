@@ -1,9 +1,9 @@
 /**
- * @file     reader.h
+ * @file     reader_file.h
  * @brief    SCEW reader functions
  * @author   Aleix Conchillo Flaque <aleix@member.fsf.org>
  * @date     Sun Nov 23, 2008 13:51
- * @ingroup  SCEWReader
+ * @ingroup  SCEWReaderFile
  *
  * @if copyright
  *
@@ -27,6 +27,12 @@
  * @endif
  */
 
+/**
+ * @defgroup SCEWReaderFile Files
+ * Read data from files.
+ * @ingroup SCEWReader
+ */
+
 #ifndef READER_FILE_H_0811231351
 #define READER_FILE_H_0811231351
 
@@ -40,8 +46,26 @@
 extern "C" {
 #endif /* __cplusplus */
 
+/**
+ *
+ *
+ * @param file_name
+ *
+ * @return
+ *
+ * @ingroup SCEWReaderFile
+ */
 extern SCEW_API scew_reader* scew_reader_file_create (char const *file_name);
 
+/**
+ *
+ *
+ * @param file
+ *
+ * @return
+ *
+ * @ingroup SCEWReaderFile
+ */
 extern SCEW_API scew_reader* scew_reader_fp_create (FILE *file);
 
 #ifdef __cplusplus

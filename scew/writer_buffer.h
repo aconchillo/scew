@@ -3,7 +3,7 @@
  * @brief    SCEW writer buffer related functions
  * @author   Aleix Conchillo Flaque <aleix@member.fsf.org>
  * @date     Thu Nov 13, 2008 11:03
- * @ingroup  SCEWWriter
+ * @ingroup  SCEWWriterMemory
  *
  * @if copyright
  *
@@ -25,6 +25,12 @@
  * 02110-1301, USA.
  *
  * @endif
+ */
+
+/**
+ * @defgroup SCEWWriterMemory Memory
+ * Write data to memory buffers.
+ * @ingroup SCEWWriter
  */
 
 #ifndef WRITER_BUFFER_H_0811131103
@@ -55,7 +61,7 @@ extern "C" {
  * @return a new SCEW writer for the given buffer or NULL if the
  * writer could not be created.
  *
- * @ingroup SCEWWriterAlloc
+ * @ingroup SCEWWriterMemory
  */
 extern SCEW_API scew_writer* scew_writer_buffer_create (XML_Char *buffer,
                                                         size_t size);
