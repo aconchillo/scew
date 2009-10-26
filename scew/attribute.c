@@ -68,6 +68,8 @@ scew_attribute_create (XML_Char const *name, XML_Char const *value)
 scew_attribute*
 scew_attribute_copy (scew_attribute const *attribute)
 {
+  assert (attribute != NULL);
+
   scew_attribute *new_attr = calloc (1, sizeof (scew_attribute));
 
   if (new_attr != NULL)

@@ -78,19 +78,20 @@ typedef struct scew_tree scew_tree;
  */
 
 /**
- * Creates a new empty XML tree in memory. You can also have access to
- * the tree created by the parser when reading an XML file.
- *
- * By default, the XML version is set to 1.0, and the encoding to
- * UTF-8, also a standalone document is considered.
+ * Creates a new empty XML tree in memory. By default, the XML version
+ * is set to 1.0, and the encoding to UTF-8, also a standalone
+ * document is considered.
  *
  * @ingroup SCEWTreeAlloc
  */
 extern SCEW_API scew_tree* scew_tree_create (void);
 
 /**
- * Makes a deep copy of the given @a tree. It also copies XML
- * encoding, version and standalone attributes.
+ * Makes a deep copy of the given @a tree. A deep copy means that the
+ * root element and its children will be copied recursively. XML
+ * encoding, version and standalone attributes are also copied.
+ *
+ * @pre tree != NULL
  *
  * @param tree the tree to be duplicated.
  *
@@ -120,7 +121,10 @@ extern SCEW_API void scew_tree_free (scew_tree *tree);
 
 /**
  * Performs a deep comparison of the given tree. That is, it compares
- * that both trees have the same XML attributes and root element.
+ * that both trees have the same XML declaration, preamble and root
+ * element, recursively.
+ *
+ * Remember that XML is case-sensitive.
  *
  * @pre a != NULL
  * @pre b != NULL
@@ -141,8 +145,8 @@ extern SCEW_API scew_bool scew_tree_compare (scew_tree const *a,
 
 /**
  * Returns the current XML version for the given @a tree. This is the
- * version specified in the "version" attribute in the main XML
- * element.
+ * version specified in the "version" attribute in the XML
+ * declaration.
  *
  * @pre tree != NULL
  *
@@ -156,12 +160,16 @@ extern SCEW_API XML_Char const*
 scew_tree_xml_version (scew_tree const *tree);
 
 /**
- * Sets the XML version in the XML declaration. Currently there is one
- * XML version, so the value is always 1.0. If there were more XML
- * versions, this proerty tells the XML processor which one to use.
+ * Sets the XML @a version in the XML declaration to the given @a
+ * tree. Currently there is one XML version, so the value is always
+ * 1.0. If there were more XML versions, this property tells to the
+ * XML processor which one to use.
  *
  * @pre tree != NULL
  * @pre version != NULL
+ *
+ * @param tree the XML tree to set the new XML version to.
+ * @param version the new XML version for the given tree.
  *
  * @ingroup SCEWTreeProp
  */
@@ -169,24 +177,43 @@ extern SCEW_API void scew_tree_set_xml_version (scew_tree *tree,
                                                 XML_Char const *version);
 
 /**
+ * Returns the current XML character encoding for the given @a
+ * tree. The default, when creating new SCEW trees, is UTF-8.
  *
+ * Expat supports the following encodings:
+ *
+ * - UTF-8, ASCII and ISO-8859-1.
+ * - UTF-16.
+ *
+ * As SCEW is based on Expat the same encodings are supported when
+ * parsing XML documents. However, SCEW only supports UTF-16 in
+ * Windows platforms.
+ *
+ * Note that these encodings are only supported when parsing files,
+ * but not when creating new ones. So, it is the responsibility of the
+ * user to provide the correct characters.
  *
  * @pre tree != NULL
  *
- * @param tree
+ * @param tree the XML tree to obtain its character encoding for.
  *
- * @return
+ * @return the character encoding for the given tree.
  *
  * @ingroup SCEWTreeProp
  */
 extern SCEW_API XML_Char const* scew_tree_xml_encoding (scew_tree const *tree);
 
 /**
- * Sets the character encoding used in the XML document. The default is
- * UTF-8.
+ * Sets the character encoding used in the given XML @a tree. Note
+ * that a user might want to use another encoding, different than the
+ * ones supported by Expat. And, as SCEW does not provide, or force,
+ * any encoding, the user is allowed to do so.
  *
  * @pre tree != NULL
  * @pre encoding != NULL
+ *
+ * @param tree the XML tree to set the new encoding to.
+ * @param encoding the new character encoding for the given tree.
  *
  * @ingroup SCEWTreeProp
  */
@@ -202,7 +229,7 @@ extern SCEW_API void scew_tree_set_xml_encoding (scew_tree *tree,
  *
  * @param tree the tree to check its standalone property for.
  *
- * @return true if the given tree is standalone, false otherwise.
+ * @return the XML tree standalone property.
  *
  * @ingroup SCEWTreeProp
  */
@@ -213,13 +240,12 @@ scew_tree_xml_standalone (scew_tree const *tree);
  * The standalone property tells the XML processor whether there are
  * any other extra files to load, such as external entities or
  * DTDs. If the XML document can stand on its own, set it to
- * 'yes'.
+ * #scew_tree_standalone_yes.
  *
  * @pre tree != NULL
  *
- * @param tree the tree to set the option to.
- * @param standalone true to activate standalone property, false
- * otherwise.
+ * @param tree the XML tree to set the option to.
+ * @param standalone the new XML tree standalone property.
  *
  * @ingroup SCEWTreeProp
  */
@@ -256,6 +282,9 @@ extern SCEW_API scew_element* scew_tree_root (scew_tree const *tree);
  * @pre tree != NULL
  * @pre name != NULL
  *
+ * @param tree the XML tree to set a new root element to.
+ * @param name the name of the new XML root element.
+ *
  * @return the tree's root element, or NULL if the element could not
  * be created.
  *
@@ -265,14 +294,17 @@ extern SCEW_API scew_element* scew_tree_set_root (scew_tree *tree,
                                                   XML_Char const *name);
 
 /**
- * Sets the root element of an XML @a tree with the given @a
- * root. Note that if the tree already had a root element, it will be
- * overwritten, possibly causing a memory leak, as the old root
+ * Sets the root element of an XML @a tree with the given
+ * element. Note that if the tree already had a root element, it will
+ * be overwritten, possibly causing a memory leak, as the old root
  * element is *not* automatically freed. So, if you plan to set a new
  * root element, remember to free the old one first.
  *
  * @pre tree != NULL
  * @pre root != NULL
+ *
+ * @param tree the XML tree to set a new root element to.
+ * @param root the new XML root element.
  *
  * @return the tree's root element, or NULL if the element could not
  * be created.
@@ -282,13 +314,18 @@ extern SCEW_API scew_element* scew_tree_set_root (scew_tree *tree,
 extern SCEW_API scew_element* scew_tree_set_root_element (scew_tree *tree,
                                                           scew_element *root);
 /**
+ * Return the XML preamble for the given @a tree. The XML preamble is
+ * the text between the XML declaration and the first element. It
+ * typically contains DOCTYPE declarations or processing instructions.
  *
+ * SCEW does not provide specific functions for DOCTYPEs or processing
+ * instructions, but they are treated as a whole.
  *
  * @pre tree != NULL
  *
- * @param tree
+ * @param tree the XML tree to obtain the preamble for.
  *
- * @return
+ * @return the XML preamble, or NULL if no preamble is found.
  *
  * @ingroup SCEWTreeContent
  */
@@ -296,10 +333,17 @@ extern SCEW_API XML_Char const* scew_tree_xml_preamble (scew_tree const *tree);
 
 /**
  * Sets the preamble string for the XML document. Typically this
- * will contain a DOCTYPE declaration.
+ * contains DOCTYPE declarations or processing instructions. The old
+ * XML tree preamble will be freed, if any.
+ *
+ * SCEW does not provide specific functions for DOCTYPEs or processing
+ * instructions, but they can be added as a whole.
  *
  * @pre tree != NULL
  * @pre preamble != NULL
+ *
+ * @param tree the XML tree to set the preamble to.
+ * @param preamble the XML preamble text for the given tree.
  *
  * @ingroup SCEWTreeContent
  */

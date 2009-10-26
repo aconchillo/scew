@@ -75,6 +75,8 @@ scew_tree_create (void)
 scew_tree*
 scew_tree_copy (scew_tree const *tree)
 {
+  assert (tree != NULL);
+
   scew_tree *new_tree = calloc (1, sizeof (scew_tree));
 
   if (new_tree != NULL)

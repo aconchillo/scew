@@ -170,6 +170,8 @@ scew_element_list_by_name (scew_element const *element, XML_Char const *name);
  * compares that both elements have the same name, attributes,
  * contents, children (recursively), etc.
  *
+ * Remember that XML is case-sensitive.
+ *
  * @pre a != NULL
  * @pre b != NULL
  *

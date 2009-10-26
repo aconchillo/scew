@@ -102,6 +102,8 @@ extern SCEW_API void scew_attribute_free (scew_attribute *attribute);
  * name and value must be equal in both attributes. Attribute's
  * elements are not compared.
  *
+ * Remember that XML is case-sensitive.
+ *
  * @pre a != NULL
  * @pre b != NULL
  *
