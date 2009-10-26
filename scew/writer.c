@@ -45,6 +45,8 @@ struct scew_writer
 scew_writer*
 scew_writer_create (scew_writer_hooks const *hooks, void *data)
 {
+  assert (hooks != NULL);
+
   scew_writer *writer = calloc (1, sizeof (scew_writer));
 
   if (writer != NULL)
