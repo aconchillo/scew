@@ -3,6 +3,7 @@
  * @brief    SCEW string functions
  * @author   Aleix Conchillo Flaque <aleix@member.fsf.org>
  * @date     Sun Dec 01, 2002 13:05
+ * @ingroup  SCEWString
  *
  * @if copyright
  *
@@ -26,6 +27,20 @@
  * @endif
  */
 
+/**
+ * @defgroup SCEWString Text utilities
+ *
+ * This module defines a set of functions to work with text
+ * strings. SCEW has defined wrappers for standard C routines in order
+ * to work with regular and wide character strings (wchar_t). The
+ * wrappers are simple macros to call the appropiate functions in both
+ * cases.
+ *
+ * Right now, wide character strings are only availabe in Windows
+ * platforms to provide UTF-16 support (XML_UNICODE_WCHAR_T needs to
+ * be defined at compile time).
+ */
+
 #ifndef STR_H_0212011305
 #define STR_H_0212011305
 
@@ -37,7 +52,18 @@
 
 #include <string.h>
 
+/**
+ * @ingroup SCEWString
+ */
+/*@{*/
+/**
+ * See standard @a memcpy documentation.
+ */
 #define scew_memcpy(dst, src, n)  memcpy (dst, src, sizeof (XML_Char) * (n))
+
+/**
+ * See standard @a memmove documentation.
+ */
 #define scew_memmove(dst, src, n) memmove (dst, src, sizeof (XML_Char) * (n))
 
 #ifdef XML_UNICODE_WCHAR_T
@@ -78,34 +104,135 @@
 
 #include <ctype.h>
 
+/**
+ * Creates a regular string or a wide character string.
+ */
 #define _XT(str) str
 
+/**
+ * See standard @a printf documentation.
+ */
 #define scew_printf printf
+
+/**
+ * See standard @a fprintf documentation.
+ */
 #define scew_fprintf fprintf
+
+/**
+ * See standard @a vfprintf documentation.
+ */
 #define scew_vfprintf vfprintf
+
+/**
+ * See standard @a fputs documentation.
+ */
 #define scew_fputs fputs
+
+/**
+ * See standard @a fgets documentation.
+ */
 #define scew_fgets fgets
+
+/**
+ * See standard @a fputc documentation.
+ */
 #define scew_fputc fputc
+
+/**
+ * See standard @a fgetc documentation.
+ */
 #define scew_fgetc fgetc
 
+
+
+/**
+ * See standard @a strspn documentation.
+ */
 #define scew_strspn(s, accept) strspn (s, accept)
+
+/**
+ * See standard @a strcpy documentation.
+ */
 #define scew_strcpy(dest, src) strcpy (dest, src)
+
+/**
+ * See standard @a strcat documentation.
+ */
 #define scew_strcat(dest, src) strcat (dest, src)
+
+/**
+ * See standard @a strncpy documentation.
+ */
 #define scew_strncpy(dest, src, n) strncpy (dest, src, (n))
+
+/**
+ * See standard @a strncat documentation.
+ */
 #define scew_strncat(dest, src, n) strncat (dest, src, (n))
+
+/**
+ * See standard @a strlen documentation.
+ */
 #define scew_strlen(s) strlen (s)
 
+
+
+/**
+ * See standard @a isalnum documentation.
+ */
 #define scew_isalnum(c) isalnum ((unsigned char)(c))
+
+/**
+ * See standard @a isalpha documentation.
+ */
 #define scew_isalpha(c) isalpha ((unsigned char)(c))
+
+/**
+ * See standard @a iscntrl documentation.
+ */
 #define scew_iscntrl(c) iscntrl ((unsigned char)(c))
+
+/**
+ * See standard @a isdigit documentation.
+ */
 #define scew_isdigit(c) isdigit ((unsigned char)(c))
+
+/**
+ * See standard @a isxdigit documentation.
+ */
 #define scew_isxdigit(c) isxdigit ((unsigned char)(c))
+
+/**
+ * See standard @a isgraph documentation.
+ */
 #define scew_isgraph(c) isgraph ((unsigned char)(c))
+
+/**
+ * See standard @a islower documentation.
+ */
 #define scew_islower(c) islower ((unsigned char)(c))
+
+/**
+ * See standard @a isupper documentation.
+ */
 #define scew_isupper(c) isupper ((unsigned char)(c))
+
+/**
+ * See standard @a isprint documentation.
+ */
 #define scew_isprint(c) isprint ((unsigned char)(c))
+
+/**
+ * See standard @a ispunct documentation.
+ */
 #define scew_ispunct(c) ispunct ((unsigned char)(c))
+
+/**
+ * See standard @a isspace documentation.
+ */
 #define scew_isspace(c) isspace ((unsigned char)(c))
+/*@}*/
 
 #endif /* XML_UNICODE_WCHAR_T */
 
@@ -118,6 +245,8 @@ extern "C" {
  *
  * @return 0 if the two strings are identical or NULL, less than zero
  * if @a s1 is less than @a s2 or greater than zero otherwise.
+ *
+ * @ingroup SCEWString
  */
 extern SCEW_API int scew_strcmp (XML_Char const *a, XML_Char const *b);
 
@@ -127,6 +256,8 @@ extern SCEW_API int scew_strcmp (XML_Char const *a, XML_Char const *b);
  * @param src the string to be duplicated (might be NULL).
  *
  * @return the duplicated string, or NULL if the given string is NULL.
+ *
+ * @ingroup SCEWString
  */
 extern SCEW_API XML_Char* scew_strdup (XML_Char const *src);
 
@@ -134,10 +265,25 @@ extern SCEW_API XML_Char* scew_strdup (XML_Char const *src);
  * Trims off extra spaces from the beginning and end of a string. The
  * trimming is done in place.
  *
+ * @pre src != NULL
+ *
  * @param src the string to be trimmed off.
+ *
+ * @ingroup SCEWString
  */
 extern SCEW_API void scew_strtrim (XML_Char *src);
 
+/**
+ * Tells whether the given string is empty. That is, all character are
+ * spaces, form-feed, newlines, etc. See @a isspace documentation to
+ * see the list of charactes considered space.
+ *
+ * @param src the string to tell if its empty or not.
+ *
+ * @return true if the given string is empty, false otherwise.
+ *
+ * @ingroup SCEWString
+ */
 extern SCEW_API scew_bool scew_isempty (XML_Char const *src);
 
 #ifdef __cplusplus
