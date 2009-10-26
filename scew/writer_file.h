@@ -1,6 +1,6 @@
 /**
  * @file     writer_file.h
- * @brief    SCEW writer file related functions
+ * @brief    SCEW writer functions for files
  * @author   Aleix Conchillo Flaque <aleix@member.fsf.org>
  * @date     Thu Nov 13, 2008 11:01
  * @ingroup  SCEWWriterFile
@@ -49,41 +49,42 @@ extern "C" {
 /**
  * Creates a new SCEW writer for the given file name. This routine
  * will create a new file if the file does not exist or it will
- * overwrite the existing one. Once the writer is created, any of the
- * SCEW writer functions might be called in order to store some
- * information to the file.
+ * overwrite the existing one. The file will be created in text
+ * mode. Once the writer is created, the @ref SCEWWriter routines must
+ * be called in order to store data to the file or to know the file
+ * status.
+ *
+ * For UTF-16 encoding (only in Windows paltforms) the BOM (Byte Order
+ * Mask) is automatically handled by the Windows API.
  *
  * @pre file_name != NULL
  *
  * @param file_name the file name to create for the new SCEW writer.
  *
  * @return a new SCEW writer for the given file name or NULL if the
- * writer could not be created.
+ * writer could not be created (e.g. memory allocation, file
+ * permissions, etc.).
  *
  * @ingroup SCEWWriterFile
  */
 extern SCEW_API scew_writer* scew_writer_file_create (char const *file_name);
 
 /**
- * Creates a new SCEW writer for the given @a file stream. Once the
- * writer is created, any of the SCEW writer functions might be called
- * in order to store some information to the file.
+ * Creates a new SCEW writer for the given @a file stream. The file
+ * stream is created in text mode. Once the writer is created, any of
+ * the @ref SCEWWriter routines must be called in order to store data
+ * to the file or to know the file status.
  *
- * Note that the file stream has an orientation which might be
- * manually set immediately after creating it (see @a fwide), or is
- * automatically set with the first I/O operation. SCEW will use the
- * correct output function according to the Expat XML_Char type
- * defined in your system (to enable UTF-16 define @a XML_UNICODE or
- * @a XML_UNICODE_WCHAR_T). The orientation should not be changed
- * before any SCEW function is used on the stream (or at least it
- * should be changed according to XML_Char).
+ * For UTF-16 encoding (only in Windows paltforms) the BOM (Byte Order
+ * Mask) is automatically handled by the Windows API.
  *
  * @pre file != NULL
  *
  * @param file the file where the new SCEW writer will write to.
  *
  * @return a new SCEW writer for the given file stream or NULL if the
- * writer could not be created.
+ * writer could not be created (e.g. memory allocation, file
+ * permissions, etc.).
  *
  * @ingroup SCEWWriterFile
  */

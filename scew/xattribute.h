@@ -39,9 +39,9 @@
 
 struct scew_attribute
 {
-  XML_Char *name;
-  XML_Char *value;
-  scew_element *parent;
+  XML_Char *name;               /**< The attribute's name */
+  XML_Char *value;              /**< The attribute's value */
+  scew_element *parent;         /**< The XML element parent (if any) */
 };
 
 

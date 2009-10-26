@@ -1,6 +1,6 @@
 /**
  * @file     reader_buffer.h
- * @brief    SCEW reader buffer related functions
+ * @brief    SCEW reader functions for memory buffers
  * @author   Aleix Conchillo Flaque <aleix@member.fsf.org>
  * @date     Tue Aug 25, 2009 02:02
  * @ingroup  SCEWReaderMemory
@@ -47,12 +47,20 @@ extern "C" {
 #endif /* __cplusplus */
 
 /**
+ * Creates a new SCEW reader for the given memory @a buffer of the
+ * specified @a size. Once the writer is created, any of the @ref
+ * SCEWReader functions might be called in order to read data from the
+ * buffer.
  *
+ * @pre buffer != NULL
+ * @pre size > 0
  *
- * @param buffer
- * @param size
+ * @param buffer the memory area where the new SCEW reader should read
+ * data from.
+ * @param size the size of the memory area.
  *
- * @return
+ * @return a new SCEW reader for the given buffer or NULL if the
+ * reader could not be created.
  *
  * @ingroup SCEWReaderMemory
  */

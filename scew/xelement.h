@@ -40,19 +40,19 @@
 
 struct scew_element
 {
-  XML_Char *name;
-  XML_Char *contents;
+  XML_Char *name;               /**< The element's name */
+  XML_Char *contents;           /**< The element's text contents */
 
-  scew_element *parent;
+  scew_element *parent;         /**< The parent of the element (if any) */
   scew_list *myself;            /**< Pointer to parent's children list
                                    (performance) */
 
-  unsigned int n_children;
-  scew_list *children;
+  unsigned int n_children;      /**< Number of children (if any) */
+  scew_list *children;          /**< List of children elements */
   scew_list *last_child;        /**< Pointer to last child (performance) */
 
-  unsigned int n_attributes;
-  scew_list *attributes;
+  unsigned int n_attributes;    /**< Number of attributes (if any) */
+  scew_list *attributes;        /**< List of attributes */
   scew_list *last_attribute;    /**< Pointer to last attribute (performance) */
 };
 

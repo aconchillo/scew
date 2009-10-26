@@ -33,10 +33,14 @@
 
 #include "error.h"
 
-/* Sets SCEW internal last error. */
+/**
+ * Sets SCEW internal last error.
+ */
 extern SCEW_LOCAL void scew_error_set_last_error_ (scew_error code);
 
-/* Gets SCEW internal last error. */
+/**
+ * Gets SCEW internal last error.
+ */
 extern SCEW_LOCAL scew_error scew_error_last_error_ (void);
 
 #endif /* XERROR_H_0305051040 */

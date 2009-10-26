@@ -62,8 +62,17 @@ struct scew_parser
 
 /* Functions */
 
+/**
+ * Frees the stack of elements used while parsing XML elements.
+ */
 extern SCEW_LOCAL void scew_parser_stack_free_ (scew_parser *parser);
 
+/**
+ * Install SCEW Expat handlers. The Expat handlers are the main
+ * interface between Expat and SCEW. The handlers will be called by
+ * Expat while parsing XML documents and SCEW will create the
+ * necessary data structures representing the XML being read.
+ */
 extern SCEW_LOCAL void
 scew_parser_expat_install_handlers_ (scew_parser *parser);
 

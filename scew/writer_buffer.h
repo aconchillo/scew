@@ -1,6 +1,6 @@
 /**
  * @file     writer_buffer.h
- * @brief    SCEW writer buffer related functions
+ * @brief    SCEW writer functions for memory buffers
  * @author   Aleix Conchillo Flaque <aleix@member.fsf.org>
  * @date     Thu Nov 13, 2008 11:03
  * @ingroup  SCEWWriterMemory
@@ -45,12 +45,12 @@ extern "C" {
 #endif /* __cplusplus */
 
 /**
- * Creates a new SCEW writer for the given memory @a buffer. The
- * buffer should exist before calling this function and the @a size of
- * the buffer should enough to store the desired information (e.g. an
- * XML tree, an element...). Once the writer is created, any of the
- * SCEW writer functions might be called in order to store some
- * information to the buffer.
+ * Creates a new SCEW writer for the given memory @a buffer of the
+ * specified @a size. The buffer should exist before calling this
+ * function and the @a size of the buffer should be large enough to
+ * store the desired information (e.g. an XML tree, an
+ * element...). Once the writer is created, any of the @ref SCEWWriter
+ * functions might be called in order to store data to the buffer.
  *
  * @pre buffer != NULL
  * @pre size > 0
