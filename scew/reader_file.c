@@ -72,9 +72,9 @@ scew_reader_file_create (char const *file_name)
   assert (file_name != NULL);
 
 #ifdef XML_UNICODE_WCHAR_T
-  file = fopen (file_name, "r, ccs=UNICODE");
+  file = fopen (file_name, "rt, ccs=UNICODE");
 #else
-  file = fopen (file_name, "r");
+  file = fopen (file_name, "rt");
 #endif
 
   if (file != NULL)
@@ -119,33 +119,13 @@ file_read_ (scew_reader *reader, XML_Char *buffer, size_t char_no)
 {
   size_t read_no = 0;
   scew_reader_fp *fp_reader = NULL;
-#ifdef XML_UNICODE_WCHAR_T
-  scew_bool read_ok = SCEW_TRUE;
-#endif
 
   assert (reader != NULL);
   assert (buffer != NULL);
 
   fp_reader = scew_reader_data (reader);
 
-#ifdef XML_UNICODE_WCHAR_T
-  for (read_no = 0; read_ok && (read_no < char_no); )
-    {
-      int c = scew_fgetc (fp_reader->file);
-      read_ok = (c != EOF) && (c != WEOF);
-      if (read_ok)
-        {
-          buffer[read_no] = c;
-          read_no += 1;
-        }
-    }
-#else
-  /**
-   * We could use the same XML_UNICODE_WCHAR_T mechanism, but this
-   * will be much faster.
-   */
   read_no = fread (buffer, sizeof (XML_Char), char_no, fp_reader->file);
-#endif
 
   buffer[read_no] = _XT('\0');
 
