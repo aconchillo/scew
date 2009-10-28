@@ -269,7 +269,7 @@ void
 scew_list_foreach (scew_list *list, scew_list_hook hook, void *user_data)
 {
   assert (list != NULL);
-  assert (func != NULL);
+  assert (hook != NULL);
 
   while (list != NULL)
     {
@@ -306,7 +306,7 @@ scew_list_find_custom (scew_list *list,
 {
   assert (list != NULL);
   assert (data != NULL);
-  assert (func != NULL);
+  assert (hook != NULL);
 
   while (list != NULL)
     {

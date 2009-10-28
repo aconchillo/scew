@@ -48,9 +48,11 @@ static scew_bool copy_attributes_ (scew_element *new_element,
 scew_element*
 scew_element_copy (scew_element const *element)
 {
+  scew_element *new_elem = NULL;
+
   assert (element != NULL);
 
-  scew_element *new_elem = calloc (1, sizeof (scew_element));
+  new_elem = calloc (1, sizeof (scew_element));
 
   if (new_elem != NULL)
     {

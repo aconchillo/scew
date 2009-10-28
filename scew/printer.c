@@ -78,9 +78,11 @@ static scew_bool print_element_end_ (scew_printer *printer,
 scew_printer*
 scew_printer_create (scew_writer *writer)
 {
+  scew_printer *printer = NULL;
+
   assert (writer != NULL);
 
-  scew_printer *printer = calloc (1, sizeof (scew_printer));
+  printer = calloc (1, sizeof (scew_printer));
 
   if (printer != NULL)
     {

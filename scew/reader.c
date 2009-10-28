@@ -47,9 +47,11 @@ struct scew_reader
 scew_reader*
 scew_reader_create (scew_reader_hooks const *hooks, void *data)
 {
+  scew_reader *reader = NULL;
+
   assert (hooks != NULL);
 
-  scew_reader *reader = calloc (1, sizeof (scew_reader));
+  reader = calloc (1, sizeof (scew_reader));
 
   if (reader != NULL)
     {
