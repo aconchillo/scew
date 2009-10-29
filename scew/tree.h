@@ -50,6 +50,8 @@ extern "C" {
 #endif /* __cplusplus */
 
 /**
+ * List of possible values for the standalone attribute.
+ *
  * The standalone attribute in an XML declaration defines whether the
  * XML document is self consistent or not, that is, whether it needs
  * to load any extra files.
