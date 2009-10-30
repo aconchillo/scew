@@ -5,6 +5,8 @@
 # Copyright (C) 2007-2009 Aleix Conchillo Flaque
 #
 
+SUBDIRS = data
+
 INCLUDES = -I$(top_srcdir) -DSCEW_TESTSDIR=\""$(top_srcdir)/tests/data"\"
 
 if CHECK_TESTS

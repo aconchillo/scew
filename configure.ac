@@ -119,6 +119,7 @@ examples/win32/scew_print/Makefile \
 examples/win32/scew_stream/Makefile \
 examples/win32/scew_write/Makefile
 tests/Makefile \
+tests/data/Makefile \
 )
 
 if test "x$enable_debug" = "xyes"; then
