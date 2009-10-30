@@ -7,6 +7,8 @@
 
 SUBDIRS = doc etc scew examples tests win32
 
+EXTRA_DIST = ChangeLog.1
+
 .PHONY: doc
 
 if DOC
