@@ -6,7 +6,7 @@ See the end for copying conditions.
 
 ------------------------------------------------------------------------
 
-* Version 1.0.0 (2009/09/??)
+* Version 1.0.0 (2009/10/30)
 
 ** API changes:
 
@@ -16,14 +16,16 @@ See the end for copying conditions.
 
    - scew_parser_tree has been removed.
 
-   - Parse loading notifications can be added for elements and trees.
+   - Parse loading notifications (via hooks) can be added for elements
+     and trees.
 
    - A new type, scew_printer, has been added to provide XML document
-     printing. Printers need a writer to perform the actual output.
+     printing. Printers work with any SCEW writer type to perform the
+     actual output.
 
    - Two new types, scew_reader and scew_writer, have been created to
      support any type of I/O. Two default I/O interfaces are provided:
-     files and buffers. New I/O sources should be easily added.
+     files and memory buffers. New I/O sources can be easily added.
 
    - More functions to delete attributes and child elements have been
      added to the scew_element interface.
@@ -60,15 +62,17 @@ See the end for copying conditions.
 ** Changes:
 
    - Windows support has been updated to Microsoft Visual C++ 2008. It
-     is now also possible to build SCEW examples.
+     is now also possible to build SCEW DLLs and SCEW examples.
+
+   - UTF-16 is better supported (only under Windows platforms).
 
    - XML preamble (anything between XML declaration and root element)
      is now parsed.
 
    - XML declaration standalone attribute is now used.
 
-   - Test cases have been added using Check unit testing framework
-     (C99 needed).
+   - Unit Test cases have been added using Check unit testing
+     framework (C99 needed).
      (see http://check.sf.net)
 
    - Code has been cleaned to allow better definition of private and

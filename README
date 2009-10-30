@@ -9,12 +9,11 @@ you want to load a new XML document.
 
 These are the main SCEW features:
 
-    - New XML documents can be created from scratch.
-    - Loads XML documents into memory and allows working with them.
-    - Writes XML documents to multiple outputs.
-    - Can copy and compare full XML documents, elements or attributes.
-    - Allows adding new I/O sources easily.
+    - Uses a DOM-like object model for new or parsed XML documents.
     - Supports loading concatenated XML documents.
+    - Can copy and compare full XML documents, elements or attributes.
+    - Writes XML documents to multiple outputs.
+    - Allows adding new I/O sources easily.
     - UTF-8, ISO-8859-1 and US-ASCII encodings (and UTF-16 in Windows).
 
 Project homepage: http://www.nongnu.org/scew/
