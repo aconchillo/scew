@@ -1,6 +1,6 @@
 /**
  * @file     reader.h
- * @brief    SCEW reader functions
+ * @brief    SCEW reader common functions
  * @author   Aleix Conchillo Flaque <aleix@member.fsf.org>
  * @date     Sun Nov 23, 2008 13:36
  * @ingroup  SCEWReader

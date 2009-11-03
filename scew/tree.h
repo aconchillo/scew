@@ -1,6 +1,6 @@
 /**
  * @file     tree.h
- * @brief    SCEW tree type declaration
+ * @brief    SCEW tree handling routines
  * @author   Aleix Conchillo Flaque <aleix@member.fsf.org>
  * @date     Thu Feb 20, 2003 23:32
  * @ingroup  SCEWTree, SCEWTreeAlloc, SCEWTreeProp, SCEWTreeContent

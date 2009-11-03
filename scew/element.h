@@ -1,6 +1,6 @@
 /**
  * @file     element.h
- * @brief    Element's handling routines
+ * @brief    SCEW element's handling routines
  * @author   Aleix Conchillo Flaque <aleix@member.fsf.org>
  * @date     Mon Nov 25, 2002 00:48
  * @ingroup  SCEWElement, SCEWElementAcc, SCEWElementAttr, SCEWElementHier

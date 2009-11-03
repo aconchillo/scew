@@ -1,6 +1,6 @@
 /**
  * @file     writer.h
- * @brief    SCEW writer functions
+ * @brief    SCEW writer common functions
  * @author   Aleix Conchillo Flaque <aleix@member.fsf.org>
  * @date     Thu Sep 11, 2003 00:36
  * @ingroup  SCEWWriter

@@ -1,6 +1,6 @@
 /**
  * @file     attribute.h
- * @brief    Attribute's handling routines
+ * @brief    SCEW attribute's handling routines
  * @author   Aleix Conchillo Flaque <aleix@member.fsf.org>
  * @date     Mon Nov 25, 2002 00:39
  * @ingroup  SCEWAttribute, SCEWAttributeAlloc, SCEWAttributeAcc

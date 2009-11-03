@@ -1,6 +1,6 @@
 /**
  * @file     parser.h
- * @brief    SCEW parser type declaration
+ * @brief    SCEW parser handling routines
  * @author   Aleix Conchillo Flaque <aleix@member.fsf.org>
  * @date     Mon Nov 25, 2002 00:57
  * @ingroup  SCEWParser, SCEWParserAlloc, SCEWParserLoad, SCEWParserAcc

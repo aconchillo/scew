@@ -1,6 +1,6 @@
 /**
  * @file     printer.h
- * @brief    SCEW printer
+ * @brief    SCEW printer routines for XML output
  * @author   Aleix Conchillo Flaque <aleix@member.fsf.org>
  * @date     Fri Jan 16, 2009 22:34
  * @ingroup  SCEWPrinter, SCEWPrinterAlloc, SCEWPrinterProp, SCEWPrinterOutput
