@@ -62,6 +62,17 @@ scew_element_compare (scew_element const *a, scew_element const *b)
   return equal;
 }
 
+scew_bool
+scew_element_compare_hook (scew_element const *a,
+                           scew_element const *b,
+                           scew_element_cmp_hook hook)
+{
+  assert (a != NULL);
+  assert (b != NULL);
+
+  return (hook == NULL) ? scew_element_compare (a, b) : hook (a, b);
+}
+
 
 /* Private */
 

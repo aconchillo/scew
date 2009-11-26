@@ -62,6 +62,19 @@ typedef struct scew_element scew_element;
  */
 typedef struct scew_attribute scew_attribute;
 
+/**
+ * SCEW element compare hooks might be used to define new user XML
+ * element comparisons. The hooks are used by
+ * #scew_element_compare_hook.
+ *
+ * @return true if the given elements are considered equal, false
+ * otherwise.
+ *
+ * @ingroup SCEWElementCompare
+ */
+typedef scew_bool (*scew_element_cmp_hook) (scew_element const *,
+                                            scew_element const *);
+
 
 /**
  * @defgroup SCEWElementAlloc Allocation
@@ -181,6 +194,29 @@ scew_element_list_by_name (scew_element const *element, XML_Char const *name);
  */
 extern SCEW_API scew_bool scew_element_compare (scew_element const *a,
                                                 scew_element const *b);
+
+/**
+ * Performs a user defined comparison of the two given elements. There
+ * is no restriction, thus the user is responsible to define how the
+ * comparison is to be done.
+ *
+ * @pre a != NULL
+ * @pre b != NULL
+ *
+ * @param a one of the elements to compare.
+ * @param b one of the elements to compare.
+ * @param hook the user defined comparison function. If NULL, the
+ * default #scew_element_compare function is used.
+ *
+ * @return true if both elements are considered equal, false
+ * otherwise.
+ *
+ * @ingroup SCEWElementCompare
+ */
+extern SCEW_API scew_bool
+scew_element_compare_hook (scew_element const *a,
+                           scew_element const *b,
+                           scew_element_cmp_hook hook);
 
 
 /**

@@ -140,6 +140,17 @@ scew_tree_compare (scew_tree const *a, scew_tree const *b)
   return equal;
 }
 
+scew_bool
+scew_tree_compare_hook (scew_tree const *a,
+                        scew_tree const *b,
+                        scew_tree_cmp_hook hook)
+{
+  assert (a != NULL);
+  assert (b != NULL);
+
+  return (hook == NULL) ? scew_tree_compare (a, b) : hook (a, b);
+}
+
 
 /* Properties */
 
