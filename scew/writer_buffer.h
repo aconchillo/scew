@@ -66,7 +66,6 @@ extern "C" {
 extern SCEW_API scew_writer* scew_writer_buffer_create (XML_Char *buffer,
                                                         size_t size);
 
-
 #ifdef __cplusplus
 }
 #endif /* __cplusplus */

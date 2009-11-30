@@ -249,4 +249,8 @@ extern SCEW_API scew_bool
 scew_printer_print_attribute (scew_printer *printer,
                               scew_attribute const *attribute);
 
+#ifdef __cplusplus
+}
+#endif /* __cplusplus */
+
 #endif /* PRINTER_H_0901162234 */
