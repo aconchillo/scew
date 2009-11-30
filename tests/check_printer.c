@@ -109,7 +109,8 @@ START_TEST (test_print_tree)
   scew_tree *tree = test_tree_create_ ();
 
   /* Print tree */
-  scew_printer_print_tree (printer, tree);
+  CHECK_BOOL (scew_printer_print_tree (printer, tree), SCEW_TRUE,
+              "Unable to print XML tree");
 
   CHECK_STR (write_buffer, TEST_TREE_CONTENTS,
              "Printed element does not match");
@@ -134,7 +135,8 @@ START_TEST (test_print_element)
 
   /* Print root element */
   scew_element *root = scew_tree_root (tree);
-  scew_printer_print_element (printer, root);
+  CHECK_BOOL (scew_printer_print_element (printer, root), SCEW_TRUE,
+              "Unable to print root element");
 
   CHECK_STR (write_buffer, TEST_ROOT_CONTENTS,
              "Printed element does not match");
@@ -148,7 +150,8 @@ START_TEST (test_print_element)
 
   /* Print element children (subelement) */
   scew_element *element = scew_element_by_index (root, 3);
-  scew_printer_print_element_children (printer, element);
+  CHECK_BOOL (scew_printer_print_element_children (printer, element),
+              SCEW_TRUE, "Unable to print children (subelement)");
 
   CHECK_STR (write_buffer, TEST_CHILDREN_CONTENTS,
              "Printed element children do not match");
@@ -174,7 +177,8 @@ START_TEST (test_print_attribute)
   /* Print root element */
   scew_element *root = scew_tree_root (tree);
   scew_element *element = scew_element_by_index (root, 2);
-  scew_printer_print_element_attributes (printer, element);
+  CHECK_BOOL (scew_printer_print_element_attributes (printer, element),
+              SCEW_TRUE, "Unable to print element attributes");
 
   CHECK_STR (write_buffer, TEST_ATTRIBUTE_CONTENTS,
              "Printed element attributes do not match");
@@ -243,9 +247,13 @@ test_tree_create_ (void)
   scew_element *element = scew_element_add (root, _XT("element"));
   scew_element_set_contents (element, _XT("element contents"));
 
-  /* Add an element with an attribute pair (name, value). */
+  /**
+   * Add an element with an attribute pair (name, value) and a
+   * zero-length string.
+   */
   element = scew_element_add (root, _XT("element"));
   scew_element_add_attribute_pair (element, _XT("attribute"), _XT("value"));
+  scew_element_set_contents (element, _XT(""));
 
   element = scew_element_add (root, _XT("element"));
   scew_element_add_attribute_pair (element,

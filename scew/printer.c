@@ -217,6 +217,7 @@ scew_printer_print_element (scew_printer *printer, scew_element const *element)
 
       if (contents != NULL)
         {
+          unsigned int contents_len = scew_strlen (contents);
           unsigned int children_no = scew_element_count (element);
 
           /* Only indent contents if we have children elements. */
@@ -225,9 +226,14 @@ scew_printer_print_element (scew_printer *printer, scew_element const *element)
               result = result && print_next_indent_ (printer);
             }
 
-          result = result && scew_writer_write (printer->writer,
-                                                contents,
-                                                scew_strlen (contents));
+          /* Only write contents if non zero-length string. */
+          if (contents_len > 0)
+            {
+              result = result && scew_writer_write (printer->writer,
+                                                    contents,
+                                                    contents_len);
+            }
+
           if (children_no > 0)
             {
               result = result && print_eol_ (printer);
@@ -464,7 +470,7 @@ print_element_start_ (scew_printer *printer,
 
   *closed = SCEW_FALSE;
   list = scew_element_children (element);
-  if ((NULL == contents) && (NULL == list))
+  if (((NULL == contents) || (scew_strlen (contents) == 0)) && (NULL == list))
     {
       result = result && scew_writer_write (writer, END_2, 2);
       result = result && print_eol_ (printer);
