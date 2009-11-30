@@ -190,7 +190,7 @@ scew_element_list_by_name (scew_element const *element, XML_Char const *name);
  *
  * It is important to note that, for any given hook (or if NULL), the
  * children are automatically traversed recursively using the given @a
- * hook. Therefore, the hook must only provide comparison for
+ * hook. Therefore, the hook must only provide comparisons for
  * element's name and contents and the list of attribtues.
  *
  * There is no restriction on the provided comparison hook (if any),

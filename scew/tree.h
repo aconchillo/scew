@@ -140,8 +140,8 @@ extern SCEW_API void scew_tree_free (scew_tree *tree);
  * - XML declaration: version, encoding and standalone attribute
  *   (encoding is considered case-sensitive).
  * - Preamble is considered case-sensitive as well.
- * - The root element uses the default #scew_element_compare with a
- *   NULL element comparision hook.
+ * - The root element comparison uses #scew_element_compare with a
+ *   NULL element comparison hook.
  *
  * There is no restriction on the provided comparison hook (if any),
  * thus the user is responsible to define how the comparison is to be
@@ -161,7 +161,7 @@ extern SCEW_API void scew_tree_free (scew_tree *tree);
  */
 extern SCEW_API scew_bool scew_tree_compare (scew_tree const *a,
                                              scew_tree const *b,
-                                             scew_tree_cmp_hook tree_hook);
+                                             scew_tree_cmp_hook hook);
 
 
 /**
