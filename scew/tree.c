@@ -47,6 +47,8 @@ struct scew_tree
   scew_element *root;
 };
 
+static scew_bool compare_tree_ (scew_tree const *a, scew_tree const *b);
+
 static XML_Char const *DEFAULT_XML_VERSION_ = (XML_Char *) _XT("1.0");
 static XML_Char const *DEFAULT_ENCODING_ = (XML_Char *) _XT("UTF-8");
 
@@ -124,31 +126,18 @@ scew_tree_free (scew_tree *tree)
 /* Comparison */
 
 scew_bool
-scew_tree_compare (scew_tree const *a, scew_tree const *b)
+scew_tree_compare (scew_tree const *a,
+                   scew_tree const *b,
+                   scew_tree_cmp_hook hook)
 {
-  scew_bool equal = SCEW_FALSE;
+  scew_tree_cmp_hook cmp_hook = NULL;
 
   assert (a != NULL);
   assert (b != NULL);
 
-  equal = (scew_strcmp (a->version, b->version) == 0)
-    && (scew_strcmp (a->encoding, b->encoding) == 0)
-    && (scew_strcmp (a->preamble, b->preamble) == 0)
-    && (a->standalone == b->standalone)
-    && scew_element_compare (a->root, b->root);
+  cmp_hook = (NULL == hook) ? compare_tree_ : hook;
 
-  return equal;
-}
-
-scew_bool
-scew_tree_compare_hook (scew_tree const *a,
-                        scew_tree const *b,
-                        scew_tree_cmp_hook hook)
-{
-  assert (a != NULL);
-  assert (b != NULL);
-
-  return (hook == NULL) ? scew_tree_compare (a, b) : hook (a, b);
+  return cmp_hook (a, b);
 }
 
 
@@ -270,4 +259,24 @@ scew_tree_set_xml_preamble (scew_tree *tree, XML_Char const *preamble)
   free (tree->preamble);
 
   tree->preamble = scew_strdup (preamble);
+}
+
+
+/* Private*/
+
+scew_bool
+compare_tree_ (scew_tree const *a, scew_tree const *b)
+{
+  scew_bool equal = SCEW_FALSE;
+
+  assert (a != NULL);
+  assert (b != NULL);
+
+  equal = (scew_strcmp (a->version, b->version) == 0)
+    && (scew_strcmp (a->encoding, b->encoding) == 0)
+    && (scew_strcmp (a->preamble, b->preamble) == 0)
+    && (a->standalone == b->standalone)
+    && scew_element_compare (a->root, b->root, NULL);
+
+  return equal;
 }

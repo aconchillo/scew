@@ -6,6 +6,29 @@ See the end for copying conditions.
 
 ------------------------------------------------------------------------
 
+* Version 1.1.0 (2009/12/??)
+
+** API changes:
+
+   - scew_tree_compare and scew_element_compare now receive an extra
+     argument to specify user defined comparisons.
+
+** Changes:
+
+   - Tree and element comparison function can now take a user defined
+     comparison function.
+
+** Fixes:
+
+   - Missing _cpluplus closing brace in printer.h.
+     (closes #28130)
+
+   - Printer stops printing when element with zero-length contents is
+     encountered.
+     (closes #28125)
+
+------------------------------------------------------------------------
+
 * Version 1.0.0 (2009/10/30)
 
 ** API changes:

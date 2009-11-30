@@ -158,13 +158,13 @@ START_TEST (test_compare)
 
   CHECK_PTR (tree_copy, "Unable to copy tree");
 
-  CHECK_BOOL (scew_tree_compare (tree, tree_copy), SCEW_TRUE,
+  CHECK_BOOL (scew_tree_compare (tree, tree_copy, NULL), SCEW_TRUE,
               "Tree and tree copy should be equal");
 
   /* Modify and compare again */
   scew_tree_set_xml_standalone (tree_copy, scew_tree_standalone_no);
 
-  CHECK_BOOL (scew_tree_compare (tree, tree_copy), SCEW_FALSE,
+  CHECK_BOOL (scew_tree_compare (tree, tree_copy, NULL), SCEW_FALSE,
               "Tree and tree copy should be different (standalone)");
 
   scew_tree_free (tree);

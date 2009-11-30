@@ -10,17 +10,17 @@ people. Help me keep it complete and exempt of errors.
   usual, he has helped me in many other ways. Thanks jao!
 
 * Brodie Thiesfield has submitted lots of fixes and improvements. He
-  has also improved builds on Windows, and many more.
+  also provided the initial builds on Windows, and many more.
 
-* Sanzo Miyazawa has submitted code to improve performance in element
-  and attribute iteration.
+* Sanzo Miyazawa submitted code to improve performance in element and
+  attribute iteration in first releases.
 
-* Gord Shier has implemented the load stream functionality.
+* Gord Shier implemented the first load stream functionality.
 
 * Neil Harvey has contributed the pkg-config file.
 
-* Carlos Carrasco has helped a lot in the debugging and testing
-  phases. Those nigths at IRC were really great. Thanks!
+* Carlos Carrasco helped a lot in the debugging and testing phases of
+  initial releases. Those nigths at IRC were really great. Thanks!
 
 * Lluis Gesa also helped in testing the package and listened to my
   boring implementation thoughts of SCEW readers/writers.
@@ -30,4 +30,4 @@ people. Help me keep it complete and exempt of errors.
   Anonymous reporters, Stuart R. Anderson, Paul Bohme, Eric
   Fronheiser, Alex Katebi, Aaron S. Kurland, Christopher Layne, Jussi
   Mäki, Sanzo Miyazawa, George Neill, Gord Shier, Brodie Thiesfield,
-  Andrew Thomas, Kalle Vallo and Mark Zieg.
+  Andrew Thomas, Kalle Vallo, Michal Wozniak and Mark Zieg.

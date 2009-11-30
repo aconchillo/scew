@@ -64,8 +64,9 @@ typedef struct scew_attribute scew_attribute;
 
 /**
  * SCEW element compare hooks might be used to define new user XML
- * element comparisons. The hooks are used by
- * #scew_element_compare_hook.
+ * element comparisons. This hook must only compare the element's name
+ * and contents and the list of attributes. The new hook is to be used
+ * by #scew_element_compare.
  *
  * @return true if the given elements are considered equal, false
  * otherwise.
@@ -179,26 +180,22 @@ scew_element_list_by_name (scew_element const *element, XML_Char const *name);
  */
 
 /**
- * Performs a deep comparison of the two given elements. That is, it
- * compares that both elements have the same name, attributes,
- * contents, children (recursively), etc.
+ * Performs a deep comparison of the two given elements. The
+ * comparison is done via the comparison @a hook. If @a hook is NULL,
+ * the default comparison is done:
  *
- * Remember that XML is case-sensitive.
+ * - Name and contents are equal (case-sensitive).
+ * - Number of attributes match.
+ * - Attribute names and values match (case-sensitive).
  *
- * @pre a != NULL
- * @pre b != NULL
+ * It is important to note that, for any given hook (or if NULL), the
+ * children are automatically traversed recursively using the given @a
+ * hook. Therefore, the hook must only provide comparison for
+ * element's name and contents and the list of attribtues.
  *
- * @return true if both elements are equal, false otherwise.
- *
- * @ingroup SCEWElementCompare
- */
-extern SCEW_API scew_bool scew_element_compare (scew_element const *a,
-                                                scew_element const *b);
-
-/**
- * Performs a user defined comparison of the two given elements. There
- * is no restriction, thus the user is responsible to define how the
- * comparison is to be done.
+ * There is no restriction on the provided comparison hook (if any),
+ * thus the user is responsible to define how the comparison is to be
+ * done.
  *
  * @pre a != NULL
  * @pre b != NULL
@@ -206,17 +203,16 @@ extern SCEW_API scew_bool scew_element_compare (scew_element const *a,
  * @param a one of the elements to compare.
  * @param b one of the elements to compare.
  * @param hook the user defined comparison function. If NULL, the
- * default #scew_element_compare function is used.
+ * default comparison is used.
  *
  * @return true if both elements are considered equal, false
  * otherwise.
  *
  * @ingroup SCEWElementCompare
  */
-extern SCEW_API scew_bool
-scew_element_compare_hook (scew_element const *a,
-                           scew_element const *b,
-                           scew_element_cmp_hook hook);
+extern SCEW_API scew_bool scew_element_compare (scew_element const *a,
+                                                scew_element const *b,
+                                                scew_element_cmp_hook hook);
 
 
 /**

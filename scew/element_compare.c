@@ -37,8 +37,11 @@
 
 /* Private */
 
+static scew_bool compare_element_ (scew_element const *a,
+                                   scew_element const *b);
 static scew_bool compare_children_ (scew_element const *a,
-                                    scew_element const *b);
+                                    scew_element const *b,
+                                    scew_element_cmp_hook hook);
 static scew_bool compare_attributes_ (scew_element const *a,
                                       scew_element const *b);
 
@@ -47,7 +50,25 @@ static scew_bool compare_attributes_ (scew_element const *a,
 /* Public */
 
 scew_bool
-scew_element_compare (scew_element const *a, scew_element const *b)
+scew_element_compare (scew_element const *a,
+                      scew_element const *b,
+                      scew_element_cmp_hook hook)
+{
+  scew_element_cmp_hook cmp_hook = NULL;
+
+  assert (a != NULL);
+  assert (b != NULL);
+
+  cmp_hook = (NULL == hook) ? compare_element_ : hook;
+
+  return (cmp_hook (a, b) && compare_children_ (a, b, cmp_hook));
+}
+
+
+/* Private */
+
+scew_bool
+compare_element_ (scew_element const *a, scew_element const *b)
 {
   scew_bool equal = SCEW_FALSE;
 
@@ -56,48 +77,7 @@ scew_element_compare (scew_element const *a, scew_element const *b)
 
   equal = (scew_strcmp (a->name, b->name) == 0)
     && (scew_strcmp (a->contents, b->contents) == 0)
-    && compare_children_ (a, b)
     && compare_attributes_ (a, b);
-
-  return equal;
-}
-
-scew_bool
-scew_element_compare_hook (scew_element const *a,
-                           scew_element const *b,
-                           scew_element_cmp_hook hook)
-{
-  assert (a != NULL);
-  assert (b != NULL);
-
-  return (hook == NULL) ? scew_element_compare (a, b) : hook (a, b);
-}
-
-
-/* Private */
-
-scew_bool
-compare_children_ (scew_element const *a, scew_element const *b)
-{
-  scew_bool equal = SCEW_TRUE;
-  scew_list *list_a = NULL;
-  scew_list *list_b = NULL;
-
-  assert (a != NULL);
-  assert (b != NULL);
-
-  equal = (a->n_children == b->n_children);
-
-  list_a = a->children;
-  list_b = b->children;
-  while (equal && (list_a != NULL) && (list_b != NULL))
-    {
-      scew_element *child_a = scew_list_data (list_a);
-      scew_element *child_b = scew_list_data (list_b);
-      equal = scew_element_compare (child_a, child_b);
-      list_a = scew_list_next (list_a);
-      list_b = scew_list_next (list_b);
-    }
 
   return equal;
 }
@@ -121,6 +101,34 @@ compare_attributes_ (scew_element const *a, scew_element const *b)
       scew_attribute *attr_a = scew_list_data (list_a);
       scew_attribute *attr_b = scew_list_data (list_b);
       equal = scew_attribute_compare (attr_a, attr_b);
+      list_a = scew_list_next (list_a);
+      list_b = scew_list_next (list_b);
+    }
+
+  return equal;
+}
+
+scew_bool
+compare_children_ (scew_element const *a,
+                   scew_element const *b,
+                   scew_element_cmp_hook hook)
+{
+  scew_bool equal = SCEW_TRUE;
+  scew_list *list_a = NULL;
+  scew_list *list_b = NULL;
+
+  assert (a != NULL);
+  assert (b != NULL);
+
+  equal = (a->n_children == b->n_children);
+
+  list_a = a->children;
+  list_b = b->children;
+  while (equal && (list_a != NULL) && (list_b != NULL))
+    {
+      scew_element *child_a = scew_list_data (list_a);
+      scew_element *child_b = scew_list_data (list_b);
+      equal = scew_element_compare (child_a, child_b, hook);
       list_a = scew_list_next (list_a);
       list_b = scew_list_next (list_b);
     }

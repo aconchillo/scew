@@ -469,14 +469,14 @@ START_TEST (test_compare)
 
   CHECK_PTR (root_copy, "Unable to copy root element");
 
-  CHECK_BOOL (scew_element_compare (root, root_copy), SCEW_TRUE,
+  CHECK_BOOL (scew_element_compare (root, root_copy, NULL), SCEW_TRUE,
               "Root and root copy should be equal");
 
   /* Modify and compare again */
   scew_element *element = scew_element_by_index (root_copy, N_ELEMENTS - 1);
   scew_element_set_contents (element, CONTENTS);
 
-  CHECK_BOOL (scew_element_compare (root, root_copy), SCEW_FALSE,
+  CHECK_BOOL (scew_element_compare (root, root_copy, NULL), SCEW_FALSE,
               "Root and root copy should be different (last child)");
 
   scew_element_free (root);

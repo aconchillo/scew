@@ -74,7 +74,7 @@ typedef struct scew_tree scew_tree;
 
 /**
  * SCEW tree compare hooks might be used to define new user XML tree
- * comparisons. The hooks are used by #scew_tre_compare_hook.
+ * comparisons. The hooks are used by #scew_tree_compare.
  *
  * @return true if the given XML trees are considered equal, false
  * otherwise.
@@ -133,26 +133,19 @@ extern SCEW_API void scew_tree_free (scew_tree *tree);
  */
 
 /**
- * Performs a deep comparison for the given trees. That is, it
- * compares that both trees have the same XML declaration, preamble
- * and root element, recursively.
+ * Performs a deep comparison for the given trees. The comparison is
+ * done via the comparison @a hook. If @a hook is NULL, the default
+ * comparison is done:
  *
- * Remember that XML is case-sensitive.
+ * - XML declaration: version, encoding and standalone attribute
+ *   (encoding is considered case-sensitive).
+ * - Preamble is considered case-sensitive as well.
+ * - The root element uses the default #scew_element_compare with a
+ *   NULL element comparision hook.
  *
- * @pre a != NULL
- * @pre b != NULL
- *
- * @return true if trees are equal, false otherwise.
- *
- * @ingroup SCEWTreeCompare
- */
-extern SCEW_API scew_bool scew_tree_compare (scew_tree const *a,
-                                             scew_tree const *b);
-
-/**
- * Performs a user defined comparison for the given trees. There is no
- * restriction, thus the user is responsible to define how the
- * comparison is to be done.
+ * There is no restriction on the provided comparison hook (if any),
+ * thus the user is responsible to define how the comparison is to be
+ * done.
  *
  * @pre a != NULL
  * @pre b != NULL
@@ -160,15 +153,15 @@ extern SCEW_API scew_bool scew_tree_compare (scew_tree const *a,
  * @param a one of the trees to compare.
  * @param b one of the trees to compare.
  * @param hook the user defined comparison function. If NULL, the
- * default #scew_tree_compare function is used.
+ * default comparison is used.
  *
  * @return true if trees are considered equal, false otherwise.
  *
  * @ingroup SCEWTreeCompare
  */
-extern SCEW_API scew_bool scew_tree_compare_hook (scew_tree const *a,
-                                                  scew_tree const *b,
-                                                  scew_tree_cmp_hook hook);
+extern SCEW_API scew_bool scew_tree_compare (scew_tree const *a,
+                                             scew_tree const *b,
+                                             scew_tree_cmp_hook tree_hook);
 
 
 /**
