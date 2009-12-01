@@ -71,6 +71,8 @@ static scew_bool print_element_start_ (scew_printer *printer,
                                        scew_bool *closed);
 static scew_bool print_element_end_ (scew_printer *printer,
                                      scew_element const *element);
+static scew_bool print_escaped_ (scew_printer *printer,
+                                 XML_Char const *string);
 
 
 /* Public */
@@ -217,7 +219,6 @@ scew_printer_print_element (scew_printer *printer, scew_element const *element)
 
       if (contents != NULL)
         {
-          unsigned int contents_len = scew_strlen (contents);
           unsigned int children_no = scew_element_count (element);
 
           /* Only indent contents if we have children elements. */
@@ -227,11 +228,9 @@ scew_printer_print_element (scew_printer *printer, scew_element const *element)
             }
 
           /* Only write contents if non zero-length string. */
-          if (contents_len > 0)
+          if (scew_strlen (contents) > 0)
             {
-              result = result && scew_writer_write (printer->writer,
-                                                    contents,
-                                                    contents_len);
+              result = result && print_escaped_ (printer, contents);
             }
 
           if (children_no > 0)
@@ -371,7 +370,6 @@ print_attribute_ (scew_printer *printer,
                   XML_Char const* name,
                   XML_Char const* value)
 {
-  size_t len_value = 0;
   scew_bool result = SCEW_FALSE;
 
   scew_writer *writer = printer->writer;
@@ -381,10 +379,9 @@ print_attribute_ (scew_printer *printer,
   result = result && scew_writer_write (writer, _XT("=\""), 2);
 
   /* It is possible that an attribute's value is empty. */
-  len_value = scew_strlen (value);
-  if (len_value > 0)
+  if (scew_strlen (value) > 0)
     {
-      result = result && scew_writer_write (writer, value, len_value);
+      result = result && print_escaped_ (printer, value);
     }
 
   result = result && scew_writer_write (writer, _XT("\""), 1);
@@ -510,6 +507,22 @@ print_element_end_ (scew_printer *printer, scew_element const *element)
   result = result && scew_writer_write (writer, START, 2);
   result = result && scew_writer_write (writer, name, scew_strlen (name));
   result = result && scew_writer_write (writer, END, 1);
+
+  return result;
+}
+
+scew_bool
+print_escaped_ (scew_printer *printer, XML_Char const *string)
+{
+  scew_bool result = SCEW_TRUE;
+
+  /* Get escaped string. */
+  XML_Char *escaped = scew_strescape (string);
+
+  result = scew_writer_write (printer->writer, escaped, scew_strlen (escaped));
+
+  /* Free escaped string. */
+  free (escaped);
 
   return result;
 }

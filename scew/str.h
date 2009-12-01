@@ -57,12 +57,14 @@
  */
 /*@{*/
 /**
- * See standard @a memcpy documentation.
+ * Copy the number of given characters from @a src to @a dst. See
+ * standard @a memcpy documentation.
  */
 #define scew_memcpy(dst, src, n)  memcpy (dst, src, sizeof (XML_Char) * (n))
 
 /**
- * See standard @a memmove documentation.
+ * Move the number of given characters from @a src to @a dst. See
+ * standard @a memmove documentation.
  */
 #define scew_memmove(dst, src, n) memmove (dst, src, sizeof (XML_Char) * (n))
 
@@ -274,9 +276,11 @@ extern SCEW_API XML_Char* scew_strdup (XML_Char const *src);
 extern SCEW_API void scew_strtrim (XML_Char *src);
 
 /**
- * Tells whether the given string is empty. That is, all character are
- * spaces, form-feed, newlines, etc. See @a isspace documentation to
- * see the list of charactes considered space.
+ * Tells whether the given string is empty. That is, all characters
+ * are spaces, form-feed, newlines, etc. See @a isspace documentation
+ * to see the list of characters considered space.
+ *
+ * @pre src != NULL
  *
  * @param src the string to tell if its empty or not.
  *
@@ -285,6 +289,30 @@ extern SCEW_API void scew_strtrim (XML_Char *src);
  * @ingroup SCEWString
  */
 extern SCEW_API scew_bool scew_isempty (XML_Char const *src);
+
+/**
+ * Escapes the given string for XML. This will substitute the general
+ * XML delimiters:
+ *
+ * \verbatim < > & ' " \endverbatim
+ *
+ * to the pre-defined XML entities, respectively:
+ *
+ * \verbatim &lt; &gt; &amp; &apos; &quot; \endverbatim
+ *
+ * A new escaped string will be allocated. Thus, the user is
+ * responsible of freeing the new string.
+ *
+ * @pre src != NULL
+ *
+ * @param src the string to be escaped.
+ *
+ * @return a new allocated string with the XML delimiters (if any)
+ * escaped.
+ *
+ * @ingroup SCEWString
+ */
+extern XML_Char* scew_strescape (XML_Char const *src);
 
 #ifdef __cplusplus
 }

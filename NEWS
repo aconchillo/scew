@@ -6,6 +6,15 @@ See the end for copying conditions.
 
 ------------------------------------------------------------------------
 
+* Version 1.2.0 (2009/12/??)
+
+** Changes:
+
+   - Element contents and attribute values are now escaped when
+     printing by using the new scew_strescape function.
+
+------------------------------------------------------------------------
+
 * Version 1.1.0 (2009/11/30)
 
 ** API changes:
