@@ -35,6 +35,12 @@
 
 /* Private */
 
+#ifdef XML_UNICODE_WCHAR_T
+#define SCEW_EOF WEOF
+#else
+#define SCEW_EOF EOF
+#endif /* XML_UNICODE_WCHAR_T */
+
 typedef struct
 {
   FILE *file;
@@ -115,6 +121,7 @@ scew_writer_fp_create (FILE *file)
 size_t
 file_write_ (scew_writer *writer, XML_Char const *buffer, size_t char_no)
 {
+  XML_Char c = 0;
   size_t written_no = 0;
   scew_writer_fp *fp_writer = NULL;
 
@@ -123,7 +130,14 @@ file_write_ (scew_writer *writer, XML_Char const *buffer, size_t char_no)
 
   fp_writer = scew_writer_data (writer);
 
-  written_no = fwrite (buffer, sizeof (XML_Char), char_no, fp_writer->file);
+  while ((c != SCEW_EOF) && (written_no < char_no))
+    {
+      c = scew_fputc (buffer[written_no], fp_writer->file);
+      if (c != SCEW_EOF)
+        {
+          written_no += 1;
+        }
+    }
 
   return written_no;
 }

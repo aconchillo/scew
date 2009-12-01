@@ -31,6 +31,11 @@
 
 #include <scew/scew.h>
 
+#ifdef XML_UNICODE_WCHAR_T
+#include <fcntl.h>
+#include <io.h>
+#endif /* XML_UNICODE_WCHAR_T */
+
 #include <stdio.h>
 
 static void
@@ -125,9 +130,14 @@ main (int argc, char *argv[])
   scew_writer *writer = NULL;
   scew_printer *printer = NULL;
 
+#ifdef XML_UNICODE_WCHAR_T
+  /* Change stdout to Unicode. */
+  _setmode(_fileno(stdout), _O_U16TEXT);
+#endif
+
   if (argc < 2)
     {
-      printf ("Usage: scew_print file.xml\n");
+      scew_printf (_XT("Usage: scew_print file.xml\n"));
       return EXIT_FAILURE;
     }
 
@@ -169,15 +179,16 @@ main (int argc, char *argv[])
     }
 
   /* Prints full tree. */
-  printf ("\n*** Manual print:\n\n");
+  scew_printf (_XT("\n*** Manual print:\n\n"));
   print_element (scew_tree_root (tree), 0);
 
   /* Prints full tree using SCEW writer. */
-  printf ("\n\n*** SCEW writer (stdout) print:\n\n");
+  scew_printf (_XT("\n\n*** SCEW writer (stdout) print:\n\n"));
+
   writer = scew_writer_fp_create (stdout);
   printer = scew_printer_create (writer);
   scew_printer_print_tree (printer, tree);
-  printf ("\n");
+  scew_printf (_XT("\n"));
 
   /* Remember to free tree (scew_parser_free does not free it). */
   scew_tree_free (tree);
