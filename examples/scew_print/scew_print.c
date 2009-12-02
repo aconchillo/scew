@@ -31,10 +31,10 @@
 
 #include <scew/scew.h>
 
-#ifdef XML_UNICODE_WCHAR_T
+#if defined(_MSC_VER) && defined(XML_UNICODE_WCHAR_T)
 #include <fcntl.h>
 #include <io.h>
-#endif /* XML_UNICODE_WCHAR_T */
+#endif /* _MSC_VER && XML_UNICODE_WCHAR_T */
 
 #include <stdio.h>
 
@@ -130,10 +130,10 @@ main (int argc, char *argv[])
   scew_writer *writer = NULL;
   scew_printer *printer = NULL;
 
-#ifdef XML_UNICODE_WCHAR_T
-  /* Change stdout to Unicode. */
+#if defined(_MSC_VER) && defined(XML_UNICODE_WCHAR_T)
+  /* Change stdout to Unicode before writing anything. */
   _setmode(_fileno(stdout), _O_U16TEXT);
-#endif
+#endif /* _MSC_VER && XML_UNICODE_WCHAR_T */
 
   if (argc < 2)
     {

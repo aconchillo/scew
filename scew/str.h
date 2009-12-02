@@ -102,7 +102,7 @@
 #define scew_ispunct(c) iswpunct ((c))
 #define scew_isspace(c) iswspace ((c))
 
-#else /* not XML_UNICODE_WCHAR_T */
+#else /* XML_UNICODE_WCHAR_T */
 
 #include <ctype.h>
 

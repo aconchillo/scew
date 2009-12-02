@@ -71,11 +71,11 @@ scew_reader_file_create (char const *file_name)
 
   assert (file_name != NULL);
 
-#ifdef XML_UNICODE_WCHAR_T
+#if defined(_MSC_VER) && defined(XML_UNICODE_WCHAR_T)
   file = fopen (file_name, "rt, ccs=UNICODE");
 #else
   file = fopen (file_name, "rt");
-#endif
+#endif /* _MSC_VER && XML_UNICODE_WCHAR_T */
 
   if (file != NULL)
     {

@@ -75,11 +75,11 @@ scew_writer_file_create (char const *file_name)
 
   assert (file_name != NULL);
 
-#ifdef XML_UNICODE_WCHAR_T
+#if defined(_MSC_VER) && defined(XML_UNICODE_WCHAR_T)
   file = fopen (file_name, "wt, ccs=UNICODE");
 #else
   file = fopen (file_name, "wt");
-#endif
+#endif /* _MSC_VER && XML_UNICODE_WCHAR_T */
 
   if (file != NULL)
     {

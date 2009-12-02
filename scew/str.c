@@ -88,7 +88,7 @@ scew_strcmp (XML_Char const *s1, XML_Char const *s2)
           result = wcscmp (s1, s2);
 #else
           result = strcmp (s1, s2);
-#endif
+#endif /* XML_UNICODE_WCHAR_T */
         }
     }
 

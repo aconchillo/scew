@@ -47,6 +47,11 @@
 
 #include <scew/scew.h>
 
+#if defined(_MSC_VER) && defined(XML_UNICODE_WCHAR_T)
+#include <fcntl.h>
+#include <io.h>
+#endif /* _MSC_VER && XML_UNICODE_WCHAR_T */
+
 #include <stdio.h>
 
 static scew_printer *stdout_printer_ = NULL;
@@ -83,6 +88,11 @@ main (int argc, char *argv[])
 {
   scew_reader *reader = NULL;
   scew_parser *parser = NULL;
+
+#if defined(_MSC_VER) && defined(XML_UNICODE_WCHAR_T)
+  /* Change stdout to Unicode before writing anything. */
+  _setmode(_fileno(stdout), _O_U16TEXT);
+#endif /* _MSC_VER && XML_UNICODE_WCHAR_T */
 
   if (argc < 2)
     {

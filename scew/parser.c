@@ -207,7 +207,7 @@ parser_create_ (scew_bool namespace, XML_Char separator)
   static XML_Char *encoding = _XT("UTF-16");
 #else
   static XML_Char *encoding = NULL;
-#endif
+#endif /* XML_UNICODE_WCHAR_T */
   scew_parser *parser = calloc (1, sizeof (scew_parser));
 
   if (NULL == parser)

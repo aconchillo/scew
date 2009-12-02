@@ -85,7 +85,7 @@ fi
 
 CFLAGS="$CFLAGS -Wall -Werror"
 
-# By now, we do not support UTF-16 in Unix systems.
+# By now, we do not support UTF-16 in Unix systems (see above).
 AM_CONDITIONAL(SCEW_UNICODE_WCHAR_T, test x$enable_utf16 = xyes)
 if test "x$enable_utf16" = "xyes"; then
    CFLAGS="$CFLAGS -std=c99"
