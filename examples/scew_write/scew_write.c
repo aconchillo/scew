@@ -49,6 +49,11 @@
 
 #include <scew/scew.h>
 
+#if defined(_MSC_VER) && defined(XML_UNICODE_WCHAR_T)
+#include <fcntl.h>
+#include <io.h>
+#endif /* _MSC_VER && XML_UNICODE_WCHAR_T */
+
 #include <stdio.h>
 
 enum { MAX_OUTPUT_BUFFER_ = 2000 };
@@ -66,9 +71,14 @@ main(int argc, char *argv[])
   scew_writer *writer = NULL;
   XML_Char *buffer = NULL;
 
+#if defined(_MSC_VER) && defined(XML_UNICODE_WCHAR_T)
+  /* Change stdout to Unicode before writing anything. */
+  _setmode(_fileno(stdout), _O_U16TEXT);
+#endif /* _MSC_VER && XML_UNICODE_WCHAR_T */
+
   if (argc < 2)
     {
-      printf ("Usage: scew_write new_file.xml\n");
+      scew_printf (_XT("Usage: scew_write new_file.xml\n"));
       return EXIT_FAILURE;
     }
 
@@ -77,6 +87,9 @@ main(int argc, char *argv[])
    * "scew_test".
    */
   tree = scew_tree_create ();
+#ifdef XML_UNICODE_WCHAR_T
+  scew_tree_set_xml_encoding(tree, _XT("UTF-16"));
+#endif /* XML_UNICODE_WCHAR_T */
   root = scew_tree_set_root (tree, _XT("test"));
 
   /* Add an element and set element contents. */

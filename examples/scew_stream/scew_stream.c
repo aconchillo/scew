@@ -60,11 +60,11 @@ static scew_writer *stdout_writer_ = NULL;
 static scew_bool
 tree_hook_ (scew_parser *parser, void *tree, void *user_data)
 {
-  printf ("*** SCEW stream tree loaded!\n\n");
+  scew_printf (_XT("*** SCEW stream tree loaded!\n\n"));
 
   scew_printer_print_tree (stdout_printer_, (scew_tree *) tree);
 
-  printf ("\n-----------------------------------------------------\n");
+  scew_printf (_XT("\n----------------------------------\n"));
 
   /**
    * We free the tree here as we are not going to using it. We should
@@ -78,7 +78,7 @@ tree_hook_ (scew_parser *parser, void *tree, void *user_data)
 static scew_bool
 element_hook_ (scew_parser *parser, void *element, void *user_data)
 {
-  printf ("*** SCEW stream element loaded!\n");
+  scew_printf (_XT("*** SCEW stream element loaded!\n"));
 
   return SCEW_TRUE;
 }
@@ -96,7 +96,7 @@ main (int argc, char *argv[])
 
   if (argc < 2)
     {
-      printf ("Usage: scew_stream file.xml\n");
+      scew_printf (_XT("Usage: scew_stream file.xml\n"));
       return EXIT_FAILURE;
     }
 
