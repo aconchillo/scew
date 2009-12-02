@@ -13,6 +13,8 @@ See the end for copying conditions.
    - Element contents and attribute values are now escaped when
      printing by using the new scew_strescape function.
 
+   - Examples correctly output UTF-16 characters in Windows console.
+
 ------------------------------------------------------------------------
 
 * Version 1.1.0 (2009/11/30)
