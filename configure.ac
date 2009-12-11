@@ -7,7 +7,7 @@
 
 #### boilerplate and flags
 
-define([scew_version], [1.2.0])
+define([scew_version], [1.1.1])
 
 AC_INIT(scew/scew.h, scew_version)
 AM_INIT_AUTOMAKE(scew, scew_version)
