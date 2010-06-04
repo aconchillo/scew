@@ -2,7 +2,7 @@
 # Author: Aleix Conchillo Flaque <aleix@member.fsf.org>
 # Start date: Sun Jul 06, 2003 04:41
 #
-# Copyright (C) 2003-2008 Aleix Conchillo Flaque
+# Copyright (C) 2003-2010 Aleix Conchillo Flaque
 #
 
 # Locate doxygen and auxiliary programs.
@@ -38,6 +38,13 @@ else
       enable_doc=no
    else
       enable_doc=yes
+      if test "x$enable_latex_docs" = xyes; then
+         AC_PATH_PROG(LATEX, latex, , $PATH)
+         if test x$LATEX = x; then
+            AC_MSG_WARN(Could not find 'latex'.)
+            enable_latex_docs=no
+         fi
+      fi
       if test "x$enable_dot" = xyes; then
          AC_PATH_PROG(DOT, dot, , $PATH)
          if test x$DOT = x; then
