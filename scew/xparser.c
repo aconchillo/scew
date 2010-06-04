@@ -325,7 +325,10 @@ expat_end_handler_ (void *data, XML_Char const *elem)
               free (parser->preamble);
               parser->preamble = NULL;
             }
-          scew_tree_set_xml_preamble (parser->tree, parser->preamble);
+          else
+            {
+              scew_tree_set_xml_preamble (parser->tree, parser->preamble);
+            }
         }
 
       scew_tree_set_root_element (parser->tree, current);
