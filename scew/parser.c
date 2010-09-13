@@ -6,7 +6,7 @@
  *
  * @if copyright
  *
- * Copyright (C) 2002-2009 Aleix Conchillo Flaque
+ * Copyright (C) 2002-2010 Aleix Conchillo Flaque
  *
  * SCEW is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -342,13 +342,6 @@ parse_stream_buffer_ (scew_parser *parser, XML_Char const *buffer, size_t size)
    */
   while ((start < size) && (end <= size))
     {
-      /* Skip initial whitespaces. */
-      while ((start < size) && scew_isspace (buffer[start]))
-        {
-          start += 1;
-          end += 1;
-        }
-
       if ((end == size) || (buffer[end] == _XT('>')))
         {
           length = end - start;
