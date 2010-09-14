@@ -6,9 +6,12 @@ See the end for copying conditions.
 
 ------------------------------------------------------------------------
 
-* Version 1.1.3 (????/??/??)
+* Version 1.1.3 (2010/??/??)
 
 ** Fixes:
+
+   - Fix compilation for ARM platforms.
+     (reported by Anup Rao)
 
    - Skipping initial whitespaces when parsing streams causes invalid
      XMLs and therefore Expat parsing errors.
