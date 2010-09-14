@@ -6,7 +6,7 @@
  *
  * @if copyright
  *
- * Copyright (C) 2008-2009 Aleix Conchillo Flaque
+ * Copyright (C) 2008-2010 Aleix Conchillo Flaque
  *
  * SCEW is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -36,9 +36,9 @@
 /* Private */
 
 #ifdef XML_UNICODE_WCHAR_T
-#define SCEW_EOF WEOF
+#define SCEW_EOF (XML_Char) WEOF
 #else
-#define SCEW_EOF EOF
+#define SCEW_EOF (XML_Char) EOF
 #endif /* XML_UNICODE_WCHAR_T */
 
 typedef struct
