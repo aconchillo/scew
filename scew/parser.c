@@ -342,6 +342,16 @@ parse_stream_buffer_ (scew_parser *parser, XML_Char const *buffer, size_t size)
    */
   while ((start < size) && (end <= size))
     {
+      /* Skip extra whitespaces before any XML declaration is found. */
+      if (parser->tree == NULL)
+        {
+          while ((start < size) && scew_isspace (buffer[start]))
+            {
+              start += 1;
+              end += 1;
+            }
+        }
+
       if ((end == size) || (buffer[end] == _XT('>')))
         {
           length = end - start;

@@ -6,7 +6,7 @@
  *
  * @if copyright
  *
- * Copyright (C) 2009 Aleix Conchillo Flaque
+ * Copyright (C) 2009, 2010 Aleix Conchillo Flaque
  *
  * SCEW is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -60,13 +60,15 @@ static XML_Char const *TEST_HOOKS_XML =
       "</test>\n");
 
 static XML_Char const *TEST_STREAM_XML =
-  _XT("<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n\n"
+  _XT("\n"
+      "   <?xml version=\"1.0\" encoding=\"UTF-8\"?>\n\n"
       "<test>\n"
       "   <element>element contents</element>\n"
       "   <element attribute=\"value\"/>\n"
       "   <element attribute1=\"value1\" attribute2=\"value2\"/>\n"
       "</test>\n"
-      "<?xml version=\"1.0\" encoding=\"ISO-8859-1\"?>\n\n"
+      "\n"
+      "   <?xml version=\"1.0\" encoding=\"ISO-8859-1\"?>\n\n"
       "<test>\n"
       "   <element attribute=\"value\"/>\n"
       "   <element attribute1=\"value1\" attribute2=\"value2\"/>\n"
