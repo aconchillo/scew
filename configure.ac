@@ -13,6 +13,9 @@ AC_INIT(scew/scew.h, scew_version)
 AM_INIT_AUTOMAKE(scew, scew_version)
 AM_CONFIG_HEADER(config.h)
 
+m4_ifdef([AM_SILENT_RULES], [AM_SILENT_RULES([yes])])
+m4_ifdef([AM_COLOR_TESTS], [AM_COLOR_TESTS([yes])])
+
 AC_ISC_POSIX
 AC_PROG_CC
 
