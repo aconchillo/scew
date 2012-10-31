@@ -5,7 +5,8 @@ rm -rf autom4te*.cache
 set -e
 
 echo "changelog..."
-(hg log -r tip:170 --style changelog > ChangeLog) || {
+touch ChangeLog
+(./gitlog-to-changelog > ChangeLog) || {
     echo "Error generating ChangeLog. The file won't be up to date."
 }
 echo "libtoolize... "
