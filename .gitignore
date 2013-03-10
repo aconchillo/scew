@@ -3,7 +3,6 @@
 *.la
 *.lo
 *.o
-ChangeLog
 autom4te.cache
 Makefile
 Makefile.in
@@ -63,3 +62,5 @@ win32/lib
 win32/scew.ncb
 win32/scew.suo
 win32/scew.vcproj.*
+
+scew-*.tar.gz

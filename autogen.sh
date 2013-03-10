@@ -1,14 +1,13 @@
 #!/bin/sh
+
 rm -f ltconfig ltmain.sh config.cache aclocal.m4
-# remove the autoconf cache
+
+#
+# Remove the autoconf cache
+#
 rm -rf autom4te*.cache
 set -e
 
-echo "changelog..."
-touch ChangeLog
-(./gitlog-to-changelog > ChangeLog) || {
-    echo "Error generating ChangeLog. The file won't be up to date."
-}
 echo "libtoolize... "
 ${LIBTOOLIZE:-libtoolize} --copy --force --automake >/dev/null
 echo "aclocal... "
@@ -19,7 +18,15 @@ echo "autoconf... "
 ${AUTOCONF:-autoconf}
 echo "automake... "
 ${AUTOMAKE:-automake} -a
-echo okay.
-# remove the autoconf cache
+
+#
+# Remove the autoconf cache
+#
 rm -rf autom4te*.cache
-exit
+
+#
+# Force everything to the abspath of this script
+#
+srcdir=$(cd $(dirname $0) && pwd)
+
+$srcdir/configure "$@"

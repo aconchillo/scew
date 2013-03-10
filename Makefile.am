@@ -2,12 +2,13 @@
 # Author: Aleix Conchillo Flaque <aleix@member.fsf.org>
 # Date:   Mon Nov 04, 2002 20:29
 #
-# Copyright (C) 2002-2009 Aleix Conchillo Flaque
+# Copyright (C) 2002-2013 Aleix Conchillo Flaque
 #
 
 SUBDIRS = doc etc scew examples tests win32
 
-EXTRA_DIST = ChangeLog.1
+dist-hook:
+	$(SHELL) $(top_srcdir)/ChangeLog > $(top_distdir)/ChangeLog
 
 .PHONY: doc
 
