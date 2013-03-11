@@ -1,8 +1,17 @@
 SCEW -- History of visible changes.
 
-Copyright (C) 2002-2010 Aleix Conchillo Flaqué
+Copyright (C) 2002-2013 Aleix Conchillo Flaqué
 
 See the end for copying conditions.
+
+------------------------------------------------------------------------
+
+* Version 1.1.4 (2013/03/11)
+
+** Fixes:
+
+   - Export scew_strescape.
+     (bug #38361)
 
 ------------------------------------------------------------------------
 
@@ -335,7 +344,7 @@ See the end for copying conditions.
 
 * Copying information:
 
-Copyright (C) 2002-2010 Aleix Conchillo Flaqué
+Copyright (C) 2002-2013 Aleix Conchillo Flaqué
 
    Permission is granted to anyone to make or distribute verbatim
    copies of this document as received, in any medium, provided that
