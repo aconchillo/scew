@@ -1,8 +1,17 @@
 SCEW -- History of visible changes.
 
-Copyright (C) 2002-2013 Aleix Conchillo Flaqué
+Copyright (C) 2002-2014 Aleix Conchillo Flaqué
 
 See the end for copying conditions.
+
+------------------------------------------------------------------------
+
+* Version 1.1.5 (2014/01/13)
+
+** Fixes:
+
+   - Fix error code initialization per-thread.
+     (bug #41001)
 
 ------------------------------------------------------------------------
 
