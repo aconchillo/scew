@@ -6,7 +6,7 @@
  *
  * @if copyright
  *
- * Copyright (C) 2003-2009 Aleix Conchillo Flaque
+ * Copyright (C) 2003-2014 Aleix Conchillo Flaque
  *
  * SCEW is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -116,13 +116,8 @@ static pthread_once_t key_once_ = PTHREAD_ONCE_INIT;
 static void
 create_keys_ (void)
 {
-  scew_error* error = NULL;
-
   pthread_key_create (&key_error_, free);
 
-  error = (scew_error *) malloc (sizeof (scew_error));
-  *error = scew_error_none;
-  pthread_setspecific (key_error_, error);
 }
 
 void
@@ -134,6 +129,11 @@ scew_error_set_last_error_ (scew_error code)
   pthread_once (&key_once_, create_keys_);
 
   error = (scew_error *) pthread_getspecific (key_error_);
+  if (NULL == error)
+    {
+      error = (scew_error *) malloc (sizeof (scew_error));
+      pthread_setspecific (key_error_, error);
+    }
   *error = code;
 }
 
