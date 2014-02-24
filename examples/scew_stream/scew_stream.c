@@ -6,7 +6,7 @@
  *
  * @if copyright
  *
- * Copyright (C) 2004-2009 Aleix Conchillo Flaque
+ * Copyright (C) 2004-2014 Aleix Conchillo Flaque
  *
  * SCEW is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -56,6 +56,7 @@
 
 static scew_printer *stdout_printer_ = NULL;
 static scew_writer *stdout_writer_ = NULL;
+static scew_tree *loaded_tree_ = NULL;
 
 static scew_bool
 tree_hook_ (scew_parser *parser, void *tree, void *user_data)
@@ -67,10 +68,12 @@ tree_hook_ (scew_parser *parser, void *tree, void *user_data)
   scew_printf (_XT("\n----------------------------------\n"));
 
   /**
-   * We free the tree here as we are not going to using it. We should
-   * save the pointer if we want to play with it.
+   * Keep a reference to the loaded tree. Note that this is the basic
+   * case where the stream only has one tree. If more XML trees were
+   * found in the stream, the user should keep track of all of them and
+   * free them later.
    */
-  scew_tree_free ((scew_tree *) tree);
+  loaded_tree_ = tree;
 
   return SCEW_TRUE;
 }
@@ -141,6 +144,7 @@ main (int argc, char *argv[])
       /* Frees the SCEW parser, printer, reader and writer. */
       scew_reader_free (reader);
       scew_parser_free (parser);
+      scew_tree_free (loaded_tree_);
       scew_writer_free (stdout_writer_);
       scew_printer_free (stdout_printer_);
 
@@ -150,6 +154,7 @@ main (int argc, char *argv[])
   /* Frees the SCEW parser, printer, reader and writer. */
   scew_reader_free (reader);
   scew_parser_free (parser);
+  scew_tree_free (loaded_tree_);
   scew_writer_free (stdout_writer_);
   scew_printer_free (stdout_printer_);
 
