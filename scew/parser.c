@@ -6,7 +6,7 @@
  *
  * @if copyright
  *
- * Copyright (C) 2002-2010 Aleix Conchillo Flaque
+ * Copyright (C) 2002-2014 Aleix Conchillo Flaque
  *
  * SCEW is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -342,8 +342,12 @@ parse_stream_buffer_ (scew_parser *parser, XML_Char const *buffer, size_t size)
    */
   while ((start < size) && (end <= size))
     {
-      /* Skip extra whitespaces before any XML declaration is found. */
-      if (parser->tree == NULL)
+      /**
+       * Skip extra whitespaces before any element is found. Note that
+       * we need to use stack here instead of tree, as we might have a
+       * stream without the mandatory <xml version...> preamble.
+       */
+      if (parser->stack == NULL)
         {
           while ((start < size) && scew_isspace (buffer[start]))
             {
