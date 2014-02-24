@@ -6,6 +6,16 @@ See the end for copying conditions.
 
 ------------------------------------------------------------------------
 
+* Version 1.1.6 (2014/02/24)
+
+** Fixes:
+
+   - Skipping initial whitespaces when parsing streams causes invalid
+     XMLs and therefore Expat parsing errors (not fully fixed in 1.1.3).
+     (reported by Anup Rao)
+
+------------------------------------------------------------------------
+
 * Version 1.1.5 (2014/01/13)
 
 ** Fixes:
