@@ -64,3 +64,4 @@ win32/scew.suo
 win32/scew.vcproj.*
 
 scew-*.tar.gz
+scew-*.tar.gz.asc
