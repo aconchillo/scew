@@ -6,7 +6,7 @@
  *
  * @if copyright
  *
- * Copyright (C) 2002-2009 Aleix Conchillo Flaque
+ * Copyright (C) 2002-2014 Aleix Conchillo Flaque
  *
  * SCEW is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -55,6 +55,9 @@ struct scew_parser
   XML_Char *preamble;           /**< Current XML document tree preamble */
   stack_element *stack;         /**< Current parsed element stack */
   scew_bool ignore_whitespaces; /**< Whether to ignore white spaces */
+  scew_bool parsing_started;    /**< Whether we started parsing any
+                                   non-space character before a tree
+                                   starts (used in streams) */
   load_hook element_hook;       /**< Hook for loaded elements */
   load_hook tree_hook;          /**< Hook for loaded trees */
 };

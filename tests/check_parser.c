@@ -74,16 +74,21 @@ static XML_Char const *TEST_STREAM_XML =
       "   <element attribute1=\"value1\" attribute2=\"value2\"/>\n"
       "</test>\n");
 
-/* Note that we don't have an XML header here. */
-static XML_Char const *TEST_STREAM_1_XML =
+static XML_Char const *TEST_STREAM_A_1_XML =
   _XT("<test>\n"
       "   <element>element contents</element>\n"
       "   <element");
 
-static XML_Char const *TEST_STREAM_2_XML =
+static XML_Char const *TEST_STREAM_A_2_XML =
   _XT("\n"
       " attribute1=\"value1\" attribute2=\"value2\"/>\n"
       "</test>\n");
+
+static XML_Char const *TEST_STREAM_B_1_XML =
+  _XT("<element");
+
+static XML_Char const *TEST_STREAM_B_2_XML =
+  _XT(" attribute1=\"value1\" attribute2=\"value2\"/>\n");
 
 static XML_Char const *TEST_INVALID_XML =
   _XT("<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n\n"
@@ -251,7 +256,7 @@ START_TEST (test_load_stream)
 END_TEST
 
 static scew_bool
-tree_chunked_stream_hook_ (scew_parser *parser, void *tree, void *user_data)
+tree_chunked_stream_a_hook_ (scew_parser *parser, void *tree, void *user_data)
 {
   static unsigned int const N_CHILDREN = 2;
 
@@ -263,20 +268,62 @@ tree_chunked_stream_hook_ (scew_parser *parser, void *tree, void *user_data)
   return SCEW_TRUE;
 }
 
-START_TEST (test_load_chunked_stream)
+START_TEST (test_load_chunked_stream_a)
 {
   scew_parser *parser = scew_parser_create ();
 
   scew_reader *reader_1 =
-    scew_reader_buffer_create (TEST_STREAM_1_XML,
-                               scew_strlen (TEST_STREAM_1_XML));
+    scew_reader_buffer_create (TEST_STREAM_A_1_XML,
+                               scew_strlen (TEST_STREAM_A_1_XML));
 
   scew_reader *reader_2 =
-    scew_reader_buffer_create (TEST_STREAM_2_XML,
-                               scew_strlen (TEST_STREAM_2_XML));
+    scew_reader_buffer_create (TEST_STREAM_A_2_XML,
+                               scew_strlen (TEST_STREAM_A_2_XML));
 
   scew_parser_set_element_hook (parser, element_hook_, NULL);
-  scew_parser_set_tree_hook (parser, tree_chunked_stream_hook_, NULL);
+  scew_parser_set_tree_hook (parser, tree_chunked_stream_a_hook_, NULL);
+
+  CHECK_BOOL (scew_parser_load_stream (parser, reader_1), SCEW_TRUE,
+              "Unable to parse first stream");
+
+  CHECK_BOOL (scew_parser_load_stream (parser, reader_2), SCEW_TRUE,
+              "Unable to parse second stream");
+
+  scew_reader_free (reader_1);
+  scew_reader_free (reader_2);
+  scew_parser_free (parser);
+}
+END_TEST
+
+static scew_bool
+tree_chunked_stream_b_hook_ (scew_parser *parser, void *tree, void *user_data)
+{
+  static unsigned int const N_CHILDREN = 0;
+  static XML_Char const *ROOT_NAME = _XT("element");
+
+  scew_element *root = scew_tree_root (tree);
+
+  CHECK_U_INT (scew_element_count (root), N_CHILDREN,
+               "Number of children do not match");
+
+  CHECK_STR (scew_element_name (root), ROOT_NAME, "Child name do not match");
+
+  return SCEW_TRUE;
+}
+
+START_TEST (test_load_chunked_stream_b)
+{
+  scew_parser *parser = scew_parser_create ();
+
+  scew_reader *reader_1 =
+    scew_reader_buffer_create (TEST_STREAM_B_1_XML,
+                               scew_strlen (TEST_STREAM_B_1_XML));
+
+  scew_reader *reader_2 =
+    scew_reader_buffer_create (TEST_STREAM_B_2_XML,
+                               scew_strlen (TEST_STREAM_B_2_XML));
+
+  scew_parser_set_tree_hook (parser, tree_chunked_stream_b_hook_, NULL);
 
   CHECK_BOOL (scew_parser_load_stream (parser, reader_1), SCEW_TRUE,
               "Unable to parse first stream");
@@ -335,7 +382,8 @@ parser_suite (void)
   tcase_add_test (tc_core, test_load);
   tcase_add_test (tc_core, test_load_hooks);
   tcase_add_test (tc_core, test_load_stream);
-  tcase_add_test (tc_core, test_load_chunked_stream);
+  tcase_add_test (tc_core, test_load_chunked_stream_a);
+  tcase_add_test (tc_core, test_load_chunked_stream_b);
   tcase_add_test (tc_core, test_load_invalid);
   suite_add_tcase (s, tc_core);
 

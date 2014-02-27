@@ -343,11 +343,20 @@ parse_stream_buffer_ (scew_parser *parser, XML_Char const *buffer, size_t size)
   while ((start < size) && (end <= size))
     {
       /**
-       * Skip extra whitespaces before any element is found. Note that
-       * we need to use stack here instead of tree, as we might have a
-       * stream without the mandatory <xml version...> preamble.
+       * If we haven't got any non-space character yet, let's check
+       * again. If we have one now, it means there will be something to
+       * parse soon.
        */
-      if (parser->stack == NULL)
+      if (!parser->parsing_started && !scew_isspace (buffer[start]))
+        {
+          parser->parsing_started = SCEW_TRUE;
+        }
+
+      /**
+       * If we still are not doing any real parsing, let's skip
+       * whitespaces.
+       */
+      if (!parser->parsing_started && (parser->stack == NULL))
         {
           while ((start < size) && scew_isspace (buffer[start]))
             {
@@ -388,6 +397,13 @@ parse_stream_buffer_ (scew_parser *parser, XML_Char const *buffer, size_t size)
               /* Reset parser to continue using it. */
               scew_parser_reset (parser);
             }
+
+          /* If this was the last element of a tree, reset parsing. */
+          if ((buffer[end] == _XT('>')) && (parser->stack == NULL))
+            {
+              parser->parsing_started = SCEW_FALSE;
+            }
+
           start = end + 1;
         }
       end += 1;
