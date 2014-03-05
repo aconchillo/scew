@@ -399,7 +399,9 @@ parse_stream_buffer_ (scew_parser *parser, XML_Char const *buffer, size_t size)
             }
 
           /* If this was the last element of a tree, reset parsing. */
-          if ((buffer[end] == _XT('>')) && (parser->stack == NULL))
+          if ((end < size)
+              && (buffer[end] == _XT('>'))
+              && (parser->stack == NULL))
             {
               parser->parsing_started = SCEW_FALSE;
             }
