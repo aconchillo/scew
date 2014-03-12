@@ -25,6 +25,8 @@ people. Help me keep it complete and exempt of errors.
 * Lluis Gesa also helped in testing the package and listened to my
   boring implementation thoughts of SCEW readers/writers.
 
+* Anup Rao tested the library, specially stream parsing, extensively.
+
 * Bug reporting and others (in alphabetical order):
 
   Anonymous reporters, Stuart R. Anderson, Paul Bohme, Eric
