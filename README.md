@@ -1,7 +1,7 @@
 [![Build Status](https://travis-ci.org/aconchillo/scew.svg?branch=master)](https://travis-ci.org/aconchillo/scew)
 
-Welcome to SCEW (Simple C Expat Wrapper)
-========================================
+SCEW: A Simple C Expat Wrapper
+==============================
 
    The aim of SCEW is to provide an easy interface around the XML
 Expat parser, as well as a simple interface for creating new XML
