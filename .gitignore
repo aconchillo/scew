@@ -47,6 +47,9 @@ examples/win32/scew_write/Release
 examples/win32/scew_write/scew_write.ncb
 examples/win32/scew_write/scew_write.suo
 examples/win32/scew_write/scew_write.vcproj.*
+test-driver
+tests/*.log
+tests/*.trs
 tests/check_attribute
 tests/check_element
 tests/check_list
