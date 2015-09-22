@@ -1,3 +1,5 @@
+before_install:
+  - sudo apt-get install libexpat1-dev check
 language: c
 script: ./autogen.sh && make && make check
 compiler:
