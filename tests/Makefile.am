@@ -2,12 +2,12 @@
 # Author: Aleix Conchillo Flaque <aleix@member.fsf.org>
 # Date:   Thu Aug 02, 2007 14:20
 #
-# Copyright (C) 2007-2009 Aleix Conchillo Flaque
+# Copyright (C) 2007-2016 Aleix Conchillo Flaque
 #
 
 SUBDIRS = data
 
-INCLUDES = -I$(top_srcdir) -DSCEW_TESTSDIR=\""$(top_srcdir)/tests/data"\"
+AM_CPPFLAGS = -I$(top_srcdir) -DSCEW_TESTSDIR=\""$(top_srcdir)/tests/data"\"
 
 if CHECK_TESTS
 

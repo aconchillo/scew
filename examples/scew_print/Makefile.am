@@ -5,7 +5,7 @@
 # Copyright (C) 2002-2009 Aleix Conchillo Flaque
 #
 
-INCLUDES = -I$(top_srcdir)
+AM_CPPFLAGS = -I$(top_srcdir)
 
 noinst_PROGRAMS = scew_print
 

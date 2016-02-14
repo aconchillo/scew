@@ -2,16 +2,17 @@
 # Author: Aleix Conchillo Flaque <aleix@member.fsf.org>
 # Date:   Mon Oct 07, 2002 01:56
 #
-# Copyright (C) 2002-2014 Aleix Conchillo Flaque
+# Copyright (C) 2002-2016 Aleix Conchillo Flaque
 #
 
 #### boilerplate and flags
 
 define([scew_version], [1.1.7])
 
-AC_INIT(scew/scew.h, scew_version)
-AM_INIT_AUTOMAKE(scew, scew_version)
-AM_CONFIG_HEADER(config.h)
+AC_INIT([scew], [scew_version])
+AC_CONFIG_SRCDIR([scew/element.c])
+AM_CONFIG_HEADER([config.h])
+AM_INIT_AUTOMAKE
 
 m4_ifdef([AM_SILENT_RULES], [AM_SILENT_RULES([yes])])
 m4_ifdef([AM_COLOR_TESTS], [AM_COLOR_TESTS([yes])])

@@ -2,10 +2,10 @@
 # Author: Aleix Conchillo Flaque <aleix@member.fsf.org>
 # Date:   Sun Mar 30, 2003 12:23
 #
-# Copyright (C) 2002-2009 Aleix Conchillo Flaque
+# Copyright (C) 2002-2016 Aleix Conchillo Flaque
 #
 
-INCLUDES = -I$(top_srcdir)
+AM_CPPFLAGS = -I$(top_srcdir)
 
 noinst_PROGRAMS = scew_write
 
