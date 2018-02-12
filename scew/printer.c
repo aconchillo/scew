@@ -518,8 +518,9 @@ print_escaped_ (scew_printer *printer, XML_Char const *string)
 
   /* Get escaped string. */
   XML_Char *escaped = scew_strescape (string);
-
-  result = scew_writer_write (printer->writer, escaped, scew_strlen (escaped));
+  size_t escaped_len = scew_strlen(escaped);
+ 
+  result = (scew_writer_write (printer->writer, escaped, escaped_len) == escaped_len);
 
   /* Free escaped string. */
   free (escaped);
