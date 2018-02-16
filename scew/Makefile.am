@@ -2,7 +2,7 @@
 # Author: Aleix Conchillo Flaque <aleix@member.fsf.org>
 # Date:   Wed Nov 06, 2002 00:55
 #
-# Copyright (C) 2002-2014 Aleix Conchillo Flaque
+# Copyright (C) 2002-2018 Aleix Conchillo Flaque
 #
 
 includedir = $(prefix)/include/$(PACKAGE)
@@ -25,12 +25,12 @@ if SCEW_UNICODE_WCHAR_T
 
 lib_LTLIBRARIES = libsceww.la
 libsceww_la_SOURCES = $(SCEW_SOURCES)
-libsceww_la_LDFLAGS = -version-info 1:8:0
+libsceww_la_LDFLAGS = -version-info 1:9:0
 
 else
 
 lib_LTLIBRARIES = libscew.la
 libscew_la_SOURCES = $(SCEW_SOURCES)
-libscew_la_LDFLAGS = -version-info 1:8:0
+libscew_la_LDFLAGS = -version-info 1:9:0
 
 endif
