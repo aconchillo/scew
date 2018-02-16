@@ -6,7 +6,7 @@
  *
  * @if copyright
  *
- * Copyright (C) 2009 Aleix Conchillo Flaque
+ * Copyright (C) 2009-2018 Aleix Conchillo Flaque
  *
  * SCEW is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -39,7 +39,12 @@
 static XML_Char const *TEST_TREE_CONTENTS =
   _XT("<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n\n"
       "<test>\n"
-      "   <element>element contents</element>\n"
+      "   <element>01234567890123456789012345678901234567890123456789"
+      "01234567890123456789012345678901234567890123456789"
+      "01234567890123456789012345678901234567890123456789"
+      "01234567890123456789012345678901234567890123456789"
+      "01234567890123456789012345678901234567890123456789"
+      "012345</element>\n"
       "   <element attribute=\"value\"/>\n"
       "   <element attribute1=\"value1\" attribute2=\"value2\"/>\n"
       "   <element>\n"
@@ -52,7 +57,12 @@ static XML_Char const *TEST_TREE_CONTENTS =
 
 static XML_Char const *TEST_ROOT_CONTENTS =
   _XT("<test>\n"
-      "   <element>element contents</element>\n"
+      "   <element>01234567890123456789012345678901234567890123456789"
+      "01234567890123456789012345678901234567890123456789"
+      "01234567890123456789012345678901234567890123456789"
+      "01234567890123456789012345678901234567890123456789"
+      "01234567890123456789012345678901234567890123456789"
+      "012345</element>\n"
       "   <element attribute=\"value\"/>\n"
       "   <element attribute1=\"value1\" attribute2=\"value2\"/>\n"
       "   <element>\n"
@@ -80,7 +90,7 @@ static scew_tree* test_tree_create_ (void);
 
 START_TEST (test_alloc)
 {
-  enum { MAX_BUFFER = 512 };
+  enum { MAX_BUFFER = 1024 };
 
   XML_Char BUFFER[MAX_BUFFER] = _XT("");
 
@@ -219,7 +229,7 @@ run_tests (SRunner *sr)
 scew_writer*
 test_writer_create_ (XML_Char **buffer)
 {
-  enum { MAX_BUFFER = 512 };
+  enum { MAX_BUFFER = 1024 };
 
   static XML_Char write_buffer[MAX_BUFFER] = _XT("");
 
@@ -243,9 +253,18 @@ test_tree_create_ (void)
   scew_tree *tree = scew_tree_create ();
   scew_element *root = scew_tree_set_root (tree, _XT("test"));
 
-  /* Add an element and set element contents. */
+  /**
+   * Add an element and set element contents with a specific size:
+   * http://savannah.nongnu.org/bugs/?53130
+   */
   scew_element *element = scew_element_add (root, _XT("element"));
-  scew_element_set_contents (element, _XT("element contents"));
+  scew_element_set_contents (element,
+                             _XT("01234567890123456789012345678901234567890123456789"
+                                 "01234567890123456789012345678901234567890123456789"
+                                 "01234567890123456789012345678901234567890123456789"
+                                 "01234567890123456789012345678901234567890123456789"
+                                 "01234567890123456789012345678901234567890123456789"
+                                 "012345"));
 
   /**
    * Add an element with an attribute pair (name, value) and a
