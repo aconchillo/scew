@@ -6,7 +6,7 @@
  *
  * @if copyright
  *
- * Copyright (C) 2002-2009 Aleix Conchillo Flaque
+ * Copyright (C) 2002-2016 Aleix Conchillo Flaque
  *
  * SCEW is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -175,7 +175,8 @@ expat_xmldecl_handler_ (void *data,
    * We need to add 1 as our standalone enumeration starts at 0. Expat
    * returns -1, 0 or 1.
    */
-  scew_tree_set_xml_standalone (parser->tree, standalone + 1);
+  scew_tree_set_xml_standalone (parser->tree,
+                                (scew_tree_standalone) (standalone + 1));
 }
 
 void
