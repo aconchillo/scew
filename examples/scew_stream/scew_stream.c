@@ -121,6 +121,7 @@ main (int argc, char *argv[])
       scew_error code = scew_error_code ();
       scew_printf (_XT("Unable to load file (error #%d: %s)\n"),
                    code, scew_error_string (code));
+      return EXIT_FAILURE;
     }
 
   /* Setup element and tree hooks. */
