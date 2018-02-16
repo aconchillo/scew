@@ -443,15 +443,12 @@ print_element_start_ (scew_printer *printer,
   static XML_Char const *END_2 = _XT("/>");
 
   scew_list *list = NULL;
-  scew_writer *writer = NULL;
   XML_Char const *name = NULL;
   XML_Char const *contents = NULL;
   scew_bool result = SCEW_TRUE;
 
   assert (printer != NULL);
   assert (element != NULL);
-
-  writer = printer->writer;
 
   name = scew_element_name (element);
 
@@ -488,14 +485,11 @@ print_element_end_ (scew_printer *printer, scew_element const *element)
   static XML_Char const *START = _XT("</");
   static XML_Char const *END = _XT(">");
 
-  scew_writer *writer = NULL;
   scew_bool result = SCEW_TRUE;
 
   XML_Char const *name = scew_element_name (element);
 
   assert (printer != NULL);
-
-  writer = printer->writer;
 
   if (scew_element_count (element) > 0)
     {
