@@ -25,12 +25,12 @@ if SCEW_UNICODE_WCHAR_T
 
 lib_LTLIBRARIES = libsceww.la
 libsceww_la_SOURCES = $(SCEW_SOURCES)
-libsceww_la_LDFLAGS = -version-info 1:9:0
+libsceww_la_LDFLAGS = -version-info 1:10:0
 
 else
 
 lib_LTLIBRARIES = libscew.la
 libscew_la_SOURCES = $(SCEW_SOURCES)
-libscew_la_LDFLAGS = -version-info 1:9:0
+libscew_la_LDFLAGS = -version-info 1:10:0
 
 endif
