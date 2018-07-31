@@ -55,6 +55,7 @@ struct scew_parser
   XML_Char *preamble;           /**< Current XML document tree preamble */
   stack_element *stack;         /**< Current parsed element stack */
   scew_bool ignore_whitespaces; /**< Whether to ignore white spaces */
+  scew_bool ignore_insignificant_whitespaces; /**< Whether to insignificant whitespaces */
   scew_bool parsing_started;    /**< Whether we started parsing any
                                    non-space character before a tree
                                    starts (used in streams) */

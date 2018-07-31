@@ -290,6 +290,26 @@ expat_end_handler_ (void *data, XML_Char const *elem)
         }
     }
 
+  /* Trim the whitespace in mixed nodes if necessary */
+  if(parser->ignore_insignificant_whitespaces && (contents != NULL) && scew_element_count(current) > 1) 
+   {
+      int isEmpty = 1;
+      for(int i =0;i < scew_strlen(contents); i++)
+       {
+         char c = contents[i];
+         if(!scew_isspace(c))
+           {
+             isEmpty = 0;
+             break;
+           }
+       }
+
+      if(isEmpty)
+        {
+          scew_element_free_contents (current);
+        }
+    }
+
   /* Call loaded element hook. */
   if (parser->element_hook.hook != NULL)
     {
