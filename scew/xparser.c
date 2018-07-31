@@ -294,7 +294,8 @@ expat_end_handler_ (void *data, XML_Char const *elem)
   if(parser->ignore_insignificant_whitespaces && (contents != NULL) && scew_element_count(current) > 1) 
    {
       int isEmpty = 1;
-      for(int i =0;i < scew_strlen(contents); i++)
+      int i;
+      for(i =0;i < scew_strlen(contents); i++)
        {
          char c = contents[i];
          if(!scew_isspace(c))
