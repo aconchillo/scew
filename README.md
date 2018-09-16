@@ -19,9 +19,6 @@ These are the main SCEW features:
 
 # Download
 
-SCEW is freely available for download under the terms of the GNU Lesser
-General Public License v2.1 (LGPL).
-
 Download the latest tarball and untar it:
 
 - [scew-1.2.0.tar.gz](http://download.savannah.gnu.org/releases/scew/scew-1.2.0.tar.gz)
