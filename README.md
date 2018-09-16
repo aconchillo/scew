@@ -28,13 +28,13 @@ Download the latest tarball and untar it:
 
 If you are cloning the repository make sure you run this first:
 
-    : $ ./autogen.sh
+    $ ./autogen.sh
 
 Then, run the typical sequence:
 
-    : $ ./configure
-    : $ make
-    : $ sudo make install
+    $ ./configure
+    $ make
+    $ sudo make install
 
 
 # License
