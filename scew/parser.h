@@ -281,6 +281,13 @@ extern SCEW_API void scew_parser_set_tree_hook (scew_parser *parser,
 extern SCEW_API void scew_parser_ignore_whitespaces (scew_parser *parser,
                                                      scew_bool ignore);
 
+/**
+ * Same as scew_parser_ignore_whitespaces but only ignores
+ * insignificant ones. i.e. the spaces between elements. 
+ * @ingroup SCEWParserLoad
+ */
+extern SCEW_API void scew_parser_ignore_insignificant_whitespaces(scew_parser *parser,
+						      scew_bool ignore);
 
 /**
  * @defgroup SCEWParserAcc Accessors

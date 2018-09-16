@@ -197,6 +197,16 @@ scew_parser_ignore_whitespaces (scew_parser *parser, scew_bool ignore)
   parser->ignore_whitespaces = ignore;
 }
 
+void 
+scew_parser_ignore_insignificant_whitespaces(scew_parser *parser, scew_bool ignore)
+{
+   assert (parser != NULL);
+   parser->ignore_insignificant_whitespaces = ignore;
+   if(ignore) {
+      parser->ignore_whitespaces = SCEW_FALSE;
+   }
+}
+
 
 /* Private */
 
@@ -225,6 +235,7 @@ parser_create_ (scew_bool namespace, XML_Char separator)
     {
       /* Ignore white spaces by default. */
       parser->ignore_whitespaces = SCEW_TRUE;
+      parser->ignore_insignificant_whitespaces = SCEW_FALSE;
 
       /* No load hooks by default. */
       parser->element_hook.hook = NULL;
