@@ -7,7 +7,7 @@
 
 #### boilerplate and flags
 
-define([scew_version], [1.1.9])
+define([scew_version], [1.2.0])
 
 AC_INIT([scew], [scew_version])
 AC_CONFIG_SRCDIR([scew/element.c])

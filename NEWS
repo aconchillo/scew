@@ -6,7 +6,7 @@ See the end for copying conditions.
 
 ------------------------------------------------------------------------
 
-* Version 1.2.0 (??)
+* Version 1.2.0 (2018/09/15)
 
 ** Fixes:
 
@@ -405,15 +405,19 @@ See the end for copying conditions.
 
 Copyright (C) 2002-2013 Aleix Conchillo Flaqué
 
-   Permission is granted to anyone to make or distribute verbatim
-   copies of this document as received, in any medium, provided that
-   the copyright notice and this permission notice are preserved, thus
-   giving the recipient permission to redistribute in turn.
+SCEW is free software; you can redistribute it and/or modify it under the
+terms of the GNU Lesser General Public License as published by the Free
+Software Foundation; either version 2.1 of the License, or (at your option)
+any later version.
 
-   Permission is granted to distribute modified versions of this
-   document, or of portions of it, under the above conditions,
-   provided also that they carry prominent notices stating who last
-   changed them.
+SCEW is distributed in the hope that it will be useful, but WITHOUT ANY
+WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR
+A PARTICULAR PURPOSE.  See the GNU Lesser General Public License for more
+details.
+
+You should have received a copy of the GNU Lesser General Public License along
+with this library; if not, write to the Free Software Foundation, Inc., 51
+Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 
 --
 ;;; Local Variables:
