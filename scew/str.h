@@ -1,7 +1,7 @@
 /**
  * @file     str.h
  * @brief    SCEW string functions
- * @author   Aleix Conchillo Flaque <aleix@member.fsf.org>
+ * @author   Aleix Conchillo Flaque <aconchillo@gmail.com>
  * @date     Sun Dec 01, 2002 13:05
  * @ingroup  SCEWString
  *

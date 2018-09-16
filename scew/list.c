@@ -1,7 +1,7 @@
 /**
  * @file     list.c
  * @brief    list.h implementation
- * @author   Aleix Conchillo Flaque <aleix@member.fsf.org>
+ * @author   Aleix Conchillo Flaque <aconchillo@gmail.com>
  * @date     Thu Jul 12, 2007 20:09
  *
  * @if copyright

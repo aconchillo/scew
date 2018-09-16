@@ -1,7 +1,7 @@
 /**
  * @file     tree.c
  * @brief    tree.h implementation
- * @author   Aleix Conchillo Flaque <aleix@member.fsf.org>
+ * @author   Aleix Conchillo Flaque <aconchillo@gmail.com>
  * @date     Thu Feb 20, 2003 23:45
  *
  * @if copyright

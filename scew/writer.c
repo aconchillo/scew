@@ -1,7 +1,7 @@
 /**
  * @file     writer.c
  * @brief    writer.h implementation
- * @author   Aleix Conchillo Flaque <aleix@member.fsf.org>
+ * @author   Aleix Conchillo Flaque <aconchillo@gmail.com>
  * @date     Thu Sep 11, 2003 00:39
  *
  * @if copyright

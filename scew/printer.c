@@ -1,7 +1,7 @@
 /**
  * @file     printer.c
  * @brief    printer.h implementation
- * @author   Aleix Conchillo Flaque <aleix@member.fsf.org>
+ * @author   Aleix Conchillo Flaque <aconchillo@gmail.com>
  * @date     Fri Jan 16, 2009 22:38
  *
  * @if copyright

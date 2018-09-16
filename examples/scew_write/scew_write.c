@@ -1,7 +1,7 @@
 /**
  * @file     scew_write.c
  * @brief    SCEW usage example
- * @author   Aleix Conchillo Flaque <aleix@member.fsf.org>
+ * @author   Aleix Conchillo Flaque <aconchillo@gmail.com>
  * @date     Sun Mar 30, 2003 12:21
  *
  * @if copyright

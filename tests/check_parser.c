@@ -1,7 +1,7 @@
 /**
  * @file     check_parser.c
  * @brief    Unit testing for SCEW parser
- * @author   Aleix Conchillo Flaque <aleix@member.fsf.org>
+ * @author   Aleix Conchillo Flaque <aconchillo@gmail.com>
  * @date     Fri Oct 30, 2009 07:45
  *
  * @if copyright

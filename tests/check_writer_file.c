@@ -1,7 +1,7 @@
 /**
  * @file     check_writer_file.c
  * @brief    Unit testing for SCEW file writer
- * @author   Aleix Conchillo Flaque <aleix@member.fsf.org>
+ * @author   Aleix Conchillo Flaque <aconchillo@gmail.com>
  * @date     Tue Sep 01, 2009 16:55
  *
  * @if copyright

@@ -1,7 +1,7 @@
 /**
  * @file     xattribute.c
  * @brief    xattribute.h implementation
- * @author   Aleix Conchillo Flaque <aleix@member.fsf.org>
+ * @author   Aleix Conchillo Flaque <aconchillo@gmail.com>
  * @date     Mon Aug 24, 2009 23:43
  *
  * @if copyright

@@ -1,7 +1,7 @@
 /**
  * @file     export.h
  * @brief    SCEW shared library support
- * @author   Aleix Conchillo Flaque <aleix@member.fsf.org>
+ * @author   Aleix Conchillo Flaque <aconchillo@gmail.com>
  * @date     Fri Sep 04, 2009 00:14
  *
  * @if copyright

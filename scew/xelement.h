@@ -1,7 +1,7 @@
 /**
  * @file     element.c
  * @brief    SCEW private element type declaration
- * @author   Aleix Conchillo Flaque <aleix@member.fsf.org>
+ * @author   Aleix Conchillo Flaque <aconchillo@gmail.com>
  * @date     Thu Aug 27, 2009 01:47
  *
  * @if copyright

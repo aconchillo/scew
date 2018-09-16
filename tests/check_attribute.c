@@ -1,7 +1,7 @@
 /**
  * @file     check_attribute.c
  * @brief    Unit testing for SCEW attributes
- * @author   Aleix Conchillo Flaque <aleix@member.fsf.org>
+ * @author   Aleix Conchillo Flaque <aconchillo@gmail.com>
  * @date     Mon Aug 24, 2009 23:17
  *
  * @if copyright

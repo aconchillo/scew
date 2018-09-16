@@ -1,7 +1,7 @@
 /**
  * @file     reader.c
  * @brief    reader.h implementation
- * @author   Aleix Conchillo Flaque <aleix@member.fsf.org>
+ * @author   Aleix Conchillo Flaque <aconchillo@gmail.com>
  * @date     Sun Nov 23, 2008 13:44
  *
  * @if copyright

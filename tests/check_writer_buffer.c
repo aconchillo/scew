@@ -1,7 +1,7 @@
 /**
  * @file     check_writer_buffer.c
  * @brief    Unit testing for SCEW buffer writer
- * @author   Aleix Conchillo Flaque <aleix@member.fsf.org>
+ * @author   Aleix Conchillo Flaque <aconchillo@gmail.com>
  * @date     Sat Aug 29, 2009 19:44
  *
  * @if copyright

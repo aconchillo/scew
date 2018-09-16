@@ -1,7 +1,7 @@
 /**
  * @file     error.c
  * @brief    error.h implementation
- * @author   Aleix Conchillo Flaque <aleix@member.fsf.org>
+ * @author   Aleix Conchillo Flaque <aconchillo@gmail.com>
  * @date     Mon May 05, 2003 10:35
  *
  * @if copyright

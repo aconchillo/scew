@@ -1,7 +1,7 @@
 /**
  * @file     str.c
  * @brief    str.h implementation
- * @author   Aleix Conchillo Flaque <aleix@member.fsf.org>
+ * @author   Aleix Conchillo Flaque <aconchillo@gmail.com>
  * @date     Mon Nov 25, 2002 23:32
  *
  * @if copyright

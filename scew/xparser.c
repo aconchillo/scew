@@ -1,7 +1,7 @@
 /**
  * @file     xparser.c
  * @brief    xparser.h implementation
- * @author   Aleix Conchillo Flaque <aleix@member.fsf.org>
+ * @author   Aleix Conchillo Flaque <aconchillo@gmail.com>
  * @date     Tue Dec 03, 2002 00:21
  *
  * @if copyright

@@ -1,7 +1,7 @@
 /**
  * @file     reader_buffer.h
  * @brief    SCEW reader functions for memory buffers
- * @author   Aleix Conchillo Flaque <aleix@member.fsf.org>
+ * @author   Aleix Conchillo Flaque <aconchillo@gmail.com>
  * @date     Tue Aug 25, 2009 02:02
  * @ingroup  SCEWReaderMemory
  *

@@ -1,7 +1,7 @@
 /**
  * @file     check_reader_file.c
  * @brief    Unit testing for SCEW file reader
- * @author   Aleix Conchillo Flaque <aleix@member.fsf.org>
+ * @author   Aleix Conchillo Flaque <aconchillo@gmail.com>
  * @date     Sun Aug 30, 2009 22:34
  *
  * @if copyright

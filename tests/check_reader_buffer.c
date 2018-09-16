@@ -1,7 +1,7 @@
 /**
  * @file     check_reader_buffer.c
  * @brief    Unit testing for SCEW buffer reader
- * @author   Aleix Conchillo Flaque <aleix@member.fsf.org>
+ * @author   Aleix Conchillo Flaque <aconchillo@gmail.com>
  * @date     Fri Aug 28, 2009 19:38
  *
  * @if copyright

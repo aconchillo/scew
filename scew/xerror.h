@@ -1,7 +1,7 @@
 /**
  * @file     xerror.h
  * @brief    Internal error functions
- * @author   Aleix Conchillo Flaque <aleix@member.fsf.org>
+ * @author   Aleix Conchillo Flaque <aconchillo@gmail.com>
  * @date     Mon May 05, 2003 10:40
  *
  * @if copyright

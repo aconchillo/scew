@@ -1,7 +1,7 @@
 /**
  * @file     writer_buffer.h
  * @brief    SCEW writer functions for memory buffers
- * @author   Aleix Conchillo Flaque <aleix@member.fsf.org>
+ * @author   Aleix Conchillo Flaque <aconchillo@gmail.com>
  * @date     Thu Nov 13, 2008 11:03
  * @ingroup  SCEWWriterMemory
  *

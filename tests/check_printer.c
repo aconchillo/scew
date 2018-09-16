@@ -1,7 +1,7 @@
 /**
  * @file     check_printer.c
  * @brief    Unit testing for SCEW printer
- * @author   Aleix Conchillo Flaque <aleix@member.fsf.org>
+ * @author   Aleix Conchillo Flaque <aconchillo@gmail.com>
  * @date     Thu Sep 03, 2009 00:10
  *
  * @if copyright

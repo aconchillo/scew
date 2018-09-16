@@ -1,7 +1,7 @@
 /**
  * @file     attribute.h
  * @brief    SCEW attribute's handling routines
- * @author   Aleix Conchillo Flaque <aleix@member.fsf.org>
+ * @author   Aleix Conchillo Flaque <aconchillo@gmail.com>
  * @date     Mon Nov 25, 2002 00:39
  * @ingroup  SCEWAttribute, SCEWAttributeAlloc, SCEWAttributeAcc
  * @ingroup  SCEWAttributeCompare, SCEWAttributeHier

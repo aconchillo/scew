@@ -1,7 +1,7 @@
 /**
  * @file     test.h
  * @brief    Common unit testing macros
- * @author   Aleix Conchillo Flaque <aleix@member.fsf.org>
+ * @author   Aleix Conchillo Flaque <aconchillo@gmail.com>
  * @date     Thu Aug 09, 2007 12:25
  *
  * Copyright (C) 2007-2009 Aleix Conchillo Flaque

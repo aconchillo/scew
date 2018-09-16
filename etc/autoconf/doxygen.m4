@@ -1,5 +1,5 @@
 #
-# Author: Aleix Conchillo Flaque <aleix@member.fsf.org>
+# Author: Aleix Conchillo Flaque <aconchillo@gmail.com>
 # Start date: Sun Jul 06, 2003 04:41
 #
 # Copyright (C) 2003-2010 Aleix Conchillo Flaque

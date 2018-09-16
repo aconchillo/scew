@@ -1,7 +1,7 @@
 /**
  * @file     error.h
  * @brief    SCEW error handling functions
- * @author   Aleix Conchillo Flaque <aleix@member.fsf.org>
+ * @author   Aleix Conchillo Flaque <aconchillo@gmail.com>
  * @date     Mon May 05, 2003 10:29
  * @ingroup  SCEWError, SCEWErrorCodes, SCEWErrorExpat
  *

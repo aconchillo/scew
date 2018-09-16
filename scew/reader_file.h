@@ -1,7 +1,7 @@
 /**
  * @file     reader_file.h
  * @brief    SCEW reader functions for files
- * @author   Aleix Conchillo Flaque <aleix@member.fsf.org>
+ * @author   Aleix Conchillo Flaque <aconchillo@gmail.com>
  * @date     Sun Nov 23, 2008 13:51
  * @ingroup  SCEWReaderFile
  *

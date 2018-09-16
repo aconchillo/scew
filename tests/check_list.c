@@ -1,7 +1,7 @@
 /**
  * @file     check_element.c
  * @brief    Unit testing for SCEW lists
- * @author   Aleix Conchillo Flaque <aleix@member.fsf.org>
+ * @author   Aleix Conchillo Flaque <aconchillo@gmail.com>
  * @date     Fri Aug 03, 2007 17:11
  *
  * @if copyright

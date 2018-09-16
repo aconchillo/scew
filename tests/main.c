@@ -1,7 +1,7 @@
 /**
  * @file     main.c
  * @brief    Unit testing main
- * @author   Aleix Conchillo Flaque <aleix@member.fsf.org>
+ * @author   Aleix Conchillo Flaque <aconchillo@gmail.com>
  * @date     Fri Aug 03, 2007 17:52
  *
  * @if copyright

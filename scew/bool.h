@@ -1,7 +1,7 @@
 /**
  * @file     bool.h
  * @brief    SCEW boolean type declaration
- * @author   Aleix Conchillo Flaque <aleix@member.fsf.org>
+ * @author   Aleix Conchillo Flaque <aconchillo@gmail.com>
  * @date     Thu Sep 04, 2008 11:42
  *
  * @if copyright

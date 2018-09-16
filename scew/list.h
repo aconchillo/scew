@@ -1,7 +1,7 @@
 /**
  * @file     list.h
  * @brief    SCEW general list implementation
- * @author   Aleix Conchillo Flaque <aleix@member.fsf.org>
+ * @author   Aleix Conchillo Flaque <aconchillo@gmail.com>
  * @date     Thu Jul 12, 2007 20:09
  * @ingroup  SCEWList, SCEWListAlloc, SCEWListAcc, SCEWListMod
  * @ingroup  SCEWListTrav, SCEWListSearch, SCEWList
