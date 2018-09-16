@@ -6,7 +6,7 @@
  *
  * @if copyright
  *
- * Copyright (C) 2009-2014 Aleix Conchillo Flaque
+ * Copyright (C) 2009-2018 Aleix Conchillo Flaque
  *
  * SCEW is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -58,6 +58,10 @@ static XML_Char const *TEST_HOOKS_XML =
       "   <element attribute=\"value\"/>\n"
       "   <element attribute1=\"value1\" attribute2=\"value2\"/>\n"
       "</test>\n");
+
+static XML_Char const *TEST_WHITE_SPACE_XML =
+  _XT("<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n\n"
+      "<test>  <element> element contents </element>  </test>\n");
 
 static XML_Char const *TEST_STREAM_XML =
   _XT("\n"
@@ -369,6 +373,56 @@ START_TEST (test_load_invalid)
 END_TEST
 
 
+/* White spaces */
+
+START_TEST (test_white_spaces)
+{
+  scew_parser *parser = scew_parser_create ();
+
+  scew_reader *reader =
+    scew_reader_buffer_create (TEST_WHITE_SPACE_XML, scew_strlen (TEST_WHITE_SPACE_XML));
+
+  scew_tree *tree = scew_parser_load (parser, reader);
+
+  scew_element *root = scew_tree_root (tree);
+  CHECK_NULL_PTR (scew_element_contents (root),
+                  "Root element shouldn't have any white spaces");
+
+  scew_element *element = scew_element_by_name (root, "element");
+  CHECK_STR (scew_element_contents (element), " element contents ",
+             "Element contents should preserve white spaces");
+
+  scew_tree_free (tree);
+  scew_reader_free (reader);
+  scew_parser_free (parser);
+}
+END_TEST
+
+START_TEST (test_ignore_white_spaces)
+{
+  scew_parser *parser = scew_parser_create ();
+  scew_parser_ignore_whitespaces (parser, SCEW_FALSE);
+
+  scew_reader *reader =
+    scew_reader_buffer_create (TEST_WHITE_SPACE_XML, scew_strlen (TEST_WHITE_SPACE_XML));
+
+  scew_tree *tree = scew_parser_load (parser, reader);
+
+  scew_element *root = scew_tree_root (tree);
+  CHECK_PTR (scew_element_contents (root),
+             "Root element should preserve white spaces");
+
+  scew_element *element = scew_element_by_name (root, "element");
+  CHECK_STR (scew_element_contents (element), " element contents ",
+                  "Element contents should preserve white spaces");
+
+  scew_tree_free (tree);
+  scew_reader_free (reader);
+  scew_parser_free (parser);
+}
+END_TEST
+
+
 /* Suite */
 
 static Suite*
@@ -385,6 +439,8 @@ parser_suite (void)
   tcase_add_test (tc_core, test_load_chunked_stream_a);
   tcase_add_test (tc_core, test_load_chunked_stream_b);
   tcase_add_test (tc_core, test_load_invalid);
+  tcase_add_test (tc_core, test_white_spaces);
+  tcase_add_test (tc_core, test_ignore_white_spaces);
   suite_add_tcase (s, tc_core);
 
   return s;

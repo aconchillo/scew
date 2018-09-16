@@ -6,7 +6,7 @@
  *
  * @if copyright
  *
- * Copyright (C) 2002-2016 Aleix Conchillo Flaque
+ * Copyright (C) 2002-2018 Aleix Conchillo Flaque
  *
  * SCEW is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -282,9 +282,8 @@ expat_end_handler_ (void *data, XML_Char const *elem)
   contents = scew_element_contents (current);
   if (parser->ignore_whitespaces && (contents != NULL))
     {
-      /* We use the internal const pointer for performance reasons. */
-      scew_strtrim ((XML_Char *) contents);
-      if (scew_strlen (contents) == 0)
+      /* If element contents is all spaces, get rid of the contents. */
+      if (scew_isempty (contents))
         {
           scew_element_free_contents (current);
         }

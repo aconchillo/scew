@@ -7,7 +7,7 @@
  *
  * @if copyright
  *
- * Copyright (C) 2002-2009 Aleix Conchillo Flaque
+ * Copyright (C) 2002-2018 Aleix Conchillo Flaque
  *
  * SCEW is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -255,8 +255,9 @@ extern SCEW_API void scew_parser_set_tree_hook (scew_parser *parser,
                                                 void *user_data);
 
 /**
- * Tells the @a parser how to treat white spaces. The default is to
- * ignore heading and trailing white spaces.
+ * Tells the @a parser how to treat white spaces. The default is to ignore
+ * heading and trailing white spaces, except for text nodes where white spaces
+ * are always preserved.
  *
  * There is a new section in XML specification which talks about how
  * to handle white spaces in XML. One can set an optional attribtue to

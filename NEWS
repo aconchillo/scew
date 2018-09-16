@@ -6,6 +6,16 @@ See the end for copying conditions.
 
 ------------------------------------------------------------------------
 
+* Version 1.2.0 (??)
+
+** Fixes:
+
+   - Do not ignore white spaces in text nodes even if
+     scew_parser_ignore_whitespace is set to true.
+     (closes patch #9568, reported by Felipe Provenzano)
+
+------------------------------------------------------------------------
+
 * Version 1.1.9 (2018/02/16)
 
 ** Fixes:
